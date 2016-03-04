@@ -1,0 +1,2 @@
+v1.2.6, 01.03.2016 -- First tracked release
+v1.3.0, 03.03.2016 -- Added plot module
