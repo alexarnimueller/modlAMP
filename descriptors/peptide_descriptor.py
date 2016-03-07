@@ -411,7 +411,7 @@ class GlobalDescriptor:
 	- **Sequence Length**	(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.length()`)
 	- **Isoelectric Point**	(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.isoelectric_point()`)
 	- **Charge Density**	(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.charge_density()`)
-	- **Hydrophobic Ratio**	(not available yet)
+	- **Hydrophobic Ratio**	(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.hydrophobic_ratio()`)
 	- **Aromaticity**		(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.aromaticity()`)
 	- **Boman Index**		(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.boman_index()`)
 	- **Aliphatic Index**	(:meth:`modlAMP.descriptors.peptide_descriptor.GlobalDescriptor.aliphatic_index()`)
