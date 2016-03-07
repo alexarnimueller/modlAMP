@@ -9,7 +9,7 @@ The remaining empty spots are filled up by hydrophobic AAs.
 The method :func:`mutate_AA(nr,prob)` enables sequential mutations of the produced sequences.
 """
 
-from core import mutate_AA, aminoacids, template, clean, save_fasta
+from core.templates import mutate_AA, aminoacids, template, clean, save_fasta
 import random
 from itertools import cycle
 

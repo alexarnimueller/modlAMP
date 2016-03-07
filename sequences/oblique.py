@@ -9,7 +9,7 @@ tilted/oblique in membrane environment.
 """
 
 import random
-from core import mutate_AA, aminoacids, template, clean, save_fasta
+from core.templates import mutate_AA, aminoacids, template, clean, save_fasta
 from itertools import cycle
 
 __author__ = 'modlab'

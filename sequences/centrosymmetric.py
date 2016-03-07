@@ -11,7 +11,7 @@ two or three different blocks are concatenated.
 """
 
 import random
-from core import mutate_AA, aminoacids, clean, save_fasta
+from ..core.templates import mutate_AA, aminoacids, clean, save_fasta
 
 __author__ = 'modlab'
 

@@ -15,7 +15,7 @@ The amino acid probabilities can be chosen from different probabilities:
 import random
 import numpy as np
 import os
-from core import mutate_AA, aminoacids, template, clean
+from core.templates import mutate_AA, aminoacids, template, clean
 
 __author__ = 'modlab'
 

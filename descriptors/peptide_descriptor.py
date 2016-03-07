@@ -7,7 +7,7 @@
 
 import os
 import sys
-from core import load_scale
+from core.templates import load_scale, read_fasta, save_fasta
 import collections
 import numpy as np
 from scipy import stats
@@ -82,16 +82,18 @@ class PeptideDescriptor:
 		:param inputfile: .fasta file with sequences and headers to read
 		:return: list of sequences in self.sequences with corresponding sequence names in self.names
 		"""
-		fasta = open(inputfile)
-		self.names = list()  # list for storing names
-		self.sequences = list()  # list for storing sequences
-		for line in fasta:
-			if line.startswith('>'):
-				self.names.append(line[1:].rstrip('\n'))  # strip newline characters at the end of the line
-			elif line == '\n':  # skip empty lines
-				continue
-			else:
-				self.sequences.append(line[0:].rstrip('\n'))
+		read_fasta(self, inputfile)
+
+
+	def save_fasta(self, outputfile):
+		"""
+		Method for saving sequences from :py:attr:`self.sequences` to a FASTA formatted file.
+
+		:param outputfile: filename of the output FASTA file
+		:return: list of sequences in self.sequences with corresponding sequence names in :py:attr:`self.names`
+		"""
+		save_fasta(self,outputfile)
+
 
 	def calculate_autocorr(self, window):
 		"""
