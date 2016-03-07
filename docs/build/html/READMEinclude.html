@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>README &mdash; modlAMP  documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="modlAMP  documentation" href="index.html" />
+    <link rel="next" title="modlAMP" href="modules.html" />
+    <link rel="prev" title="Welcome to modlAMP’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="modlAMP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to modlAMP’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<p><strong>modlAMP</strong></p>
+<p>This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids.
+It incorporates several modules, like descriptor calculation (module <strong>descriptors</strong>) or sequence generation (module <strong>sequences</strong>).
+For basic instructions how to use the package, see <a class="reference internal" href="#usage">Usage</a>.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>run the following command located in the package directory:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo make
+sudo make build
+make doc
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>After installation, you should be able to import and use the different modules like shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sequences.centrosymmetric</span> <span class="kn">import</span> <span class="n">CentroSequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">descriptors.peptide_descriptor</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">CentroSequences</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">generate_asymmetric</span><span class="p">()</span> <span class="c1"># generate 5 asymmetric centrosymmetric sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;VRVFVRVVKLYLKVVKGFGKV&#39;,&#39;ARAFARAVRGYGRV&#39;,&#39;VKIWIKVGRAFARG&#39;,&#39;LRIWIRLIKAYAKI&#39;,&#39;VKAYAKVVRLWLRV&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="s1">&#39;PPCALI&#39;</span><span class="p">)</span> <span class="c1"># describe the sequences by the auto-correlated PPCALI descriptor scale</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/Users/name/Desktop/descriptor.csv&#39;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="package-structure">
+<h2>Package Structure<a class="headerlink" href="#package-structure" title="Permalink to this headline">¶</a></h2>
+<p>The package structure looks as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>__init__.py
+README.rst
+LICENSE
+setup.py
+requirements.txt
+
+descriptors/
+        __init__.py
+        peptide_descriptor.py
+        scales/
+
+sequences/
+        __init__.py
+        centrosymmetric.py
+        helix.py
+        kinked.py
+        oblique.py
+        random_seq.py
+
+machinelearning/
+        __init__.py
+
+plot/
+        __init__.py
+
+tests/
+        test_peptide_descriptor.py
+        test_centrosymmetric.py
+        test_helix.py
+        test_kinked.py
+        test_oblique.py
+        test_random.py
+        files/
+
+docs/
+        _build/
+                html/
+                        index.html
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/modlab.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">README</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#package-structure">Package Structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to modlAMP&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="next chapter">modlAMP</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/READMEinclude.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="modlAMP"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to modlAMP’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

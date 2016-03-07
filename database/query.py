@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+.. module:: database
+
+.. moduleauthor:: modlab Alex Müller ETH Zurich <alex.mueller@pharma.ethz.ch>
+"""
 """
 .. warning::
 	The delta_db module is used to connect to the internal modlab peptide database on the delta641 machine.
