@@ -22,7 +22,7 @@ import os
 
 
 # Sort members by type
-autodoc_member_order = 'groupwise'
+#autodoc_member_order = 'groupwise'
 
 # include __init__ scripts in apidoc
 def skip(app, what, name, obj, skip, options):
@@ -63,8 +63,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'modlAMP'
-copyright = u'2016, Author'
-author = u'Author'
+copyright = u'2016, modlab ETH Zurich'
+author = u'Alex Mueller ETH Zurich'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -90,7 +90,7 @@ language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['build']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
