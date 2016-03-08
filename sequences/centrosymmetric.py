@@ -11,7 +11,7 @@ two or three different blocks are concatenated.
 """
 
 import random
-from core.templates import mutate_AA, aminoacids, clean, save_fasta
+from core.templates import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural
 
 __author__ = 'modlab'
 
@@ -129,3 +129,11 @@ class CentroSequences:
 		:return: a FASTA formatted file containing the generated sequences
 		"""
 		save_fasta(self,filename)
+
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)

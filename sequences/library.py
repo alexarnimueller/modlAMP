@@ -14,6 +14,7 @@ from kinked import Kinked
 from oblique import Oblique
 from random_seq import RandomSeqs
 from sklearn.utils import shuffle
+from core.templates import filter_unnatural
 
 class MixedLibrary:
 	"""
@@ -92,3 +93,11 @@ class MixedLibrary:
 			S = RandomSeqs(7,28,self.number - len(self.sequences))
 			S.generate_sequences()
 			self.sequences = self.sequences + S.sequences
+
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)

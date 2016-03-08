@@ -9,7 +9,7 @@ The remaining empty spots are filled up by hydrophobic AAs.
 The method :func:`mutate_AA(nr,prob)` enables sequential mutations of the produced sequences.
 """
 
-from core.templates import mutate_AA, aminoacids, template, clean, save_fasta
+from core.templates import mutate_AA, aminoacids, template, clean, save_fasta, filter_unnatural
 import random
 from itertools import cycle
 
@@ -86,3 +86,11 @@ class Helices:
 		:return: a FASTA formatted file containing the generated sequences
 		"""
 		save_fasta(self,filename)
+
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)

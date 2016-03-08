@@ -15,7 +15,7 @@ The amino acid probabilities can be chosen from different probabilities:
 import random
 import numpy as np
 import os
-from core.templates import mutate_AA, aminoacids, template, clean
+from core.templates import mutate_AA, aminoacids, template, clean, filter_unnatural
 
 __author__ = 'modlab'
 
@@ -91,3 +91,11 @@ class RandomSeqs:
 		['NAKAGRAWIK']
 		"""
 		mutate_AA(self,nr,prob)
+
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)

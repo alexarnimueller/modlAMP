@@ -7,7 +7,7 @@
 
 import os
 import sys
-from core.templates import load_scale, read_fasta, save_fasta
+from core.templates import load_scale, read_fasta, save_fasta, filter_unnatural
 import collections
 import numpy as np
 from scipy import stats
@@ -400,6 +400,14 @@ class PeptideDescriptor:
 		['VGVRLIKGIGRVARGAI','LILRALKGAARALKVA','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV','VKIAKIALKIIKGLG']
 		"""
 		self.sequences = shuffle(self.sequences)
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)
+
 
 class GlobalDescriptor:
 	"""

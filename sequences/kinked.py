@@ -9,7 +9,7 @@ The remaining spots are filled up by hydrophobic AAs. Then, a basic residue is r
 leading to a kink in the hydrophobic face of the amphipathic helices.
 """
 
-from core.templates import mutate_AA, aminoacids, template, clean, save_fasta
+from core.templates import mutate_AA, aminoacids, template, clean, save_fasta, filter_unnatural
 import random
 from itertools import cycle
 
@@ -93,3 +93,11 @@ class Kinked:
 		:return: a FASTA formatted file containing the generated sequences
 		"""
 		save_fasta(self,filename)
+
+
+	def filter_unnatrual(self):
+		"""
+		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""
+		filter_unnatural(self)
