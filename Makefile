@@ -8,4 +8,4 @@ install:
 	python setup.py install
 
 doc:
-	open docs/_build/html/index.html
+	open docs/build/html/index.html

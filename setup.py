@@ -11,7 +11,7 @@ with open('LICENSE') as f:
 
 setup(
     name='modlAMP',
-    version='1.3.0',
+    version='1.3.1',
     description='modlabs peptide package with descriptors, sequences, ML etc. for peptide QSAR studies',
     long_description=readme,
     author='modlab, Alex Müller',
@@ -19,7 +19,7 @@ setup(
     url='https://www.cadd.ethz.ch',
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
-    scripts=['bin/*.py'],
+    #scripts=['bin/*.py'],
 	keywords = "antimicrobial peptide descriptor sequences",
     classifiers=[
     'Development Status :: 2 - Pre-Alpha',
