@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 with open('README.rst') as f:
@@ -11,14 +11,14 @@ with open('LICENSE') as f:
 
 setup(
     name='modlAMP',
-    version='1.4.0',
+    version='1.5.0',
     description='modlabs peptide package with descriptors, sequences, ML etc. for peptide QSAR studies',
     long_description=readme,
     author='modlab, Alex Müller',
     author_email='alex.mueller@pharma.ethz.ch',
     url='https://www.cadd.ethz.ch',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=['modlamp'],
     #scripts=['bin/*.py'],
 	keywords = "antimicrobial peptide descriptor sequences",
     classifiers=[
