@@ -20,14 +20,22 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None):
+def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None):
 	"""
 	Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet as separate boxes.
 
 	:param y_values: Array of feature values to be plotted.
 	:param targets: List of target class values [string/binary] for the given feature data.
 	:param y_label: Axis label.
+	:param x_tick_labels: list of labels to be assigned to the ticks on the x-axis. Must match the number of targets.
+	:param filename: filename where to safe the plot. *default = None*
 	:return: A feature box plot.
+	:Example:
+
+	>>> plot_feature(P.descriptor,y_label='uH Eisenberg')
+
+	.. image:: ../docs/static/uH_Eisenberg.png
+		:scale: 50 %
 	"""
 	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black','hotpink'] # available colors
 
@@ -50,7 +58,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 		if x_tick_labels:
 			labels = x_tick_labels
 		else:
-			labels = 'all data'
+			labels = ['all data']
 		data = y_values
 
 	# coloring faces of boxes
@@ -64,10 +72,14 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 	ax.set_xlabel('Classes',fontweight='bold')
 	ax.set_ylabel(y_label, fontweight='bold')
 	ax.set_title('Feature Box-Plot',fontsize=16,fontweight='bold')
-	plt.show()
+
+	if filename:
+		plt.savefig(filename,dpi=150)
+	else:
+		plt.show()
 
 
-def plot_2_features(x_values, y_values, targets=None, x_label='', y_label=''):
+def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', filename=None):
 	"""
 	Function to generate a feature scatter plot of 2 given features. The different target classes given in **targets**
 	are plottet in different colors.
@@ -77,11 +89,16 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label=''):
 	:param targets: List of target class values [string/binary] for the given feature data.
 	:param x_label: X-axis label.
 	:param y_label: Y-axis label.
+	:param filename: filename where to safe the plot. *default = None*
 	:return: A 2D feature scatter plot.
+	:Example:
+
+	>>> plot_2_features(A.descriptor,B.descriptor,x_label='uH',y_label='pI',targets=targets)
+
+	.. image:: ../docs/static/2D_scatter.png
+		:scale: 50 %
 	"""
 
-	x = np.array(x_values)
-	y = np.array(y_values)
 	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black'] # available colors
 
 	fig, ax = plt.subplots()
@@ -89,21 +106,25 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label=''):
 	if targets:
 		for n in list(set(targets)): # finding indices of the different targets in "targets" and plotting
 			t = np.array([i for i,j in enumerate(targets) if j == n])
-			xt = x[t] # find all values in x for the given target
-			yt = y[t] # find all values in y for the given target
+			xt = x_values[t] # find all values in x for the given target
+			yt = y_values[t] # find all values in y for the given target
 			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25, label='class '+str(n)) # plot scatter for this target group
-			ax.legend(loc='best')
+			ax.legend(loc='lower right')
 
 	else:
-		ax.scatter(x,y,c=colors[0],alpha=1., s=25)
+		ax.scatter(x_values,y_values,c=colors[0],alpha=1., s=25)
 
 	ax.set_xlabel(x_label, fontweight='bold')
 	ax.set_ylabel(y_label, fontweight='bold')
 	ax.set_title('2D Feature Plot',fontsize=16,fontweight='bold')
-	plt.show()
+
+	if filename:
+		plt.savefig(filename,dpi=150)
+	else:
+		plt.show()
 
 
-def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label=''):
+def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None):
 	"""
 	Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in **targets**
 	are plottet in different colors.
@@ -115,12 +136,16 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
 	:param x_label: X-axis label.
 	:param y_label: Y-axis label.
 	:param z_label: Z-axis label.
+	:param filename: filename where to safe the plot. *default = None*
 	:return: A 3D feature scatter plot.
+	:Example:
+
+	>>> plot_3_features(A.descriptor,B.descriptor,C.descriptor,x_label='uH',y_label='pI',z_label='length')
+
+	.. image:: ../docs/static/3D_scatter.png
+		:scale: 50 %
 	"""
 
-	x = np.array(x_values)
-	y = np.array(y_values)
-	z = np.array(z_values)
 	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black'] # available colors
 
 	fig = plt.figure()
@@ -129,17 +154,21 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
 	if targets:
 		for n in list(set(targets)): # finding indices of the different targets in "targets" and plotting
 			t = np.array([i for i,j in enumerate(targets) if j == n])
-			xt = x[t] # find all values in x for the given target
-			yt = y[t] # find all values in y for the given target
-			zt = z[t] # find all values in y for the given target
+			xt = x_values[t] # find all values in x for the given target
+			yt = y_values[t] # find all values in y for the given target
+			zt = z_values[t] # find all values in y for the given target
 			ax.scatter(xt, yt, zt, c=colors[n], alpha=1., s=25, label='class '+str(n)) # plot 3Dscatter for this target group
 			ax.legend(loc='best')
 
 	else:
-		ax.scatter(x, y, z, c=colors[0], alpha=1., s=25) # plot 3Dscatter for this target group
+		ax.scatter(x_values, y_values, z_values, c=colors[0], alpha=1., s=25) # plot 3Dscatter for this target group
 
 	ax.set_xlabel(x_label, fontweight='bold')
 	ax.set_ylabel(y_label, fontweight='bold')
 	ax.set_zlabel(z_label, fontweight='bold')
 	ax.set_title('3D Feature Plot',fontsize=16,fontweight='bold')
-	plt.show()
+
+	if filename:
+		plt.savefig(filename,dpi=150)
+	else:
+		plt.show()

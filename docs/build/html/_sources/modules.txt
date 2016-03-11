@@ -1,7 +1,0 @@
-modlamp
-=======
-
-.. toctree::
-   :maxdepth: 4
-
-   modlamp

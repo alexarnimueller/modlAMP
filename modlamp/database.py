@@ -7,6 +7,7 @@ This module incorporates functions to connect to the modlab internal peptide dat
 the different database tables.
 """
 
+from getpass import getpass
 import mysql.connector
 from mysql.connector import Error
 
@@ -24,7 +25,7 @@ def _read_db_config(host='gsdelta641.ethz.ch',database='peptides',user='modlab',
 	:return: a dictionary of database parameters
 	"""
 	if password == None:
-		password = raw_input('Password: ')
+		password = getpass()
 
 	db = {	'host' : host,
 			'database' : database,
@@ -60,7 +61,7 @@ def _connect():
 			return conn
 
 
-def query_sequences(table='ACP_annotation'):
+def query_sequences(table='modlab_experiments'):
 	"""
 	This function extracts all sequences stored in a table column "sequence" and returns them as a list.
 
