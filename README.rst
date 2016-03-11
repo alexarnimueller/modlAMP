@@ -11,7 +11,10 @@ For basic instructions how to use the package, see Usage_.
 Installation
 ************
 
-run the following command located in the package directory::
+For the installation to work, ``pip`` needs to be installed. If you're not sure whether you already have pip, type
+``pip --version``. If you don't have pip installed, install it via ``easy_install pip``.
+
+When pip is installed, run the following command when located in the modlAMP package directory::
 
     sudo make
     sudo make build
