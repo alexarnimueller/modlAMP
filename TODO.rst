@@ -3,6 +3,5 @@ TODOs
 
 - add test cases for all classes & methods
 - add connection test cases
-- add correct aral descriptor
 - add machinelearning module
-- add plot module
+- add methods to add more descriptor features as columns to :py:attr:`self.descriptors`

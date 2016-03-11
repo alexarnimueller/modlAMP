@@ -137,6 +137,8 @@ class Centrosymmetric:
 		>>> S.mutate_AA(3,1)
 		>>> S.sequences
 		['NAKAGRAWIK']
+
+		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
 
@@ -147,6 +149,8 @@ class Centrosymmetric:
 
 		:param filename: output filename (ending .fasta)
 		:return: a FASTA formatted file containing the generated sequences
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
 		save_fasta(self,filename)
 
@@ -155,6 +159,8 @@ class Centrosymmetric:
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -221,6 +227,8 @@ class Helices:
 		>>> H.mutate_AA(3,1)
 		>>> H.sequences
 		['NAKAGRAWIK']
+
+		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
 
@@ -231,6 +239,8 @@ class Helices:
 
 		:param filename: output filename (ending .fasta)
 		:return: a FASTA formatted file containing the generated sequences
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
 		save_fasta(self,filename)
 
@@ -239,6 +249,8 @@ class Helices:
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -252,12 +264,12 @@ class Kinked:
 	leading to a kink in the hydrophobic face of the amphipathic helices.
 	"""
 	def __init__(self,lenmin,lenmax,seqnum,):
-		'''
+		"""
 		:param lenmin: minimal sequence length
 		:param lenmax: maximal sequence length
 		:param seqnum: number of sequences to generate
 		:return: defined self variables
-		'''
+		"""
 		aminoacids(self)
 		template(self,lenmin,lenmax,seqnum)
 
@@ -313,6 +325,8 @@ class Kinked:
 		>>> S.mutate_AA(3,1)
 		>>> S.sequences
 		['NAKAGRAWIK']
+
+		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
 
@@ -323,6 +337,8 @@ class Kinked:
 
 		:param filename: output filename (ending .fasta)
 		:return: a FASTA formatted file containing the generated sequences
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
 		save_fasta(self,filename)
 
@@ -331,6 +347,8 @@ class Kinked:
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -417,10 +435,24 @@ class MixedLibrary:
 			self.sequences = self.sequences + S.sequences
 
 
+	def save_fasta(self,filename):
+		"""
+		Method for saving sequences in the instance self.sequences to a file in FASTA format.
+
+		:param filename: output filename (ending .fasta)
+		:return: a FASTA formatted file containing the generated sequences
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
+		"""
+		save_fasta(self,filename)
+
+
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -489,6 +521,8 @@ class Oblique(object):
 		>>> H.mutate_AA(3,1)
 		>>> H.sequences
 		['NAKAGRAWIK']
+
+		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
 
@@ -499,6 +533,8 @@ class Oblique(object):
 
 		:param filename: output filename (ending .fasta)
 		:return: a FASTA formatted file containing the generated sequences
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
 		save_fasta(self,filename)
 
@@ -507,6 +543,8 @@ class Oblique(object):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -559,10 +597,12 @@ class Random:
 
 
 	def save_fasta(self,filename):
-		'''
+		"""
 		:param filename: output filename in which the sequences are safed in fasta format.
 		:return: a fasta file containing the generated sequences
-		'''
+
+		.. seealso:: :func:`modlamp.core.save_fasta()`
+		"""
 		if os.path.exists(filename):
 			os.remove(filename) #remove outputfile, it it exists
 		o = open(filename, 'a')
@@ -587,6 +627,8 @@ class Random:
 		>>> H.mutate_AA(3,1)
 		>>> H.sequences
 		['NAKAGRAWIK']
+
+		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
 
@@ -595,5 +637,7 @@ class Random:
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
 		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)

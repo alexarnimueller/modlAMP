@@ -31,23 +31,23 @@ __author__ = 'modlab'
 class GlobalDescriptor:
 	"""
 	Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
-	the **methods** specified in brackets:
+	the **methods** linked below:
 
-	- **Sequence Charge**	(:meth:`modlamp.descriptors.GlobalDescriptor.calculate_charge()`)
-	- **Molecular Weight**	(:meth:`modlamp.descriptors.GlobalDescriptor.calculate_MW()`)
-	- **Sequence Length**	(:meth:`modlamp.descriptors.GlobalDescriptor.length()`)
-	- **Isoelectric Point**	(:meth:`modlamp.descriptors.GlobalDescriptor.isoelectric_point()`)
-	- **Charge Density**	(:meth:`modlamp.descriptors.GlobalDescriptor.charge_density()`)
-	- **Hydrophobic Ratio**	(:meth:`modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio()`)
-	- **Aromaticity**		(:meth:`modlamp.descriptors.GlobalDescriptor.aromaticity()`)
-	- **Boman Index**		(:meth:`modlamp.descriptors.GlobalDescriptor.boman_index()`)
-	- **Aliphatic Index**	(:meth:`modlamp.descriptors.GlobalDescriptor.aliphatic_index()`)
-	- **Instability Index**	(:meth:`modlamp.descriptors.GlobalDescriptor.instability_index()`)
+	- `Sequence Charge 		<modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
+	- `Molecular Weight		<modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
+	- `Sequence Length		<modlamp.html#modlamp.descriptors.GlobalDescriptor.length>`_
+	- `Isoelectric Point	<modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point>`_
+	- `Charge Density		<modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density>`_
+	- `Hydrophobic Ratio	<modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
+	- `Aromaticity			<modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity>`_
+	- `Boman Index			<modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
+	- `Aliphatic Index		<modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
+	- `Instability Index	<modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
 	"""
 
-	def __init__(self,inputfile):
+	def __init__(self,seqs):
 		"""
-		:param inputfile: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
+		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
 		:Example:
 
@@ -55,7 +55,7 @@ class GlobalDescriptor:
 		>>> P.sequences
 		['KLAKLAKKLAKLAK']
 		"""
-		D = PeptideDescriptor(inputfile,'eisenberg')
+		D = PeptideDescriptor(seqs,'eisenberg')
 		self.sequences = D.sequences
 		self.names = D.names
 
@@ -241,9 +241,9 @@ class PeptideDescriptor:
 
 	"""
 
-	def __init__(self, inputfile, scalename='eisenberg'):
+	def __init__(self, seqs, scalename='eisenberg'):
 		"""
-		:param inputfile: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
+		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
 		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
 		:Example:
@@ -252,14 +252,14 @@ class PeptideDescriptor:
 		>>> AMP.sequences
 		['KLLKLLKKLLKLLK']
 		"""
-		if type(inputfile) == list:
-			self.sequences = inputfile
+		if type(seqs) == list:
+			self.sequences = seqs
 			self.names = []
-		elif type(inputfile) == str and inputfile.isupper():
-			self.sequences = [inputfile]
+		elif type(seqs) == str and seqs.isupper():
+			self.sequences = [seqs]
 			self.names = []
-		elif os.path.isfile(inputfile):
-			self.read_fasta(inputfile)
+		elif os.path.isfile(seqs):
+			self.read_fasta(seqs)
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 			sys.exit()
@@ -267,15 +267,15 @@ class PeptideDescriptor:
 		load_scale(self,scalename)
 
 
-	def read_fasta(self, inputfile):
+	def read_fasta(self, seqs):
 		"""
 		Method for loading sequences from a FASTA formatted file into self.sequences & self.names. This method is
 		used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
 
-		:param inputfile: .fasta file with sequences and headers to read
+		:param seqs: .fasta file with sequences and headers to read
 		:return: list of sequences in self.sequences with corresponding sequence names in self.names
 		"""
-		read_fasta(self, inputfile)
+		read_fasta(self, seqs)
 
 
 	def save_fasta(self, outputfile):

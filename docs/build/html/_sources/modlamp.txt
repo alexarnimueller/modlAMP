@@ -1,17 +1,17 @@
-modlamp package
-===============
+Package Documentation
+=====================
 
-The package includes the following **modules**:
+The **modlamp** package includes the following **modules**:
 
-=================== ==========================================================================================================
-Module              Characteristics
-=================== ==========================================================================================================
-:mod:`descriptors`  Module incorporating :class:`GlobalDescriptor` and :class:`PeptideDescriptor` for descriptor calculations.
-:mod:`sequences`    Module incorporating different classes for generating peptide sequences with different characteristics.
-:mod:`database`     Module incorporating functions to connect to the modlab in-house peptide database server.
-:mod:`plot`         Module incorporating functions to visualize descriptor.
-:mod:`core`         Module incorporating helper functions for other modules.
-=================== ==========================================================================================================
+=========================== ==========================================================================================================
+Module                      Characteristics
+=========================== ==========================================================================================================
+:mod:`modlamp.descriptors`  Module incorporating :class:`GlobalDescriptor` and :class:`PeptideDescriptor` for descriptor calculations.
+:mod:`modlamp.sequences`    Module incorporating different classes for generating peptide sequences with different characteristics.
+:mod:`modlamp.database`     Module incorporating functions to connect to the modlab in-house peptide database server.
+:mod:`modlamp.plot`         Module incorporating functions to visualize descriptor.
+:mod:`modlamp.core`         Module incorporating helper functions for other modules.
+=========================== ==========================================================================================================
 
 
 modlamp.descriptors

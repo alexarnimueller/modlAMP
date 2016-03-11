@@ -68,7 +68,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'modlamp'
-copyright = u'2016, Alex Mueller'
+copyright = u'2016, modlab ETH Zurich, Alex Mueller'
 author = u'Alex Mueller'
 
 # The version info for the project you're documenting, acts as replacement for

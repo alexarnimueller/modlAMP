@@ -186,6 +186,8 @@
 <span class="sd">		&gt;&gt;&gt; S.mutate_AA(3,1)</span>
 <span class="sd">		&gt;&gt;&gt; S.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
 
@@ -196,6 +198,8 @@
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -204,6 +208,8 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
@@ -270,6 +276,8 @@
 <span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
 <span class="sd">		&gt;&gt;&gt; H.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
 
@@ -280,6 +288,8 @@
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -288,6 +298,8 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
@@ -301,12 +313,12 @@
 <span class="sd">	leading to a kink in the hydrophobic face of the amphipathic helices.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Kinked.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">,):</span>
-		<span class="sd">&#39;&#39;&#39;</span>
+		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param lenmin: minimal sequence length</span>
 <span class="sd">		:param lenmax: maximal sequence length</span>
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined self variables</span>
-<span class="sd">		&#39;&#39;&#39;</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">)</span></div>
 
@@ -362,6 +374,8 @@
 <span class="sd">		&gt;&gt;&gt; S.mutate_AA(3,1)</span>
 <span class="sd">		&gt;&gt;&gt; S.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
 
@@ -372,6 +386,8 @@
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -380,6 +396,8 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
@@ -466,10 +484,24 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">S</span><span class="o">.</span><span class="n">sequences</span></div>
 
 
+<div class="viewcode-block" id="MixedLibrary.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
+
+<span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="MixedLibrary.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
@@ -538,6 +570,8 @@
 <span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
 <span class="sd">		&gt;&gt;&gt; H.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
 
@@ -548,6 +582,8 @@
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -556,6 +592,8 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
@@ -608,10 +646,12 @@
 
 
 <div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
-		<span class="sd">&#39;&#39;&#39;</span>
+		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param filename: output filename in which the sequences are safed in fasta format.</span>
 <span class="sd">		:return: a fasta file containing the generated sequences</span>
-<span class="sd">		&#39;&#39;&#39;</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="c1">#remove outputfile, it it exists</span>
 		<span class="n">o</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
@@ -636,6 +676,8 @@
 <span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
 <span class="sd">		&gt;&gt;&gt; H.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
 
@@ -644,6 +686,8 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
 <span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
@@ -687,7 +731,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Alex Mueller.
+        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

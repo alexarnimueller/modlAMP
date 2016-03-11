@@ -18,7 +18,7 @@ def load_scale(self,scalename):
 	"""
 	Method to load scale values for a given amino acid scale
 
-	:param scalename: amino acid scale name, for available scales see the :class:`PeptideDescriptor()` documentation.
+	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
 	:return: amino acid scale values in self.scale
 	"""
 	scales = {
@@ -50,7 +50,7 @@ def load_scale(self,scalename):
 def read_fasta(self, inputfile):
 	"""
 	Method for loading sequences from a FASTA formatted file into self.sequences & self.names. This method is
-	used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
+	used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
 
 	:param inputfile: .fasta file with sequences and headers to read
 	:return: list of sequences in self.sequences with corresponding sequence names in self.names
@@ -110,7 +110,7 @@ def mutate_AA(self,nr,prob):
 
 def aminoacids(self):
 	"""
-	Method used by all classes in :mod:`sequences` to generate templates for all needed instances.
+	Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
 
 	:return: all needed instances of the classes in this package
 	"""
@@ -131,7 +131,7 @@ def aminoacids(self):
 
 def template(self,lenmin,lenmax,seqnum):
 	"""
-	Method used by different classes in :mod:`sequences` to generate length and number templates for all needed instances.
+	Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
 
 	:param lenmin: minimal length of the generated sequences
 	:param lenmax: maximal length of the generated sequences
@@ -145,7 +145,7 @@ def template(self,lenmin,lenmax,seqnum):
 
 def clean(self):
 	"""
-	Method to clean the attributes **sequences**, **names** and **descriptor**.
+	Method to clean the attributes :py:attr:`self.sequences`, :py:attr:`names` and :py:attr:`descriptor`.
 
 	:return:
 	"""
@@ -161,7 +161,7 @@ def filter_similarity(self, threshold=0.8):
 	that have a lower similarity to the other list members than the given threshold.
 
 	:param lst: list of sequences to be filtered for internal similarity
-	:param threshold: similarity threshold over which one of similar members of **seq_list** gets kicked out
+	:param threshold: similarity threshold over which one of similar members of :py:attr:`self.sequences` gets kicked out
 	:return: filtered list of sequences
 	"""
 	self.sequences = [x for x in set(self.sequences)] # remove duplicates
@@ -180,7 +180,7 @@ def filter_similarity(self, threshold=0.8):
 
 def filter_unnatural(self):
 	"""
-	Method to filter out sequences with non-proteinogenic amino acids [B,J,O,U,X,Z]. Dublicates are removed as well.
+	Method to filter out sequences with non-proteinogenic amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
 
 	:param seq_list: List of sequences to be filtered.
 	:return: Filtered list.

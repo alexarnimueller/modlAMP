@@ -56,6 +56,7 @@
 <span class="sd">the different database tables.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
 <span class="kn">import</span> <span class="nn">mysql.connector</span>
 <span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="kn">import</span> <span class="n">Error</span>
 
@@ -73,7 +74,7 @@
 <span class="sd">	:return: a dictionary of database parameters</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">password</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="n">password</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s1">&#39;Password: &#39;</span><span class="p">)</span>
+		<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">()</span>
 
 	<span class="n">db</span> <span class="o">=</span> <span class="p">{</span>	<span class="s1">&#39;host&#39;</span> <span class="p">:</span> <span class="n">host</span><span class="p">,</span>
 			<span class="s1">&#39;database&#39;</span> <span class="p">:</span> <span class="n">database</span><span class="p">,</span>
@@ -109,7 +110,7 @@
 			<span class="k">return</span> <span class="n">conn</span>
 
 
-<div class="viewcode-block" id="query_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_sequences">[docs]</a><span class="k">def</span> <span class="nf">query_sequences</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s1">&#39;ACP_annotation&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="query_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_sequences">[docs]</a><span class="k">def</span> <span class="nf">query_sequences</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	This function extracts all sequences stored in a table column &quot;sequence&quot; and returns them as a list.</span>
 
@@ -179,7 +180,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Alex Mueller.
+        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
