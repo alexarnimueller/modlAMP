@@ -1,16 +1,18 @@
+# -*- coding: utf-8 -*-
 """
-.. module:: descriptors
+.. module:: modlamp.descriptors
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
 This module incorporates different classes to calculate peptide descriptor values. The following classes are available:
 
-============================		============================================================================
+=============================		============================================================================
 Class								Characteristics
-============================		============================================================================
+=============================		============================================================================
 :py:class:`GlobalDescriptor`		Global one-dimensional peptide descriptors calculated from the AA sequence.
 :py:class:`PeptideDescriptor`		AA scale based global or convoluted descriptors (auto-/cross-correlated).
-============================		============================================================================
+=============================		============================================================================
+
 """
 
 import os
@@ -29,18 +31,18 @@ __author__ = 'modlab'
 class GlobalDescriptor:
 	"""
 	Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
-	the modules specified in brackets:
+	the **methods** specified in brackets:
 
-	- **Sequence Charge**	(:meth:`modlAMP.descriptors.GlobalDescriptor.calculate_charge()`)
-	- **Molecular Weight**	(:meth:`modlAMP.descriptors.GlobalDescriptor.calculate_MW()`)
-	- **Sequence Length**	(:meth:`modlAMP.descriptors.GlobalDescriptor.length()`)
-	- **Isoelectric Point**	(:meth:`modlAMP.descriptors.GlobalDescriptor.isoelectric_point()`)
-	- **Charge Density**	(:meth:`modlAMP.descriptors.GlobalDescriptor.charge_density()`)
-	- **Hydrophobic Ratio**	(:meth:`modlAMP.descriptors.GlobalDescriptor.hydrophobic_ratio()`)
-	- **Aromaticity**		(:meth:`modlAMP.descriptors.GlobalDescriptor.aromaticity()`)
-	- **Boman Index**		(:meth:`modlAMP.descriptors.GlobalDescriptor.boman_index()`)
-	- **Aliphatic Index**	(:meth:`modlAMP.descriptors.GlobalDescriptor.aliphatic_index()`)
-	- **Instability Index**	(:meth:`modlAMP.descriptors.GlobalDescriptor.instability_index()`)
+	- **Sequence Charge**	(:meth:`modlamp.descriptors.GlobalDescriptor.calculate_charge()`)
+	- **Molecular Weight**	(:meth:`modlamp.descriptors.GlobalDescriptor.calculate_MW()`)
+	- **Sequence Length**	(:meth:`modlamp.descriptors.GlobalDescriptor.length()`)
+	- **Isoelectric Point**	(:meth:`modlamp.descriptors.GlobalDescriptor.isoelectric_point()`)
+	- **Charge Density**	(:meth:`modlamp.descriptors.GlobalDescriptor.charge_density()`)
+	- **Hydrophobic Ratio**	(:meth:`modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio()`)
+	- **Aromaticity**		(:meth:`modlamp.descriptors.GlobalDescriptor.aromaticity()`)
+	- **Boman Index**		(:meth:`modlamp.descriptors.GlobalDescriptor.boman_index()`)
+	- **Aliphatic Index**	(:meth:`modlamp.descriptors.GlobalDescriptor.aliphatic_index()`)
+	- **Instability Index**	(:meth:`modlamp.descriptors.GlobalDescriptor.instability_index()`)
 	"""
 
 	def __init__(self,inputfile):
@@ -209,9 +211,6 @@ class GlobalDescriptor:
 # TODO: test for most new methods!
 
 
-__author__ = 'modlab'
-
-
 class PeptideDescriptor:
 	"""
 	Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor calculation:
@@ -238,7 +237,7 @@ class PeptideDescriptor:
 	- **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
 	- **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
-	Further, amino acid scale independent methods can be calculated with help of the :class:`modlAMP.descriptors.GlobalDescriptor()` class.
+	Further, amino acid scale independent methods can be calculated with help of the :class:`modlamp.descriptors.GlobalDescriptor()` class.
 
 	"""
 

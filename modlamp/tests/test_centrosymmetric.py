@@ -1,7 +1,7 @@
 import unittest
 from modlamp.sequences import Centrosymmetric
 
-class TestCentroSequences(unittest.TestCase):
+class TestCentrosymmetric(unittest.TestCase):
 	S = Centrosymmetric(1)
 	S.generate_symmetric()
 

@@ -18,7 +18,7 @@ setup(
     author_email='alex.mueller@pharma.ethz.ch',
     url='https://www.cadd.ethz.ch',
     license=license,
-    packages=['modlamp'],
+    packages=['modlamp', 'modlamp.tests'],
     #scripts=['bin/*.py'],
 	keywords = "antimicrobial peptide descriptor sequences",
     classifiers=[

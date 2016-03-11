@@ -1,5 +1,5 @@
 """
-.. module:: plot
+.. module:: modlamp.plot
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
@@ -12,6 +12,7 @@ Function							Characteristics
 :py:func:`plot_2_features`			Generate a 2D scatter plot of 2 given features.
 :py:func:`plot_3_features`			Generate a 3D scatter plot of 3 given features.
 ============================		============================================================================
+
 """
 
 
@@ -19,7 +20,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def plot_feature(y_values, targets=None, y_label='', x_tick_labels=None):
+def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None):
 	"""
 	Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet as separate boxes.
 
@@ -30,7 +31,6 @@ def plot_feature(y_values, targets=None, y_label='', x_tick_labels=None):
 	"""
 	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black','hotpink'] # available colors
 
-	x = np.array(y_values)
 	fig, ax = plt.subplots()
 
 	if targets:
@@ -38,7 +38,7 @@ def plot_feature(y_values, targets=None, y_label='', x_tick_labels=None):
 		cntr = 0
 		for n in list(set(targets)): # finding indices of the different targets in "targets" and plotting
 			t = np.array([i for i,j in enumerate(targets) if j == n])
-			data.append([x[t]])
+			data.append([y_values[t]])
 			cntr += 1
 		if x_tick_labels:
 			labels = x_tick_labels
@@ -51,7 +51,7 @@ def plot_feature(y_values, targets=None, y_label='', x_tick_labels=None):
 			labels = x_tick_labels
 		else:
 			labels = 'all data'
-		data = x
+		data = y_values
 
 	# coloring faces of boxes
 	medianprops = dict(linestyle='-', linewidth=1, color='black')

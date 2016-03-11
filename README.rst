@@ -1,7 +1,7 @@
 README
 ======
 
-**modlAMP**
+**modlamp**
 
 This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids. 
 It incorporates several modules, like descriptor calculation (module **descriptors**) or sequence generation (module **sequences**).
@@ -16,8 +16,8 @@ For the installation to work, ``pip`` needs to be installed. If you're not sure 
 
 When pip is installed, run the following command when located in the modlAMP package directory::
 
-    sudo make
-    sudo make build
+    make
+    sudo make install
     make doc
 
 Usage
@@ -25,9 +25,9 @@ Usage
 
 After installation, you should be able to import and use the different modules like shown below:
 
->>> from sequences.centrosymmetric import CentroSequences
->>> from descriptors.peptide_descriptor import PeptideDescriptor
->>> S = CentroSequences(5)
+>>> from modlamp.sequences import Centrosymmetric
+>>> from modlamp.descriptors import PeptideDescriptor
+>>> S = Centrosymmetric(5)
 >>> S.generate_asymmetric() # generate 5 asymmetric centrosymmetric sequences
 >>> S.sequences
 ['VRVFVRVVKLYLKVVKGFGKV','ARAFARAVRGYGRV','VKIWIKVGRAFARG','LRIWIRLIKAYAKI','VKAYAKVVRLWLRV']
@@ -36,48 +36,33 @@ After installation, you should be able to import and use the different modules l
 >>> D.calculate_autocorr(7)
 >>> D.save_descriptor('/Users/name/Desktop/descriptor.csv',delimiter=',')
 
+A basic workflow how the package can be used is shown hereafter:
 
-Package Structure
-*****************
+>>> from modlamp.sequences import MixedLibrary
+>>> from modlamp.descriptors import PeptideDescriptor
+>>> Lib = MixedLibrary(1000)
+>>> Lib.generate_library()
+>>> Lib.sequences[:10]
+['VIVRVLKIAA','VGAKALRGIGPVVK','QTGKAKIKLVKLRAGPYANGKLF','RLIKGALKLVRIVGPGLRVIVRGAR','DGQTNRFCGI','ILRVGKLAAKV',...]
 
-The package structure looks as follows::
+These commands generated a mixed peptide library comprising of 1000 sequences.
 
-	__init__.py
-	README.rst
-	LICENSE
-	setup.py
-	requirements.txt
+.. note::
+    If duplicates are present in :py:att:`self.sequences`, these are removed during generation. Therefore it is possible
+    that less than the specified sequences are obtained.
 
-	descriptors/
-		__init__.py
-		peptide_descriptor.py
-		scales/
+Now, different descriptor values can be calculated for these sequences:
 
-	sequences/
-		__init__.py
-		centrosymmetric.py
-		helix.py
-		kinked.py
-		oblique.py
-		random_seq.py
-	
-	machinelearning/
-		__init__.py
+>>> from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
+>>> P = PeptideDescriptor(Lib.sequences,'eisenberg')
+>>> P.calculate_moment()
+>>> P.descriptor[:10]
+array([[ 0.60138255],[ 0.61232763],[ 0.01474009],[ 0.72333858],[ 0.20390763],[ 0.68818279],...]
 
-	plot/
-		__init__.py
+We calculated the global hydrophobic moments from the Eisenberg hydrophobicity scale. We can now plot these values
+as a boxplot:
 
-	tests/
-		test_peptide_descriptor.py
-		test_centrosymmetric.py
-		test_helix.py
-		test_kinked.py
-		test_oblique.py
-		test_random.py
-		files/
-	
-	docs/
-		_build/
-			html/
-				index.html
+>>> from modlamp.plot import plot_feature
+>>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
+.. image:: ../../static/uH_boxplot.png

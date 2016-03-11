@@ -1,21 +1,22 @@
 """
-.. module:: sequences
+.. module:: modlamp.sequences
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
 This module incorporates different classes to generate peptide sequences with different characteristics. The following
 classes are available:
 
-=========================== 		===============================================================================
+============================		===============================================================================
 Class								Characteristics
-===========================			===============================================================================
+============================		===============================================================================
 :py:class:`Random`					Generates random sequences with a specified amino acid distribution.
 :py:class:`Helices`					Generates presumed amphipathic helical sequences with a hydrophobic moment.
 :py:class:`Kinked`					Generates presumed amphipathic helices with a kink (Pro residue).
 :py:class:`Oblique`					Generates presumed oblique oriented sequences in presence of libid membranes.
 :py:class:`Centrosymmetric`			Generates centrosymmetric sequences with a symmetry axis.
 :py:class:`MixedLibrary`			Generates a mixed library of sequences of all other classes.
-===========================			===============================================================================
+============================		===============================================================================
+
 """
 
 import os

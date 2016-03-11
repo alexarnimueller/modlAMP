@@ -1,5 +1,5 @@
 """
-.. module:: database
+.. module:: modlamp.database
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 

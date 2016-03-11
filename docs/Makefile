@@ -22,7 +22,6 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 .PHONY: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  rst        to create initial rst files"
 	@echo "  html       to make standalone HTML files"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  view       to view the created HTML files in the browser"
@@ -52,12 +51,6 @@ help:
 .PHONY: clean
 clean:
 	rm -rf $(BUILDDIR)/*
-
-.PHONY: rst
-rst:
-	sphinx-apidoc -f -o . ..
-	@echo
-	@echo "Created .rst files."
 
 .PHONY: html
 html:
