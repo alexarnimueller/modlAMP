@@ -75,10 +75,13 @@
 <tr class="row-even"><td><a class="reference internal" href="#module-modlamp.database" title="modlamp.database"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.database</span></code></a></td>
 <td>Module incorporating functions to connect to the modlab in-house peptide database server.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.plot" title="modlamp.plot"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.plot</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.datasets" title="modlamp.datasets"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.datasets</span></code></a></td>
+<td>Module incorporating functions to load different peptide datasets used for ML classification tasks.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-modlamp.plot" title="modlamp.plot"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.plot</span></code></a></td>
 <td>Module incorporating functions to visualize descriptor.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
 <td>Module incorporating helper functions for other modules.</td>
 </tr>
 </tbody>
@@ -1428,8 +1431,96 @@ the different database tables.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-modlamp.datasets">
+<span id="modlamp-datasets"></span><h2>2.4. modlamp.datasets<a class="headerlink" href="#module-modlamp.datasets" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-modlamp.datasets"></span><p>This module incorporates functions to load different peptide datasets used for classification.</p>
+<dl class="class">
+<dt id="modlamp.datasets.Bunch">
+<em class="property">class </em><code class="descclassname">modlamp.datasets.</code><code class="descname">Bunch</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#Bunch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.Bunch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Container object for datasets</p>
+<p>Dictionary-like object that exposes its keys as attributes. Taken from the <code class="docutils literal"><span class="pre">sklearn</span></code> package.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">b</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="modlamp.datasets.Bunch.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#Bunch.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.Bunch.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_AMPvsTM">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsTM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsTM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of AMP sequences and transmembrane regions of proteins for classification.</p>
+<p>The AMP class consists of an intersection of all activity annotations of the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
+<a class="reference external" href="http://camp.bicnirrh.res.in/">CAMP</a> databases, where for gram positive, gram negative and antifungal exact
+matches were observed. A detailed description of how the dataset was compiled can be found in the following
+publication: <em>Schneider P. et al. 2016, Mol. Inf.</em></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="65%" />
+<col width="35%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>206</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>412</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">data</span></code>, the data to learn, <code class="docutils literal"><span class="pre">target</span></code>, the
+classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsTM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTM</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">array([[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;],[&#39;LWIVIACLACVGSAAALTLRA&#39;],[&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;],[&#39;GTLELGVDYGRAN&#39;],[&#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;TM&#39;, &#39;AMP&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(412, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="module-modlamp.plot">
-<span id="modlamp-plot"></span><h2>2.4. modlamp.plot<a class="headerlink" href="#module-modlamp.plot" title="Permalink to this headline">¶</a></h2>
+<span id="modlamp-plot"></span><h2>2.5. modlamp.plot<a class="headerlink" href="#module-modlamp.plot" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-modlamp.plot"></span><p>This module incorporates functions to plot different feature plots. The following functions are available:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1551,7 +1642,7 @@ are plottet in different colors.</p>
 
 </div>
 <div class="section" id="module-modlamp.core">
-<span id="modlamp-core"></span><h2>2.5. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
+<span id="modlamp-core"></span><h2>2.6. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-modlamp.core"></span><p>Core helper functions for other modules.</p>
 <dl class="function">
 <dt id="modlamp.core.aminoacids">
@@ -1739,8 +1830,9 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <li><a class="reference internal" href="#module-modlamp.descriptors">2.1. modlamp.descriptors</a></li>
 <li><a class="reference internal" href="#module-modlamp.sequences">2.2. modlamp.sequences</a></li>
 <li><a class="reference internal" href="#module-modlamp.database">2.3. modlamp.database</a></li>
-<li><a class="reference internal" href="#module-modlamp.plot">2.4. modlamp.plot</a></li>
-<li><a class="reference internal" href="#module-modlamp.core">2.5. modlamp.core</a></li>
+<li><a class="reference internal" href="#module-modlamp.datasets">2.4. modlamp.datasets</a></li>
+<li><a class="reference internal" href="#module-modlamp.plot">2.5. modlamp.plot</a></li>
+<li><a class="reference internal" href="#module-modlamp.core">2.6. modlamp.core</a></li>
 </ul>
 </li>
 </ul>
