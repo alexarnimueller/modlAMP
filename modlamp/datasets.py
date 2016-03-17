@@ -14,6 +14,7 @@ import numpy as np
 
 __author__ = 'modlab'
 
+
 class Bunch(dict):
 	"""Container object for datasets
 
@@ -24,7 +25,7 @@ class Bunch(dict):
 	>>> b = Bunch(a=1, b=2)
 	>>> b['b']
 	2
-	>>> b.b
+	>>> b.b  # key can also be called as attribute
 	2
 	>>> b.a = 3
 	>>> b['a']
@@ -47,19 +48,11 @@ class Bunch(dict):
 			raise AttributeError(key)
 
 	def __setstate__(self, state):
-		# Bunch pickles generated with scikit-learn 0.16.* have an non
-		# empty __dict__. This causes a surprising behaviour when
-		# loading these pickles scikit-learn 0.17: reading bunch.key
-		# uses __dict__ but assigning to bunch.key use __setattr__ and
-		# only changes bunch['key']. More details can be found at:
-		# https://github.com/scikit-learn/scikit-learn/issues/6196.
-		# Overriding __setstate__ to be a noop has the effect of
-		# ignoring the pickled __dict__
 		pass
 
 
-def load_AMPvsTM():
-	"""Function to load a dataset consisting of AMP sequences and transmembrane regions of proteins for classification.
+def load_AMPvsTMset():
+	"""Function to load a dataset consisting of **AMP sequences and transmembrane regions of proteins** for classification.
 
 	The AMP class consists of an intersection of all activity annotations of the `APD2 <http://aps.unmc.edu/AP/>`_ and
 	`CAMP <http://camp.bicnirrh.res.in/>`_ databases, where for gram positive, gram negative and antifungal exact
@@ -73,12 +66,12 @@ def load_AMPvsTM():
 	Dimensionality		1
 	=================	====
 
-	:return: Bunch, a dictionary-like object, the interesting attributes are: ``data``, the data to learn, ``target``, the
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
 		classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
 	:Example:
 
-	>>> from modlamp.datasets import load_AMPvsTM
-	>>> data = load_AMPvsTM()
+	>>> from modlamp.datasets import load_AMPvsTMset
+	>>> data = load_AMPvsTMset()
 	>>> data.sequences[:5]
 	array([['AAGAATVLLVIVLLAGSYLAVLA'],['LWIVIACLACVGSAAALTLRA'],['FYRFYMLREGTAVPAVWFSIELIFGLFA'],['GTLELGVDYGRAN'],['KLFWRAVVAEFLATTLFVFISIGSALGFK']])
 	>>> list(data.target_names)
@@ -88,13 +81,13 @@ def load_AMPvsTM():
 	"""
 
 	module_path = dirname(__file__)
-	with open(join(module_path, 'data', 'AMPvsTM.csv')) as csv_file:
+	with open(join(module_path, 'data', 'AMPvsTMset.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
 		n_samples = int(temp[0])
 		n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = np.empty((n_samples,n_features), dtype='|S100')
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
 		target = np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
@@ -106,4 +99,51 @@ def load_AMPvsTM():
 				 feature_names=['Sequence'])
 
 
-#TODO: add more data set loading method, e.g helical vs AMPs
+def load_helicalAMPset():
+	"""Function to load a dataset consisting of **helical AMP sequences and other helical peptides** for classification.
+
+	The AMP class consists of 363 helical annotated sequences from the `APD2 <http://aps.unmc.edu/AP/>`_
+	(extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the
+	`PDB <http://www.rcsb.org/pdb/home/home.do>`_, out of which alpha helical regions were extracted. 363 sequences
+	were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.
+
+	=================	====
+	Classes				2
+	Samples per class	363
+	Samples total		726
+	Dimensionality		1
+	=================	====
+
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
+			classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:Example:
+
+	>>> from modlamp.datasets import load_helicalAMPset
+	>>> data = load_helicalAMPset()
+	>>> data.sequences[:5]
+	array([['FDQAQTEIQATMEEN'],['DVDAALHYLARLVEAG'],['RCPLVIDYLIDLATRS'],['NPATLMMFFK'],['NLEDSIQILRTD']])
+	>>> list(data.target_names)
+	['HEL', 'AMP']
+	>>> data.sequences.shape
+	(726, 1)
+	"""
+
+	module_path = dirname(__file__)
+	with open(join(module_path, 'data', 'helicalAMPset.csv')) as csv_file:
+		data_file = csv.reader(csv_file)
+		temp = next(data_file)
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
+		target_names = np.array(temp[2:])
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
+		target = np.empty((n_samples,), dtype=np.int)
+
+		for i, ir in enumerate(data_file):
+			sequences[i] = ir[0]
+			target[i] = ir[-1]
+
+	return Bunch(sequences=sequences, target=target,
+				 target_names=target_names,
+				 feature_names=['Sequence'])
+
+# TODO: add more data set loading functions

@@ -1285,17 +1285,10 @@ tilted/oblique in membrane environment.</p>
 <dd><p>Class for random peptide sequences
 This class incorporates methods for generating peptide random peptide sequences of defined length.
 The amino acid probabilities can be chosen from different probabilities:</p>
-<ul>
-<li><p class="first"><strong>rand</strong>: equal probabilities for all amino acids</p>
-</li>
-<li><dl class="first docutils">
-<dt><strong>AMP</strong>: amino acid probabilities taken from the antimicrobial peptide database</dt>
-<dd><p class="first last"><a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><strong>AMPnoCM</strong>: same amino acid probabilities as <strong>AMP</strong> but lacking Cys and Met (for synthesizability)</p>
-</li>
+<ul class="simple">
+<li><strong>rand</strong>: equal probabilities for all amino acids</li>
+<li><strong>AMP</strong>: amino acid probabilities taken from the antimicrobial peptide database <a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016.</li>
+<li><strong>AMPnoCM</strong>: same amino acid probabilities as <strong>AMP</strong> but lacking Cys and Met (for synthesizability)</li>
 </ul>
 <p>The probability values for all natural AA can be found in the following table:</p>
 <table border="1" class="docutils">
@@ -1429,7 +1422,7 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined variables</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">initialized class attributes for sequence number and length</p>
 </td>
 </tr>
 </tbody>
@@ -1575,7 +1568,7 @@ the different database tables.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
 <span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">b</span>  <span class="c1"># key can also be called as attribute</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
@@ -1593,9 +1586,9 @@ the different database tables.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.datasets.load_AMPvsTM">
-<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsTM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsTM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load a dataset consisting of AMP sequences and transmembrane regions of proteins for classification.</p>
+<dt id="modlamp.datasets.load_AMPvsTMset">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsTMset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsTMset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsTMset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of <strong>AMP sequences and transmembrane regions of proteins</strong> for classification.</p>
 <p>The AMP class consists of an intersection of all activity annotations of the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
 <a class="reference external" href="http://camp.bicnirrh.res.in/">CAMP</a> databases, where for gram positive, gram negative and antifungal exact
 matches were observed. A detailed description of how the dataset was compiled can be found in the following
@@ -1624,21 +1617,72 @@ publication: <em>Schneider P. et al. 2016, Mol. Inf.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">data</span></code>, the data to learn, <code class="docutils literal"><span class="pre">target</span></code>, the
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>, the
 classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the features.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsTM</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTM</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsTMset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTMset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 <span class="go">array([[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;],[&#39;LWIVIACLACVGSAAALTLRA&#39;],[&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;],[&#39;GTLELGVDYGRAN&#39;],[&#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <span class="go">[&#39;TM&#39;, &#39;AMP&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(412, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_helicalAMPset">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_helicalAMPset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_helicalAMPset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_helicalAMPset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of <strong>helical AMP sequences and other helical peptides</strong> for classification.</p>
+<p>The AMP class consists of 363 helical annotated sequences from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a>
+(extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the
+<a class="reference external" href="http://www.rcsb.org/pdb/home/home.do">PDB</a>, out of which alpha helical regions were extracted. 363 sequences
+were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="65%" />
+<col width="35%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>363</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>726</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>, the
+classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">array([[&#39;FDQAQTEIQATMEEN&#39;],[&#39;DVDAALHYLARLVEAG&#39;],[&#39;RCPLVIDYLIDLATRS&#39;],[&#39;NPATLMMFFK&#39;],[&#39;NLEDSIQILRTD&#39;]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;HEL&#39;, &#39;AMP&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(726, 1)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1910,7 +1954,7 @@ are plottet in different colors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">freshly initialized, empty class attributes.</td>
 </tr>
 </tbody>
 </table>

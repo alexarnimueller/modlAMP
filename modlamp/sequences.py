@@ -556,8 +556,7 @@ class Random:
 	The amino acid probabilities can be chosen from different probabilities:
 
 	- **rand**: equal probabilities for all amino acids
-	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database
-		`APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016.
+	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016.
 	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
 
 	The probability values for all natural AA can be found in the following table:
@@ -589,15 +588,15 @@ class Random:
 
 	"""
 
-	def __init__(self,lenmin,lenmax,seqnum):
+	def __init__(self, lenmin, lenmax, seqnum):
 		"""
 		:param lenmin: minimal sequence length
 		:param lenmax: maximal sequence length
 		:param seqnum: number of sequences to generate
-		:return: defined variables
+		:return: initialized class attributes for sequence number and length
 		"""
 		aminoacids(self)
-		template(self,lenmin,lenmax,seqnum)
+		template(self, lenmin, lenmax, seqnum)
 
 	def generate_sequences(self,proba='rand'):
 		"""

@@ -11,7 +11,7 @@ with open('LICENSE') as f:
 
 setup(
     name='modlAMP',
-    version='2.0.4',
+    version='2.0.5',
     description='modlabs peptide package with descriptors, sequences, ML etc. for peptide QSAR studies',
     long_description=readme,
     author='modlab, Alex Müller',

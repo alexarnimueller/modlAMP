@@ -605,8 +605,7 @@
 <span class="sd">	The amino acid probabilities can be chosen from different probabilities:</span>
 
 <span class="sd">	- **rand**: equal probabilities for all amino acids</span>
-<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database</span>
-<span class="sd">		`APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016.</span>
+<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016.</span>
 <span class="sd">	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)</span>
 
 <span class="sd">	The probability values for all natural AA can be found in the following table:</span>
@@ -638,15 +637,15 @@
 
 <span class="sd">	&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Random.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">):</span>
+<div class="viewcode-block" id="Random.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param lenmin: minimal sequence length</span>
 <span class="sd">		:param lenmax: maximal sequence length</span>
 <span class="sd">		:param seqnum: number of sequences to generate</span>
-<span class="sd">		:return: defined variables</span>
+<span class="sd">		:return: initialized class attributes for sequence number and length</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">)</span></div>
+		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
