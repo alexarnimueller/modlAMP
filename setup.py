@@ -20,7 +20,7 @@ setup(
     license=license,
     keywords = "antimicrobial peptide descriptor sequences QSAR machine learning",
     packages=['modlamp', 'modlamp.tests'],
-    package_data = {'modlamp': ['data/*.csv','data/*.fasta']},
+    package_data = {'modlamp': ['data/*.csv' ,'data/*.fasta']},
     scripts = ['bin/*.py'],
     classifiers=[
     'Development Status :: 2 - Pre-Alpha',
@@ -29,5 +29,5 @@ setup(
     'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.6',
-    'Programming Language :: Python :: 2.7',],
+    'Programming Language :: Python :: 2.7']
 )

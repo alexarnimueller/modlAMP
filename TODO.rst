@@ -1,6 +1,7 @@
 TODOs
 =====
 
+- contribution guide
 - add test cases for all classes & methods
 - add connection test cases
 - add machinelearning module
