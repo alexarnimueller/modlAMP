@@ -605,23 +605,51 @@
 <span class="sd">	The amino acid probabilities can be chosen from different probabilities:</span>
 
 <span class="sd">	- **rand**: equal probabilities for all amino acids</span>
-<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD2 &lt;http://aps.unmc.edu/AP/main.php&gt;`_.</span>
+<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database</span>
+<span class="sd">		`APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016.</span>
 <span class="sd">	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)</span>
+
+<span class="sd">	The probability values for all natural AA can be found in the following table:</span>
+
+<span class="sd">	===	====	======	=========</span>
+<span class="sd">	AA	rand	AMP		AMPnoCM</span>
+<span class="sd">	===	====	======	=========</span>
+<span class="sd">	A	0.05	0.0766	0.0812275</span>
+<span class="sd">	C	0.05	0.071	0.0</span>
+<span class="sd">	D	0.05	0.026	0.0306275</span>
+<span class="sd">	E	0.05	0.0264	0.0310275</span>
+<span class="sd">	F	0.05	0.0405	0.0451275</span>
+<span class="sd">	G	0.05	0.1172	0.1218275</span>
+<span class="sd">	H	0.05	0.021	0.0256275</span>
+<span class="sd">	I	0.05	0.061	0.0656275</span>
+<span class="sd">	K	0.05	0.0958	0.1004275</span>
+<span class="sd">	L	0.05	0.0838	0.0884275</span>
+<span class="sd">	M	0.05	0.0123	0.0</span>
+<span class="sd">	N	0.05	0.0386	0.0432275</span>
+<span class="sd">	P	0.05	0.0463	0.0509275</span>
+<span class="sd">	Q	0.05	0.0251	0.0297275</span>
+<span class="sd">	R	0.05	0.0545	0.0591275</span>
+<span class="sd">	S	0.05	0.0613	0.0659275</span>
+<span class="sd">	T	0.05	0.0455	0.0501275</span>
+<span class="sd">	V	0.05	0.0572	0.0618275</span>
+<span class="sd">	W	0.05	0.0155	0.0201275</span>
+<span class="sd">	Y	0.05	0.0244	0.0290275</span>
+<span class="sd">	===	====	======	=========</span>
+
 <span class="sd">	&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Random.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">):</span>
-		<span class="sd">&#39;&#39;&#39;</span>
+		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param lenmin: minimal sequence length</span>
 <span class="sd">		:param lenmax: maximal sequence length</span>
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined variables</span>
-<span class="sd">		&#39;&#39;&#39;</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lenmin</span><span class="p">,</span><span class="n">lenmax</span><span class="p">,</span><span class="n">seqnum</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
-		<span class="sd">&#39;&#39;&#39;</span>
+		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand</span>
 <span class="sd">		:return: A list of random AMP sequences with defined AA probabilities</span>
 <span class="sd">		:Example:</span>
@@ -630,7 +658,7 @@
 <span class="sd">		&gt;&gt;&gt; R.generate_sequences(proba=&#39;AMP&#39;)</span>
 <span class="sd">		&gt;&gt;&gt; R.sequences</span>
 <span class="sd">		[&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
-<span class="sd">		&#39;&#39;&#39;</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span> <span class="c1"># default probability = rand</span>
 		<span class="k">if</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMPnoCM&#39;</span><span class="p">:</span>
@@ -643,7 +671,6 @@
 			<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span><span class="o">+</span><span class="mi">1</span><span class="p">))):</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span> <span class="c1">#weighed random selection of amino acid, probabilities = prob</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
-
 
 <div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -660,7 +687,6 @@
 			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
 		<span class="n">o</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-
 
 <div class="viewcode-block" id="Random.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.mutate_AA">[docs]</a>	<span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -680,7 +706,6 @@
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nr</span><span class="p">,</span><span class="n">prob</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="Random.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>

@@ -27,8 +27,7 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 __author__ = 'modlab'
 
-
-class GlobalDescriptor:
+class GlobalDescriptor(object):
 	"""
 	Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
 	the **methods** linked below:
@@ -45,7 +44,7 @@ class GlobalDescriptor:
 	- `Instability Index	<modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
 	"""
 
-	def __init__(self,seqs):
+	def __init__(self, seqs):
 		"""
 		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
@@ -55,10 +54,10 @@ class GlobalDescriptor:
 		>>> P.sequences
 		['KLAKLAKKLAKLAK']
 		"""
-		D = PeptideDescriptor(seqs,'eisenberg')
+		D = PeptideDescriptor(seqs, 'eisenberg')
 		self.sequences = D.sequences
 		self.names = D.names
-
+		self.descriptor = D.descriptor
 
 	def isoelectric_point(self):
 		"""
@@ -70,7 +69,6 @@ class GlobalDescriptor:
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).isoelectric_point())
 		self.descriptor = np.asarray(desc)
-
 
 	def calculate_charge(self):
 		"""
@@ -92,7 +90,6 @@ class GlobalDescriptor:
 			desc.append(charge)
 		self.descriptor = np.asarray(desc)
 
-
 	def calculate_MW(self):
 		"""
 		Method to calculate the molecular weight [g/mol] of every sequence in :py:attr:`self.sequences`.
@@ -103,7 +100,6 @@ class GlobalDescriptor:
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).molecular_weight())
 		self.descriptor = np.asarray(desc)
-
 
 	def length(self):
 		"""
@@ -116,7 +112,6 @@ class GlobalDescriptor:
 			desc.append(ProteinAnalysis(seq).length)
 		self.descriptor = np.asarray(desc)
 
-
 	def charge_density(self):
 		"""
 		Method to calculate the charge density (charge / MW) of every sequence in :py:attr:`self.sequences`.
@@ -128,7 +123,6 @@ class GlobalDescriptor:
 		for i,seq in enumerate(self.sequences):
 			desc.append(self.descriptor[i] / ProteinAnalysis(seq).molecular_weight())
 		self.descriptor = np.asarray(desc)
-
 
 	def instability_index(self):
 		"""
@@ -143,7 +137,6 @@ class GlobalDescriptor:
 			desc.append(ProteinAnalysis(seq).instability_index())
 		self.descriptor = np.asarray(desc)
 
-
 	def aromaticity(self):
 		"""
 		Method to calculate the aromaticity of every sequence in :py:attr:`self.sequences`.
@@ -155,7 +148,6 @@ class GlobalDescriptor:
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).aromaticity())
 		self.descriptor = np.asarray(desc)
-
 
 	def aliphatic_index(self):
 		"""
@@ -171,7 +163,6 @@ class GlobalDescriptor:
 			D = ProteinAnalysis(seq).count_amino_acids()
 			desc.append(D['A'] + 2.9 * D['V'] + 3.9 * (D['I'] + D['L'])) # formula for calculating the AI (Ikai, 1980)
 		self.descriptor = np.asarray(desc)
-
 
 	def boman_index(self):
 		"""
@@ -194,7 +185,6 @@ class GlobalDescriptor:
 			desc.append(sum(val)/len(val))
 		self.descriptor = np.asarray(desc)
 
-
 	def hydrophobic_ratio(self):
 		"""
 		Method to calculate the hydrophobic ratio of every sequence in :py:attr:`self.sequences`, which is the relative
@@ -204,14 +194,15 @@ class GlobalDescriptor:
 		"""
 		desc = []
 		for seq in self.sequences:
-			D = ProteinAnalysis(seq).count_amino_acids()
-			desc.append((D['A'] + D['C'] + D['F'] + D['I'] + D['L'] + D['M'] + D['V']) / float(len(seq))) # formula for calculating the AI (Ikai, 1980)
+			pa = ProteinAnalysis(seq).count_amino_acids()
+			# formula for calculating the AI (Ikai, 1980):
+			desc.append((pa['A'] + pa['C'] + pa['F'] + pa['I'] + pa['L'] + pa['M'] + pa['V']) / float(len(seq)))
 		self.descriptor = np.asarray(desc)
 
 # TODO: test for most new methods!
 
 
-class PeptideDescriptor:
+class PeptideDescriptor(object):
 	"""
 	Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor calculation:
 
@@ -259,13 +250,15 @@ class PeptideDescriptor:
 			self.sequences = [seqs]
 			self.names = []
 		elif os.path.isfile(seqs):
-			self.read_fasta(seqs)
+			self.sequences, self.names = read_fasta(seqs)
+		elif type(seqs) == np.ndarray:
+			self.sequences = seqs.tolist()
+			self.names = []
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
-			sys.exit()
 
-		load_scale(self,scalename)
-
+		self.scale = load_scale(scalename)
+		self.descriptor = np.array([[]])
 
 	def read_fasta(self, seqs):
 		"""
@@ -275,8 +268,7 @@ class PeptideDescriptor:
 		:param seqs: .fasta file with sequences and headers to read
 		:return: list of sequences in self.sequences with corresponding sequence names in self.names
 		"""
-		read_fasta(self, seqs)
-
+		self.sequences, self.names = read_fasta(seqs)
 
 	def save_fasta(self, outputfile):
 		"""
@@ -286,7 +278,6 @@ class PeptideDescriptor:
 		:return: list of sequences in self.sequences with corresponding sequence names in :py:attr:`self.names`
 		"""
 		save_fasta(self,outputfile)
-
 
 	def calculate_autocorr(self, window):
 		"""
@@ -324,7 +315,6 @@ class PeptideDescriptor:
 
 			desc.append(seqdesc)  # store final descriptor values in "descriptor"
 		self.descriptor = np.array(desc)
-
 
 	def calculate_crosscorr(self, window):
 		"""
@@ -563,7 +553,6 @@ class PeptideDescriptor:
 		except:
 			print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
 
-
 	def feature_shuffle(self):
 		"""
 		Method for shuffling features randomly.
@@ -579,6 +568,7 @@ class PeptideDescriptor:
 		self.descriptor = shuffle(self.descriptor.transpose()).transpose()
 
 # TODO move to core for both sequences and descriptors
+
 	def sequence_order_shuffle(self):
 		"""
 		Method for shuffling sequence order in self.sequences.

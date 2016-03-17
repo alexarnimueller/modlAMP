@@ -2,7 +2,7 @@ import unittest
 from modlamp.sequences import Helices
 
 class TestHelices(unittest.TestCase):
-	H = Helices(10,40,1)
+	H = Helices(18, 40, 1)
 	H.generate_helices()
 
 	def test_seq_length(self):

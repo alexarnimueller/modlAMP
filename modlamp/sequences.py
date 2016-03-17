@@ -556,23 +556,51 @@ class Random:
 	The amino acid probabilities can be chosen from different probabilities:
 
 	- **rand**: equal probabilities for all amino acids
-	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD2 <http://aps.unmc.edu/AP/main.php>`_.
+	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database
+		`APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016.
 	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
+
+	The probability values for all natural AA can be found in the following table:
+
+	===	====	======	=========
+	AA	rand	AMP		AMPnoCM
+	===	====	======	=========
+	A	0.05	0.0766	0.0812275
+	C	0.05	0.071	0.0
+	D	0.05	0.026	0.0306275
+	E	0.05	0.0264	0.0310275
+	F	0.05	0.0405	0.0451275
+	G	0.05	0.1172	0.1218275
+	H	0.05	0.021	0.0256275
+	I	0.05	0.061	0.0656275
+	K	0.05	0.0958	0.1004275
+	L	0.05	0.0838	0.0884275
+	M	0.05	0.0123	0.0
+	N	0.05	0.0386	0.0432275
+	P	0.05	0.0463	0.0509275
+	Q	0.05	0.0251	0.0297275
+	R	0.05	0.0545	0.0591275
+	S	0.05	0.0613	0.0659275
+	T	0.05	0.0455	0.0501275
+	V	0.05	0.0572	0.0618275
+	W	0.05	0.0155	0.0201275
+	Y	0.05	0.0244	0.0290275
+	===	====	======	=========
+
 	"""
 
 	def __init__(self,lenmin,lenmax,seqnum):
-		'''
+		"""
 		:param lenmin: minimal sequence length
 		:param lenmax: maximal sequence length
 		:param seqnum: number of sequences to generate
 		:return: defined variables
-		'''
+		"""
 		aminoacids(self)
 		template(self,lenmin,lenmax,seqnum)
 
-
 	def generate_sequences(self,proba='rand'):
-		'''
+		"""
 		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand
 		:return: A list of random AMP sequences with defined AA probabilities
 		:Example:
@@ -581,7 +609,7 @@ class Random:
 		>>> R.generate_sequences(proba='AMP')
 		>>> R.sequences
 		['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
-		'''
+		"""
 		clean(self)
 		self.prob = self.prob_rand # default probability = rand
 		if proba == 'AMPnoCM':
@@ -594,7 +622,6 @@ class Random:
 			for l in range(random.choice(range(self.lenmin, self.lenmax+1))):
 				self.seq.append(np.random.choice(self.AAs,p=self.prob)) #weighed random selection of amino acid, probabilities = prob
 			self.sequences.append(''.join(self.seq))
-
 
 	def save_fasta(self,filename):
 		"""
@@ -611,7 +638,6 @@ class Random:
 			print >> o, '>Seq_' + str(n)
 			print >> o, self.sequences[n]
 		o.close()
-
 
 	def mutate_AA(self,nr,prob):
 		"""
@@ -631,7 +657,6 @@ class Random:
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
 		"""
 		mutate_AA(self,nr,prob)
-
 
 	def filter_unnatrual(self):
 		"""

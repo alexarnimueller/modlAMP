@@ -1285,11 +1285,136 @@ tilted/oblique in membrane environment.</p>
 <dd><p>Class for random peptide sequences
 This class incorporates methods for generating peptide random peptide sequences of defined length.
 The amino acid probabilities can be chosen from different probabilities:</p>
-<ul class="simple">
-<li><strong>rand</strong>: equal probabilities for all amino acids</li>
-<li><strong>AMP</strong>: amino acid probabilities taken from the antimicrobial peptide database <a class="reference external" href="http://aps.unmc.edu/AP/main.php">APD2</a>.</li>
-<li><strong>AMPnoCM</strong>: same amino acid probabilities as <strong>AMP</strong> but lacking Cys and Met (for synthesizability)</li>
+<ul>
+<li><p class="first"><strong>rand</strong>: equal probabilities for all amino acids</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>AMP</strong>: amino acid probabilities taken from the antimicrobial peptide database</dt>
+<dd><p class="first last"><a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>AMPnoCM</strong>: same amino acid probabilities as <strong>AMP</strong> but lacking Cys and Met (for synthesizability)</p>
+</li>
 </ul>
+<p>The probability values for all natural AA can be found in the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="14%" />
+<col width="21%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">rand</th>
+<th class="head">AMP</th>
+<th class="head">AMPnoCM</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.05</td>
+<td>0.0766</td>
+<td>0.0812275</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.05</td>
+<td>0.071</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.05</td>
+<td>0.026</td>
+<td>0.0306275</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.05</td>
+<td>0.0264</td>
+<td>0.0310275</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.05</td>
+<td>0.0405</td>
+<td>0.0451275</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.05</td>
+<td>0.1172</td>
+<td>0.1218275</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.05</td>
+<td>0.021</td>
+<td>0.0256275</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.05</td>
+<td>0.061</td>
+<td>0.0656275</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.05</td>
+<td>0.0958</td>
+<td>0.1004275</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.05</td>
+<td>0.0838</td>
+<td>0.0884275</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.05</td>
+<td>0.0123</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.05</td>
+<td>0.0386</td>
+<td>0.0432275</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.05</td>
+<td>0.0463</td>
+<td>0.0509275</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.05</td>
+<td>0.0251</td>
+<td>0.0297275</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.05</td>
+<td>0.0545</td>
+<td>0.0591275</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.05</td>
+<td>0.0613</td>
+<td>0.0659275</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.05</td>
+<td>0.0455</td>
+<td>0.0501275</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.05</td>
+<td>0.0572</td>
+<td>0.0618275</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.05</td>
+<td>0.0155</td>
+<td>0.0201275</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.05</td>
+<td>0.0244</td>
+<td>0.0290275</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="modlamp.sequences.Random.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.__init__" title="Permalink to this definition">¶</a></dt>
@@ -1656,6 +1781,125 @@ are plottet in different colors.</p>
 </tr>
 </tbody>
 </table>
+<p>The following amino acid probabilities are used by modlAMP: (extracted from the
+<a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="14%" />
+<col width="21%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">rand</th>
+<th class="head">AMP</th>
+<th class="head">AMPnoCM</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.05</td>
+<td>0.0766</td>
+<td>0.0812275</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.05</td>
+<td>0.071</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.05</td>
+<td>0.026</td>
+<td>0.0306275</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.05</td>
+<td>0.0264</td>
+<td>0.0310275</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.05</td>
+<td>0.0405</td>
+<td>0.0451275</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.05</td>
+<td>0.1172</td>
+<td>0.1218275</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.05</td>
+<td>0.021</td>
+<td>0.0256275</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.05</td>
+<td>0.061</td>
+<td>0.0656275</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.05</td>
+<td>0.0958</td>
+<td>0.1004275</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.05</td>
+<td>0.0838</td>
+<td>0.0884275</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.05</td>
+<td>0.0123</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.05</td>
+<td>0.0386</td>
+<td>0.0432275</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.05</td>
+<td>0.0463</td>
+<td>0.0509275</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.05</td>
+<td>0.0251</td>
+<td>0.0297275</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.05</td>
+<td>0.0545</td>
+<td>0.0591275</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.05</td>
+<td>0.0613</td>
+<td>0.0659275</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.05</td>
+<td>0.0455</td>
+<td>0.0501275</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.05</td>
+<td>0.0572</td>
+<td>0.0618275</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.05</td>
+<td>0.0155</td>
+<td>0.0201275</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.05</td>
+<td>0.0244</td>
+<td>0.0290275</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -1713,7 +1957,7 @@ that have a lower similarity to the other list members than the given threshold.
 
 <dl class="function">
 <dt id="modlamp.core.load_scale">
-<code class="descclassname">modlamp.core.</code><code class="descname">load_scale</code><span class="sig-paren">(</span><em>self</em>, <em>scalename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#load_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.load_scale" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.core.</code><code class="descname">load_scale</code><span class="sig-paren">(</span><em>scalename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#load_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.load_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load scale values for a given amino acid scale</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1759,7 +2003,7 @@ that have a lower similarity to the other list members than the given threshold.
 
 <dl class="function">
 <dt id="modlamp.core.read_fasta">
-<code class="descclassname">modlamp.core.</code><code class="descname">read_fasta</code><span class="sig-paren">(</span><em>self</em>, <em>inputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#read_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.read_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.core.</code><code class="descname">read_fasta</code><span class="sig-paren">(</span><em>inputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#read_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.read_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for loading sequences from a FASTA formatted file into self.sequences &amp; self.names. This method is
 used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a> if the input is a FASTA file.</p>
 <table class="docutils field-list" frame="void" rules="none">

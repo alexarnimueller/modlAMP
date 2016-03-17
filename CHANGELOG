@@ -1,3 +1,4 @@
 v1.2.6, 01.03.2016 -- First tracked release
 v1.3.0, 03.03.2016 -- Added plot module
 v1.5.0, 11.03.2016 -- Changed package architecture to one submodules in modlamp
+v2.0.4  17.03.2016 -- Updated docs and AA probabilities, added capability of reading sequences from numpy.ndarrays
