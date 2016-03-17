@@ -84,15 +84,15 @@ def load_AMPvsTMset():
 	with open(join(module_path, 'data', 'AMPvsTMset.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
-		n_samples = int(temp[0])
-		n_features = int(temp[1])
+		# n_samples = int(temp[0])
+		# n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = np.empty((n_samples, n_features), dtype='|S100')
-		target = np.empty((n_samples,), dtype=np.int)
+		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
+		target = []  # np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
-			sequences[i] = ir[0]
-			target[i] = ir[-1]
+			sequences.append(ir[0])  # sequences[i] = ir[0]
+			target.append(ir[-1])  # target[i] = ir[-1]
 
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,
@@ -132,15 +132,15 @@ def load_helicalAMPset():
 	with open(join(module_path, 'data', 'helicalAMPset.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
-		n_samples = int(temp[0])
-		n_features = int(temp[1])
+		# n_samples = int(temp[0])
+		# n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = np.empty((n_samples, n_features), dtype='|S100')
-		target = np.empty((n_samples,), dtype=np.int)
+		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
+		target = []  # np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
-			sequences[i] = ir[0]
-			target[i] = ir[-1]
+			sequences.append(ir[0])  # sequences[i] = ir[0]
+			target.append(ir[-1])  # target[i] = ir[-1]
 
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,

@@ -246,14 +246,14 @@ class PeptideDescriptor(object):
 		if type(seqs) == list:
 			self.sequences = seqs
 			self.names = []
+		elif type(seqs) == np.ndarray:
+			self.sequences = seqs.tolist()
+			self.names = []
 		elif type(seqs) == str and seqs.isupper():
 			self.sequences = [seqs]
 			self.names = []
 		elif os.path.isfile(seqs):
 			self.sequences, self.names = read_fasta(seqs)
-		elif type(seqs) == np.ndarray:
-			self.sequences = seqs.tolist()
-			self.names = []
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
