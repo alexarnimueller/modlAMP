@@ -1963,21 +1963,17 @@ are plottet in different colors.</p>
 <dl class="function">
 <dt id="modlamp.core.filter_similarity">
 <code class="descclassname">modlamp.core.</code><code class="descname">filter_similarity</code><span class="sig-paren">(</span><em>self</em>, <em>threshold=0.8</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_similarity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out peptide sequences above a given similarity threshold in a list of given sequences. The list
-is first shuffled and all duplicates are removed. Then, the function iterates through the list only keeps sequences
-that have a lower similarity to the other list members than the given threshold.</p>
+<dd><p>Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The list of sequences is first shuffled and all duplicates are removed. Then, the
+function iterates through the list only keeps sequences that have a lower similarity to the other list members than
+the given threshold.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lst</strong> &#8211; list of sequences to be filtered for internal similarity</li>
-<li><strong>threshold</strong> &#8211; similarity threshold over which one of similar members of <code class="xref py py-attr docutils literal"><span class="pre">self.sequences</span></code> gets kicked out</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> &#8211; similarity threshold over which one of similar members of <code class="xref py py-attr docutils literal"><span class="pre">self.sequences</span></code> gets kicked out</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered list of sequences</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences</td>
 </tr>
 </tbody>
 </table>
@@ -1986,14 +1982,13 @@ that have a lower similarity to the other list members than the given threshold.
 <dl class="function">
 <dt id="modlamp.core.filter_unnatural">
 <code class="descclassname">modlamp.core.</code><code class="descname">filter_unnatural</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with non-proteinogenic amino acids [B,J,O,U,X,Z]. <strong>Dublicates</strong> are removed as well.</p>
+<dd><p>Method to filter out sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with non-proteinogenic
+amino acids [B,J,O,U,X,Z]. <strong>Dublicates</strong> are removed as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seq_list</strong> &#8211; List of sequences to be filtered.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Filtered list.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered list.</td>
 </tr>
 </tbody>
 </table>

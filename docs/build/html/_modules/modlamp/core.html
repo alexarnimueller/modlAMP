@@ -365,11 +365,11 @@
 
 <div class="viewcode-block" id="filter_similarity"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_similarity">[docs]</a><span class="k">def</span> <span class="nf">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Method to filter out peptide sequences above a given similarity threshold in a list of given sequences. The list</span>
-<span class="sd">	is first shuffled and all duplicates are removed. Then, the function iterates through the list only keeps sequences</span>
-<span class="sd">	that have a lower similarity to the other list members than the given threshold.</span>
+<span class="sd">	Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class</span>
+<span class="sd">	attribute :py:attr:`sequences`. The list of sequences is first shuffled and all duplicates are removed. Then, the</span>
+<span class="sd">	function iterates through the list only keeps sequences that have a lower similarity to the other list members than</span>
+<span class="sd">	the given threshold.</span>
 
-<span class="sd">	:param lst: list of sequences to be filtered for internal similarity</span>
 <span class="sd">	:param threshold: similarity threshold over which one of similar members of :py:attr:`self.sequences` gets kicked out</span>
 <span class="sd">	:return: filtered list of sequences</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -389,9 +389,9 @@
 
 <div class="viewcode-block" id="filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_unnatural">[docs]</a><span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Method to filter out sequences with non-proteinogenic amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.</span>
+<span class="sd">	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic</span>
+<span class="sd">	amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.</span>
 
-<span class="sd">	:param seq_list: List of sequences to be filtered.</span>
 <span class="sd">	:return: Filtered list.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">seq_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)]</span>  <span class="c1"># remove duplicates</span>

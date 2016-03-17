@@ -316,11 +316,11 @@ def clean(self):
 
 def filter_similarity(self, threshold=0.8):
 	"""
-	Method to filter out peptide sequences above a given similarity threshold in a list of given sequences. The list
-	is first shuffled and all duplicates are removed. Then, the function iterates through the list only keeps sequences
-	that have a lower similarity to the other list members than the given threshold.
+	Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+	attribute :py:attr:`sequences`. The list of sequences is first shuffled and all duplicates are removed. Then, the
+	function iterates through the list only keeps sequences that have a lower similarity to the other list members than
+	the given threshold.
 
-	:param lst: list of sequences to be filtered for internal similarity
 	:param threshold: similarity threshold over which one of similar members of :py:attr:`self.sequences` gets kicked out
 	:return: filtered list of sequences
 	"""
@@ -340,9 +340,9 @@ def filter_similarity(self, threshold=0.8):
 
 def filter_unnatural(self):
 	"""
-	Method to filter out sequences with non-proteinogenic amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
+	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
+	amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
 
-	:param seq_list: List of sequences to be filtered.
 	:return: Filtered list.
 	"""
 	seq_list = [x for x in set(self.sequences)]  # remove duplicates

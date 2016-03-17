@@ -1,11 +1,9 @@
-"""
-Example script of a possible usage of the modlamp package for peptide QSAR studies with a Random Forest model.
-"""
+"""Example script for a possible usage of the modlamp package for peptide QSAR studies with a Random Forest model."""
 
 import sys
 from collections import OrderedDict
 from modlamp.datasets import load_helicalAMPset
-from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
+from modlamp.descriptors import PeptideDescriptor
 from sklearn.ensemble import RandomForestClassifier
 from modlamp.sequences import MixedLibrary
 
@@ -49,4 +47,4 @@ def main(libsize=1000):
 		print k + "," + str(d50[k])
 
 if __name__ == "__main__":
-	main(1000)
+	main(sys.argv[1])
