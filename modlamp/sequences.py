@@ -22,12 +22,12 @@ Class								Characteristics
 import os
 import random
 import numpy as np
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_similarity
 from itertools import cycle
 from sklearn.utils import shuffle
 
-
 __author__ = 'modlab'
+
 
 class Centrosymmetric:
 	"""
@@ -47,7 +47,6 @@ class Centrosymmetric:
 		'''
 		aminoacids(self)
 		self.seqnum = int(seqnum)
-
 
 	def generate_symmetric(self):
 		'''
@@ -83,7 +82,6 @@ class Centrosymmetric:
 				else:
 					continue
 			self.sequences.append(''.join(seq)*n)
-
 
 	def generate_asymmetric(self):
 		'''
@@ -122,7 +120,6 @@ class Centrosymmetric:
 				self.blocks.append(''.join(seq))
 			self.sequences.append(''.join(self.blocks))
 
-
 	def mutate_AA(self,nr,prob):
 		"""
 		Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
@@ -142,7 +139,6 @@ class Centrosymmetric:
 		"""
 		mutate_AA(self,nr,prob)
 
-
 	def save_fasta(self,filename):
 		"""
 		Method for saving sequences in the instance self.sequences to a file in FASTA format.
@@ -154,7 +150,6 @@ class Centrosymmetric:
 		"""
 		save_fasta(self,filename)
 
-
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
@@ -163,6 +158,17 @@ class Centrosymmetric:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)
 
 
 class Helices:
@@ -212,7 +218,6 @@ class Helices:
 
 			self.sequences.append(''.join(seq))
 
-
 	def mutate_AA(self,nr,prob):
 		"""
 		Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
@@ -232,7 +237,6 @@ class Helices:
 		"""
 		mutate_AA(self,nr,prob)
 
-
 	def save_fasta(self,filename):
 		"""
 		Method for saving sequences in the instance self.sequences to a file in FASTA format.
@@ -244,7 +248,6 @@ class Helices:
 		"""
 		save_fasta(self,filename)
 
-
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
@@ -254,6 +257,16 @@ class Helices:
 		"""
 		filter_unnatural(self)
 
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)
 
 class Kinked:
 	"""
@@ -330,7 +343,6 @@ class Kinked:
 		"""
 		mutate_AA(self,nr,prob)
 
-
 	def save_fasta(self,filename):
 		"""
 		Method for saving sequences in the instance self.sequences to a file in FASTA format.
@@ -342,7 +354,6 @@ class Kinked:
 		"""
 		save_fasta(self,filename)
 
-
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
@@ -351,6 +362,17 @@ class Kinked:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)
 
 
 class MixedLibrary:
@@ -387,7 +409,6 @@ class MixedLibrary:
 		self.ratio_rand = float(rand) / self.norm
 		self.ratio_randAMP = float(randAMP) / self.norm
 		self.ratio_randAMPnoCM = float(randAMPnoCM) / self.norm
-
 
 	def generate_library(self):
 		"""
@@ -434,7 +455,6 @@ class MixedLibrary:
 			S.generate_sequences()
 			self.sequences = self.sequences + S.sequences
 
-
 	def save_fasta(self,filename):
 		"""
 		Method for saving sequences in the instance self.sequences to a file in FASTA format.
@@ -446,7 +466,6 @@ class MixedLibrary:
 		"""
 		save_fasta(self,filename)
 
-
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
@@ -455,6 +474,17 @@ class MixedLibrary:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)
 
 
 class Oblique(object):
@@ -506,7 +536,6 @@ class Oblique(object):
 
 			self.sequences.append(''.join(seq))
 
-
 	def mutate_AA(self,nr,prob):
 		"""
 		Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
@@ -526,7 +555,6 @@ class Oblique(object):
 		"""
 		mutate_AA(self,nr,prob)
 
-
 	def save_fasta(self,filename):
 		"""
 		Method for saving sequences in the instance self.sequences to a file in FASTA format.
@@ -538,7 +566,6 @@ class Oblique(object):
 		"""
 		save_fasta(self,filename)
 
-
 	def filter_unnatrual(self):
 		"""
 		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
@@ -547,6 +574,17 @@ class Oblique(object):
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)
 
 
 class Random:
@@ -665,3 +703,14 @@ class Random:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_similarity(self, threshold=0.8):
+		"""
+		Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
+		attribute :py:attr:`sequences`.
+		:param threshold: Similarity threshold over which similar sequences are kicked out
+		:return: Filtered sequence list in :py:attr:`self.sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		"""
+		filter_similarity(self, threshold)

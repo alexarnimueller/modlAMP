@@ -21,3 +21,7 @@ class TestTMSet(unittest.TestCase):
 
 	def test_targets(self):
 		self.assertEqual([0, 0, 1, 1], [int(self.data.target[i]) for i in [0, 205, 206, 411]])
+
+
+if __name__ == '__main__':
+	unittest.main()
