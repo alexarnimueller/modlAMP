@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 sys.path.insert(0, os.path.abspath('..'))
-from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = 'modlab'
 
@@ -55,14 +55,6 @@ class TestPeptideDescriptor(unittest.TestCase):
 		self.D.count_aa()
 		for n in range(len(self.D.descriptor[0])):
 			self.assertAlmostEqual(self.D.descriptor[0][n],self.data_aa[n],places=8)
-
-class TestGlobalDescriptor(unittest.TestCase):
-
-	G = GlobalDescriptor(['GLFDIVKKVVGALG'])
-
-	def test_boman_index(self):
-		self.G.boman_index()
-		self.assertAlmostEqual(self.G.descriptor[0],-1.04785714)
 
 if __name__ == '__main__':
 	unittest.main()

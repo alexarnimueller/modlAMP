@@ -11,5 +11,9 @@ class TestCore(unittest.TestCase):
 		self.R.filter_unnatrual()
 		self.assertNotIn('ABCDEFGHAJKLMNOPQRSTUVWXYZ', self.R.sequences)
 
+	def test_mutate(self):
+		self.R.mutate_AA(1, 1)
+		self.assertNotEqual(self.sequences, self.R.sequences)
+
 if __name__ == '__main__':
 	unittest.main()

@@ -61,7 +61,8 @@ class GlobalDescriptor(object):
 
 	def isoelectric_point(self):
 		"""
-		Method to calculate the isoelectric point of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the isoelectric point of every sequence in :py:attr:`self.sequences`. The pK scale used is
+		Bjellquist.
 
 		:return: array of descriptor values in :py:attr:`self.descriptor`
 		"""
@@ -160,8 +161,9 @@ class GlobalDescriptor(object):
 		"""
 		desc = []
 		for seq in self.sequences:
-			D = ProteinAnalysis(seq).count_amino_acids()
-			desc.append(D['A'] + 2.9 * D['V'] + 3.9 * (D['I'] + D['L'])) # formula for calculating the AI (Ikai, 1980)
+			d = ProteinAnalysis(seq).count_amino_acids()
+			d = {k:(float(d[k]) / len(seq)) * 100 for k in d.keys()}  # get mole percent of all AA
+			desc.append(d['A'] + 2.9 * d['V'] + 3.9 * (d['I'] + d['L']))  # formula for calculating the AI (Ikai, 1980)
 		self.descriptor = np.asarray(desc)
 
 	def boman_index(self):
