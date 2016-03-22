@@ -70,6 +70,7 @@ class GlobalDescriptor(object):
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).length)
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -85,6 +86,7 @@ class GlobalDescriptor(object):
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).molecular_weight())
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -109,22 +111,23 @@ class GlobalDescriptor(object):
 			for a in seq:
 				charge += AACharge.get(a,0)
 			desc.append(charge)
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
 
 	def charge_density(self, append=False):
-		"""
-		Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.
+		"""Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		self.calculate_charge()
-		for i,seq in enumerate(self.sequences):
+		for i, seq in enumerate(self.sequences):
 			desc.append(self.descriptor[i] / ProteinAnalysis(seq).molecular_weight())
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -141,6 +144,7 @@ class GlobalDescriptor(object):
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).isoelectric_point())
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -158,6 +162,7 @@ class GlobalDescriptor(object):
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).instability_index())
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -174,6 +179,7 @@ class GlobalDescriptor(object):
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).aromaticity())
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -194,6 +200,7 @@ class GlobalDescriptor(object):
 			d = ProteinAnalysis(seq).count_amino_acids()
 			d = {k:(float(d[k]) / len(seq)) * 100 for k in d.keys()}  # get mole percent of all AA
 			desc.append(d['A'] + 2.9 * d['V'] + 3.9 * (d['I'] + d['L']))  # formula for calculating the AI (Ikai, 1980)
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -219,6 +226,7 @@ class GlobalDescriptor(object):
 			for a in seq:
 				val.append(D[a])
 			desc.append(sum(val)/len(val))
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
@@ -237,6 +245,7 @@ class GlobalDescriptor(object):
 			pa = ProteinAnalysis(seq).count_amino_acids()
 			# formula for calculating the AI (Ikai, 1980):
 			desc.append((pa['A'] + pa['C'] + pa['F'] + pa['I'] + pa['L'] + pa['M'] + pa['V']) / float(len(seq)))
+		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
