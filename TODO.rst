@@ -1,8 +1,8 @@
 TODOs
 =====
 
+- fix :func:`core.filter_similarity` used by the other modules
 - contribution guide
 - add connection test cases
 - add machinelearning module
-- add methods to add more descriptor features as columns to :py:attr:`self.descriptors`
-- add more functions like :fun:`database.load_helicalAMPset` to load sequences datasets for classification
+- add more functions like :func:`database.load_helicalAMPset` to load sequences datasets for classification

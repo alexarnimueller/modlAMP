@@ -106,24 +106,45 @@
 		<span class="n">D</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">seqs</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">sequences</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">names</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">descriptor</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">descriptor</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">target</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>	<span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.length"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.length">[docs]</a>	<span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the isoelectric point of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the length (total AA count) of every sequence in the attribute :py:attr:`sequences`.</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">())</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.calculate_MW"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_MW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the overall charge of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 
 <span class="sd">		The following dictionary shows the used side chain charges at neutral pH::</span>
 
@@ -137,92 +158,107 @@
 			<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
 				<span class="n">charge</span> <span class="o">+=</span> <span class="n">AACharge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.calculate_MW"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_MW</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.charge_density"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">[docs]</a>	<span class="k">def</span> <span class="nf">charge_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the molecular weight [g/mol] of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="GlobalDescriptor.length"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.length">[docs]</a>	<span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the length (total AA count) of every sequence in :py:attr:`self.sequences`.</span>
-
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="GlobalDescriptor.charge_density"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">[docs]</a>	<span class="k">def</span> <span class="nf">charge_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the charge density (charge / MW) of every sequence in :py:attr:`self.sequences`.</span>
-
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">()</span>
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.instability_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">[docs]</a>	<span class="k">def</span> <span class="nf">instability_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>	<span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the instability of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`. The pK scale used is</span>
+<span class="sd">		Bjellquist.</span>
+
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">())</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.instability_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">[docs]</a>	<span class="k">def</span> <span class="nf">instability_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">		The instability index is a prediction of protein stability based on the amino acid composition.</span>
 <span class="sd">		([1] K. Guruprasad, B. V Reddy, M. W. Pandit, Protein Eng. 1990, 4, 155–161.)</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">instability_index</span><span class="p">())</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.aromaticity"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">[docs]</a>	<span class="k">def</span> <span class="nf">aromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.aromaticity"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">[docs]</a>	<span class="k">def</span> <span class="nf">aromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the aromaticity of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">		According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">())</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.aliphatic_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">[docs]</a>	<span class="k">def</span> <span class="nf">aliphatic_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.aliphatic_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">[docs]</a>	<span class="k">def</span> <span class="nf">aliphatic_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the aliphatic index of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">		According to Ikai, 1980, the aliphatic index is a measure of thermal stability of proteins and is dependant</span>
 <span class="sd">		on the relative volume occupied by aliphatic amino acids (A,I,L &amp; V).</span>
 <span class="sd">		([1] A. Ikai, J. Biochem. 1980, 88, 1895–1898.)</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">D</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.9</span> <span class="o">*</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.9</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]))</span> <span class="c1"># formula for calculating the AI (Ikai, 1980)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+			<span class="n">d</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
+			<span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># get mole percent of all AA</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.9</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.9</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]))</span>  <span class="c1"># formula for calculating the AI (Ikai, 1980)</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.boman_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index">[docs]</a>	<span class="k">def</span> <span class="nf">boman_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.boman_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index">[docs]</a>	<span class="k">def</span> <span class="nf">boman_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the boman index of every sequence in :py:attr:`self.sequences`.</span>
+<span class="sd">		Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">		According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by</span>
 <span class="sd">		summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by</span>
 <span class="sd">		dividing by	sequence length.</span>
 <span class="sd">		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, FEBS Lett. 1989, 259, 103–106.</span>
 <span class="sd">		[2] A. Radzicka, R. Wolfenden, Biochemistry 1988, 27, 1664–1670.)</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;L&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">4.92</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">4.92</span><span class="p">,</span><span class="s1">&#39;V&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">4.04</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">2.98</span><span class="p">,</span><span class="s1">&#39;M&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">2.35</span><span class="p">,</span><span class="s1">&#39;W&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">2.33</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">1.81</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">1.28</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">0.94</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span><span class="mf">0.14</span><span class="p">,</span><span class="s1">&#39;T&#39;</span><span class="p">:</span><span class="mf">2.57</span><span class="p">,</span>
 			 <span class="s1">&#39;S&#39;</span><span class="p">:</span><span class="mf">3.40</span><span class="p">,</span><span class="s1">&#39;H&#39;</span><span class="p">:</span><span class="mf">4.66</span><span class="p">,</span><span class="s1">&#39;Q&#39;</span><span class="p">:</span><span class="mf">5.54</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">:</span><span class="mf">5.55</span><span class="p">,</span><span class="s1">&#39;N&#39;</span><span class="p">:</span><span class="mf">6.64</span><span class="p">,</span><span class="s1">&#39;E&#39;</span><span class="p">:</span><span class="mf">6.81</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">:</span><span class="mf">8.72</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">:</span><span class="mf">14.92</span><span class="p">}</span>
@@ -232,23 +268,105 @@
 			<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
 				<span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.hydrophobic_ratio"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">[docs]</a>	<span class="k">def</span> <span class="nf">hydrophobic_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.hydrophobic_ratio"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">[docs]</a>	<span class="k">def</span> <span class="nf">hydrophobic_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the hydrophobic ratio of every sequence in :py:attr:`self.sequences`, which is the relative</span>
+<span class="sd">		Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the relative</span>
 <span class="sd">		frequency of the amino acids [A,C,F,I,L,M &amp; V].</span>
 
-<span class="sd">		:return: array of descriptor values in :py:attr:`self.descriptor`</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
 			<span class="n">pa</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
 			<span class="c1"># formula for calculating the AI (Ikai, 1980):</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pa</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;M&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<span class="c1"># TODO: test for most new methods!</span>
+<div class="viewcode-block" id="GlobalDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.feature_scaling">[docs]</a>	<span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
+
+<span class="sd">		:param type: **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
+<span class="sd">		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or</span>
+<span class="sd">			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
+<span class="sd">		:return: scaled descriptor values in :py:attr`self.descriptor`</span>
+<span class="sd">		:Example:</span>
+
+<span class="sd">		&gt;&gt;&gt; D.descriptor</span>
+<span class="sd">		array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
+<span class="sd">		&gt;&gt;&gt; D.feature_scaling(type=&#39;minmax&#39;,fit=True)</span>
+<span class="sd">		array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+			<span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span><span class="s1">&#39;minmax&#39;</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+
+			<span class="k">if</span> <span class="n">fit</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s2">&quot;Unknown scaler type!</span><span class="se">\n</span><span class="s2">Available: &#39;standard&#39;, &#39;minmax&#39;&quot;</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.feature_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.feature_shuffle">[docs]</a>	<span class="k">def</span> <span class="nf">feature_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for shuffling features randomly.</span>
+
+<span class="sd">		:return: descriptor matrix with shuffled feature columns in the attribute :py:attr:`descriptor`</span>
+<span class="sd">		:Example:</span>
+
+<span class="sd">		&gt;&gt;&gt; D.descriptor</span>
+<span class="sd">		array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])</span>
+<span class="sd">		&gt;&gt;&gt; D.feature_shuffle()</span>
+<span class="sd">		array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
+<span class="sd">		class :class:`modlamp.descriptors.PeptideDescriptor`.</span>
+
+<span class="sd">		.. note::</span>
+<span class="sd">			The data file should **not** have any headers</span>
+
+<span class="sd">		:param filename: filenam of the data file to be loaded</span>
+<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param targets: {boolean} whether last column in the file contains a target class vector</span>
+<span class="sd">		:return: loaded sequences, descriptor values and targets in the corresponding attributes.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># skip sequences as they are &quot;nan&quot; when read as float</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">seqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">targets</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to save the descriptor values to a .csv/.txt file</span>
+
+<span class="sd">		:param filename: filename of the output file</span>
+<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)</span>
+<span class="sd">		:return: output file with peptide names and descriptor values</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
+			<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
+		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PeptideDescriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor">[docs]</a><span class="k">class</span> <span class="nc">PeptideDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -277,7 +395,7 @@
 <span class="sd">	- **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)</span>
 <span class="sd">	- **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)</span>
 
-<span class="sd">	Further, amino acid scale independent methods can be calculated with help of the :class:`modlamp.descriptors.GlobalDescriptor()` class.</span>
+<span class="sd">	Further, amino acid scale independent methods can be calculated with help of the :class:`GlobalDescriptor` class.</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
 
@@ -285,7 +403,7 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.</span>
 <span class="sd">		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values</span>
-<span class="sd">		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values</span>
+<span class="sd">		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; AMP = PeptideDescriptor(&#39;KLLKLLKKLLKLLK&#39;,&#39;pepcats&#39;)</span>
@@ -307,32 +425,31 @@
 			<span class="k">print</span> <span class="s2">&quot;&#39;inputfile&#39; does not exist, is not a valid list of sequences or is not a valid sequence string&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]])</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.read_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqs</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for loading sequences from a FASTA formatted file into self.sequences &amp; self.names. This method is</span>
-<span class="sd">		used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.</span>
+<div class="viewcode-block" id="PeptideDescriptor.read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.read_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and</span>
+<span class="sd">		:py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.</span>
 
-<span class="sd">		:param seqs: .fasta file with sequences and headers to read</span>
+<span class="sd">		:param filename: .fasta file with sequences and headers to read</span>
 <span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in self.names</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for saving sequences from :py:attr:`self.sequences` to a FASTA formatted file.</span>
+		<span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
 <span class="sd">		:param outputfile: filename of the output FASTA file</span>
-<span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in :py:attr:`self.names`</span>
+<span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">outputfile</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.calculate_autocorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_autocorr">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_autocorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for auto-correlating the amino acid values for a given descriptor scale</span>
+<div class="viewcode-block" id="PeptideDescriptor.calculate_autocorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_autocorr">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_autocorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for auto-correlating the amino acid values for a given descriptor scale</span>
 
 <span class="sd">		:param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: calculated descriptor numpy.array in self.descriptor</span>
 <span class="sd">		:Example:</span>
 
@@ -363,13 +480,16 @@
 					<span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
 
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seqdesc</span><span class="p">)</span>  <span class="c1"># store final descriptor values in &quot;descriptor&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.calculate_crosscorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_crosscorr">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_crosscorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for cross-correlating the amino acid values for a given descriptor scale</span>
+<div class="viewcode-block" id="PeptideDescriptor.calculate_crosscorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_crosscorr">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_crosscorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for cross-correlating the amino acid values for a given descriptor scale</span>
 
 <span class="sd">		:param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: calculated descriptor numpy.array in self.descriptor</span>
 <span class="sd">		:Example:</span>
 
@@ -404,15 +524,18 @@
 							<span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
 
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seqdesc</span><span class="p">)</span>  <span class="c1"># store final descriptor values in &quot;descriptor&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.calculate_moment"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_moment">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.</span>
+<div class="viewcode-block" id="PeptideDescriptor.calculate_moment"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_moment">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.</span>
 
 <span class="sd">		:param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal hydrophiobic moment for the chosen window size found in the sequence will be returned.</span>
 <span class="sd">		:param angle: {int} angle in which to calculate the moment. **100** for alpha helices, **180** for beta sheets.</span>
-<span class="sd">		:param modality: (max or mean) Calculate respectively maximum or mean hydrophobic moment.</span>
+<span class="sd">		:param modality: {&#39;max&#39; or &#39;mean&#39;} Calculate respectively maximum or mean hydrophobic moment.</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in self.all_moms (needed for calculate_profile method)</span>
 <span class="sd">		:Example:</span>
 
@@ -452,15 +575,18 @@
 				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">all_moms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moms</span><span class="p">)</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.calculate_global"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_global">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_global</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for calculating a global / window averaging descriptor value of a given AA scale</span>
+<div class="viewcode-block" id="PeptideDescriptor.calculate_global"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_global">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_global</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for calculating a global / window averaging descriptor value of a given AA scale</span>
 
 <span class="sd">		:param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken.</span>
-<span class="sd">		:param modality: (max or mean) Calculate respectively maximum or mean hydrophobic moment.</span>
+<span class="sd">		:param modality: {&#39;max&#39; or &#39;mean&#39;} Calculate respectively maximum or mean hydrophobic moment.</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in self.all_globs (needed for calculate_profile method)</span>
 <span class="sd">		:Example:</span>
 
@@ -492,17 +618,18 @@
 			<span class="k">except</span><span class="p">:</span>
 				<span class="k">print</span> <span class="s1">&#39;Modality parameter is wrong, please choose between &quot;max&quot; and &quot;mean&quot;</span><span class="se">\n</span><span class="s1">.&#39;</span>
 
+		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-
-		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PeptideDescriptor.calculate_profile"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_profile">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is &quot;eisenberg&quot;</span>
+<div class="viewcode-block" id="PeptideDescriptor.calculate_profile"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_profile">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is &quot;eisenberg&quot;</span>
 
 <span class="sd">		:param type: type of profile, available: &#39;H&#39; for hydrophobicity or &#39;uH&#39; for hydrophobic moment</span>
 <span class="sd">		:param window: {int} size of sliding window used (odd-numbered).</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor</span>
 <span class="sd">		:Example:</span>
 
@@ -530,14 +657,18 @@
 				<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_vals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_vals</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">])</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.count_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.count_aa">[docs]</a>	<span class="k">def</span> <span class="nf">count_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;relative&#39;</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for producing the amino acid distribution for the given sequences as a descriptor</span>
+<div class="viewcode-block" id="PeptideDescriptor.count_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.count_aa">[docs]</a>	<span class="k">def</span> <span class="nf">count_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;relative&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for producing the amino acid distribution for the given sequences as a descriptor</span>
 
-<span class="sd">		:scale: (&#39;absolute&#39; or &#39;relative&#39;) defines whether counts or frequencies are given for each AA</span>
-<span class="sd">		:return: self.descriptor containing the amino acid distributions for every sequence individually</span>
+<span class="sd">		:param scale: {&#39;absolute&#39; or &#39;relative&#39;} defines whether counts or frequencies are given for each AA</span>
+<span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
+<span class="sd">			attribute :py:attr:`descriptor`.</span>
+<span class="sd">		:return: the amino acid distributions for every sequence individually in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; AMP = PeptideDescriptor(&#39;ACDEFGHIKLMNPQRSTVWY&#39;,&#39;pepcats&#39;) # aa_count() does not depend on the descriptor scale</span>
@@ -556,32 +687,18 @@
 			<span class="n">od</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<span class="c1"># TODO: make modle &quot;load_descriptor&quot; to directly load saved values again</span>
+<div class="viewcode-block" id="PeptideDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.feature_scaling">[docs]</a>	<span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
 
-<div class="viewcode-block" id="PeptideDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to save the descriptor values to a .csv/.txt file</span>
-
-<span class="sd">		:param filename: filename of the output file</span>
-<span class="sd">		:param delimiter: column delimiter</span>
-<span class="sd">		:return: output file with peptide names and descriptor values</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S20&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
-		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div>
-
-<span class="c1"># TODO: add possibility to save target vector into descriptor directly</span>
-
-<div class="viewcode-block" id="PeptideDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.feature_scaling">[docs]</a>	<span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span><span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for feature scaling of the calculated descriptor matrix.</span>
-
-<span class="sd">		:param type: **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
-<span class="sd">		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or</span>
-<span class="sd">		 whether the already fitted scaler in self.scaler should be used to transform (False).</span>
-<span class="sd">		:return: scaled descriptor values in self.descriptor</span>
+<span class="sd">		:param type: {&#39;standard&#39; or &#39;minmax&#39;} type of scaling to be used</span>
+<span class="sd">		:param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or</span>
+<span class="sd">			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
+<span class="sd">		:return: scaled descriptor values in :py:attr:`descriptor`</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; D.descriptor</span>
@@ -603,10 +720,9 @@
 			<span class="k">print</span> <span class="s2">&quot;Unknown scaler type!</span><span class="se">\n</span><span class="s2">Available: &#39;standard&#39;, &#39;minmax&#39;&quot;</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.feature_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.feature_shuffle">[docs]</a>	<span class="k">def</span> <span class="nf">feature_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for shuffling features randomly.</span>
+		<span class="sd">&quot;&quot;&quot;Method for shuffling feature columns randomly.</span>
 
-<span class="sd">		:return: descriptor matrix with shuffled feature columns in self.descriptor</span>
+<span class="sd">		:return: descriptor matrix with shuffled feature columns in :py:attr:`descriptor`</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; D.descriptor</span>
@@ -619,10 +735,9 @@
 <span class="c1"># TODO move to core for both sequences and descriptors</span>
 
 <div class="viewcode-block" id="PeptideDescriptor.sequence_order_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.sequence_order_shuffle">[docs]</a>	<span class="k">def</span> <span class="nf">sequence_order_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method for shuffling sequence order in self.sequences.</span>
+		<span class="sd">&quot;&quot;&quot;Method for shuffling sequence order in self.sequences.</span>
 
-<span class="sd">		:return: sequences in self.sequences with shuffled order in the list.</span>
+<span class="sd">		:return: sequences in :py:attr`self.sequences` with shuffled order in the list.</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; D.sequences</span>
@@ -634,12 +749,47 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.</span>
-<span class="sd">		:return: Filtered sequence list in :py:attr:`self.sequences`</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.</span>
+<span class="sd">		:return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PeptideDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
+<span class="sd">		class :class:`modlamp.descriptors.PeptideDescriptor`.</span>
+
+<span class="sd">		.. note::</span>
+<span class="sd">			The data file should **not** have any headers</span>
+
+<span class="sd">		:param filename: filenam of the data file to be loaded</span>
+<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param targets: {boolean} whether last column in the file contains a target class vector</span>
+<span class="sd">		:return: loaded sequences, descriptor values and targets in the corresponding attributes.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># skip sequences as they are &quot;nan&quot; when read as float</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">seqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">targets</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to save the descriptor values to a .csv/.txt file</span>
+
+<span class="sd">		:param filename: filename of the output file</span>
+<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)</span>
+<span class="sd">		:return: output file with peptide names and descriptor values</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
+			<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
+		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
