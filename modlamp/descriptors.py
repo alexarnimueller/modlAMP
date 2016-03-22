@@ -513,19 +513,22 @@ class PeptideDescriptor(object):
 
 # TODO: make modle "load_descriptor" to directly load saved values again
 
-	def save_descriptor(self, filename, delimiter=','):
+	def save_descriptor(self, filename, delimiter=',', target=None):
 		"""
 		Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: filename of the output file
 		:param delimiter: column delimiter
+		:param target: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
 		:return: output file with peptide names and descriptor values
 		"""
-		names = np.array(self.sequences, dtype='|S20')[:, np.newaxis]
-		data = np.hstack((names, self.descriptor))
+		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		if len(target) == len(self.sequences):
+			target = np.array(target)[:, np.newaxis]
+			data = np.hstack((names, self.descriptor, target))
+		else:
+			data = np.hstack((names, self.descriptor))
 		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
-
-# TODO: add possibility to save target vector into descriptor directly
 
 	def feature_scaling(self,type='standard',fit=True):
 		"""
@@ -592,4 +595,3 @@ class PeptideDescriptor(object):
 		:return: Filtered sequence list in :py:attr:`self.sequences`
 		"""
 		filter_unnatural(self)
-
