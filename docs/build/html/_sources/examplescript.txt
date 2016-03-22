@@ -1,0 +1,1 @@
+.. include:: ../bin/example_modlamp.rst

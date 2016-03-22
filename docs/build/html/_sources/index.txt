@@ -12,8 +12,8 @@ Welcome to modlamp's documentation!
 
 This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural
 amino acids. It incorporates several modules, like descriptor calculation (module descriptors) or sequence generation
-(module sequences). For basic instructions how to use the package, check the `README <READMEinclude.html>`_ or the
-`example script <examplescriptinclude.html>`_.
+(module sequences). For basic instructions how to use the package, check the `README <readme.html>`_ or the
+`example script <examplescript.html>`_.
 
 The package has the following contents:
 
@@ -22,9 +22,9 @@ The package has the following contents:
    :maxdepth: 3
    :numbered:
 
-   READMEinclude
+   readme
    modlamp
-   TODOinclude
+   todo
 
 
 Indices and tables

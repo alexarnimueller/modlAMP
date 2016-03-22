@@ -5,4 +5,5 @@
 .DS_Store
 .ipynb_checkpoints
 dist/
+build/
 *.egg*
