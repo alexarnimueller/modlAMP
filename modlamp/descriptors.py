@@ -238,7 +238,7 @@ class PeptideDescriptor(object):
 		"""
 		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
-		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
+		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values
 		:Example:
 
 		>>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
@@ -261,6 +261,7 @@ class PeptideDescriptor(object):
 
 		self.scale = load_scale(scalename)
 		self.descriptor = np.array([[]])
+		self.target = np.array([], dtype='int')
 
 	def read_fasta(self, seqs):
 		"""
@@ -511,25 +512,6 @@ class PeptideDescriptor(object):
 
 		self.descriptor = np.asarray(desc)
 
-# TODO: make modle "load_descriptor" to directly load saved values again
-
-	def save_descriptor(self, filename, delimiter=',', target=None):
-		"""
-		Method to save the descriptor values to a .csv/.txt file
-
-		:param filename: filename of the output file
-		:param delimiter: column delimiter
-		:param target: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
-		:return: output file with peptide names and descriptor values
-		"""
-		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
-		if len(target) == len(self.sequences):
-			target = np.array(target)[:, np.newaxis]
-			data = np.hstack((names, self.descriptor, target))
-		else:
-			data = np.hstack((names, self.descriptor))
-		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
-
 	def feature_scaling(self,type='standard',fit=True):
 		"""
 		Method for feature scaling of the calculated descriptor matrix.
@@ -595,3 +577,43 @@ class PeptideDescriptor(object):
 		:return: Filtered sequence list in :py:attr:`self.sequences`
 		"""
 		filter_unnatural(self)
+
+# TODO: make modle "load_descriptor" to directly load saved values again
+
+	def load_descriptordata(self, filename, delimiter=",", targets=False):
+		""" Function to load any data file with sequences and descriptor values and save it to a new insatnce of the
+		class :class:`modlamp.descriptors.PeptideDescriptor`.
+
+		.. note::
+			The data file should *not* have any headers
+
+		:param filename: filenam of the data file to be loaded
+		:param delimiter: column delimiter
+		:param targets: (boolean) whether last column in the file contains a target class vector
+		:return: a :class:`modlamp.descriptors.PeptideDescriptor` class instance with the loaded data and sequences.
+		"""
+		data = np.genfromtxt(filename, delimiter=delimiter)
+		data = data[:, 1:]  # skip sequences as they are "nan" when read as float
+		seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
+		seqs = seqs[:, 0]
+		if targets:
+			self.target = np.array(data[:,-1], dtype='int')
+		self.sequences = seqs
+		self.descriptor = data
+
+	def save_descriptor(self, filename, delimiter=',', targets=None):
+		"""
+		Method to save the descriptor values to a .csv/.txt file
+
+		:param filename: filename of the output file
+		:param delimiter: column delimiter
+		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:return: output file with peptide names and descriptor values
+		"""
+		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		if len(targets) == len(self.sequences):
+			target = np.array(targets)[:, np.newaxis]
+			data = np.hstack((names, self.descriptor, target))
+		else:
+			data = np.hstack((names, self.descriptor))
+		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
