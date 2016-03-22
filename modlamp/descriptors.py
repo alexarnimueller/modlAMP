@@ -58,23 +58,46 @@ class GlobalDescriptor(object):
 		self.sequences = D.sequences
 		self.names = D.names
 		self.descriptor = D.descriptor
+		self.target = D.target
 
-	def isoelectric_point(self):
+	def length(self, append=False):
 		"""
-		Method to calculate the isoelectric point of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the length (total AA count) of every sequence in the attribute :py:attr:`sequences`.
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
-			desc.append(ProteinAnalysis(seq).isoelectric_point())
-		self.descriptor = np.asarray(desc)
+			desc.append(ProteinAnalysis(seq).length)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def calculate_charge(self):
+	def calculate_MW(self, append=False):
 		"""
-		Method to calculate the overall charge of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		"""
+		desc = []
+		for seq in self.sequences:
+			desc.append(ProteinAnalysis(seq).molecular_weight())
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
+
+	def calculate_charge(self, append=False):
+		"""
+		Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
+
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 
 		The following dictionary shows the used side chain charges at neutral pH::
 
@@ -88,92 +111,112 @@ class GlobalDescriptor(object):
 			for a in seq:
 				charge += AACharge.get(a,0)
 			desc.append(charge)
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def calculate_MW(self):
-		"""
-		Method to calculate the molecular weight [g/mol] of every sequence in :py:attr:`self.sequences`.
+	def charge_density(self, append=False):
+		"""Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
-		"""
-		desc = []
-		for seq in self.sequences:
-			desc.append(ProteinAnalysis(seq).molecular_weight())
-		self.descriptor = np.asarray(desc)
-
-	def length(self):
-		"""
-		Method to calculate the length (total AA count) of every sequence in :py:attr:`self.sequences`.
-
-		:return: array of descriptor values in :py:attr:`self.descriptor`
-		"""
-		desc = []
-		for seq in self.sequences:
-			desc.append(ProteinAnalysis(seq).length)
-		self.descriptor = np.asarray(desc)
-
-	def charge_density(self):
-		"""
-		Method to calculate the charge density (charge / MW) of every sequence in :py:attr:`self.sequences`.
-
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		self.calculate_charge()
-		for i,seq in enumerate(self.sequences):
+		for i, seq in enumerate(self.sequences):
 			desc.append(self.descriptor[i] / ProteinAnalysis(seq).molecular_weight())
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def instability_index(self):
+	def isoelectric_point(self, append=False):
 		"""
-		Method to calculate the instability of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`. The pK scale used is
+		Bjellquist.
+
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		"""
+		desc = []
+		for seq in self.sequences:
+			desc.append(ProteinAnalysis(seq).isoelectric_point())
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
+
+	def instability_index(self, append=False):
+		"""
+		Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.
 		The instability index is a prediction of protein stability based on the amino acid composition.
 		([1] K. Guruprasad, B. V Reddy, M. W. Pandit, Protein Eng. 1990, 4, 155–161.)
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).instability_index())
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def aromaticity(self):
+	def aromaticity(self, append=False):
 		"""
-		Method to calculate the aromaticity of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.
 		According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
 			desc.append(ProteinAnalysis(seq).aromaticity())
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def aliphatic_index(self):
+	def aliphatic_index(self, append=False):
 		"""
-		Method to calculate the aliphatic index of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.
 		According to Ikai, 1980, the aliphatic index is a measure of thermal stability of proteins and is dependant
 		on the relative volume occupied by aliphatic amino acids (A,I,L & V).
 		([1] A. Ikai, J. Biochem. 1980, 88, 1895–1898.)
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
-			D = ProteinAnalysis(seq).count_amino_acids()
-			desc.append(D['A'] + 2.9 * D['V'] + 3.9 * (D['I'] + D['L'])) # formula for calculating the AI (Ikai, 1980)
-		self.descriptor = np.asarray(desc)
+			d = ProteinAnalysis(seq).count_amino_acids()
+			d = {k:(float(d[k]) / len(seq)) * 100 for k in d.keys()}  # get mole percent of all AA
+			desc.append(d['A'] + 2.9 * d['V'] + 3.9 * (d['I'] + d['L']))  # formula for calculating the AI (Ikai, 1980)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def boman_index(self):
+	def boman_index(self, append=False):
 		"""
-		Method to calculate the boman index of every sequence in :py:attr:`self.sequences`.
+		Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
 		According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
 		summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
 		dividing by	sequence length.
 		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, FEBS Lett. 1989, 259, 103–106.
 		[2] A. Radzicka, R. Wolfenden, Biochemistry 1988, 27, 1664–1670.)
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		D = {'L':-4.92,'I':-4.92,'V':-4.04,'F':-2.98,'M':-2.35,'W':-2.33,'A':-1.81,'C':-1.28,'G':-0.94,'Y':0.14,'T':2.57,
 			 'S':3.40,'H':4.66,'Q':5.54,'K':5.55,'N':6.64,'E':6.81,'D':8.72,'R':14.92}
@@ -183,23 +226,107 @@ class GlobalDescriptor(object):
 			for a in seq:
 				val.append(D[a])
 			desc.append(sum(val)/len(val))
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def hydrophobic_ratio(self):
+	def hydrophobic_ratio(self, append=False):
 		"""
-		Method to calculate the hydrophobic ratio of every sequence in :py:attr:`self.sequences`, which is the relative
+		Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the relative
 		frequency of the amino acids [A,C,F,I,L,M & V].
 
-		:return: array of descriptor values in :py:attr:`self.descriptor`
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
 			pa = ProteinAnalysis(seq).count_amino_acids()
 			# formula for calculating the AI (Ikai, 1980):
 			desc.append((pa['A'] + pa['C'] + pa['F'] + pa['I'] + pa['L'] + pa['M'] + pa['V']) / float(len(seq)))
-		self.descriptor = np.asarray(desc)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-# TODO: test for most new methods!
+	def feature_scaling(self, type='standard', fit=True):
+		"""Method for feature scaling of the calculated descriptor matrix.
+
+		:param type: **'standard'** or **'minmax'**, type of scaling to be used
+		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or
+			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
+		:return: scaled descriptor values in :py:attr`self.descriptor`
+		:Example:
+
+		>>> D.descriptor
+		array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
+		>>> D.feature_scaling(type='minmax',fit=True)
+		array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
+		"""
+		try:
+			if type == 'standard':
+				self.scaler = StandardScaler()
+			elif type =='minmax':
+				self.scaler = MinMaxScaler()
+
+			if fit == True:
+				self.descriptor = self.scaler.fit_transform(self.descriptor)
+			else:
+				self.descriptor = self.scaler.transform(self.descriptor)
+		except:
+			print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
+
+	def feature_shuffle(self):
+		"""Method for shuffling features randomly.
+
+		:return: descriptor matrix with shuffled feature columns in the attribute :py:attr:`descriptor`
+		:Example:
+
+		>>> D.descriptor
+		array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])
+		>>> D.feature_shuffle()
+		array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
+		"""
+		self.descriptor = shuffle(self.descriptor.transpose()).transpose()
+
+	def load_descriptordata(self, filename, delimiter=",", targets=False):
+		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
+		class :class:`modlamp.descriptors.PeptideDescriptor`.
+
+		.. note::
+			The data file should **not** have any headers
+
+		:param filename: filenam of the data file to be loaded
+		:param delimiter: column delimiter
+		:param targets: {boolean} whether last column in the file contains a target class vector
+		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
+		"""
+		data = np.genfromtxt(filename, delimiter=delimiter)
+		data = data[:, 1:]  # skip sequences as they are "nan" when read as float
+		seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
+		seqs = seqs[:, 0]
+		if targets:
+			self.target = np.array(data[:, -1], dtype='int')
+		self.sequences = seqs
+		self.descriptor = data
+
+	def save_descriptor(self, filename, delimiter=',', targets=None):
+		"""Method to save the descriptor values to a .csv/.txt file
+
+		:param filename: filename of the output file
+		:param delimiter: column delimiter
+		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:return: output file with peptide names and descriptor values
+		"""
+		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		if len(targets) == len(self.sequences):
+			target = np.array(targets)[:, np.newaxis]
+			data = np.hstack((names, self.descriptor, target))
+		else:
+			data = np.hstack((names, self.descriptor))
+		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
 
 
 class PeptideDescriptor(object):
@@ -228,7 +355,7 @@ class PeptideDescriptor(object):
 	- **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
 	- **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
-	Further, amino acid scale independent methods can be calculated with help of the :class:`modlamp.descriptors.GlobalDescriptor()` class.
+	Further, amino acid scale independent methods can be calculated with help of the :class:`GlobalDescriptor` class.
 
 	"""
 
@@ -236,7 +363,7 @@ class PeptideDescriptor(object):
 		"""
 		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
-		:return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
+		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values
 		:Example:
 
 		>>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
@@ -259,31 +386,30 @@ class PeptideDescriptor(object):
 
 		self.scale = load_scale(scalename)
 		self.descriptor = np.array([[]])
+		self.target = np.array([], dtype='int')
 
-	def read_fasta(self, seqs):
-		"""
-		Method for loading sequences from a FASTA formatted file into self.sequences & self.names. This method is
-		used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
+	def read_fasta(self, filename):
+		"""Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
+		:py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
 
-		:param seqs: .fasta file with sequences and headers to read
+		:param filename: .fasta file with sequences and headers to read
 		:return: list of sequences in self.sequences with corresponding sequence names in self.names
 		"""
-		self.sequences, self.names = read_fasta(seqs)
+		self.sequences, self.names = read_fasta(filename)
 
 	def save_fasta(self, outputfile):
-		"""
-		Method for saving sequences from :py:attr:`self.sequences` to a FASTA formatted file.
+		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
 		:param outputfile: filename of the output FASTA file
-		:return: list of sequences in self.sequences with corresponding sequence names in :py:attr:`self.names`
+		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
 		"""
 		save_fasta(self,outputfile)
 
-	def calculate_autocorr(self, window):
-		"""
-		Method for auto-correlating the amino acid values for a given descriptor scale
+	def calculate_autocorr(self, window, append=False):
+		"""Method for auto-correlating the amino acid values for a given descriptor scale
 
 		:param window: correlation window for descriptor calculation in a sliding window approach
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: calculated descriptor numpy.array in self.descriptor
 		:Example:
 
@@ -314,13 +440,16 @@ class PeptideDescriptor(object):
 					seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
 
 			desc.append(seqdesc)  # store final descriptor values in "descriptor"
-		self.descriptor = np.array(desc)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def calculate_crosscorr(self, window):
-		"""
-		Method for cross-correlating the amino acid values for a given descriptor scale
+	def calculate_crosscorr(self, window, append=False):
+		"""Method for cross-correlating the amino acid values for a given descriptor scale
 
 		:param window: correlation window for descriptor calculation in a sliding window approach
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: calculated descriptor numpy.array in self.descriptor
 		:Example:
 
@@ -355,15 +484,18 @@ class PeptideDescriptor(object):
 							seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
 
 			desc.append(seqdesc)  # store final descriptor values in "descriptor"
-		self.descriptor = np.asarray(desc)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def calculate_moment(self, window=1000, angle=100, modality='max'):
-		"""
-		Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.
+	def calculate_moment(self, window=1000, angle=100, modality='max', append=False):
+		"""Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.
 
 		:param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal hydrophiobic moment for the chosen window size found in the sequence will be returned.
 		:param angle: {int} angle in which to calculate the moment. **100** for alpha helices, **180** for beta sheets.
-		:param modality: (max or mean) Calculate respectively maximum or mean hydrophobic moment.
+		:param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in self.all_moms (needed for calculate_profile method)
 		:Example:
 
@@ -403,15 +535,18 @@ class PeptideDescriptor(object):
 				sys.exit()
 			desc.append(moment)
 			self.all_moms.append(moms)
-		desc = np.asarray(desc)
-		self.descriptor = desc.reshape(len(desc), 1)
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def calculate_global(self, window=1000, modality='max'):
-		"""
-		Method for calculating a global / window averaging descriptor value of a given AA scale
+	def calculate_global(self, window=1000, modality='max', append=False):
+		"""Method for calculating a global / window averaging descriptor value of a given AA scale
 
 		:param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken.
-		:param modality: (max or mean) Calculate respectively maximum or mean hydrophobic moment.
+		:param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in self.all_globs (needed for calculate_profile method)
 		:Example:
 
@@ -443,17 +578,18 @@ class PeptideDescriptor(object):
 			except:
 				print 'Modality parameter is wrong, please choose between "max" and "mean"\n.'
 
+		desc = np.asarray(desc).reshape(len(desc), 1)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-
-		desc = np.asarray(desc)
-		self.descriptor = desc.reshape(len(desc), 1)
-
-	def calculate_profile(self, type='uH', window=7):
-		"""
-		Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is "eisenberg"
+	def calculate_profile(self, type='uH', window=7, append=False):
+		"""Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is "eisenberg"
 
 		:param type: type of profile, available: 'H' for hydrophobicity or 'uH' for hydrophobic moment
 		:param window: {int} size of sliding window used (odd-numbered).
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor
 		:Example:
 
@@ -481,14 +617,18 @@ class PeptideDescriptor(object):
 				slope, intercept, r_value, p_value, std_err = stats.linregress(self.x_vals, self.y_vals[n])
 			desc.append([slope, intercept])
 
-		self.descriptor = np.asarray(desc)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-	def count_aa(self, scale='relative'):
-		"""
-		Method for producing the amino acid distribution for the given sequences as a descriptor
+	def count_aa(self, scale='relative', append=False):
+		"""Method for producing the amino acid distribution for the given sequences as a descriptor
 
-		:scale: ('absolute' or 'relative') defines whether counts or frequencies are given for each AA
-		:return: self.descriptor containing the amino acid distributions for every sequence individually
+		:param scale: {'absolute' or 'relative'} defines whether counts or frequencies are given for each AA
+		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+			attribute :py:attr:`descriptor`.
+		:return: the amino acid distributions for every sequence individually in the attribute :py:attr:`descriptor`
 		:Example:
 
 		>>> AMP = PeptideDescriptor('ACDEFGHIKLMNPQRSTVWY','pepcats') # aa_count() does not depend on the descriptor scale
@@ -507,32 +647,18 @@ class PeptideDescriptor(object):
 			od = collections.OrderedDict(sorted(d.items()))
 			desc.append(od.values())
 
-		self.descriptor = np.asarray(desc)
+		if append:
+			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+		else:
+			self.descriptor = np.array(desc)
 
-# TODO: make modle "load_descriptor" to directly load saved values again
+	def feature_scaling(self, type='standard', fit=True):
+		"""Method for feature scaling of the calculated descriptor matrix.
 
-	def save_descriptor(self, filename, delimiter=','):
-		"""
-		Method to save the descriptor values to a .csv/.txt file
-
-		:param filename: filename of the output file
-		:param delimiter: column delimiter
-		:return: output file with peptide names and descriptor values
-		"""
-		names = np.array(self.sequences, dtype='|S20')[:, np.newaxis]
-		data = np.hstack((names, self.descriptor))
-		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
-
-# TODO: add possibility to save target vector into descriptor directly
-
-	def feature_scaling(self,type='standard',fit=True):
-		"""
-		Method for feature scaling of the calculated descriptor matrix.
-
-		:param type: **'standard'** or **'minmax'**, type of scaling to be used
-		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or
-		 whether the already fitted scaler in self.scaler should be used to transform (False).
-		:return: scaled descriptor values in self.descriptor
+		:param type: {'standard' or 'minmax'} type of scaling to be used
+		:param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or
+			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
+		:return: scaled descriptor values in :py:attr:`descriptor`
 		:Example:
 
 		>>> D.descriptor
@@ -554,10 +680,9 @@ class PeptideDescriptor(object):
 			print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
 
 	def feature_shuffle(self):
-		"""
-		Method for shuffling features randomly.
+		"""Method for shuffling feature columns randomly.
 
-		:return: descriptor matrix with shuffled feature columns in self.descriptor
+		:return: descriptor matrix with shuffled feature columns in :py:attr:`descriptor`
 		:Example:
 
 		>>> D.descriptor
@@ -570,10 +695,9 @@ class PeptideDescriptor(object):
 # TODO move to core for both sequences and descriptors
 
 	def sequence_order_shuffle(self):
-		"""
-		Method for shuffling sequence order in self.sequences.
+		"""Method for shuffling sequence order in self.sequences.
 
-		:return: sequences in self.sequences with shuffled order in the list.
+		:return: sequences in :py:attr`self.sequences` with shuffled order in the list.
 		:Example:
 
 		>>> D.sequences
@@ -585,9 +709,44 @@ class PeptideDescriptor(object):
 		self.sequences = shuffle(self.sequences)
 
 	def filter_unnatrual(self):
-		"""
-		Method to filter out sequences with unnatural amino acids from :py:attr:`self.sequences` as well as duplicates.
-		:return: Filtered sequence list in :py:attr:`self.sequences`
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 		"""
 		filter_unnatural(self)
 
+	def load_descriptordata(self, filename, delimiter=",", targets=False):
+		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
+		class :class:`modlamp.descriptors.PeptideDescriptor`.
+
+		.. note::
+			The data file should **not** have any headers
+
+		:param filename: filenam of the data file to be loaded
+		:param delimiter: column delimiter
+		:param targets: {boolean} whether last column in the file contains a target class vector
+		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
+		"""
+		data = np.genfromtxt(filename, delimiter=delimiter)
+		data = data[:, 1:]  # skip sequences as they are "nan" when read as float
+		seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
+		seqs = seqs[:, 0]
+		if targets:
+			self.target = np.array(data[:, -1], dtype='int')
+		self.sequences = seqs
+		self.descriptor = data
+
+	def save_descriptor(self, filename, delimiter=',', targets=None):
+		"""Method to save the descriptor values to a .csv/.txt file
+
+		:param filename: filename of the output file
+		:param delimiter: column delimiter
+		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:return: output file with peptide names and descriptor values
+		"""
+		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		if len(targets) == len(self.sequences):
+			target = np.array(targets)[:, np.newaxis]
+			data = np.hstack((names, self.descriptor, target))
+		else:
+			data = np.hstack((names, self.descriptor))
+		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')

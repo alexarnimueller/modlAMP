@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 
 # Sort members by type
-autodoc_member_order = 'groupwise'
+autodoc_member_order = 'bysource'
 
 # include __init__ scripts in apidoc
 def skip(app, what, name, obj, skip, options):

@@ -305,7 +305,7 @@ def template(self, lenmin, lenmax, seqnum):
 
 def clean(self):
 	"""
-	Method to clean the attributes :py:attr:`self.sequences`, :py:attr:`names` and :py:attr:`descriptor`.
+	Method to clean the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
 
 	:return: freshly initialized, empty class attributes.
 	"""
@@ -319,9 +319,9 @@ def filter_similarity(self, threshold=0.8):
 	Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
 	attribute :py:attr:`sequences`. The list of sequences is first shuffled and all duplicates are removed. Then, the
 	function iterates through the list only keeps sequences that have a lower similarity to the other list members than
-	the given threshold.
+	the given threshold. Similarity is defined as same amino acids in a given order.
 
-	:param threshold: similarity threshold over which one of similar members of :py:attr:`self.sequences` gets kicked out
+	:param threshold: similarity threshold over which one of similar members of :py:attr:`sequences` gets kicked out
 	:return: filtered list of sequences
 	"""
 	self.sequences = [x for x in set(self.sequences)]  # remove duplicates
@@ -332,7 +332,7 @@ def filter_similarity(self, threshold=0.8):
 	for s in self.sequences:
 		for l in self.sequences:
 			seq = difflib.SequenceMatcher(None, s, l)
-			if seq.ratio() < threshold:  # and seq.ratio() != 1.: #if higher than threshold but not self
+			if seq.ratio() < threshold and seq.ratio() != 1.:  # if higher than threshold but not itself
 				lst.append(s)
 
 	self.sequences = [x for x in set(lst)]  # return unique list of filtered sequences
