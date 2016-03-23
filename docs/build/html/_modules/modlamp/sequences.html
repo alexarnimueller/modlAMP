@@ -71,7 +71,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_similarity</span>
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_similarity</span><span class="p">,</span> <span class="n">filter_aa</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
 
@@ -214,8 +214,18 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Centrosymmetric.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="Helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices">[docs]</a><span class="k">class</span> <span class="nc">Helices</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;Base class for peptide sequences probable to form helices.</span>
@@ -309,7 +319,19 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Helices.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+
 
 <div class="viewcode-block" id="Kinked"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked">[docs]</a><span class="k">class</span> <span class="nc">Kinked</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -412,7 +434,18 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Kinked.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="MixedLibrary"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary">[docs]</a><span class="k">class</span> <span class="nc">MixedLibrary</span><span class="p">:</span>
@@ -521,7 +554,18 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MixedLibrary.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Oblique"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique">[docs]</a><span class="k">class</span> <span class="nc">Oblique</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -619,7 +663,18 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Oblique.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Random"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random">[docs]</a><span class="k">class</span> <span class="nc">Random</span><span class="p">:</span>
@@ -631,33 +686,34 @@
 <span class="sd">	- **rand**: equal probabilities for all amino acids</span>
 <span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016, containing 2674 sequences.</span>
 <span class="sd">	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)</span>
+<span class="sd">	- **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)</span>
 
 <span class="sd">	The probability values for all natural AA can be found in the following table:</span>
 
-<span class="sd">	===	====	======	=========</span>
-<span class="sd">	AA	rand	AMP		AMPnoCM</span>
-<span class="sd">	===	====	======	=========</span>
-<span class="sd">	A	0.05	0.0766	0.0812275</span>
-<span class="sd">	C	0.05	0.071	0.0</span>
-<span class="sd">	D	0.05	0.026	0.0306275</span>
-<span class="sd">	E	0.05	0.0264	0.0310275</span>
-<span class="sd">	F	0.05	0.0405	0.0451275</span>
-<span class="sd">	G	0.05	0.1172	0.1218275</span>
-<span class="sd">	H	0.05	0.021	0.0256275</span>
-<span class="sd">	I	0.05	0.061	0.0656275</span>
-<span class="sd">	K	0.05	0.0958	0.1004275</span>
-<span class="sd">	L	0.05	0.0838	0.0884275</span>
-<span class="sd">	M	0.05	0.0123	0.0</span>
-<span class="sd">	N	0.05	0.0386	0.0432275</span>
-<span class="sd">	P	0.05	0.0463	0.0509275</span>
-<span class="sd">	Q	0.05	0.0251	0.0297275</span>
-<span class="sd">	R	0.05	0.0545	0.0591275</span>
-<span class="sd">	S	0.05	0.0613	0.0659275</span>
-<span class="sd">	T	0.05	0.0455	0.0501275</span>
-<span class="sd">	V	0.05	0.0572	0.0618275</span>
-<span class="sd">	W	0.05	0.0155	0.0201275</span>
-<span class="sd">	Y	0.05	0.0244	0.0290275</span>
-<span class="sd">	===	====	======	=========</span>
+<span class="sd">	===	====	======	=========	==========</span>
+<span class="sd">	AA	rand	AMP	AMPnoCM		randnoCM</span>
+<span class="sd">	===	====	======	=========	==========</span>
+<span class="sd">	A	0.05	0.0766	0.0812275	0.05555555</span>
+<span class="sd">	C	0.05	0.071	0.0		0.0</span>
+<span class="sd">	D	0.05	0.026	0.0306275	0.05555555</span>
+<span class="sd">	E	0.05	0.0264	0.0310275	0.05555555</span>
+<span class="sd">	F	0.05	0.0405	0.0451275	0.05555555</span>
+<span class="sd">	G	0.05	0.1172	0.1218275	0.05555555</span>
+<span class="sd">	H	0.05	0.021	0.0256275	0.05555555</span>
+<span class="sd">	I	0.05	0.061	0.0656275	0.05555555</span>
+<span class="sd">	K	0.05	0.0958	0.1004275	0.05555555</span>
+<span class="sd">	L	0.05	0.0838	0.0884275	0.05555555</span>
+<span class="sd">	M	0.05	0.0123	0.0		0.0</span>
+<span class="sd">	N	0.05	0.0386	0.0432275	0.05555555</span>
+<span class="sd">	P	0.05	0.0463	0.0509275	0.05555555</span>
+<span class="sd">	Q	0.05	0.0251	0.0297275	0.05555555</span>
+<span class="sd">	R	0.05	0.0545	0.0591275	0.05555555</span>
+<span class="sd">	S	0.05	0.0613	0.0659275	0.05555555</span>
+<span class="sd">	T	0.05	0.0455	0.0501275	0.05555555</span>
+<span class="sd">	V	0.05	0.0572	0.0618275	0.05555555</span>
+<span class="sd">	W	0.05	0.0155	0.0201275	0.05555555</span>
+<span class="sd">	Y	0.05	0.0244	0.0290275	0.05555555</span>
+<span class="sd">	===	====	======	=========	==========</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
 
@@ -671,10 +727,10 @@
 		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to actually generate the sequences.</span>
 
-<span class="sd">		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand</span>
+<span class="sd">		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM</span>
 <span class="sd">		:return: A list of random AMP sequences with defined AA probabilities</span>
 <span class="sd">		:Example:</span>
 
@@ -684,11 +740,13 @@
 <span class="sd">		[&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span> <span class="c1"># default probability = rand</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span>  <span class="c1"># default probability = rand</span>
 		<span class="k">if</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMPnoCM&#39;</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span>
 		<span class="k">elif</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMP&#39;</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span>
+		<span class="k">elif</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;randnoCM&#39;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span>
 
 		<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
@@ -749,7 +807,18 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_similarity()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div></div>
+		<span class="n">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Random.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">		**Dublicates** sequences are removed as well.</span>
+
+<span class="sd">		:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">		:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

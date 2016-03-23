@@ -64,8 +64,6 @@
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
-<span class="c1"># random.seed(8)</span>
-
 
 <div class="viewcode-block" id="load_scale"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.load_scale">[docs]</a><span class="k">def</span> <span class="nf">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -224,11 +222,11 @@
 
 <div class="viewcode-block" id="read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.read_fasta">[docs]</a><span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Method for loading sequences from a FASTA formatted file into self.sequences &amp; self.names. This method is</span>
+<span class="sd">	Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` &amp; :py:attr:`names`. This method is</span>
 <span class="sd">	used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.</span>
 
 <span class="sd">	:param inputfile: .fasta file with sequences and headers to read</span>
-<span class="sd">	:return: list of sequences in self.sequences with corresponding sequence names in self.names</span>
+<span class="sd">	:return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in :py:attr:`names`.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">fasta</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span>
 	<span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list for storing names</span>
@@ -245,7 +243,7 @@
 
 <div class="viewcode-block" id="save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.save_fasta">[docs]</a><span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
+<span class="sd">	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
 
 <span class="sd">	:param filename: output filename (ending .fasta)</span>
 <span class="sd">	:return: a FASTA formatted file containing the generated sequences</span>
@@ -263,7 +261,7 @@
 
 <span class="sd">	:param nr: number of mutations to perform per sequence</span>
 <span class="sd">	:param prob: probability of mutating a sequence</span>
-<span class="sd">	:return: In *self.sequences*: mutated sequences</span>
+<span class="sd">	:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">	:Example:</span>
 
 <span class="sd">	&gt;&gt;&gt; H.sequences</span>
@@ -274,7 +272,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
 		<span class="n">mutate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span>
-								  <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span><span class="p">])</span>  <span class="c1"># mutate: yes or no? probability = given mutation probability</span>
+								  <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span><span class="p">])</span>  <span class="c1"># mutate: yes or no? probability = mutation probability</span>
 		<span class="k">if</span> <span class="n">mutate</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 			<span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
 			<span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -293,30 +291,30 @@
 <span class="sd">	The following amino acid probabilities are used by modlAMP: (extracted from the</span>
 <span class="sd">	`APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016)</span>
 
-<span class="sd">	===	====	======	=========</span>
-<span class="sd">	AA	rand	AMP		AMPnoCM</span>
-<span class="sd">	===	====	======	=========</span>
-<span class="sd">	A	0.05	0.0766	0.0812275</span>
-<span class="sd">	C	0.05	0.071	0.0</span>
-<span class="sd">	D	0.05	0.026	0.0306275</span>
-<span class="sd">	E	0.05	0.0264	0.0310275</span>
-<span class="sd">	F	0.05	0.0405	0.0451275</span>
-<span class="sd">	G	0.05	0.1172	0.1218275</span>
-<span class="sd">	H	0.05	0.021	0.0256275</span>
-<span class="sd">	I	0.05	0.061	0.0656275</span>
-<span class="sd">	K	0.05	0.0958	0.1004275</span>
-<span class="sd">	L	0.05	0.0838	0.0884275</span>
-<span class="sd">	M	0.05	0.0123	0.0</span>
-<span class="sd">	N	0.05	0.0386	0.0432275</span>
-<span class="sd">	P	0.05	0.0463	0.0509275</span>
-<span class="sd">	Q	0.05	0.0251	0.0297275</span>
-<span class="sd">	R	0.05	0.0545	0.0591275</span>
-<span class="sd">	S	0.05	0.0613	0.0659275</span>
-<span class="sd">	T	0.05	0.0455	0.0501275</span>
-<span class="sd">	V	0.05	0.0572	0.0618275</span>
-<span class="sd">	W	0.05	0.0155	0.0201275</span>
-<span class="sd">	Y	0.05	0.0244	0.0290275</span>
-<span class="sd">	===	====	======	=========</span>
+<span class="sd">	===	====	======	=========	==========</span>
+<span class="sd">	AA	rand	AMP	AMPnoCM		randnoCM</span>
+<span class="sd">	===	====	======	=========	==========</span>
+<span class="sd">	A	0.05	0.0766	0.0812275	0.05555555</span>
+<span class="sd">	C	0.05	0.071	0.0		0.0</span>
+<span class="sd">	D	0.05	0.026	0.0306275	0.05555555</span>
+<span class="sd">	E	0.05	0.0264	0.0310275	0.05555555</span>
+<span class="sd">	F	0.05	0.0405	0.0451275	0.05555555</span>
+<span class="sd">	G	0.05	0.1172	0.1218275	0.05555555</span>
+<span class="sd">	H	0.05	0.021	0.0256275	0.05555555</span>
+<span class="sd">	I	0.05	0.061	0.0656275	0.05555555</span>
+<span class="sd">	K	0.05	0.0958	0.1004275	0.05555555</span>
+<span class="sd">	L	0.05	0.0838	0.0884275	0.05555555</span>
+<span class="sd">	M	0.05	0.0123	0.0		0.0</span>
+<span class="sd">	N	0.05	0.0386	0.0432275	0.05555555</span>
+<span class="sd">	P	0.05	0.0463	0.0509275	0.05555555</span>
+<span class="sd">	Q	0.05	0.0251	0.0297275	0.05555555</span>
+<span class="sd">	R	0.05	0.0545	0.0591275	0.05555555</span>
+<span class="sd">	S	0.05	0.0613	0.0659275	0.05555555</span>
+<span class="sd">	T	0.05	0.0455	0.0501275	0.05555555</span>
+<span class="sd">	V	0.05	0.0572	0.0618275	0.05555555</span>
+<span class="sd">	W	0.05	0.0155	0.0201275	0.05555555</span>
+<span class="sd">	Y	0.05	0.0244	0.0290275	0.05555555</span>
+<span class="sd">	===	====	======	=========	==========</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
@@ -337,7 +335,13 @@
 						 <span class="mf">0.02012777777777778</span><span class="p">,</span> <span class="mf">0.02902777777777778</span><span class="p">]</span>
 	<span class="c1"># equal AA probabilities:</span>
 	<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span>
-					  <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span></div>
+					  <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
+	<span class="c1"># equal AA probabilities but 0 for Cys and Met:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
+						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
+						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
+						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
+						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="template"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.template">[docs]</a><span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
@@ -394,7 +398,7 @@
 <span class="sd">	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic</span>
 <span class="sd">	amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.</span>
 
-<span class="sd">	:return: Filtered list.</span>
+<span class="sd">	:return: Filtered sequence list in the attribute :py:attr:`sequences`.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">seq_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)]</span>  <span class="c1"># remove duplicates</span>
 	<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">]))</span>
@@ -406,6 +410,75 @@
 			<span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
 	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">lst</span></div>
+
+
+<div class="viewcode-block" id="filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa">[docs]</a><span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+	<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+
+<span class="sd">	:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">	:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>
+	<span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+			<span class="n">seqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span></div>
+
+
+<div class="viewcode-block" id="filter_aa_more"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa_more">[docs]</a><span class="k">def</span> <span class="nf">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+	<span class="sd">&quot;&quot;&quot;Method to filter out corresponding names and descriptor values of sequences with given amino acids in the</span>
+<span class="sd">	argument list *aminoacids*.</span>
+
+<span class="sd">	:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">	:return: filtered list of sequences, descriptor values and names in the corresponding attributes.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>
+	<span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+			<span class="n">seqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="filter_values"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_values">[docs]</a><span class="k">def</span> <span class="nf">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="s1">&#39;==&#39;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same</span>
+<span class="sd">	size as the number of features in the descriptor matrix!) The operator option tells the method whether to</span>
+<span class="sd">	filter for values equal, lower, higher ect. to the given values in the **values** array.</span>
+
+<span class="sd">	:param values: List/array of values to filter</span>
+<span class="sd">	:param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
+<span class="sd">	:return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>  <span class="c1"># for all the features in self.descriptor</span>
+		<span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;==&#39;</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">==</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="c1"># filter descriptor matrix, sequence list and names list according to obtained indices</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 </pre></div>
 
           </div>

@@ -22,7 +22,7 @@ Class								Characteristics
 import os
 import random
 import numpy as np
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_similarity
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_similarity, filter_aa
 from itertools import cycle
 from sklearn.utils import shuffle
 
@@ -167,6 +167,16 @@ class Centrosymmetric:
 		"""
 		filter_similarity(self, threshold)
 
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)
 
 class Helices:
 	"""Base class for peptide sequences probable to form helices.
@@ -261,6 +271,18 @@ class Helices:
 		.. seealso:: :func:`modlamp.core.filter_similarity()`
 		"""
 		filter_similarity(self, threshold)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)
+
 
 class Kinked:
 	"""
@@ -364,6 +386,17 @@ class Kinked:
 		.. seealso:: :func:`modlamp.core.filter_similarity()`
 		"""
 		filter_similarity(self, threshold)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)
 
 
 class MixedLibrary:
@@ -474,6 +507,17 @@ class MixedLibrary:
 		"""
 		filter_similarity(self, threshold)
 
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)
+
 
 class Oblique(object):
 	"""Base class for oblique sequences with a so called linear hydrophobicity gradient.
@@ -572,6 +616,17 @@ class Oblique(object):
 		"""
 		filter_similarity(self, threshold)
 
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)
+
 
 class Random:
 	"""
@@ -582,33 +637,34 @@ class Random:
 	- **rand**: equal probabilities for all amino acids
 	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
 	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
+	- **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
 	The probability values for all natural AA can be found in the following table:
 
-	===	====	======	=========
-	AA	rand	AMP		AMPnoCM
-	===	====	======	=========
-	A	0.05	0.0766	0.0812275
-	C	0.05	0.071	0.0
-	D	0.05	0.026	0.0306275
-	E	0.05	0.0264	0.0310275
-	F	0.05	0.0405	0.0451275
-	G	0.05	0.1172	0.1218275
-	H	0.05	0.021	0.0256275
-	I	0.05	0.061	0.0656275
-	K	0.05	0.0958	0.1004275
-	L	0.05	0.0838	0.0884275
-	M	0.05	0.0123	0.0
-	N	0.05	0.0386	0.0432275
-	P	0.05	0.0463	0.0509275
-	Q	0.05	0.0251	0.0297275
-	R	0.05	0.0545	0.0591275
-	S	0.05	0.0613	0.0659275
-	T	0.05	0.0455	0.0501275
-	V	0.05	0.0572	0.0618275
-	W	0.05	0.0155	0.0201275
-	Y	0.05	0.0244	0.0290275
-	===	====	======	=========
+	===	====	======	=========	==========
+	AA	rand	AMP	AMPnoCM		randnoCM
+	===	====	======	=========	==========
+	A	0.05	0.0766	0.0812275	0.05555555
+	C	0.05	0.071	0.0		0.0
+	D	0.05	0.026	0.0306275	0.05555555
+	E	0.05	0.0264	0.0310275	0.05555555
+	F	0.05	0.0405	0.0451275	0.05555555
+	G	0.05	0.1172	0.1218275	0.05555555
+	H	0.05	0.021	0.0256275	0.05555555
+	I	0.05	0.061	0.0656275	0.05555555
+	K	0.05	0.0958	0.1004275	0.05555555
+	L	0.05	0.0838	0.0884275	0.05555555
+	M	0.05	0.0123	0.0		0.0
+	N	0.05	0.0386	0.0432275	0.05555555
+	P	0.05	0.0463	0.0509275	0.05555555
+	Q	0.05	0.0251	0.0297275	0.05555555
+	R	0.05	0.0545	0.0591275	0.05555555
+	S	0.05	0.0613	0.0659275	0.05555555
+	T	0.05	0.0455	0.0501275	0.05555555
+	V	0.05	0.0572	0.0618275	0.05555555
+	W	0.05	0.0155	0.0201275	0.05555555
+	Y	0.05	0.0244	0.0290275	0.05555555
+	===	====	======	=========	==========
 
 	"""
 
@@ -622,10 +678,10 @@ class Random:
 		aminoacids(self)
 		template(self, lenmin, lenmax, seqnum)
 
-	def generate_sequences(self,proba='rand'):
+	def generate_sequences(self, proba='rand'):
 		"""Method to actually generate the sequences.
 
-		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand
+		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM
 		:return: A list of random AMP sequences with defined AA probabilities
 		:Example:
 
@@ -635,11 +691,13 @@ class Random:
 		['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
 		"""
 		clean(self)
-		self.prob = self.prob_rand # default probability = rand
+		self.prob = self.prob_rand  # default probability = rand
 		if proba == 'AMPnoCM':
 			self.prob = self.prob_AMPnoCM
 		elif proba == 'AMP':
 			self.prob = self.prob_AMP
+		elif proba == 'randnoCM':
+			self.prob = self.prob_randnoCM
 
 		for s in range(self.seqnum):
 			self.seq = []
@@ -701,3 +759,14 @@ class Random:
 		.. seealso:: :func:`modlamp.core.filter_similarity()`
 		"""
 		filter_similarity(self, threshold)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
+
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+		.. seealso:: :func:`modlamp.core.filter_aa()`
+		"""
+		filter_aa(self, aminoacids=aminoacids)

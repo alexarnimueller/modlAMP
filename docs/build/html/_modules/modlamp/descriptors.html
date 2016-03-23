@@ -66,7 +66,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span>
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa_more</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
@@ -348,6 +348,30 @@
 <span class="sd">		array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.filter_values"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_values">[docs]</a>	<span class="k">def</span> <span class="nf">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="s1">&#39;==&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same</span>
+<span class="sd">		size as the number of features in the descriptor matrix!) The operator option tells the method whether to</span>
+<span class="sd">		filter for values equal, lower, higher ect. to the given values in the **values** array.</span>
+
+<span class="sd">		:param values: List/array of values to filter</span>
+<span class="sd">		:param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
+<span class="sd">		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_values()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
+<span class="sd">		amino acids in the argument list **aminoacids**.</span>
+
+<span class="sd">		:param aminoacids: List/array of amino acids to filter for</span>
+<span class="sd">		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
@@ -782,6 +806,29 @@
 <span class="sd">		:return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.filter_values"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_values">[docs]</a>	<span class="k">def</span> <span class="nf">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="s1">&#39;==&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of value (same</span>
+<span class="sd">		size as the number of features in the descriptor matrix!)</span>
+
+<span class="sd">		:param values: List of values to filter</span>
+<span class="sd">		:param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
+<span class="sd">		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_values()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
+<span class="sd">		amino acids in the argument list **aminoacids**.</span>
+
+<span class="sd">		:param aminoacids: List/array of amino acids to filter for</span>
+<span class="sd">		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>

@@ -17,7 +17,7 @@ Class								Characteristics
 
 import os
 import sys
-from core import load_scale, read_fasta, save_fasta, filter_unnatural
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more
 import collections
 import numpy as np
 from scipy import stats
@@ -299,6 +299,30 @@ class GlobalDescriptor(object):
 		array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
 		"""
 		self.descriptor = shuffle(self.descriptor.transpose()).transpose()
+
+	def filter_values(self, values, operator='=='):
+		"""Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
+		size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+		filter for values equal, lower, higher ect. to the given values in the **values** array.
+
+		:param values: List/array of values to filter
+		:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
+		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_values()`
+		"""
+		filter_values(self, values, operator)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+		amino acids in the argument list **aminoacids**.
+
+		:param aminoacids: List/array of amino acids to filter for
+		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		"""
+		filter_aa_more(self, aminoacids)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
@@ -733,6 +757,29 @@ class PeptideDescriptor(object):
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 		"""
 		filter_unnatural(self)
+
+	def filter_values(self, values, operator='=='):
+		"""Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of value (same
+		size as the number of features in the descriptor matrix!)
+
+		:param values: List of values to filter
+		:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
+		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_values()`
+		"""
+		filter_values(self, values, operator)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+		amino acids in the argument list **aminoacids**.
+
+		:param aminoacids: List/array of amino acids to filter for
+		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		"""
+		filter_aa_more(self, aminoacids)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the

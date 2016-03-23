@@ -385,6 +385,54 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </dd></dl>
 
 <dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.filter_values">
+<code class="descname">filter_values</code><span class="sig-paren">(</span><em>values</em>, <em>operator='=='</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter the descriptor matrix in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> for a given list of values (same
+size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+filter for values equal, lower, higher ect. to the given values in the <strong>values</strong> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>values</strong> &#8211; List/array of values to filter</li>
+<li><strong>operator</strong> &#8211; filter criterion, available are all SQL like operators: <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=``and</span> <span class="pre">``&gt;=</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_values" title="modlamp.core.filter_values"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_values()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+amino acids in the argument list <strong>aminoacids</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids to filter for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered descriptor matrix and updated sequences and names in the corresponding attributes.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa_more" title="modlamp.core.filter_aa_more"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa_more()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.load_descriptordata">
 <code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
@@ -811,6 +859,53 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </dd></dl>
 
 <dl class="method">
+<dt id="modlamp.descriptors.PeptideDescriptor.filter_values">
+<code class="descname">filter_values</code><span class="sig-paren">(</span><em>values</em>, <em>operator='=='</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter the descriptor matrix in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> for a given list of value (same
+size as the number of features in the descriptor matrix!)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>values</strong> &#8211; List of values to filter</li>
+<li><strong>operator</strong> &#8211; filter criterion, available are all SQL like operators: <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=``and</span> <span class="pre">``&gt;=</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_values" title="modlamp.core.filter_values"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_values()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.PeptideDescriptor.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+amino acids in the argument list <strong>aminoacids</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids to filter for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered descriptor matrix and updated sequences and names in the corresponding attributes.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa_more" title="modlamp.core.filter_aa_more"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa_more()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.load_descriptordata">
 <code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
@@ -1064,6 +1159,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 </div>
 </dd></dl>
 
+<dl class="method">
+<dt id="modlamp.sequences.Centrosymmetric.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1206,6 +1322,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_similarity" title="modlamp.core.filter_similarity"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_similarity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.Helices.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -1356,6 +1493,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 </div>
 </dd></dl>
 
+<dl class="method">
+<dt id="modlamp.sequences.Kinked.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1474,6 +1632,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_similarity" title="modlamp.core.filter_similarity"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_similarity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.MixedLibrary.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -1622,6 +1801,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 </div>
 </dd></dl>
 
+<dl class="method">
+<dt id="modlamp.sequences.Oblique.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1634,20 +1834,23 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 <li><strong>rand</strong>: equal probabilities for all amino acids</li>
 <li><strong>AMP</strong>: amino acid probabilities taken from the antimicrobial peptide database <a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016, containing 2674 sequences.</li>
 <li><strong>AMPnoCM</strong>: same amino acid probabilities as <strong>AMP</strong> but lacking Cys and Met (for synthesizability)</li>
+<li><strong>randnoCM</strong>: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)</li>
 </ul>
 <p>The probability values for all natural AA can be found in the following table:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="11%" />
-<col width="14%" />
-<col width="21%" />
-<col width="54%" />
+<col width="9%" />
+<col width="13%" />
+<col width="19%" />
+<col width="28%" />
+<col width="31%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">AA</th>
 <th class="head">rand</th>
 <th class="head">AMP</th>
 <th class="head">AMPnoCM</th>
+<th class="head">randnoCM</th>
 </tr>
 </thead>
 <tbody valign="top">
@@ -1655,101 +1858,121 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 <td>0.05</td>
 <td>0.0766</td>
 <td>0.0812275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>C</td>
 <td>0.05</td>
 <td>0.071</td>
+<td>0.0</td>
 <td>0.0</td>
 </tr>
 <tr class="row-even"><td>D</td>
 <td>0.05</td>
 <td>0.026</td>
 <td>0.0306275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>E</td>
 <td>0.05</td>
 <td>0.0264</td>
 <td>0.0310275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>F</td>
 <td>0.05</td>
 <td>0.0405</td>
 <td>0.0451275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>G</td>
 <td>0.05</td>
 <td>0.1172</td>
 <td>0.1218275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>H</td>
 <td>0.05</td>
 <td>0.021</td>
 <td>0.0256275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>I</td>
 <td>0.05</td>
 <td>0.061</td>
 <td>0.0656275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>K</td>
 <td>0.05</td>
 <td>0.0958</td>
 <td>0.1004275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>L</td>
 <td>0.05</td>
 <td>0.0838</td>
 <td>0.0884275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>M</td>
 <td>0.05</td>
 <td>0.0123</td>
+<td>0.0</td>
 <td>0.0</td>
 </tr>
 <tr class="row-odd"><td>N</td>
 <td>0.05</td>
 <td>0.0386</td>
 <td>0.0432275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>P</td>
 <td>0.05</td>
 <td>0.0463</td>
 <td>0.0509275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>Q</td>
 <td>0.05</td>
 <td>0.0251</td>
 <td>0.0297275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>R</td>
 <td>0.05</td>
 <td>0.0545</td>
 <td>0.0591275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>S</td>
 <td>0.05</td>
 <td>0.0613</td>
 <td>0.0659275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>T</td>
 <td>0.05</td>
 <td>0.0455</td>
 <td>0.0501275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>V</td>
 <td>0.05</td>
 <td>0.0572</td>
 <td>0.0618275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>W</td>
 <td>0.05</td>
 <td>0.0155</td>
 <td>0.0201275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>Y</td>
 <td>0.05</td>
 <td>0.0244</td>
 <td>0.0290275</td>
+<td>0.05555555</td>
 </tr>
 </tbody>
 </table>
@@ -1782,7 +2005,7 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>proba</strong> &#8211; AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>proba</strong> &#8211; AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of random AMP sequences with defined AA probabilities</td>
 </tr>
@@ -1888,6 +2111,27 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">seque
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_similarity" title="modlamp.core.filter_similarity"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_similarity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.Random.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -2207,7 +2451,7 @@ are plottet in different colors.</p>
 <dl class="function">
 <dt id="modlamp.core.read_fasta">
 <code class="descclassname">modlamp.core.</code><code class="descname">read_fasta</code><span class="sig-paren">(</span><em>inputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#read_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.read_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for loading sequences from a FASTA formatted file into self.sequences &amp; self.names. This method is
+<dd><p>Method for loading sequences from a FASTA formatted file into <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> &amp; <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>. This method is
 used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a> if the input is a FASTA file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2215,7 +2459,7 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inputfile</strong> &#8211; .fasta file with sequences and headers to read</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in self.names</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with corresponding sequence names in <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -2224,7 +2468,7 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <dl class="function">
 <dt id="modlamp.core.save_fasta">
 <code class="descclassname">modlamp.core.</code><code class="descname">save_fasta</code><span class="sig-paren">(</span><em>self</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
+<dd><p>Method for saving sequences in the instance <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2251,7 +2495,7 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In <em>self.sequences</em>: mutated sequences</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -2283,16 +2527,18 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016)</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="11%" />
-<col width="14%" />
-<col width="21%" />
-<col width="54%" />
+<col width="9%" />
+<col width="13%" />
+<col width="19%" />
+<col width="28%" />
+<col width="31%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">AA</th>
 <th class="head">rand</th>
 <th class="head">AMP</th>
 <th class="head">AMPnoCM</th>
+<th class="head">randnoCM</th>
 </tr>
 </thead>
 <tbody valign="top">
@@ -2300,101 +2546,121 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <td>0.05</td>
 <td>0.0766</td>
 <td>0.0812275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>C</td>
 <td>0.05</td>
 <td>0.071</td>
+<td>0.0</td>
 <td>0.0</td>
 </tr>
 <tr class="row-even"><td>D</td>
 <td>0.05</td>
 <td>0.026</td>
 <td>0.0306275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>E</td>
 <td>0.05</td>
 <td>0.0264</td>
 <td>0.0310275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>F</td>
 <td>0.05</td>
 <td>0.0405</td>
 <td>0.0451275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>G</td>
 <td>0.05</td>
 <td>0.1172</td>
 <td>0.1218275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>H</td>
 <td>0.05</td>
 <td>0.021</td>
 <td>0.0256275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>I</td>
 <td>0.05</td>
 <td>0.061</td>
 <td>0.0656275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>K</td>
 <td>0.05</td>
 <td>0.0958</td>
 <td>0.1004275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>L</td>
 <td>0.05</td>
 <td>0.0838</td>
 <td>0.0884275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>M</td>
 <td>0.05</td>
 <td>0.0123</td>
+<td>0.0</td>
 <td>0.0</td>
 </tr>
 <tr class="row-odd"><td>N</td>
 <td>0.05</td>
 <td>0.0386</td>
 <td>0.0432275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>P</td>
 <td>0.05</td>
 <td>0.0463</td>
 <td>0.0509275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>Q</td>
 <td>0.05</td>
 <td>0.0251</td>
 <td>0.0297275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>R</td>
 <td>0.05</td>
 <td>0.0545</td>
 <td>0.0591275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>S</td>
 <td>0.05</td>
 <td>0.0613</td>
 <td>0.0659275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>T</td>
 <td>0.05</td>
 <td>0.0455</td>
 <td>0.0501275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>V</td>
 <td>0.05</td>
 <td>0.0572</td>
 <td>0.0618275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-even"><td>W</td>
 <td>0.05</td>
 <td>0.0155</td>
 <td>0.0201275</td>
+<td>0.05555555</td>
 </tr>
 <tr class="row-odd"><td>Y</td>
 <td>0.05</td>
 <td>0.0244</td>
 <td>0.0290275</td>
+<td>0.05555555</td>
 </tr>
 </tbody>
 </table>
@@ -2464,7 +2730,63 @@ amino acids [B,J,O,U,X,Z]. <strong>Dublicates</strong> are removed as well.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered list.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.filter_aa">
+<code class="descclassname">modlamp.core.</code><code class="descname">filter_aa</code><span class="sig-paren">(</span><em>self, aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.filter_aa_more">
+<code class="descclassname">modlamp.core.</code><code class="descname">filter_aa_more</code><span class="sig-paren">(</span><em>self, aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_aa_more"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_aa_more" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+argument list <em>aminoacids</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences, descriptor values and names in the corresponding attributes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.filter_values">
+<code class="descclassname">modlamp.core.</code><code class="descname">filter_values</code><span class="sig-paren">(</span><em>self</em>, <em>values</em>, <em>operator='=='</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter the descriptor matrix in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> for a given list of values (same
+size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+filter for values equal, lower, higher ect. to the given values in the <strong>values</strong> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>values</strong> &#8211; List/array of values to filter</li>
+<li><strong>operator</strong> &#8211; filter criterion, available are all SQL like operators: <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=``and</span> <span class="pre">``&gt;=</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
+</td>
 </tr>
 </tbody>
 </table>

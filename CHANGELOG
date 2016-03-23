@@ -6,3 +6,4 @@ v2.0.5  17.03.2016 -- Added new sequences dataset to be loaded: ``load_helicalAM
 v2.1.0  17.03.2016 -- Added example script of usage and corrected some behaviour of core functions.
 v2.1.1  22.03.2016 -- Fixed different docstrings, added methods to load and save descriptor data
 v2.1.2  22.03.2016 -- New Documentation reference and file names
+v2.1.3  23.03.2016 -- Added filtering methods for amino acids and descriptor values, as well as test cases
