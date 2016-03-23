@@ -18,8 +18,21 @@ documentation. If you then still think, your idea is missing, go for it!
 - Include code examples of how to use your amazing new feature / add a section to the README.rst file
 
 
-Git Workflow
-............
+Reporting Bugs
+..............
+
+Before reporting a bug: are you sure, that the bug is persistent? Does it only occur on your machine? If the bug persists,
+do the following:
+
+- Create a **new issue** (left menu GitLab server)
+- Use a clear and descriptive title
+- Describe the exact steps that produced the problem
+- Provide examples
+- Explain which behaviour you actually expected to see
+
+
+Git Workflow To Contribute
+..........................
 
 1) clone a version of the current Git repository to your local machine
 2) create a new git branch for your project: ``git branch <branch-name>``

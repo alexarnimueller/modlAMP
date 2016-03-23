@@ -146,7 +146,7 @@ Loading Prepared Datasets
 For AMP QSAR models, different options exist of choosing negative / inactive peptide examples. We assembled several
 datasets for classification tasks, that can be read by the :mod:`modlamp.datasets` module.
 
-:Example:
+:Example: **Helical AMPs vs. random all helical peptides**
 
 >>> from modlamp.datasets import load_helicalAMPset
 >>> data = load_helicalAMPset()
