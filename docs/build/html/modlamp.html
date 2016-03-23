@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="modlamp v1.5.0 documentation" href="index.html" />
-    <link rel="next" title="3. TODOs" href="todo.html" />
+    <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
   <body role="document">
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="todo.html" title="3. TODOs"
+          <a href="examplescript.html" title="3. modlAMP example script"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
@@ -413,7 +413,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.save_descriptor">
-<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save the descriptor values to a .csv/.txt file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -476,7 +476,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and dictionary <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code> with amino acid scale values of the scale name in <code class="xref py py-attr docutils literal"><span class="pre">scalename</span></code>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -487,6 +487,26 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;KLLKLLKKLLKLLK&#39;]</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.PeptideDescriptor.load_scale">
+<code class="descname">load_scale</code><span class="sig-paren">(</span><em>scalename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.load_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.load_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to load amino acid values from a given scale</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scalename</strong> &#8211; name of the amino acid scale to be loaded.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">loaded amino acid scale values in a dictionary in the attribute <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.load_scale" title="modlamp.core.load_scale"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.load_scale()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -2178,7 +2198,7 @@ are plottet in different colors.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scalename</strong> &#8211; amino acid scale name, for available scales see the <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor()</span></code></a> documentation.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">amino acid scale values in self.scale</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">amino acid scale values in dictionary format.</td>
 </tr>
 </tbody>
 </table>
@@ -2479,8 +2499,8 @@ amino acids [B,J,O,U,X,Z]. <strong>Dublicates</strong> are removed as well.</p>
   <p class="topless"><a href="readme.html"
                         title="previous chapter">1. README</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="todo.html"
-                        title="next chapter">3. TODOs</a></p>
+  <p class="topless"><a href="examplescript.html"
+                        title="next chapter">3. modlAMP example script</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -2515,7 +2535,7 @@ amino acids [B,J,O,U,X,Z]. <strong>Dublicates</strong> are removed as well.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="todo.html" title="3. TODOs"
+          <a href="examplescript.html" title="3. modlAMP example script"
              >next</a> |</li>
         <li class="right" >
           <a href="readme.html" title="1. README"

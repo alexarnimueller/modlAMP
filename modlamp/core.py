@@ -15,15 +15,13 @@ import re
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
-# random.seed(8)
-
 
 def load_scale(scalename):
 	"""
 	Method to load scale values for a given amino acid scale
 
 	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
-	:return: amino acid scale values in :py:attr:`scale`.
+	:return: amino acid scale values in dictionary format.
 	"""
 	scales = {
 		'AASI': {'A': [1.89], 'C': [1.73], 'D': [3.13], 'E': [3.14], 'F': [1.53], 'G': [2.67], 'H': [3], 'I': [1.97],
@@ -175,11 +173,11 @@ def load_scale(scalename):
 
 def read_fasta(inputfile):
 	"""
-	Method for loading sequences from a FASTA formatted file into self.sequences & self.names. This method is
+	Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`. This method is
 	used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
 
 	:param inputfile: .fasta file with sequences and headers to read
-	:return: list of sequences in self.sequences with corresponding sequence names in self.names
+	:return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in :py:attr:`names`.
 	"""
 	fasta = open(inputfile)
 	names = list()  # list for storing names
@@ -196,7 +194,7 @@ def read_fasta(inputfile):
 
 def save_fasta(self, filename):
 	'''
-	Method for saving sequences in the instance self.sequences to a file in FASTA format.
+	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
 	:param filename: output filename (ending .fasta)
 	:return: a FASTA formatted file containing the generated sequences
@@ -214,7 +212,7 @@ def mutate_AA(self, nr, prob):
 
 	:param nr: number of mutations to perform per sequence
 	:param prob: probability of mutating a sequence
-	:return: In *self.sequences*: mutated sequences
+	:return: In the attribute :py:attr:`sequences`: mutated sequences
 	:Example:
 
 	>>> H.sequences
@@ -224,8 +222,7 @@ def mutate_AA(self, nr, prob):
 	['NAKAGRAWIK']
 	"""
 	for s in range(len(self.sequences)):
-		mutate = np.random.choice([1, 0], 1,
-								  p=[prob, 1 - prob])  # mutate: yes or no? probability = given mutation probability
+		mutate = np.random.choice([1, 0], 1, p=[prob, 1 - prob])  # mutate: yes or no? probability = mutation probability
 		if mutate == 1:
 			seq = list(self.sequences[s])
 			cnt = 0

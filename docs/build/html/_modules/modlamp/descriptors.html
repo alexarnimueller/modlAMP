@@ -370,7 +370,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[]):</span>
 		<span class="sd">&quot;&quot;&quot;Method to save the descriptor values to a .csv/.txt file</span>
 
 <span class="sd">		:param filename: filename of the output file</span>
@@ -421,7 +421,7 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.</span>
 <span class="sd">		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values</span>
-<span class="sd">		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values</span>
+<span class="sd">		:return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with amino acid scale values of the scale name in :py:attr:`scalename`.</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; AMP = PeptideDescriptor(&#39;KLLKLLKKLLKLLK&#39;,&#39;pepcats&#39;)</span>
@@ -442,9 +442,20 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">print</span> <span class="s2">&quot;&#39;inputfile&#39; does not exist, is not a valid list of sequences or is not a valid sequence string&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scalename</span> <span class="o">=</span> <span class="n">scalename</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scalename</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.load_scale"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_scale">[docs]</a>	<span class="k">def</span> <span class="nf">load_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to load amino acid values from a given scale</span>
+
+<span class="sd">		:param scalename: name of the amino acid scale to be loaded.</span>
+<span class="sd">		:return: loaded amino acid scale values in a dictionary in the attribute :py:attr:`scale`.</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.load_scale()`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.read_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and</span>
