@@ -23,7 +23,7 @@ def load_scale(scalename):
 	Method to load scale values for a given amino acid scale
 
 	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
-	:return: amino acid scale values in self.scale
+	:return: amino acid scale values in :py:attr:`scale`.
 	"""
 	scales = {
 		'AASI': {'A': [1.89], 'C': [1.73], 'D': [3.13], 'E': [3.14], 'F': [1.53], 'G': [2.67], 'H': [3], 'I': [1.97],

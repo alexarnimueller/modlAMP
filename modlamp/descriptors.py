@@ -321,7 +321,7 @@ class GlobalDescriptor(object):
 		self.sequences = seqs
 		self.descriptor = data
 
-	def save_descriptor(self, filename, delimiter=',', targets=None):
+	def save_descriptor(self, filename, delimiter=',', targets=[]):
 		"""Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: filename of the output file
@@ -372,7 +372,7 @@ class PeptideDescriptor(object):
 		"""
 		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
-		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values
+		:return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with amino acid scale values of the scale name in :py:attr:`scalename`.
 		:Example:
 
 		>>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
@@ -393,9 +393,20 @@ class PeptideDescriptor(object):
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
-		self.scale = load_scale(scalename)
+		self.scalename = scalename
+		self.scale = load_scale(self.scalename)
 		self.descriptor = np.array([[]])
 		self.target = np.array([], dtype='int')
+
+	def load_scale(self, scalename):
+		"""Method to load amino acid values from a given scale
+
+		:param scalename: name of the amino acid scale to be loaded.
+		:return: loaded amino acid scale values in a dictionary in the attribute :py:attr:`scale`.
+
+		.. seealso:: :func:`modlamp.core.load_scale()`
+		"""
+		self.scale = load_scale(scalename)
 
 	def read_fasta(self, filename):
 		"""Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
