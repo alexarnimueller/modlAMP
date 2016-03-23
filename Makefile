@@ -1,6 +1,6 @@
 init:
-	pip install -r requirements.txt
-    python setup.py build
+	pip install -r requirements.txt --user
+	python setup.py build
 
 install:
 	python setup.py install
