@@ -12,7 +12,8 @@ from os.path import join
 import csv
 import numpy as np
 
-__author__ = 'modlab'
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 
 class Bunch(dict):

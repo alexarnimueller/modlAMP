@@ -26,7 +26,8 @@ from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, tem
 from itertools import cycle
 from sklearn.utils import shuffle
 
-__author__ = 'modlab'
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 
 class Centrosymmetric:

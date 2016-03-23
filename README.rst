@@ -79,7 +79,7 @@ We can now plot these values as a boxplot, for example the hydrophobic moment:
 >>> from modlamp.plot import plot_feature
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
-.. image:: ../../static/uH_Eisenberg.png
+.. image:: static/uH_Eisenberg.png
 
 We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file ``APD3.fasta``:
@@ -91,7 +91,7 @@ Now lets compare the values by plotting:
 
 >>> plot_feature((P.descriptor,APD.descriptor),y_label='uH Eisenberg',x_tick_labels=['Library','APD3'])
 
-.. image:: ../../static/uH_APD3.png
+.. image:: static/uH_APD3.png
 
 It is also possible to plot 2 or 3 different features in a scatter plot:
 
@@ -104,7 +104,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> C.length()
 >>> plot_3_features(A.descriptor,B.descriptor,C.descriptor,x_label='uH',y_label='pI',z_label='length')
 
-.. image:: ../../static/3D_scatter.png
+.. image:: static/3D_scatter.png
 
 Database Connection
 -------------------

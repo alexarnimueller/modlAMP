@@ -1,4 +1,6 @@
-"""Example script for a possible usage of the modlamp package for peptide QSAR studies with a Random Forest model."""
+"""
+An example script for a possible usage of the modlamp package for peptide QSAR studies with a Random Forest model.
+"""
 
 import sys
 from collections import OrderedDict

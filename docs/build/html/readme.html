@@ -124,7 +124,7 @@ amino acid scales. For further information consider the docs for <a class="refer
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../static/uH_Eisenberg.png" src="../../static/uH_Eisenberg.png" />
+<img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" />
 <p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -135,7 +135,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span><span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span><span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="../../static/uH_APD3.png" src="../../static/uH_APD3.png" />
+<img alt="_images/uH_APD3.png" src="_images/uH_APD3.png" />
 <p>It is also possible to plot 2 or 3 different features in a scatter plot:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_3_features</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -147,7 +147,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../static/3D_scatter.png" src="../../static/3D_scatter.png" />
+<img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" />
 </div>
 <div class="section" id="database-connection">
 <h3>1.2.5. Database Connection<a class="headerlink" href="#database-connection" title="Permalink to this headline">¶</a></h3>

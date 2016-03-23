@@ -26,6 +26,7 @@ from sklearn.utils import shuffle
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 __author__ = 'modlab'
+__docformat__ = "restructuredtext en"
 
 class GlobalDescriptor(object):
 	"""
@@ -42,6 +43,8 @@ class GlobalDescriptor(object):
 	- `Boman Index			<modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
 	- `Aliphatic Index		<modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
 	- `Instability Index	<modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
+
+	Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of `Biopython <http://biopython.org/>`_.
 	"""
 
 	def __init__(self, seqs):
@@ -92,24 +95,26 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
-	def calculate_charge(self, append=False):
-		"""
-		Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
+	def calculate_charge(self, amide=False, append=False):
+		"""Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
 
+		:param amide: {boolean} whether the sequences have an amidated C-terminus (+1 charge)
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 
-		The following dictionary shows the used side chain charges at neutral pH::
+		The following dictionary shows the used side chain charges:
 
-			AACharge = {"C":-.045,"D":-.999,"E":-.998,"H":.091,"K":1,"R":1,"Y":-.001}
+			AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
 
 		"""
-		AACharge = {"C":-.045,"D":-.999,"E":-.998,"H":.091,"K":1,"R":1,"Y":-.001}
+		AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
 		desc = []
 		for seq in self.sequences:
 			charge = 0.
 			for a in seq:
-				charge += AACharge.get(a,0)
+				charge += AACharge.get(a, 0)
+			if amide:  # add +1 charge if amidated C-terminus
+				charge += 1
 			desc.append(charge)
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
@@ -135,8 +140,12 @@ class GlobalDescriptor(object):
 
 	def isoelectric_point(self, append=False):
 		"""
-		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`. The pK scale used is
-		Bjellquist.
+		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
+		The pK scale and method used is Bjellqvist. For further references, see the `Biopython <http://biopython.org/>`_
+		module :mod:`Bio.SeqUtils.ProtParam`.
+
+		positive_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
+		negative_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`

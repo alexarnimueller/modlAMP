@@ -15,10 +15,13 @@ Function							Characteristics
 
 """
 
-
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
+
 
 def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None):
 	"""

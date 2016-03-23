@@ -125,6 +125,7 @@ the <strong>methods</strong> linked below:</p>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">Aliphatic Index</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">Instability Index</a></li>
 </ul>
+<p>Most of the methods calculate values with help of the <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code> module of <a class="reference external" href="http://biopython.org/">Biopython</a>.</p>
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>seqs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.__init__" title="Permalink to this definition">¶</a></dt>
@@ -181,22 +182,26 @@ the <strong>methods</strong> linked below:</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.calculate_charge">
-<code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus (+1 charge)</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
-<p>The following dictionary shows the used side chain charges at neutral pH:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">AACharge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mo">045</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mi">999</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mi">998</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">:</span><span class="o">.</span><span class="mi">091</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mo">001</span><span class="p">}</span>
-</pre></div>
-</div>
+<p>The following dictionary shows the used side chain charges:</p>
+<blockquote>
+<div>AACharge = {&#8220;C&#8221;: -.1, &#8220;D&#8221;: -1., &#8220;E&#8221;: -1., &#8220;H&#8221;: .1, &#8220;K&#8221;: 1., &#8220;R&#8221;: 1}</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -218,8 +223,11 @@ the <strong>methods</strong> linked below:</p>
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.isoelectric_point">
 <code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The pK scale used is
-Bjellquist.</p>
+<dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
+The pK scale and method used is Bjellqvist. For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a>
+module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
+<p>positive_pKs = {&#8216;Nterm&#8217;: 7.5, &#8216;K&#8217;: 10.0, &#8216;R&#8217;: 12.0, &#8216;H&#8217;: 5.98}
+negative_pKs = {&#8216;Cterm&#8217;: 3.55, &#8216;D&#8217;: 4.05, &#8216;E&#8217;: 4.45, &#8216;C&#8217;: 9.0, &#8216;Y&#8217;: 10.0}</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

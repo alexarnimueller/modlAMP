@@ -12,6 +12,8 @@ import difflib
 import random
 import re
 
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 # random.seed(8)
 

@@ -75,6 +75,7 @@
 <span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;modlab&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 <div class="viewcode-block" id="GlobalDescriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor">[docs]</a><span class="k">class</span> <span class="nc">GlobalDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -91,6 +92,8 @@
 <span class="sd">	- `Boman Index			&lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index&gt;`_</span>
 <span class="sd">	- `Aliphatic Index		&lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index&gt;`_</span>
 <span class="sd">	- `Instability Index	&lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index&gt;`_</span>
+
+<span class="sd">	Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of `Biopython &lt;http://biopython.org/&gt;`_.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GlobalDescriptor.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqs</span><span class="p">):</span>
@@ -141,24 +144,26 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
+<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
 
+<span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus (+1 charge)</span>
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 
-<span class="sd">		The following dictionary shows the used side chain charges at neutral pH::</span>
+<span class="sd">		The following dictionary shows the used side chain charges:</span>
 
-<span class="sd">			AACharge = {&quot;C&quot;:-.045,&quot;D&quot;:-.999,&quot;E&quot;:-.998,&quot;H&quot;:.091,&quot;K&quot;:1,&quot;R&quot;:1,&quot;Y&quot;:-.001}</span>
+<span class="sd">			AACharge = {&quot;C&quot;: -.1, &quot;D&quot;: -1., &quot;E&quot;: -1., &quot;H&quot;: .1, &quot;K&quot;: 1., &quot;R&quot;: 1}</span>
 
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">AACharge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mo">045</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mi">999</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mi">998</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">:</span><span class="o">.</span><span class="mi">091</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">:</span><span class="o">-.</span><span class="mo">001</span><span class="p">}</span>
+		<span class="n">AACharge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="o">-.</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
 			<span class="n">charge</span> <span class="o">=</span> <span class="mf">0.</span>
 			<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
-				<span class="n">charge</span> <span class="o">+=</span> <span class="n">AACharge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+				<span class="n">charge</span> <span class="o">+=</span> <span class="n">AACharge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">amide</span><span class="p">:</span>  <span class="c1"># add +1 charge if amidated C-terminus</span>
+				<span class="n">charge</span> <span class="o">+=</span> <span class="mi">1</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
@@ -184,8 +189,12 @@
 
 <div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>	<span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`. The pK scale used is</span>
-<span class="sd">		Bjellquist.</span>
+<span class="sd">		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.</span>
+<span class="sd">		The pK scale and method used is Bjellqvist. For further references, see the `Biopython &lt;http://biopython.org/&gt;`_</span>
+<span class="sd">		module :mod:`Bio.SeqUtils.ProtParam`.</span>
+
+<span class="sd">		positive_pKs = {&#39;Nterm&#39;: 7.5, &#39;K&#39;: 10.0, &#39;R&#39;: 12.0, &#39;H&#39;: 5.98}</span>
+<span class="sd">		negative_pKs = {&#39;Cterm&#39;: 3.55, &#39;D&#39;: 4.05, &#39;E&#39;: 4.45, &#39;C&#39;: 9.0, &#39;Y&#39;: 10.0}</span>
 
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
