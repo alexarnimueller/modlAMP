@@ -156,17 +156,6 @@ class Centrosymmetric:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
-
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
@@ -260,17 +249,6 @@ class Helices:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
-
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
 
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -375,17 +353,6 @@ class Kinked:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
-
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
 
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -496,17 +463,6 @@ class MixedLibrary:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
-
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
@@ -604,17 +560,6 @@ class Oblique(object):
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
-
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
 
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -748,17 +693,6 @@ class Random:
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
-
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
-
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
-		"""
-		filter_similarity(self, threshold)
 
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
