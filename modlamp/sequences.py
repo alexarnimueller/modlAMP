@@ -376,7 +376,7 @@ class MixedLibrary:
 	:class:`Kinked`, :class:`Oblique` or :class:`Random`.
 	"""
 
-	def __init__(self,number,centrosymmetric=1,centroasymmetric=1,helix=1,kinked=1,oblique=1,rand=1,randAMP=1,randAMPnoCM=1):
+	def __init__(self, number, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1, randAMPnoCM=1):
 		"""initializing method of the class :class:`MixedLibrary`. Except from **number**, all other parameters are
 		ratios of sequences of the given sequence class.
 
@@ -386,18 +386,19 @@ class MixedLibrary:
 		:param helix: ratio of amphipathic helical sequences in the library
 		:param kinked: ratio of kinked amphipathic helical sequences in the library
 		:param oblique: ratio of oblique oriented amphipathic helical sequences in the library
-		:param random: ratio of random sequneces in the library
+		:param rand: ratio of random sequneces in the library
 		:param randAMP: ratio of random sequences with APD2 amino acid distribution in the library
 		:param randAMPnoCM: ratio of random sequences with APD2 amino acid distribution without Cys and Met in the library
 
 		.. warning::
 			If duplicate sequences are created, these are removed during the creation process. It is therefore quite
-			probable that you will not get the exact size of library that you entered as the parameter **number**.
+			probable that you will not get the exact size of library that you entered as the parameter **number**. If you
+			generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
 		"""
 		self.names = []
 		self.sequences = []
 		self.libsize = int(number)
-		norm = float(sum((centrosymmetric,centroasymmetric,helix,kinked,oblique,rand,randAMP,randAMPnoCM)))
+		norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
 		self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
 						'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
 						'ran': float(rand) / norm, 'AMP': float(randAMP) / norm, 'nCM': float(randAMPnoCM) / norm}
@@ -414,19 +415,26 @@ class MixedLibrary:
 		"""This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
 		All sequences are between 7 and 28 amino acids in length.
 
-		:return: a virtual library of sequences in the attribute :py:attr:`sequences`.
+		:return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in
+			:py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in
+			:py:attr:`libsize`.
 		:Example:
 
 		>>> Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)
 		>>> Lib.generate_library()
-		>>> Lib.libsize
-		10000
-		>>> len(Lib.sequences)  # as duplicates were present, the library does not have the size that was sepecified
-		7256
+		>>> Lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
+		9126
 		>>> Lib.sequences
 		['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
-		>>> Lib.ratios['hel']  # the ratio of the helical sequences
-		0.069767
+		>>> Lib.nums
+		{'AMP': 2326,
+ 		 'asy': 1163,
+ 		 'hel': 698,
+ 		 'knk': 698,
+ 		 'nCM': 1163,
+ 		 'obl': 465,
+ 		 'ran': 2326,
+ 		 'sym': 1163}
 		"""
 		Cs = Centrosymmetric(self.nums['sym'])
 		Cs.generate_symmetric()
@@ -447,13 +455,15 @@ class MixedLibrary:
 
 		self.sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
 		self.names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
-					['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['obl'] + \
+					['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['ran'] + \
 					['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']
-		od = OrderedDict().fromkeys(zip(self.names, self.sequences))  # remove duplicates while keeping names --> od.keys
-		self.names = [n[0] for n in od.keys()]
-		self.sequences = [s[1] for s in od.keys()]
+		d = {s: n for s, n in zip(self.sequences, self.names)}  # remove duplicates while keeping correct names
+		self.names = [n for n in d.values()]
+		self.sequences = [s for s in d.keys()]
+		self.libsize = len(self.sequences)
+		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
-	def save_fasta(self,filename):
+	def save_fasta(self, filename):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
