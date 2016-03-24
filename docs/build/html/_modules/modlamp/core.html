@@ -369,30 +369,6 @@
 	<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="filter_similarity"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_similarity">[docs]</a><span class="k">def</span> <span class="nf">filter_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class</span>
-<span class="sd">	attribute :py:attr:`sequences`. The list of sequences is first shuffled and all duplicates are removed. Then, the</span>
-<span class="sd">	function iterates through the list only keeps sequences that have a lower similarity to the other list members than</span>
-<span class="sd">	the given threshold. Similarity is defined as same amino acids in a given order.</span>
-
-<span class="sd">	:param threshold: similarity threshold over which one of similar members of :py:attr:`sequences` gets kicked out</span>
-<span class="sd">	:return: filtered list of sequences</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)]</span>  <span class="c1"># remove duplicates</span>
-	<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-
-	<span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
-
-	<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-		<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">seq</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">SequenceMatcher</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">seq</span><span class="o">.</span><span class="n">ratio</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="ow">and</span> <span class="n">seq</span><span class="o">.</span><span class="n">ratio</span><span class="p">()</span> <span class="o">!=</span> <span class="mf">1.</span><span class="p">:</span>  <span class="c1"># if higher than threshold but not itself</span>
-				<span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-
-	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">lst</span><span class="p">)]</span>  <span class="c1"># return unique list of filtered sequences</span></div>
-
-
 <div class="viewcode-block" id="filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_unnatural">[docs]</a><span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic</span>

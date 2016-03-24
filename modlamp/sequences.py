@@ -22,9 +22,11 @@ Class								Characteristics
 import os
 import random
 import numpy as np
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
 from itertools import cycle
 from sklearn.utils import shuffle
+from collections import OrderedDict
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
+
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -387,18 +389,26 @@ class MixedLibrary:
 		:param random: ratio of random sequneces in the library
 		:param randAMP: ratio of random sequences with APD2 amino acid distribution in the library
 		:param randAMPnoCM: ratio of random sequences with APD2 amino acid distribution without Cys and Met in the library
+
+		.. warning::
+			If duplicate sequences are created, these are removed during the creation process. It is therefore quite
+			probable that you will not get the exact size of library that you entered as the parameter **number**.
 		"""
+		self.names = []
 		self.sequences = []
-		self.number = int(number)
-		self.norm = float(sum((centrosymmetric,centroasymmetric,helix,kinked,oblique,rand,randAMP,randAMPnoCM)))
-		self.ratio_centrosym = float(centrosymmetric) / self.norm
-		self.ratio_centroasym = float(centroasymmetric) / self.norm
-		self.ratio_helix = float(helix) / self.norm
-		self.ratio_kinked = float(kinked) / self.norm
-		self.ratio_oblique = float(oblique) / self.norm
-		self.ratio_rand = float(rand) / self.norm
-		self.ratio_randAMP = float(randAMP) / self.norm
-		self.ratio_randAMPnoCM = float(randAMPnoCM) / self.norm
+		self.libsize = int(number)
+		norm = float(sum((centrosymmetric,centroasymmetric,helix,kinked,oblique,rand,randAMP,randAMPnoCM)))
+		self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
+						'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
+						'ran': float(rand) / norm, 'AMP': float(randAMP) / norm, 'nCM': float(randAMPnoCM) / norm}
+		self.nums = {'sym': int(round(float(self.libsize) * self.ratios['sym'], ndigits=0)),
+						'asy': int(round(float(self.libsize) * self.ratios['asy'], ndigits=0)),
+						'hel': int(round(float(self.libsize) * self.ratios['hel'], ndigits=0)),
+						'knk': int(round(float(self.libsize) * self.ratios['knk'], ndigits=0)),
+						'obl': int(round(float(self.libsize) * self.ratios['obl'], ndigits=0)),
+						'ran': int(round(float(self.libsize) * self.ratios['ran'], ndigits=0)),
+						'AMP': int(round(float(self.libsize) * self.ratios['AMP'], ndigits=0)),
+						'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
 
 	def generate_library(self):
 		"""This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
@@ -409,40 +419,39 @@ class MixedLibrary:
 
 		>>> Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)
 		>>> Lib.generate_library()
-		>>> len(Lib.sequences)
+		>>> Lib.libsize
 		10000
+		>>> len(Lib.sequences)  # as duplicates were present, the library does not have the size that was sepecified
+		7256
 		>>> Lib.sequences
 		['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
-		>>> Lib.ratio_helix
+		>>> Lib.ratios['hel']  # the ratio of the helical sequences
 		0.069767
 		"""
-		Cs = Centrosymmetric(round(float(self.number) * self.ratio_centrosym, ndigits=0))
+		Cs = Centrosymmetric(self.nums['sym'])
 		Cs.generate_symmetric()
-		Ca = Centrosymmetric(round(float(self.number) * self.ratio_centroasym, ndigits=0))
+		Ca = Centrosymmetric(self.nums['asy'])
 		Ca.generate_asymmetric()
-		H = Helices(7,28,round(float(self.number) * self.ratio_helix, ndigits=0))
+		H = Helices(7, 28, self.nums['hel'])
 		H.generate_helices()
-		K = Kinked(7,28,round(float(self.number) * self.ratio_kinked, ndigits=0))
+		K = Kinked(7, 28, self.nums['knk'])
 		K.generate_kinked()
-		O = Oblique(7,28,round(float(self.number) * self.ratio_oblique, ndigits=0))
+		O = Oblique(7, 28, self.nums['obl'])
 		O.generate_oblique()
-		R = Random(7, 28, round(float(self.number) * self.ratio_rand, ndigits=0))
+		R = Random(7, 28, self.nums['ran'])
 		R.generate_sequences('rand')
-		Ra = Random(7, 28, round(float(self.number) * self.ratio_randAMP, ndigits=0))
+		Ra = Random(7, 28, self.nums['AMP'])
 		Ra.generate_sequences('AMP')
-		Rc = Random(7, 28, round(float(self.number) * self.ratio_randAMPnoCM, ndigits=0))
+		Rc = Random(7, 28, self.nums['nCM'])
 		Rc.generate_sequences('AMPnoCM')
 
 		self.sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
-		self.sequences = shuffle(self.sequences)
-
-		# check if rounding affected sequence number. if too many: chop end off, if too few: fill up with random seqs
-		if len(self.sequences) > self.number:
-			self.sequences = self.sequences[:-(len(self.sequences)-self.number)]
-		elif len(self.sequences) < self.number:
-			S = Random(7, 28, self.number - len(self.sequences))
-			S.generate_sequences()
-			self.sequences = self.sequences + S.sequences
+		self.names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
+					['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['obl'] + \
+					['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']
+		od = OrderedDict().fromkeys(zip(self.names, self.sequences))  # remove duplicates while keeping names --> od.keys
+		self.names = [n[0] for n in od.keys()]
+		self.sequences = [s[1] for s in od.keys()]
 
 	def save_fasta(self,filename):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
