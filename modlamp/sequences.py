@@ -22,7 +22,7 @@ Class								Characteristics
 import os
 import random
 import numpy as np
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_similarity, filter_aa
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
 from itertools import cycle
 from sklearn.utils import shuffle
 
