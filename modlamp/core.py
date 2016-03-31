@@ -12,8 +12,8 @@ import difflib
 import random
 import re
 
-
-# random.seed(8)
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 
 def load_scale(scalename):
@@ -21,7 +21,7 @@ def load_scale(scalename):
 	Method to load scale values for a given amino acid scale
 
 	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
-	:return: amino acid scale values in self.scale
+	:return: amino acid scale values in dictionary format.
 	"""
 	scales = {
 		'AASI': {'A': [1.89], 'C': [1.73], 'D': [3.13], 'E': [3.14], 'F': [1.53], 'G': [2.67], 'H': [3], 'I': [1.97],
@@ -173,11 +173,11 @@ def load_scale(scalename):
 
 def read_fasta(inputfile):
 	"""
-	Method for loading sequences from a FASTA formatted file into self.sequences & self.names. This method is
+	Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`. This method is
 	used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
 
 	:param inputfile: .fasta file with sequences and headers to read
-	:return: list of sequences in self.sequences with corresponding sequence names in self.names
+	:return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in :py:attr:`names`.
 	"""
 	fasta = open(inputfile)
 	names = list()  # list for storing names
@@ -194,7 +194,7 @@ def read_fasta(inputfile):
 
 def save_fasta(self, filename):
 	'''
-	Method for saving sequences in the instance self.sequences to a file in FASTA format.
+	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
 	:param filename: output filename (ending .fasta)
 	:return: a FASTA formatted file containing the generated sequences
@@ -212,7 +212,7 @@ def mutate_AA(self, nr, prob):
 
 	:param nr: number of mutations to perform per sequence
 	:param prob: probability of mutating a sequence
-	:return: In *self.sequences*: mutated sequences
+	:return: In the attribute :py:attr:`sequences`: mutated sequences
 	:Example:
 
 	>>> H.sequences
@@ -223,7 +223,7 @@ def mutate_AA(self, nr, prob):
 	"""
 	for s in range(len(self.sequences)):
 		mutate = np.random.choice([1, 0], 1,
-								  p=[prob, 1 - prob])  # mutate: yes or no? probability = given mutation probability
+								  p=[prob, 1 - prob])  # mutate: yes or no? probability = mutation probability
 		if mutate == 1:
 			seq = list(self.sequences[s])
 			cnt = 0
@@ -242,30 +242,30 @@ def aminoacids(self):
 	The following amino acid probabilities are used by modlAMP: (extracted from the
 	`APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016)
 
-	===	====	======	=========
-	AA	rand	AMP		AMPnoCM
-	===	====	======	=========
-	A	0.05	0.0766	0.0812275
-	C	0.05	0.071	0.0
-	D	0.05	0.026	0.0306275
-	E	0.05	0.0264	0.0310275
-	F	0.05	0.0405	0.0451275
-	G	0.05	0.1172	0.1218275
-	H	0.05	0.021	0.0256275
-	I	0.05	0.061	0.0656275
-	K	0.05	0.0958	0.1004275
-	L	0.05	0.0838	0.0884275
-	M	0.05	0.0123	0.0
-	N	0.05	0.0386	0.0432275
-	P	0.05	0.0463	0.0509275
-	Q	0.05	0.0251	0.0297275
-	R	0.05	0.0545	0.0591275
-	S	0.05	0.0613	0.0659275
-	T	0.05	0.0455	0.0501275
-	V	0.05	0.0572	0.0618275
-	W	0.05	0.0155	0.0201275
-	Y	0.05	0.0244	0.0290275
-	===	====	======	=========
+	===	====	======	=========	==========
+	AA	rand	AMP	AMPnoCM		randnoCM
+	===	====	======	=========	==========
+	A	0.05	0.0766	0.0812275	0.05555555
+	C	0.05	0.071	0.0		0.0
+	D	0.05	0.026	0.0306275	0.05555555
+	E	0.05	0.0264	0.0310275	0.05555555
+	F	0.05	0.0405	0.0451275	0.05555555
+	G	0.05	0.1172	0.1218275	0.05555555
+	H	0.05	0.021	0.0256275	0.05555555
+	I	0.05	0.061	0.0656275	0.05555555
+	K	0.05	0.0958	0.1004275	0.05555555
+	L	0.05	0.0838	0.0884275	0.05555555
+	M	0.05	0.0123	0.0		0.0
+	N	0.05	0.0386	0.0432275	0.05555555
+	P	0.05	0.0463	0.0509275	0.05555555
+	Q	0.05	0.0251	0.0297275	0.05555555
+	R	0.05	0.0545	0.0591275	0.05555555
+	S	0.05	0.0613	0.0659275	0.05555555
+	T	0.05	0.0455	0.0501275	0.05555555
+	V	0.05	0.0572	0.0618275	0.05555555
+	W	0.05	0.0155	0.0201275	0.05555555
+	Y	0.05	0.0244	0.0290275	0.05555555
+	===	====	======	=========	==========
 
 	"""
 	self.sequences = []
@@ -287,6 +287,12 @@ def aminoacids(self):
 	# equal AA probabilities:
 	self.prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
 					  0.05, 0.05, 0.05, 0.05]
+	# equal AA probabilities but 0 for Cys and Met:
+	self.prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+						  0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+						  0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+						  0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+						  0.05555555555, 0.05555555555]
 
 
 def template(self, lenmin, lenmax, seqnum):
@@ -314,36 +320,12 @@ def clean(self):
 	self.descriptor = []
 
 
-def filter_similarity(self, threshold=0.8):
-	"""
-	Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-	attribute :py:attr:`sequences`. The list of sequences is first shuffled and all duplicates are removed. Then, the
-	function iterates through the list only keeps sequences that have a lower similarity to the other list members than
-	the given threshold. Similarity is defined as same amino acids in a given order.
-
-	:param threshold: similarity threshold over which one of similar members of :py:attr:`sequences` gets kicked out
-	:return: filtered list of sequences
-	"""
-	self.sequences = [x for x in set(self.sequences)]  # remove duplicates
-	random.shuffle(self.sequences)
-
-	lst = []
-
-	for s in self.sequences:
-		for l in self.sequences:
-			seq = difflib.SequenceMatcher(None, s, l)
-			if seq.ratio() < threshold and seq.ratio() != 1.:  # if higher than threshold but not itself
-				lst.append(s)
-
-	self.sequences = [x for x in set(lst)]  # return unique list of filtered sequences
-
-
 def filter_unnatural(self):
 	"""
 	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
 	amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
 
-	:return: Filtered list.
+	:return: Filtered sequence list in the attribute :py:attr:`sequences`.
 	"""
 	seq_list = [x for x in set(self.sequences)]  # remove duplicates
 	pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z']))
@@ -355,3 +337,72 @@ def filter_unnatural(self):
 			lst.append(s)
 
 	self.sequences = lst
+
+
+def filter_aa(self, aminoacids=['X']):
+	"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+
+	:param aminoacids: list of amino acids to be filtered
+	:return: filtered list of sequences in the attribute :py:attr:`sequences`.
+	"""
+	pattern = re.compile('|'.join(aminoacids))
+	seqs = []
+
+	for s in self.sequences:
+		if not pattern.search(s):
+			seqs.append(s)
+
+	self.sequences = seqs
+
+
+def filter_aa_more(self, aminoacids=['X']):
+	"""Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+	argument list *aminoacids*.
+
+	:param aminoacids: list of amino acids to be filtered
+	:return: filtered list of sequences, descriptor values and names in the corresponding attributes.
+	"""
+	pattern = re.compile('|'.join(aminoacids))
+	seqs = []
+	desc = []
+	names = []
+
+	for i, s in enumerate(self.sequences):
+		if not pattern.search(s):
+			seqs.append(s)
+			desc.append(self.descriptor[i])
+			if len(self.names) > 0:
+				names.append(self.names[i])
+
+	self.sequences = seqs
+	self.names = names
+	self.descriptor = np.array(desc)
+
+
+def filter_values(self, values, operator='=='):
+	"""Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
+	size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+	filter for values equal, lower, higher ect. to the given values in the **values** array.
+
+	:param values: List/array of values to filter
+	:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
+	:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+	"""
+	dim = self.descriptor.shape[1]
+	for d in range(dim):  # for all the features in self.descriptor
+		if operator == '==':
+			indices = np.where(self.descriptor[:, d] == values[d])[0]
+		elif operator == '<':
+			indices = np.where(self.descriptor[:, d] < values[d])[0]
+		elif operator == '>':
+			indices = np.where(self.descriptor[:, d] > values[d])[0]
+		elif operator == '<=':
+			indices = np.where(self.descriptor[:, d] <= values[d])[0]
+		elif operator == '>=':
+			indices = np.where(self.descriptor[:, d] >= values[d])[0]
+
+		# filter descriptor matrix, sequence list and names list according to obtained indices
+		self.descriptor = self.descriptor[indices]
+		self.sequences = np.array(self.sequences)[indices].tolist()
+		if len(self.names) > 0:
+			self.names = np.array(self.names)[indices].tolist()

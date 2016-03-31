@@ -24,8 +24,8 @@ The package has the following contents:
 
    readme
    modlamp
+   examplescript
    todo
-
 
 Indices and tables
 ==================
@@ -33,4 +33,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

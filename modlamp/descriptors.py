@@ -17,7 +17,7 @@ Class								Characteristics
 
 import os
 import sys
-from core import load_scale, read_fasta, save_fasta, filter_unnatural
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more
 import collections
 import numpy as np
 from scipy import stats
@@ -26,6 +26,7 @@ from sklearn.utils import shuffle
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 __author__ = 'modlab'
+__docformat__ = "restructuredtext en"
 
 class GlobalDescriptor(object):
 	"""
@@ -42,6 +43,8 @@ class GlobalDescriptor(object):
 	- `Boman Index			<modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
 	- `Aliphatic Index		<modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
 	- `Instability Index	<modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
+
+	Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of `Biopython <http://biopython.org/>`_.
 	"""
 
 	def __init__(self, seqs):
@@ -92,24 +95,26 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
-	def calculate_charge(self, append=False):
-		"""
-		Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
+	def calculate_charge(self, amide=False, append=False):
+		"""Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
 
+		:param amide: {boolean} whether the sequences have an amidated C-terminus (+1 charge)
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 
-		The following dictionary shows the used side chain charges at neutral pH::
+		The following dictionary shows the used side chain charges:
 
-			AACharge = {"C":-.045,"D":-.999,"E":-.998,"H":.091,"K":1,"R":1,"Y":-.001}
+			AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
 
 		"""
-		AACharge = {"C":-.045,"D":-.999,"E":-.998,"H":.091,"K":1,"R":1,"Y":-.001}
+		AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
 		desc = []
 		for seq in self.sequences:
 			charge = 0.
 			for a in seq:
-				charge += AACharge.get(a,0)
+				charge += AACharge.get(a, 0)
+			if amide:  # add +1 charge if amidated C-terminus
+				charge += 1
 			desc.append(charge)
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
@@ -135,8 +140,12 @@ class GlobalDescriptor(object):
 
 	def isoelectric_point(self, append=False):
 		"""
-		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`. The pK scale used is
-		Bjellquist.
+		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
+		The pK scale and method used is Bjellqvist. For further references, see the `Biopython <http://biopython.org/>`_
+		module :mod:`Bio.SeqUtils.ProtParam`.
+
+		positive_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
+		negative_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
@@ -291,6 +300,30 @@ class GlobalDescriptor(object):
 		"""
 		self.descriptor = shuffle(self.descriptor.transpose()).transpose()
 
+	def filter_values(self, values, operator='=='):
+		"""Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
+		size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+		filter for values equal, lower, higher ect. to the given values in the **values** array.
+
+		:param values: List/array of values to filter
+		:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
+		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_values()`
+		"""
+		filter_values(self, values, operator)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+		amino acids in the argument list **aminoacids**.
+
+		:param aminoacids: List/array of amino acids to filter for
+		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		"""
+		filter_aa_more(self, aminoacids)
+
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 		class :class:`modlamp.descriptors.PeptideDescriptor`.
@@ -312,7 +345,7 @@ class GlobalDescriptor(object):
 		self.sequences = seqs
 		self.descriptor = data
 
-	def save_descriptor(self, filename, delimiter=',', targets=None):
+	def save_descriptor(self, filename, delimiter=',', targets=[]):
 		"""Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: filename of the output file
@@ -363,7 +396,7 @@ class PeptideDescriptor(object):
 		"""
 		:param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
 		:param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
-		:return: initialized attributes self.sequences, self.names and dictionary self.AA with amino acid scale values
+		:return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with amino acid scale values of the scale name in :py:attr:`scalename`.
 		:Example:
 
 		>>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
@@ -384,9 +417,20 @@ class PeptideDescriptor(object):
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
-		self.scale = load_scale(scalename)
+		self.scalename = scalename
+		self.scale = load_scale(self.scalename)
 		self.descriptor = np.array([[]])
 		self.target = np.array([], dtype='int')
+
+	def load_scale(self, scalename):
+		"""Method to load amino acid values from a given scale
+
+		:param scalename: name of the amino acid scale to be loaded.
+		:return: loaded amino acid scale values in a dictionary in the attribute :py:attr:`scale`.
+
+		.. seealso:: :func:`modlamp.core.load_scale()`
+		"""
+		self.scale = load_scale(scalename)
 
 	def read_fasta(self, filename):
 		"""Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
@@ -713,6 +757,29 @@ class PeptideDescriptor(object):
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 		"""
 		filter_unnatural(self)
+
+	def filter_values(self, values, operator='=='):
+		"""Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of value (same
+		size as the number of features in the descriptor matrix!)
+
+		:param values: List of values to filter
+		:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
+		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_values()`
+		"""
+		filter_values(self, values, operator)
+
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
+		amino acids in the argument list **aminoacids**.
+
+		:param aminoacids: List/array of amino acids to filter for
+		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
+
+		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		"""
+		filter_aa_more(self, aminoacids)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the

@@ -25,6 +25,7 @@ help:
 	@echo "  html       to make standalone HTML files"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  view       to view the created HTML files in the browser"
+	@echo "  delta      to copy the docs to the delta server"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
 	@echo "  json       to make JSON files"
@@ -61,6 +62,10 @@ html:
 .PHONY: view
 view:
 	open build/html/index.html
+
+.PHONY: delta
+delta:
+	rsync -ruav build/html/* delta2:
 
 .PHONY: dirhtml
 dirhtml:

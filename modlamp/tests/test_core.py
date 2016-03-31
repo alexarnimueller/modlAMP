@@ -15,5 +15,9 @@ class TestCore(unittest.TestCase):
 		self.R.mutate_AA(1, 1)
 		self.assertNotEqual(self.sequences, self.R.sequences)
 
+	def test_filter_aa(self):
+		self.R.filter_aa(['G'])
+		self.assertEqual(len(self.R.sequences), 0)
+
 if __name__ == '__main__':
 	unittest.main()

@@ -1,5 +1,8 @@
-modlamp Example Script For Peptide Classification With Help of A Random Forest Classifier
-=========================================================================================
+modlAMP example script
+======================
+
+A modlamp example script for peptide classification with help of a Random Forest classifier.
+
 
 For documentation of the used modules see the the `Documentation <modlamp.html>`_ section.
 

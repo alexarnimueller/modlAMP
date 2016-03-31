@@ -12,7 +12,7 @@ Installation
 ************
 
 For the installation to work, ``pip`` needs to be installed. If you're not sure whether you already have pip, type
-``pip --version``. If you don't have pip installed, install it via ``easy_install pip``.
+``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
 
 When pip is installed, run the following command when located in the modlAMP package directory::
 
@@ -31,6 +31,7 @@ After installation, you should be able to import and use the different modules l
 >>> from modlamp.sequences import Centrosymmetric
 >>> from modlamp.descriptors import PeptideDescriptor
 >>> from modlamp.database import query_sequences
+
 
 Generating Sequences
 --------------------
@@ -52,6 +53,7 @@ These commands generated a mixed peptide library comprising of 1000 sequences.
 The module :mod:`sequences` incorporates different sequence generation classes. For documentation thereof, consider the
 docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
 
+
 Calculating Descriptor Values
 -----------------------------
 
@@ -71,6 +73,7 @@ We calculated the global hydrophobic moments from the Eisenberg hydrophobicity s
 Many more descriptors can be calculated, from global descriptors to concoluted / correlated descriptors from different
 amino acid scales. For further information consider the docs for `descriptors <modlamp.html#module-modlamp.descriptors>`_.
 
+
 Plotting Features
 -----------------
 
@@ -79,32 +82,43 @@ We can now plot these values as a boxplot, for example the hydrophobic moment:
 >>> from modlamp.plot import plot_feature
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
-.. image:: ../../static/uH_Eisenberg.png
+.. image:: static/uH_Eisenberg.png
 
 We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file ``APD3.fasta``:
 
->>> APD = PeptideDescriptor('/Path/to/file/APD3.fasta','eisenberg')
+>>> APD = PeptideDescriptor('/Path/to/file/APD3.fasta', 'eisenberg')
 >>> APD.calculate_moment()
 
 Now lets compare the values by plotting:
 
->>> plot_feature((P.descriptor,APD.descriptor),y_label='uH Eisenberg',x_tick_labels=['Library','APD3'])
+>>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
-.. image:: ../../static/uH_APD3.png
+.. image:: static/uH_APD3.png
 
 It is also possible to plot 2 or 3 different features in a scatter plot:
 
->>> from modlamp.plot import plot_3_features
->>> A = PeptideDescriptor('/Path/to/file/APD3.fasta','eisenberg')
+:Example: **2D Scatter Plot**
+
+>>> from modlamp.plot import plot_2_features
+>>> A = PeptideDescriptor('/Path/to/file/class1&2.fasta', 'eisenberg')
 >>> A.calculate_moment()
->>> B = GlobalDescriptor('/Path/to/file/APD3.fasta')
+>>> B = GlobalDescriptor('/Path/to/file/class1&2.fasta')
 >>> B.isoelectric_point()
+>>> target = [1] * (len(A.sequences) / 2) + [2] * (len(A.sequences) / 2)
+>>> plot_2_features(A.descriptor, B.descriptor, x_label='uH', y_label='pI', targets=target)
+
+.. image:: static/2D_scatter.png
+
+:Example: **3D Scatter Plot**
+
+>>> from modlamp.plot import plot_3_features
 >>> C = GlobalDescriptor('/Path/to/file/APD3.fasta')
 >>> C.length()
->>> plot_3_features(A.descriptor,B.descriptor,C.descriptor,x_label='uH',y_label='pI',z_label='length')
+>>> plot_3_features(A.descriptor, B.descriptor, C.descriptor, x_label='uH', y_label='pI', z_label='length')
 
-.. image:: ../../static/3D_scatter.png
+.. image:: static/3D_scatter.png
+
 
 Database Connection
 -------------------
@@ -124,3 +138,28 @@ Password: >? ***********
 Connecting to MySQL database...
 connection established!
 ['ILGTILGILKGL','ILGTILGFLKGL','ILGNILGFLKGL','ILGQILGILKGL','ILGHILGYLKGL','PAGHILGWWKGL','GLFDIVKKVVGALG',...]
+
+
+Loading Prepared Datasets
+-------------------------
+
+For AMP QSAR models, different options exist of choosing negative / inactive peptide examples. We assembled several
+datasets for classification tasks, that can be read by the :mod:`modlamp.datasets` module.
+
+:Example: **Helical AMPs vs. random all helical peptides**
+
+>>> from modlamp.datasets import load_helicalAMPset
+>>> data = load_helicalAMPset()
+>>> data.keys()
+['target_names', 'target', 'feature_names', 'sequences']
+
+The variable ``data`` holds **four different keys, which can also be called as its attributes**. The available attributes
+for :func:`load_helicalAMPset()` are :py:attr:`target_names` (target names), :py:attr:`target` (the target class vector),
+:py:attr:`feature_names` (the name of the data features, here: 'Sequence') and :py:attr:`sequences` (the loaded sequences).
+
+:Example:
+
+>>> data.target_names
+array(['HEL', 'AMP'], dtype='|S3')
+>>> data.sequences[:5]
+['FDQAQTEIQATMEEN', 'DVDAALHYLARLVEAG', 'RCPLVIDYLIDLATRS', 'NPATLMMFFK', 'NLEDSIQILRTD']

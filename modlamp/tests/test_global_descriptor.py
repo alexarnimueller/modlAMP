@@ -10,11 +10,11 @@ __author__ = 'modlab'
 
 class TestGlobalDescriptor(unittest.TestCase):
 
-	G = GlobalDescriptor(['GLFDIVKKVVGALG'])
+	G = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
 
 	def test_charge(self):
 		self.G.calculate_charge()
-		self.assertAlmostEqual(self.G.descriptor[0], 1.00099999)
+		self.assertAlmostEqual(self.G.descriptor[0], 1.)
 
 	def test_isoelectric(self):
 		self.G.isoelectric_point()
@@ -30,7 +30,7 @@ class TestGlobalDescriptor(unittest.TestCase):
 
 	def test_charge_density(self):
 		self.G.charge_density()
-		self.assertAlmostEqual(self.G.descriptor[0], 0.00070706)
+		self.assertAlmostEqual(self.G.descriptor[0], 0.00070636)
 
 	def test_instability_index(self):
 		self.G.instability_index()
@@ -43,3 +43,16 @@ class TestGlobalDescriptor(unittest.TestCase):
 	def test_boman_index(self):
 		self.G.boman_index()
 		self.assertAlmostEqual(self.G.descriptor[0], -1.04785714)
+
+	def test_filter_values(self):
+		self.G.calculate_charge()
+		self.G.filter_values(values=[1.], operator='>=')
+		self.assertEqual(self.G.sequences, ['GLFDIVKKVVGALG', 'KKKKKKKKKK'])
+		self.assertEqual(len(self.G.descriptor), 2)
+
+	def test_filter_aa(self):
+		D = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
+		D.calculate_charge()
+		D.filter_aa(['D'])
+		self.assertEqual(D.sequences, ['LLLLLL', 'KKKKKKKKKK'])
+		self.assertEqual(len(D.descriptor), 2)

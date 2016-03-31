@@ -12,7 +12,8 @@ from getpass import getpass
 import mysql.connector
 from mysql.connector import Error
 
-__author__ = 'modlab'
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 
 def _read_db_config(host='gsdelta641.ethz.ch',database='peptides',user='modlab',password=None):

@@ -22,11 +22,14 @@ Class								Characteristics
 import os
 import random
 import numpy as np
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_similarity
 from itertools import cycle
 from sklearn.utils import shuffle
+from collections import OrderedDict
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
 
-__author__ = 'modlab'
+
+__author__ = "modlab"
+__docformat__ = "restructuredtext en"
 
 
 class Centrosymmetric:
@@ -155,17 +158,16 @@ class Centrosymmetric:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
-
+		filter_aa(self, aminoacids=aminoacids)
 
 class Helices:
 	"""Base class for peptide sequences probable to form helices.
@@ -250,16 +252,17 @@ class Helices:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
+		filter_aa(self, aminoacids=aminoacids)
+
 
 class Kinked:
 	"""
@@ -353,16 +356,16 @@ class Kinked:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
+		filter_aa(self, aminoacids=aminoacids)
 
 
 class MixedLibrary:
@@ -373,7 +376,7 @@ class MixedLibrary:
 	:class:`Kinked`, :class:`Oblique` or :class:`Random`.
 	"""
 
-	def __init__(self,number,centrosymmetric=1,centroasymmetric=1,helix=1,kinked=1,oblique=1,rand=1,randAMP=1,randAMPnoCM=1):
+	def __init__(self, number, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1, randAMPnoCM=1):
 		"""initializing method of the class :class:`MixedLibrary`. Except from **number**, all other parameters are
 		ratios of sequences of the given sequence class.
 
@@ -383,67 +386,84 @@ class MixedLibrary:
 		:param helix: ratio of amphipathic helical sequences in the library
 		:param kinked: ratio of kinked amphipathic helical sequences in the library
 		:param oblique: ratio of oblique oriented amphipathic helical sequences in the library
-		:param random: ratio of random sequneces in the library
+		:param rand: ratio of random sequneces in the library
 		:param randAMP: ratio of random sequences with APD2 amino acid distribution in the library
 		:param randAMPnoCM: ratio of random sequences with APD2 amino acid distribution without Cys and Met in the library
+
+		.. warning::
+			If duplicate sequences are created, these are removed during the creation process. It is therefore quite
+			probable that you will not get the exact size of library that you entered as the parameter **number**. If you
+			generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
 		"""
+		self.names = []
 		self.sequences = []
-		self.number = int(number)
-		self.norm = float(sum((centrosymmetric,centroasymmetric,helix,kinked,oblique,rand,randAMP,randAMPnoCM)))
-		self.ratio_centrosym = float(centrosymmetric) / self.norm
-		self.ratio_centroasym = float(centroasymmetric) / self.norm
-		self.ratio_helix = float(helix) / self.norm
-		self.ratio_kinked = float(kinked) / self.norm
-		self.ratio_oblique = float(oblique) / self.norm
-		self.ratio_rand = float(rand) / self.norm
-		self.ratio_randAMP = float(randAMP) / self.norm
-		self.ratio_randAMPnoCM = float(randAMPnoCM) / self.norm
+		self.libsize = int(number)
+		norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
+		self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
+						'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
+						'ran': float(rand) / norm, 'AMP': float(randAMP) / norm, 'nCM': float(randAMPnoCM) / norm}
+		self.nums = {'sym': int(round(float(self.libsize) * self.ratios['sym'], ndigits=0)),
+						'asy': int(round(float(self.libsize) * self.ratios['asy'], ndigits=0)),
+						'hel': int(round(float(self.libsize) * self.ratios['hel'], ndigits=0)),
+						'knk': int(round(float(self.libsize) * self.ratios['knk'], ndigits=0)),
+						'obl': int(round(float(self.libsize) * self.ratios['obl'], ndigits=0)),
+						'ran': int(round(float(self.libsize) * self.ratios['ran'], ndigits=0)),
+						'AMP': int(round(float(self.libsize) * self.ratios['AMP'], ndigits=0)),
+						'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
 
 	def generate_library(self):
 		"""This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
 		All sequences are between 7 and 28 amino acids in length.
 
-		:return: a virtual library of sequences in the attribute :py:attr:`sequences`.
+		:return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in
+			:py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in
+			:py:attr:`libsize`.
 		:Example:
 
 		>>> Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)
 		>>> Lib.generate_library()
-		>>> len(Lib.sequences)
-		10000
+		>>> Lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
+		9126
 		>>> Lib.sequences
 		['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
-		>>> Lib.ratio_helix
-		0.069767
+		>>> Lib.nums
+		{'AMP': 2326,
+ 		 'asy': 1163,
+ 		 'hel': 698,
+ 		 'knk': 698,
+ 		 'nCM': 1163,
+ 		 'obl': 465,
+ 		 'ran': 2326,
+ 		 'sym': 1163}
 		"""
-		Cs = Centrosymmetric(round(float(self.number) * self.ratio_centrosym, ndigits=0))
+		Cs = Centrosymmetric(self.nums['sym'])
 		Cs.generate_symmetric()
-		Ca = Centrosymmetric(round(float(self.number) * self.ratio_centroasym, ndigits=0))
+		Ca = Centrosymmetric(self.nums['asy'])
 		Ca.generate_asymmetric()
-		H = Helices(7,28,round(float(self.number) * self.ratio_helix, ndigits=0))
+		H = Helices(7, 28, self.nums['hel'])
 		H.generate_helices()
-		K = Kinked(7,28,round(float(self.number) * self.ratio_kinked, ndigits=0))
+		K = Kinked(7, 28, self.nums['knk'])
 		K.generate_kinked()
-		O = Oblique(7,28,round(float(self.number) * self.ratio_oblique, ndigits=0))
+		O = Oblique(7, 28, self.nums['obl'])
 		O.generate_oblique()
-		R = Random(7, 28, round(float(self.number) * self.ratio_rand, ndigits=0))
+		R = Random(7, 28, self.nums['ran'])
 		R.generate_sequences('rand')
-		Ra = Random(7, 28, round(float(self.number) * self.ratio_randAMP, ndigits=0))
+		Ra = Random(7, 28, self.nums['AMP'])
 		Ra.generate_sequences('AMP')
-		Rc = Random(7, 28, round(float(self.number) * self.ratio_randAMPnoCM, ndigits=0))
+		Rc = Random(7, 28, self.nums['nCM'])
 		Rc.generate_sequences('AMPnoCM')
 
 		self.sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
-		self.sequences = shuffle(self.sequences)
+		self.names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
+					['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['ran'] + \
+					['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']
+		d = {s: n for s, n in zip(self.sequences, self.names)}  # remove duplicates while keeping correct names
+		self.names = [n for n in d.values()]
+		self.sequences = [s for s in d.keys()]
+		self.libsize = len(self.sequences)
+		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
-		# check if rounding affected sequence number. if too many: chop end off, if too few: fill up with random seqs
-		if len(self.sequences) > self.number:
-			self.sequences = self.sequences[:-(len(self.sequences)-self.number)]
-		elif len(self.sequences) < self.number:
-			S = Random(7, 28, self.number - len(self.sequences))
-			S.generate_sequences()
-			self.sequences = self.sequences + S.sequences
-
-	def save_fasta(self,filename):
+	def save_fasta(self, filename):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
@@ -462,16 +482,16 @@ class MixedLibrary:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
+		filter_aa(self, aminoacids=aminoacids)
 
 
 class Oblique(object):
@@ -560,16 +580,16 @@ class Oblique(object):
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
+		filter_aa(self, aminoacids=aminoacids)
 
 
 class Random:
@@ -581,33 +601,34 @@ class Random:
 	- **rand**: equal probabilities for all amino acids
 	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
 	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
+	- **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
 	The probability values for all natural AA can be found in the following table:
 
-	===	====	======	=========
-	AA	rand	AMP		AMPnoCM
-	===	====	======	=========
-	A	0.05	0.0766	0.0812275
-	C	0.05	0.071	0.0
-	D	0.05	0.026	0.0306275
-	E	0.05	0.0264	0.0310275
-	F	0.05	0.0405	0.0451275
-	G	0.05	0.1172	0.1218275
-	H	0.05	0.021	0.0256275
-	I	0.05	0.061	0.0656275
-	K	0.05	0.0958	0.1004275
-	L	0.05	0.0838	0.0884275
-	M	0.05	0.0123	0.0
-	N	0.05	0.0386	0.0432275
-	P	0.05	0.0463	0.0509275
-	Q	0.05	0.0251	0.0297275
-	R	0.05	0.0545	0.0591275
-	S	0.05	0.0613	0.0659275
-	T	0.05	0.0455	0.0501275
-	V	0.05	0.0572	0.0618275
-	W	0.05	0.0155	0.0201275
-	Y	0.05	0.0244	0.0290275
-	===	====	======	=========
+	===	====	======	=========	==========
+	AA	rand	AMP	AMPnoCM		randnoCM
+	===	====	======	=========	==========
+	A	0.05	0.0766	0.0812275	0.05555555
+	C	0.05	0.071	0.0		0.0
+	D	0.05	0.026	0.0306275	0.05555555
+	E	0.05	0.0264	0.0310275	0.05555555
+	F	0.05	0.0405	0.0451275	0.05555555
+	G	0.05	0.1172	0.1218275	0.05555555
+	H	0.05	0.021	0.0256275	0.05555555
+	I	0.05	0.061	0.0656275	0.05555555
+	K	0.05	0.0958	0.1004275	0.05555555
+	L	0.05	0.0838	0.0884275	0.05555555
+	M	0.05	0.0123	0.0		0.0
+	N	0.05	0.0386	0.0432275	0.05555555
+	P	0.05	0.0463	0.0509275	0.05555555
+	Q	0.05	0.0251	0.0297275	0.05555555
+	R	0.05	0.0545	0.0591275	0.05555555
+	S	0.05	0.0613	0.0659275	0.05555555
+	T	0.05	0.0455	0.0501275	0.05555555
+	V	0.05	0.0572	0.0618275	0.05555555
+	W	0.05	0.0155	0.0201275	0.05555555
+	Y	0.05	0.0244	0.0290275	0.05555555
+	===	====	======	=========	==========
 
 	"""
 
@@ -621,10 +642,10 @@ class Random:
 		aminoacids(self)
 		template(self, lenmin, lenmax, seqnum)
 
-	def generate_sequences(self,proba='rand'):
+	def generate_sequences(self, proba='rand'):
 		"""Method to actually generate the sequences.
 
-		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand
+		:param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM
 		:return: A list of random AMP sequences with defined AA probabilities
 		:Example:
 
@@ -634,11 +655,13 @@ class Random:
 		['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
 		"""
 		clean(self)
-		self.prob = self.prob_rand # default probability = rand
+		self.prob = self.prob_rand  # default probability = rand
 		if proba == 'AMPnoCM':
 			self.prob = self.prob_AMPnoCM
 		elif proba == 'AMP':
 			self.prob = self.prob_AMP
+		elif proba == 'randnoCM':
+			self.prob = self.prob_randnoCM
 
 		for s in range(self.seqnum):
 			self.seq = []
@@ -690,13 +713,13 @@ class Random:
 		"""
 		filter_unnatural(self)
 
-	def filter_similarity(self, threshold=0.8):
-		"""Method to filter out peptide sequences above a given similarity threshold in a list of all sequences in the class
-		attribute :py:attr:`sequences`.
+	def filter_aa(self, aminoacids=['X']):
+		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+		**Dublicates** sequences are removed as well.
 
-		:param threshold: Similarity threshold over which similar sequences are kicked out
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+		:param aminoacids: list of amino acids to be filtered
+		:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 
-		.. seealso:: :func:`modlamp.core.filter_similarity()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_similarity(self, threshold)
+		filter_aa(self, aminoacids=aminoacids)
