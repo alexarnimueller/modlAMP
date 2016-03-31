@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.1.3 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.1.4 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.1.3',
+        VERSION:     'v2.1.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.1.3 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.1.4 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.4 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -2033,8 +2033,8 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 the different database tables.</p>
 <dl class="function">
 <dt id="modlamp.database.query_sequences">
-<code class="descclassname">modlamp.database.</code><code class="descname">query_sequences</code><span class="sig-paren">(</span><em>table='modlab_experiments'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_sequences" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts all sequences stored in a table column &#8220;sequence&#8221; and returns them as a list.</p>
+<code class="descclassname">modlamp.database.</code><code class="descname">query_sequences</code><span class="sig-paren">(</span><em>table='modlab_peptides'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts all sequences from a given table in the modlab peptide database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2053,6 +2053,47 @@ the different database tables.</p>
 <span class="go">connection established!</span>
 <span class="go">[&#39;YGGFL&#39;,&#39;WGKFFAGVKKLTKAILGEIA&#39;,&#39;WGKFFAGVKKLTKAILGEIA&#39;,....]</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.database.query_experiments">
+<code class="descclassname">modlamp.database.</code><code class="descname">query_experiments</code><span class="sig-paren">(</span><em>table='modlab_experiments', columns=['sequence']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_experiments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts experimental results from the modlab peptide database. All data from the given table and
+column names is extracted and returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> &#8211; the mysql database table to be queried</li>
+<li><strong>columns</strong> &#8211; a list of the column names {str} to be extracted from the table</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of sequences as strings</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">query_experiments</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;MCF7_activity&#39;</span><span class="p">,</span> <span class="s1">&#39;Saureus_activity&#39;</span><span class="p">])</span>
+<span class="go">Password: *********</span>
+<span class="go">Connecting to MySQL database...</span>
+<span class="go">connection established!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">array([ [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If &#8216;None&#8217; appears as a value, this means no data was measured for this peptide and not that activity is None
+(inactive).</p>
 </div>
 </dd></dl>
 
@@ -2732,7 +2773,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

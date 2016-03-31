@@ -110,15 +110,15 @@ def query_experiments(table='modlab_experiments', columns=['sequence']):
 	Connecting to MySQL database...
 	connection established!
 	>>> data[:5]
-	array([['ILGTILGILKGL', None, 1.0],
-		   ['ILGTILGFLKGL', None, 1.0],
-       	   ['ILGNILGFLKGL', None, 1.0],
-       	   ['ILGQILGILKGL', None, 1.0],
-       	   ['ILGHILGYLKGL', None, 1.0]], dtype=object)
+	array([	['ILGTILGILKGL', None, 1.0],
+		['ILGTILGFLKGL', None, 1.0],
+		['ILGNILGFLKGL', None, 1.0],
+		['ILGQILGILKGL', None, 1.0],
+		['ILGHILGYLKGL', None, 1.0]], dtype=object)
 
-    .. note::
-    	If 'None' appears as a value, this means no data was measured for this peptide and not that activity is None
-    	(inactive).
+	.. note::
+		If 'None' appears as a value, this means no data was measured for this peptide and not that activity is None
+		(inactive).
 	"""
 	try:
 		conn = _connect()
