@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v1.5.0 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.1.3 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v1.5.0',
+        VERSION:     'v2.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v1.5.0 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.1.3 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v1.5.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -1501,7 +1501,9 @@ All sequences are between 7 and 28 amino acids in length.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a virtual library of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a virtual library of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, the sub-library class names in
+<code class="xref py py-attr docutils literal"><span class="pre">names</span></code>, the number of sequences generated for each class in <code class="xref py py-attr docutils literal"><span class="pre">nums</span></code> and the library size in
+<code class="xref py py-attr docutils literal"><span class="pre">libsize</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -1513,8 +1515,6 @@ All sequences are between 7 and 28 amino acids in length.</p>
 <span class="go">9126</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;RHTHVAGSWYGKMPPSPQTL&#39;,&#39;MRIKLRKIPCILAC&#39;,&#39;DGINKEVKDSYGVFLK&#39;,&#39;LRLYLRLGRVWVRG&#39;,&#39;GKLFLKGGKLFLKGGKLFLKG&#39;,...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">ratios</span><span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span>  <span class="c1"># the ratio of the helical sequences</span>
-<span class="go">0.069767</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">nums</span>
 <span class="go">{&#39;AMP&#39;: 2326,</span>
 <span class="go"> &#39;asy&#39;: 1163,</span>
@@ -2732,7 +2732,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v1.5.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

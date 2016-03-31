@@ -107,22 +107,22 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
 	fig, ax = plt.subplots()
 
 	if targets:
-		for n in list(set(targets)): # finding indices of the different targets in "targets" and plotting
+		for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
 			t = np.array([i for i,j in enumerate(targets) if j == n])
-			xt = x_values[t] # find all values in x for the given target
-			yt = y_values[t] # find all values in y for the given target
-			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25, label='class '+str(n)) # plot scatter for this target group
+			xt = x_values[t]  # find all values in x for the given target
+			yt = y_values[t]  # find all values in y for the given target
+			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25, label='class '+str(n))  # plot scatter for this target group
 			ax.legend(loc='lower right')
 
 	else:
-		ax.scatter(x_values,y_values,c=colors[0],alpha=1., s=25)
+		ax.scatter(x_values, y_values, c=colors[0], alpha=1., s=25)
 
 	ax.set_xlabel(x_label, fontweight='bold')
 	ax.set_ylabel(y_label, fontweight='bold')
-	ax.set_title('2D Feature Plot',fontsize=16,fontweight='bold')
+	ax.set_title('2D Feature Plot', fontsize=16, fontweight='bold')
 
 	if filename:
-		plt.savefig(filename,dpi=150)
+		plt.savefig(filename, dpi=150)
 	else:
 		plt.show()
 
@@ -175,3 +175,6 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
 		plt.savefig(filename,dpi=150)
 	else:
 		plt.show()
+
+# TODO: function to plot profile of a given scale & window
+# TODO: helical wheel plot function?
