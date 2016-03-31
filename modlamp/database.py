@@ -102,7 +102,7 @@ def query_experiments(table='modlab_experiments', columns=['sequence']):
 
 	:param table: the mysql database table to be queried
 	:param columns: a list of the column names {str} to be extracted from the table
-	:return: a list of sequences as strings
+	:return: queried data as a numpy array
 	:Example:
 
 	>>> data = query_experiments(table='modlab_experiments', columns=['sequence', 'MCF7_activity', 'Saureus_activity'])
