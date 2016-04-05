@@ -104,10 +104,10 @@ class GlobalDescriptor(object):
 
 		The following dictionary shows the used side chain charges:
 
-			AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
+			AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1.}
 
 		"""
-		AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1}
+		AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1.}
 		desc = []
 		for seq in self.sequences:
 			charge = 0.
