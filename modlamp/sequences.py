@@ -428,13 +428,13 @@ class MixedLibrary:
 		['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
 		>>> Lib.nums
 		{'AMP': 2326,
- 		 'asy': 1163,
- 		 'hel': 698,
- 		 'knk': 698,
- 		 'nCM': 1163,
- 		 'obl': 465,
- 		 'ran': 2326,
- 		 'sym': 1163}
+		'asy': 1163,
+		'hel': 698,
+		'knk': 698,
+		'nCM': 1163,
+		'obl': 465,
+		'ran': 2326,
+		'sym': 1163}
 		"""
 		Cs = Centrosymmetric(self.nums['sym'])
 		Cs.generate_symmetric()
@@ -453,13 +453,20 @@ class MixedLibrary:
 		Rc = Random(7, 28, self.nums['nCM'])
 		Rc.generate_sequences('AMPnoCM')
 
-		self.sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
-		self.names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
+		sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
+		names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
 					['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['ran'] + \
 					['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']
-		d = {s: n for s, n in zip(self.sequences, self.names)}  # remove duplicates while keeping correct names
-		self.names = [n for n in d.values()]
-		self.sequences = [s for s in d.keys()]
+		# combining sequence and name to remove duplicates
+		comb = []
+		for i, s in enumerate(sequences):
+			comb.append(s + '_' + names[i])
+		comb = set(comb)
+		# remove duplicates
+		for c in comb:
+			self.sequences.append(c.split('_')[0])
+			self.names.append(c.split('_')[1])
+		# update libsize and nums
 		self.libsize = len(self.sequences)
 		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
