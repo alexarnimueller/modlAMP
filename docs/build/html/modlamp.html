@@ -201,7 +201,7 @@ the <strong>methods</strong> linked below:</p>
 </table>
 <p>The following dictionary shows the used side chain charges:</p>
 <blockquote>
-<div>AACharge = {&#8220;C&#8221;: -.1, &#8220;D&#8221;: -1., &#8220;E&#8221;: -1., &#8220;H&#8221;: .1, &#8220;K&#8221;: 1., &#8220;R&#8221;: 1}</div></blockquote>
+<div>AACharge = {&#8220;C&#8221;: -.1, &#8220;D&#8221;: -1., &#8220;E&#8221;: -1., &#8220;H&#8221;: .1, &#8220;K&#8221;: 1., &#8220;R&#8221;: 1.}</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -1526,6 +1526,22 @@ All sequences are between 7 and 28 amino acids in length.</p>
 <span class="go"> &#39;sym&#39;: 1163}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.MixedLibrary.prune_library">
+<code class="descname">prune_library</code><span class="sig-paren">(</span><em>newsize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.prune_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.prune_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to cut down a library to the given new size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>newsize</strong> &#8211; new desired size of the mixed library</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">adapted library with corresponding attributes (sequences, names, libsize, nums)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
