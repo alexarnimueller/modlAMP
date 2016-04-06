@@ -491,15 +491,6 @@ class MixedLibrary:
 		"""
 		save_fasta(self,filename)
 
-	def filter_unnatrual(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
-
-		:return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-		.. seealso:: :func:`modlamp.core.filter_unnatural()`
-		"""
-		filter_unnatural(self)
-
 	def filter_aa(self, aminoacids=['X']):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
