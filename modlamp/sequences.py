@@ -463,6 +463,17 @@ class MixedLibrary:
 		self.libsize = len(self.sequences)
 		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
+	def prune_library(self, newsize):
+		"""Method to cut down a library to the given new size.
+
+		:param newsize: new desired size of the mixed library
+		:return: adapted library with corresponding attributes (sequences, names, libsize, nums)
+		"""
+		self.names = self.names[:newsize]
+		self.sequences = self.sequences[:newsize]
+		self.libsize = len(self.sequences)
+		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
+
 	def save_fasta(self, filename):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
