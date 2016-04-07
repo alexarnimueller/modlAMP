@@ -5,20 +5,21 @@
 
 This module incorporates functions to plot different feature plots. The following functions are available:
 
-============================		============================================================================
+============================		==============================================================================
 Function							Characteristics
-============================		============================================================================
+============================		==============================================================================
 :py:func:`plot_feature`				Generate a box plot for visualizing the distribution of a given feature.
 :py:func:`plot_2_features`			Generate a 2D scatter plot of 2 given features.
 :py:func:`plot_3_features`			Generate a 3D scatter plot of 3 given features.
-============================		============================================================================
+:py:func:`plot_profile`				Generates a profile plot of a sequence to visualize potential linear gradients
+============================		==============================================================================
 
 """
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -41,14 +42,14 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 	.. image:: ../docs/static/uH_Eisenberg.png
 		:scale: 50 %
 	"""
-	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black','hotpink'] # available colors
+	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black','hotpink']  # available colors
 
 	fig, ax = plt.subplots()
 
 	if targets:
 		data = []
 		cntr = 0
-		for n in list(set(targets)): # finding indices of the different targets in "targets" and plotting
+		for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
 			t = np.array([i for i,j in enumerate(targets) if j == n])
 			data.append([y_values[t]])
 			cntr += 1
@@ -67,18 +68,18 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 
 	# coloring faces of boxes
 	medianprops = dict(linestyle='-', linewidth=1, color='black')
-	box = ax.boxplot(data,notch=True, patch_artist=True,medianprops=medianprops,labels=labels)
+	box = ax.boxplot(data,notch=True, patch_artist=True, medianprops=medianprops, labels=labels)
 	plt.setp(box['whiskers'], color='black')
 
 	for patch, color in zip(box['boxes'], colors):
-		patch.set(facecolor=color,edgecolor='black',alpha=0.8)
+		patch.set(facecolor=color, edgecolor='black', alpha=0.8)
 
-	ax.set_xlabel('Classes',fontweight='bold')
+	ax.set_xlabel('Classes', fontweight='bold')
 	ax.set_ylabel(y_label, fontweight='bold')
-	ax.set_title('Feature Box-Plot',fontsize=16,fontweight='bold')
+	ax.set_title('Feature Box-Plot', fontsize=16, fontweight='bold')
 
 	if filename:
-		plt.savefig(filename,dpi=150)
+		plt.savefig(filename, dpi=150)
 	else:
 		plt.show()
 
@@ -103,13 +104,13 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
 		:scale: 50 %
 	"""
 
-	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black'] # available colors
+	colors = ['dodgerblue', 'firebrick', 'gold', 'lightgreen', 'navy', 'black']  # available colors
 
 	fig, ax = plt.subplots()
 
 	if targets:
 		for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
-			t = np.array([i for i,j in enumerate(targets) if j == n])
+			t = np.array([i for i, j in enumerate(targets) if j == n])
 			xt = x_values[t]  # find all values in x for the given target
 			yt = y_values[t]  # find all values in y for the given target
 			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25, label='class '+str(n))  # plot scatter for this target group
@@ -182,12 +183,13 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 	""" Function to generate sequence profile plots of a given amino acid scale or a moment thereof.
 
 	.. note::
-		:func`plot_profile` can only plot one-dimensional amino acid scales given in :class:`PeptideDescriptor`.
+		:func:`plot_profile` can only plot one-dimensional amino acid scales given in
+		:class:`modlamp.descriptors.PeptideDescriptor`.
 
 	:param sequence: {str} Peptide sequence for which the profile should be plotted.
 	:param window: {int, uneven} Window size for which the average value is plotted for the center amino acid.
 	:param scalename: {str} Amino acid scale to be used to describe the sequence.
-	:param filename: {str} Filename  where to safe the plot. *default = None* -> show the plot
+	:param filename: {str} Filename  where to safe the plot. *default = None* --> show the plot
 	:return: a profile plot of the input sequence interactively or with the specified *filename*
 	:Example:
 
@@ -221,7 +223,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 		plt.setp(line, color='red', linewidth=2.0)
 
 		# axis labes and title
-		ax.set_xlabel('amino acid position', fontweight='bold')
+		ax.set_xlabel('sequence position', fontweight='bold')
 		ax.set_ylabel(scalename + ' value', fontweight='bold')
 		ax.set_title('Sequence Profile For ' + sequence, fontsize=16, fontweight='bold')
 		ax.text(max(x_range)/2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)

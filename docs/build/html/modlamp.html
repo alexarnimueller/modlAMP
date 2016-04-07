@@ -1517,13 +1517,13 @@ All sequences are between 7 and 28 amino acids in length.</p>
 <span class="go">[&#39;RHTHVAGSWYGKMPPSPQTL&#39;,&#39;MRIKLRKIPCILAC&#39;,&#39;DGINKEVKDSYGVFLK&#39;,&#39;LRLYLRLGRVWVRG&#39;,&#39;GKLFLKGGKLFLKGGKLFLKG&#39;,...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">nums</span>
 <span class="go">{&#39;AMP&#39;: 2326,</span>
-<span class="go"> &#39;asy&#39;: 1163,</span>
-<span class="go"> &#39;hel&#39;: 698,</span>
-<span class="go"> &#39;knk&#39;: 698,</span>
-<span class="go"> &#39;nCM&#39;: 1163,</span>
-<span class="go"> &#39;obl&#39;: 465,</span>
-<span class="go"> &#39;ran&#39;: 2326,</span>
-<span class="go"> &#39;sym&#39;: 1163}</span>
+<span class="go">&#39;asy&#39;: 1163,</span>
+<span class="go">&#39;hel&#39;: 698,</span>
+<span class="go">&#39;knk&#39;: 698,</span>
+<span class="go">&#39;nCM&#39;: 1163,</span>
+<span class="go">&#39;obl&#39;: 465,</span>
+<span class="go">&#39;ran&#39;: 2326,</span>
+<span class="go">&#39;sym&#39;: 1163}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1561,24 +1561,6 @@ All sequences are between 7 and 28 amino acids in length.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.MixedLibrary.filter_unnatrual">
-<code class="descname">filter_unnatrual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.filter_unnatrual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.filter_unnatrual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> as well as duplicates.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -2258,8 +2240,8 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <span class="target" id="module-modlamp.plot"></span><p>This module incorporates functions to plot different feature plots. The following functions are available:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col width="25%" />
+<col width="75%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Function</th>
@@ -2275,6 +2257,9 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.plot.plot_3_features" title="modlamp.plot.plot_3_features"><code class="xref py py-func docutils literal"><span class="pre">plot_3_features()</span></code></a></td>
 <td>Generate a 3D scatter plot of 3 given features.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_profile" title="modlamp.plot.plot_profile"><code class="xref py py-func docutils literal"><span class="pre">plot_profile()</span></code></a></td>
+<td>Generates a profile plot of a sequence to visualize potential linear gradients</td>
 </tr>
 </tbody>
 </table>
@@ -2353,11 +2338,11 @@ are plottet in different colors.</p>
 <li><strong>x_values</strong> &#8211; Array of values of the feature to be plotted on the x-axis.</li>
 <li><strong>y_values</strong> &#8211; Array of values of the feature to be plotted on the y-axis.</li>
 <li><strong>z_values</strong> &#8211; Array of values of the feature to be plotted on the z-axis.</li>
-<li><strong>targets</strong> &#8211; List of target class values [string/binary] for the given feature data.</li>
-<li><strong>x_label</strong> &#8211; X-axis label.</li>
-<li><strong>y_label</strong> &#8211; Y-axis label.</li>
-<li><strong>z_label</strong> &#8211; Z-axis label.</li>
-<li><strong>filename</strong> &#8211; filename where to safe the plot. <em>default = None</em></li>
+<li><strong>targets</strong> &#8211; List of target class values {string/binary} for the given feature data.</li>
+<li><strong>x_label</strong> &#8211; {str} X-axis label.</li>
+<li><strong>y_label</strong> &#8211; {str} Y-axis label.</li>
+<li><strong>z_label</strong> &#8211; {str} Z-axis label.</li>
+<li><strong>filename</strong> &#8211; {str} filename where to safe the plot. <em>default = None</em> -&gt; show the plot</li>
 </ul>
 </td>
 </tr>
@@ -2372,6 +2357,40 @@ are plottet in different colors.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.plot.plot_profile">
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_profile</code><span class="sig-paren">(</span><em>sequence</em>, <em>window=5</em>, <em>scalename='eisenberg'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to generate sequence profile plots of a given amino acid scale or a moment thereof.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="#modlamp.plot.plot_profile" title="modlamp.plot.plot_profile"><code class="xref py py-func docutils literal"><span class="pre">plot_profile()</span></code></a> can only plot one-dimensional amino acid scales given in
+<a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sequence</strong> &#8211; {str} Peptide sequence for which the profile should be plotted.</li>
+<li><strong>window</strong> &#8211; {int, uneven} Window size for which the average value is plotted for the center amino acid.</li>
+<li><strong>scalename</strong> &#8211; {str} Amino acid scale to be used to describe the sequence.</li>
+<li><strong>filename</strong> &#8211; {str} Filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a profile plot of the input sequence interactively or with the specified <em>filename</em></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_profile</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="width: 600.0px; height: 450.0px;" /></a>
 </dd></dl>
 
 </div>
