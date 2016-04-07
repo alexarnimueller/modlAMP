@@ -80,8 +80,7 @@ class GlobalDescriptor(object):
 			self.descriptor = np.array(desc)
 
 	def calculate_MW(self, amide=False, append=False):
-		"""
-		Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
+		"""Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
 
 		:param amide: {boolean} whether the sequences are C-terminally amidated (subtracts 0.95 from the MW).
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
