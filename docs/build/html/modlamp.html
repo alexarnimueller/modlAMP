@@ -166,18 +166,26 @@ the <strong>methods</strong> linked below:</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.calculate_MW">
-<code class="descname">calculate_MW</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_MW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_MW" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_MW</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_MW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_MW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the molecular weight [g/mol] of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences are C-terminally amidated (subtracts 0.95 from the MW).</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version v2.1.5: </span>amide option added</p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -2391,6 +2399,9 @@ are plottet in different colors.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="width: 600.0px; height: 450.0px;" /></a>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.1.5.</span></p>
+</div>
 </dd></dl>
 
 </div>

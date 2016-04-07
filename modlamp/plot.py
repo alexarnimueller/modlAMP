@@ -197,6 +197,8 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 
 	.. image:: ../docs/static/profileplot.png
 		:scale: 50 %
+
+	.. versionadded:: v2.1.5
 	"""
 	# check if given scale is defined in PeptideDescriptor
 	try:

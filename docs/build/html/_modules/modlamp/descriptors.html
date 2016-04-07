@@ -128,17 +128,22 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.calculate_MW"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_MW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.calculate_MW"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_MW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.</span>
 
+<span class="sd">		:param amide: {boolean} whether the sequences are C-terminally amidated (subtracts 0.95 from the MW).</span>
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+
+<span class="sd">		.. versionchanged:: v2.1.5 amide option added</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
 			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">amide</span><span class="p">:</span>  <span class="c1"># if sequences are amidated, subtract 0.98 from calculated MW</span>
+			<span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">-</span><span class="mf">0.95</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">desc</span><span class="p">]</span>
 		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
 		<span class="k">else</span><span class="p">:</span>

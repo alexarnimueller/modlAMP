@@ -246,6 +246,8 @@
 
 <span class="sd">	.. image:: ../docs/static/profileplot.png</span>
 <span class="sd">		:scale: 50 %</span>
+
+<span class="sd">	.. versionadded:: v2.1.5</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># check if given scale is defined in PeptideDescriptor</span>
 	<span class="k">try</span><span class="p">:</span>
@@ -272,7 +274,7 @@
 		<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
 
 		<span class="c1"># axis labes and title</span>
-		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;amino acid position&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;sequence position&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">scalename</span> <span class="o">+</span> <span class="s1">&#39; value&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 		<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sequence Profile For &#39;</span> <span class="o">+</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 		<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq_profile</span><span class="p">),</span> <span class="s1">&#39;window size: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
