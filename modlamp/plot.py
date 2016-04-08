@@ -70,7 +70,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 
 	# coloring faces of boxes
 	medianprops = dict(linestyle='-', linewidth=1, color='black')
-	box = ax.boxplot(data,notch=True, patch_artist=True, medianprops=medianprops, labels=labels)
+	box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=medianprops, labels=labels)
 	plt.setp(box['whiskers'], color='black')
 
 	for patch, color in zip(box['boxes'], colors):
@@ -368,5 +368,3 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 		plt.savefig(filename, dpi=150)
 	else:
 		plt.show()
-
-# TODO: fix overlay bug for longer sequences

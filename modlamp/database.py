@@ -8,7 +8,7 @@ This module incorporates functions to connect to the modlab internal peptide dat
 the different database tables.
 """
 
-import numpy as np
+import pandas as pd
 import mysql.connector
 from getpass import getpass
 from mysql.connector import Error
@@ -51,57 +51,20 @@ def _connect():
 	try:
 		print('Connecting to MySQL database...')
 		conn = mysql.connector.connect(**config)
-		if conn.is_connected():
-			print('connection established!')
-		else:
-			print('connection failed!')
+		print('connection established!')
+		return conn
 
 	except mysql.connector.Error as err:
 		print(err)
 
-	finally:
-		if conn != None:
-			return conn
 
-
-def query_sequences(table='modlab_peptides'):
-	"""
-	This function extracts all sequences from a given table in the modlab peptide database.
-
-	:param table: the mysql database table to be queried
-	:return: a list of sequences as strings
-	:Example:
-
-	>>> query_sequences(table='modlab_peptides')
-	Password: *********
-	Connecting to MySQL database...
-	connection established!
-	['YGGFL','WGKFFAGVKKLTKAILGEIA','WGKFFAGVKKLTKAILGEIA',....]
-	"""
-	try:
-		conn = _connect()
-		cursor = conn.cursor()
-		query = ("SELECT sequence FROM " + table)
-		cursor.execute(query)
-		row = cursor.fetchone()
-		rows = []
-		while row is not None:
-			rows.append(row[0].encode('utf-8', 'ignore').strip())  # encode from unicode to utf-8 string
-			row = cursor.fetchone()
-
-		return rows
-
-	except Error as e:
-		print(e)
-
-
-def query_experiments(table='modlab_experiments', columns=['sequence']):
+def query_experiments(table, columns=None):
 	"""
 	This function extracts experimental results from the modlab peptide database. All data from the given table and
 	column names is extracted and returned.
 
 	:param table: the mysql database table to be queried
-	:param columns: a list of the column names {str} to be extracted from the table
+	:param columns: a list of the column names {str} to be extracted from the table *default*: '*' (all columns)
 	:return: queried data as a numpy array
 	:Example:
 
@@ -117,21 +80,16 @@ def query_experiments(table='modlab_experiments', columns=['sequence']):
 		['ILGHILGYLKGL', None, 1.0]], dtype=object)
 
 	.. note::
-		If 'None' appears as a value, this means no data was measured for this peptide and not that activity is None
-		(inactive).
+		If 'None' or 'NULL' appears as a value, this means no data was measured for this peptide and not that activity
+		is None (inactive).
 	"""
+	if not columns:
+		columns = ['*']
 	try:
 		conn = _connect()
-		cursor = conn.cursor()
-		query = ("SELECT " + ', '.join(columns) + " FROM " + table)
-		cursor.execute(query)
-		rows = np.asarray(cursor.fetchall(), dtype='object')  # return data in a numpy array
+		df = pd.read_sql("SELECT " + ', '.join(columns) + " FROM " + table, con=conn)
 
-		for i, c in enumerate(rows[0]):
-			if isinstance(c, unicode):  # if a column is type 'unicode', it gets converted to 'utf-8'
-				for n, e in enumerate(rows[:, i]):
-					rows[:, i][n] = e.encode('utf-8', 'ignore').strip()
-		return rows
+		return df
 
 	except Error as e:
 		print(e)
