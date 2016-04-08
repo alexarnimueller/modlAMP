@@ -259,16 +259,16 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 	>>> helical_wheel('GLFDIVKKVVGALG')
 	>>> helical_wheel('KLLKLLKKLLKLLK', colorcoding='charge')
 	>>> helical_wheel('AKLWLKAGRGFGRG', colorcoding='none', lineweights=False)
+	>>> helical_wheel('ACDEFGHIKLMNPQRSTVWY')
 
 	.. image:: ../docs/static/wheel1.png
-		:scale: 30 %
+		:scale: 25 %
 	.. image:: ../docs/static/wheel2.png
-		:scale: 30 %
+		:scale: 25 %
 	.. image:: ../docs/static/wheel3.png
-		:scale: 30 %
-
-	.. warning::
-		At the moment, only sequences up to a length of 18 AA can be plotted! This bug will be fixed in future versions.
+		:scale: 25 %
+	.. image:: ../docs/static/wheel4.png
+		:scale: 25 %
 
 	.. versionadded:: v2.1.5
 	"""
@@ -281,7 +281,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 				'#000000', '#000000', '#000000', '#000000', '#000000', '#0047b3', '#000000', '#000000', '#000000',
 				'#000000', '#000000']
 	f_none = ['#ffffff'] * 20
-	t_rainbow = ['w', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
+	t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
 	t_charge = ['w'] * 20
 	t_none = ['k'] * 20
 	if lineweights == True:
@@ -317,13 +317,22 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
 	# iterate over sequence
 	for i, r in enumerate(rad):
-		new = (np.cos(r), np.sin(r))  # new AA coordinates
+		if i < 18:
+			new = (np.cos(r), np.sin(r))  # new AA coordinates
 
-		# plot the connecting lines
-		if old is not None:
+			# plot the connecting lines
+			if old is not None:
+				line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k', linewidth=lw[i-1])
+				line.set_zorder(1)  # 1 = level behind circles
+				ax.add_line(line)
+		elif i == 18:
+			new = (np.cos(r), np.sin(r))
 			line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k', linewidth=lw[i-1])
 			line.set_zorder(1)  # 1 = level behind circles
 			ax.add_line(line)
+			new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
+		else:
+			new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
 
 		# plot circles
 		circ = patches.Circle(new, radius=0.1, transform=ax.transData, edgecolor='k', facecolor=df[sequence[i]])
@@ -332,20 +341,24 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
 		# check if N- or C-terminus and add subscript, then plot AA letter
 		if i == 0:
-			ax.text(np.cos(r), np.sin(r), sequence[i] + r'$_N$', va='center', ha='center', transform=ax.transData,
+			ax.text(new[0], new[1], sequence[i] + r'$_N$', va='center', ha='center', transform=ax.transData,
 					size=20, color=dt[sequence[i]])
 		elif i == len(sequence) - 1:
-			ax.text(np.cos(r), np.sin(r), sequence[i] + r'$_C$', va='center', ha='center', transform=ax.transData,
+			ax.text(new[0], new[1], sequence[i] + r'$_C$', va='center', ha='center', transform=ax.transData,
 					size=20, color=dt[sequence[i]])
 		else:
-			ax.text(np.cos(r), np.sin(r), sequence[i], va='center', ha='center', transform=ax.transData,
+			ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
 					size=20, color=dt[sequence[i]])
 
 		old = new  # save as previous coordinates
 
 	# plot shape
-	ax.set_xlim(-1.2, 1.2)
-	ax.set_ylim(-1.2, 1.2)
+	if len(sequence) < 19:
+		ax.set_xlim(-1.2, 1.2)
+		ax.set_ylim(-1.2, 1.2)
+	else:
+		ax.set_xlim(-1.4, 1.4)
+		ax.set_ylim(-1.4, 1.4)
 	cur_axes = plt.gca()
 	cur_axes.axes.get_xaxis().set_visible(False)
 	cur_axes.axes.get_yaxis().set_visible(False)
