@@ -12,13 +12,15 @@ Function							Characteristics
 :py:func:`plot_2_features`			Generate a 2D scatter plot of 2 given features.
 :py:func:`plot_3_features`			Generate a 3D scatter plot of 3 given features.
 :py:func:`plot_profile`				Generates a profile plot of a sequence to visualize potential linear gradients
+:py:func:`helical_wheel`			Generates a helical wheel projection plot of a given sequence.
 ============================		==============================================================================
 
 """
-
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.lines as lines
+from mpl_toolkits.mplot3d import Axes3D
 from modlamp.descriptors import PeptideDescriptor
 
 __author__ = "modlab"
@@ -242,4 +244,116 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 		else:
 			plt.show()
 
-# TODO: helical wheel plot function?
+
+def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None):
+	"""A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
+	properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
+
+	:param sequence: {str} the peptide sequence for which the helical wheel should be drawn.
+	:param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *no*
+	:param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
+	:param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
+	:return: a helical wheel projection plot of the given sequence (interactively or in **filename**)
+	:Example:
+
+	>>> helical_wheel('GLFDIVKKVVGALG')
+	>>> helical_wheel('KLLKLLKKLLKLLK', colorcoding='charge')
+	>>> helical_wheel('AKLWLKAGRGFGRG', colorcoding='none', lineweights=False)
+
+	.. image:: ../docs/static/wheel1.png
+		:scale: 30 %
+	.. image:: ../docs/static/wheel2.png
+		:scale: 30 %
+	.. image:: ../docs/static/wheel3.png
+		:scale: 30 %
+
+	.. warning::
+		At the moment, only sequences up to a length of 18 AA can be plotted! This bug will be fixed in future versions.
+
+	.. versionadded:: v2.1.5
+	"""
+	# color mappings
+	aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+	f_rainbow = ['#3e3e28', '#ffcc33', '#b30047', '#b30047', '#ffcc33', '#3e3e28', '#80d4ff', '#ffcc33', '#0047b3',
+				'#ffcc33', '#ffcc33', '#b366ff', '#29a329', '#b366ff', '#0047b3', '#ff66cc', '#ff66cc', '#ffcc33',
+				'#ffcc33', '#ffcc33']
+	f_charge = ['#000000', '#000000', '#b30047', '#b30047', '#000000', '#000000', '#80d4ff', '#000000', '#0047b3',
+				'#000000', '#000000', '#000000', '#000000', '#000000', '#0047b3', '#000000', '#000000', '#000000',
+				'#000000', '#000000']
+	f_none = ['#ffffff'] * 20
+	t_rainbow = ['w', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
+	t_charge = ['w'] * 20
+	t_none = ['k'] * 20
+	if lineweights == True:
+		lw = np.arange(1, 6, 5. / (len(sequence) - 1))  # line thickness array
+		lw = lw[::-1]  # inverse order
+	else:
+		lw = [2.] * (len(sequence) - 1)
+
+	# check which color coding to use
+	if colorcoding == 'rainbow':
+		df = dict(zip(aa, f_rainbow))
+		dt = dict(zip(aa, t_rainbow))
+	elif colorcoding == 'charge':
+		df = dict(zip(aa, f_charge))
+		dt = dict(zip(aa, t_charge))
+	elif colorcoding == 'none':
+		df = dict(zip(aa, f_none))
+		dt = dict(zip(aa, t_none))
+	else:
+		print("Unknown color coding, 'rainbow' used instead")
+		df = dict(zip(aa, f_rainbow))
+		dt = dict(zip(aa, t_rainbow))
+
+	# degree to radian
+	deg = np.arange(float(len(sequence))) * -100.
+	deg = [d + 90. for d in deg]  # start at 270 degree in unit circle (on top)
+	rad = np.radians(deg)
+
+	# create figure
+	fig = plt.figure(frameon=False, figsize=(10, 10))
+	ax = fig.add_subplot(111)
+	old = None
+
+	# iterate over sequence
+	for i, r in enumerate(rad):
+		new = (np.cos(r), np.sin(r))  # new AA coordinates
+
+		# plot the connecting lines
+		if old is not None:
+			line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k', linewidth=lw[i-1])
+			line.set_zorder(1)  # 1 = level behind circles
+			ax.add_line(line)
+
+		# plot circles
+		circ = patches.Circle(new, radius=0.1, transform=ax.transData, edgecolor='k', facecolor=df[sequence[i]])
+		circ.set_zorder(2)  # level in front of lines
+		ax.add_patch(circ)
+
+		# check if N- or C-terminus and add subscript, then plot AA letter
+		if i == 0:
+			ax.text(np.cos(r), np.sin(r), sequence[i] + r'$_N$', va='center', ha='center', transform=ax.transData,
+					size=20, color=dt[sequence[i]])
+		elif i == len(sequence) - 1:
+			ax.text(np.cos(r), np.sin(r), sequence[i] + r'$_C$', va='center', ha='center', transform=ax.transData,
+					size=20, color=dt[sequence[i]])
+		else:
+			ax.text(np.cos(r), np.sin(r), sequence[i], va='center', ha='center', transform=ax.transData,
+					size=20, color=dt[sequence[i]])
+
+		old = new  # save as previous coordinates
+
+	# plot shape
+	ax.set_xlim(-1.2, 1.2)
+	ax.set_ylim(-1.2, 1.2)
+	cur_axes = plt.gca()
+	cur_axes.axes.get_xaxis().set_visible(False)
+	cur_axes.axes.get_yaxis().set_visible(False)
+
+	# show or save plot
+	if filename:
+		plt.savefig(filename, dpi=150)
+	else:
+		plt.show()
+
+# TODO: fix overlay bug for longer sequences

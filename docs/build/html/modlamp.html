@@ -2269,6 +2269,9 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_profile" title="modlamp.plot.plot_profile"><code class="xref py py-func docutils literal"><span class="pre">plot_profile()</span></code></a></td>
 <td>Generates a profile plot of a sequence to visualize potential linear gradients</td>
 </tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.plot.helical_wheel" title="modlamp.plot.helical_wheel"><code class="xref py py-func docutils literal"><span class="pre">helical_wheel()</span></code></a></td>
+<td>Generates a helical wheel projection plot of a given sequence.</td>
+</tr>
 </tbody>
 </table>
 <dl class="function">
@@ -2399,6 +2402,47 @@ are plottet in different colors.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="width: 600.0px; height: 450.0px;" /></a>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.1.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.plot.helical_wheel">
+<code class="descclassname">modlamp.plot.</code><code class="descname">helical_wheel</code><span class="sig-paren">(</span><em>sequence</em>, <em>colorcoding='rainbow'</em>, <em>lineweights=True</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#helical_wheel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.helical_wheel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
+properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sequence</strong> &#8211; {str} the peptide sequence for which the helical wheel should be drawn.</li>
+<li><strong>colorcoding</strong> &#8211; {str} the color coding to be used, available: <em>rainbow</em>, <em>charge</em>, <em>no</em></li>
+<li><strong>lineweights</strong> &#8211; {boolean} defines whether connection lines decrease in thickness along the sequence</li>
+<li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a helical wheel projection plot of the given sequence (interactively or in <strong>filename</strong>)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">helical_wheel</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helical_wheel</span><span class="p">(</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="n">colorcoding</span><span class="o">=</span><span class="s1">&#39;charge&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helical_wheel</span><span class="p">(</span><span class="s1">&#39;AKLWLKAGRGFGRG&#39;</span><span class="p">,</span> <span class="n">colorcoding</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">lineweights</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/wheel1.png"><img alt="_images/wheel1.png" src="_images/wheel1.png" style="width: 450.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel2.png"><img alt="_images/wheel2.png" src="_images/wheel2.png" style="width: 450.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel3.png"><img alt="_images/wheel3.png" src="_images/wheel3.png" style="width: 450.0px; height: 450.0px;" /></a>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">At the moment, only sequences up to a length of 18 AA can be plotted! This bug will be fixed in future versions.</p>
+</div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
 </div>
