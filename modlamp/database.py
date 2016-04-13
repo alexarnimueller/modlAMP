@@ -58,7 +58,7 @@ def _connect():
 		print(err)
 
 
-def query_experiments(table, columns=None):
+def query_database(table, columns=None):
 	"""
 	This function extracts experimental results from the modlab peptide database. All data from the given table and
 	column names is extracted and returned.
@@ -68,7 +68,7 @@ def query_experiments(table, columns=None):
 	:return: queried data as a numpy array
 	:Example:
 
-	>>> data = query_experiments(table='modlab_experiments', columns=['sequence', 'MCF7_activity', 'Saureus_activity'])
+	>>> data = query_database(table='modlab_experiments', columns=['sequence', 'MCF7_activity', 'Saureus_activity'])
 	Password: *********
 	Connecting to MySQL database...
 	connection established!
