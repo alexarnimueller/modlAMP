@@ -5,7 +5,7 @@ README
 
 This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids. 
 It incorporates several modules, like descriptor calculation (module **descriptors**) or sequence generation (module **sequences**).
-For basic instructions how to use the package, see Usage_ or this `example script <examplescriptinclude.html>`_.
+For basic instructions how to use the package, see Usage_ or this `example script <examplescript.html>`_.
 
 
 Installation
@@ -30,7 +30,7 @@ After installation, you should be able to import and use the different modules l
 
 >>> from modlamp.sequences import Centrosymmetric
 >>> from modlamp.descriptors import PeptideDescriptor
->>> from modlamp.database import query_sequences
+>>> from modlamp.database import query_database
 
 
 Generating Sequences
@@ -83,6 +83,7 @@ We can now plot these values as a boxplot, for example the hydrophobic moment:
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
 .. image:: static/uH_Eisenberg.png
+    :scale: 50 %
 
 We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file ``APD3.fasta``:
@@ -95,6 +96,7 @@ Now lets compare the values by plotting:
 >>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
 .. image:: static/uH_APD3.png
+    :scale: 50 %
 
 It is also possible to plot 2 or 3 different features in a scatter plot:
 
@@ -109,6 +111,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> plot_2_features(A.descriptor, B.descriptor, x_label='uH', y_label='pI', targets=target)
 
 .. image:: static/2D_scatter.png
+    :scale: 50 %
 
 :Example: **3D Scatter Plot**
 
@@ -118,6 +121,10 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> plot_3_features(A.descriptor, B.descriptor, C.descriptor, x_label='uH', y_label='pI', z_label='length')
 
 .. image:: static/3D_scatter.png
+    :scale: 50 %
+
+Further plotting methods, like helical wheel plots are available. See the documentation for the
+`plot <modlamp.html#module-modlamp.plot>`_ module.
 
 
 Database Connection
@@ -132,8 +139,8 @@ Peptide sequences included in any table in the peptides database can be download
 For querying sequences from a given table, the sequences must be stored in a column called "sequences" in the mysql table.
 The query then works as follows:
 
->>> from modlamp.database import query_sequences
->>> query_sequences('modlab_experiments')
+>>> from modlamp.database import query_database
+>>> query_database('modlab_experiments', ['sequence'])
 Password: >? ***********
 Connecting to MySQL database...
 connection established!

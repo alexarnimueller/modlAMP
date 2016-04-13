@@ -57,7 +57,7 @@
 <p><strong>modlamp</strong></p>
 <p>This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids.
 It incorporates several modules, like descriptor calculation (module <strong>descriptors</strong>) or sequence generation (module <strong>sequences</strong>).
-For basic instructions how to use the package, see <a class="reference internal" href="#usage">Usage</a> or this <a class="reference external" href="examplescriptinclude.html">example script</a>.</p>
+For basic instructions how to use the package, see <a class="reference internal" href="#usage">Usage</a> or this <a class="reference external" href="examplescript.html">example script</a>.</p>
 <div class="section" id="installation">
 <h2>1.1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>For the installation to work, <code class="docutils literal"><span class="pre">pip</span></code> needs to be installed. If you&#8217;re not sure whether you already have pip, type
@@ -76,7 +76,7 @@ make doc
 <p>After installation, you should be able to import and use the different modules like shown below:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">Centrosymmetric</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
 </pre></div>
 </div>
 </div>
@@ -124,7 +124,7 @@ amino acid scales. For further information consider the docs for <a class="refer
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" />
+<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -135,7 +135,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span> <span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="_images/uH_APD3.png" src="_images/uH_APD3.png" />
+<a class="reference internal image-reference" href="_images/uH_APD3.png"><img alt="_images/uH_APD3.png" src="_images/uH_APD3.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>It is also possible to plot 2 or 3 different features in a scatter plot:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,7 +154,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" />
+<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -169,7 +169,9 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" />
+<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>Further plotting methods, like helical wheel plots are available. See the documentation for the
+<a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
 </div>
 <div class="section" id="database-connection">
 <h3>1.2.5. Database Connection<a class="headerlink" href="#database-connection" title="Permalink to this headline">¶</a></h3>
@@ -181,8 +183,8 @@ Peptide sequences included in any table in the peptides database can be download
 </div>
 <p>For querying sequences from a given table, the sequences must be stored in a column called &#8220;sequences&#8221; in the mysql table.
 The query then works as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_sequences</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query_sequences</span><span class="p">(</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query_database</span><span class="p">(</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
 <span class="go">Password: &gt;? ***********</span>
 <span class="go">Connecting to MySQL database...</span>
 <span class="go">connection established!</span>
