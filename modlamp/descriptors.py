@@ -335,7 +335,7 @@ class GlobalDescriptor(object):
 		.. note::
 			The data file should **not** have any headers
 
-		:param filename: filenam of the data file to be loaded
+		:param filename: filename of the data file to be loaded
 		:param delimiter: column delimiter
 		:param targets: {boolean} whether last column in the file contains a target class vector
 		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
@@ -382,13 +382,15 @@ class PeptideDescriptor(object):
 	- **ISAECI**		(Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
 	- **janin** 		(Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
 	- **kytedoolittle**	(Kyte & Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-	- **MSS**			(A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[12] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
-	- **MSW**			(Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[13] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
-	- **pepcats**		(modlabs pharmacophoric feature based PEPCATS scale, *[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+	- **Levitt_alpha**	(Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
+	- **MSS**			(A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
+	- **MSW**			(Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
+	- **pepcats**		(modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
 	- **polarity**		(Amino acid polarity scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
-	- **PPCALI**		(modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-	- **refractivity**	(Relative amino acid refractivity values, *[15] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
-	- **t_scale**		(A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[16] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
+	- **PPCALI**		(modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+	- **refractivity**	(Relative amino acid refractivity values, *[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
+	- **t_scale**		(A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
+	- **TM_tend**		(Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
 	- **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
 	- **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
