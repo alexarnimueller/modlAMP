@@ -142,21 +142,26 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
-	def charge_density(self, append=False):
-		"""Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.
+	def charge_density(self, pH=7.0, amide=False, append=False):
+		"""Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
 
+		:param pH: {float} pH at which to calculate peptide charge.
+		:param amide: {boolean} whether the sequences have an amidated C-terminus.
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`.
 		"""
-		desc = []
-		self.calculate_charge()
-		for i, seq in enumerate(self.sequences):
-			desc.append(self.descriptor[i] / ProteinAnalysis(seq).molecular_weight())
+		self.calculate_charge(pH, amide)
+		charges = self.descriptor
+		self.calculate_MW(amide)
+		masses = self.descriptor
+		desc = charges / masses
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
+
+
 
 	def isoelectric_point(self, append=False):
 		"""
