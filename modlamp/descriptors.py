@@ -99,48 +99,69 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
-	def calculate_charge(self, amide=False, append=False):
-		"""Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.
+	def calculate_charge(self, pH=7.0, amide=False, append=False):
+		"""
+		Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
+		Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
-		:param amide: {boolean} whether the sequences have an amidated C-terminus (+1 charge)
+		The pK scale and method used is Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15.
+		For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
+
+		positive_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
+		negative_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
+
+		:param pH: {float} pH at which to calculate peptide charge.
+		:param amide: {boolean} whether the sequences have an amidated C-terminus.
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
-
-		The following dictionary shows the used side chain charges:
-
-			AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1.}
-
 		"""
-		AACharge = {"C": -.1, "D": -1., "E": -1., "H": .1, "K": 1., "R": 1.}
+		pos_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
+		if amide:
+			neg_pKs = {'Cterm': 15., 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
+		else:
+			neg_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
 		desc = []
 		for seq in self.sequences:
-			charge = 0.
-			for a in seq:
-				charge += AACharge.get(a, 0)
-			if amide:  # add +1 charge if amidated C-terminus
-				charge += 1
-			desc.append(charge)
+			charged_aas_content = ProteinAnalysis(seq).count_amino_acids()
+			charged_aas_content['Nterm']=1.0
+			charged_aas_content['Cterm']=1.0
+			PositiveCharge = 0.0
+			for aa, pK in pos_pKs.items():
+				CR = 10 ** (pK - pH)
+				partial_charge = CR / (CR + 1.0)
+				PositiveCharge += charged_aas_content[aa] * partial_charge
+			NegativeCharge = 0.0
+			for aa, pK in neg_pKs.items():
+				CR = 10 ** (pH - pK)
+				partial_charge = CR / (CR + 1.0)
+				NegativeCharge += charged_aas_content[aa] * partial_charge
+			desc.append(PositiveCharge - NegativeCharge)
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
 
-	def charge_density(self, append=False):
-		"""Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.
+	def charge_density(self, pH=7.0, amide=False, append=False):
+		"""Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
 
+		:param pH: {float} pH at which to calculate peptide charge.
+		:param amide: {boolean} whether the sequences have an amidated C-terminus.
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`.
 		"""
-		desc = []
-		self.calculate_charge()
-		for i, seq in enumerate(self.sequences):
-			desc.append(self.descriptor[i] / ProteinAnalysis(seq).molecular_weight())
+		self.calculate_charge(pH, amide)
+		charges = self.descriptor
+		self.calculate_MW(amide)
+		masses = self.descriptor
+		desc = charges / masses
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
+
+
 
 	def isoelectric_point(self, append=False):
 		"""
@@ -268,7 +289,7 @@ class GlobalDescriptor(object):
 		"""Method for feature scaling of the calculated descriptor matrix.
 
 		:param type: **'standard'** or **'minmax'**, type of scaling to be used
-		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or
+		:param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
 			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
 		:return: scaled descriptor values in :py:attr`self.descriptor`
 		:Example:
@@ -373,6 +394,8 @@ class PeptideDescriptor(object):
 	- **AASI**			(An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
 	- **argos**			(Argos hydrophobicity amino acid scale, *[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.*)
 	- **bulkiness**		(Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
+	- **charge_physio**	(Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
+	- **charge_acidic**	(Amino acid charge at acidic pH - Hystidine charge +1.0.)
 	- **cougar**		(modlabs inhouse selection of global peptide descriptors)
 	- **eisenberg**		(the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
 	- **Ez** 			(potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)
