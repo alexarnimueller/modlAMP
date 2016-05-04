@@ -1,9 +1,10 @@
 import os
 import sys
 import unittest
-from modlamp.descriptors import GlobalDescriptor
 
 sys.path.insert(0, os.path.abspath('.'))
+
+from modlamp.descriptors import GlobalDescriptor
 
 __author__ = 'modlab'
 
@@ -22,7 +23,7 @@ class TestGlobalDescriptor(unittest.TestCase):
 
 	def test_isoelectric(self):
 		self.G.isoelectric_point()
-		self.assertAlmostEqual(self.G.descriptor[0], 9.84, places=2)
+		self.assertAlmostEqual(self.G.descriptor[0], 9.8397827)
 
 	def test_molweight(self):
 		self.G.calculate_MW()

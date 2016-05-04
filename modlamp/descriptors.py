@@ -137,7 +137,6 @@ class GlobalDescriptor(object):
 			NegativeCharge += aa_content[aa] * partial_charge
 		return PositiveCharge - NegativeCharge
 
-
 	def calculate_charge(self, pH=7.0, amide=False, append=False):
 		"""
 		Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
@@ -165,7 +164,6 @@ class GlobalDescriptor(object):
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
-
 
 	def charge_density(self, pH=7.0, amide=False, append=False):
 		"""Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
