@@ -24,6 +24,8 @@ class TestGlobalDescriptor(unittest.TestCase):
 	def test_isoelectric(self):
 		self.G.isoelectric_point()
 		self.assertAlmostEqual(self.G.descriptor[0], 9.8397827)
+		self.G.isoelectric_point(amide=True)
+		self.assertAlmostEqual(self.G.descriptor[0], 10.7089233)
 
 	def test_molweight(self):
 		self.G.calculate_MW()
