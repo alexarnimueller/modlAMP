@@ -11,7 +11,7 @@ __author__ = 'modlab'
 
 class TestGlobalDescriptor(unittest.TestCase):
 
-	G = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
+	G = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
 
 	def test_charge(self):
 		self.G.calculate_charge()
