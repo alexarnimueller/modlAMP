@@ -3,22 +3,26 @@ import sys
 import unittest
 from modlamp.descriptors import GlobalDescriptor
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('.'))
 
 __author__ = 'modlab'
 
 
 class TestGlobalDescriptor(unittest.TestCase):
 
-	G = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
+	G = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
 
 	def test_charge(self):
 		self.G.calculate_charge()
-		self.assertAlmostEqual(self.G.descriptor[0], 1.)
+		self.assertAlmostEqual(self.G.descriptor[0], 0.9959478)
+		self.G.calculate_charge(amide=True)
+		self.assertAlmostEqual(self.G.descriptor[0], 1.9959337)
+		self.G.calculate_charge(pH=9.84)
+		self.assertAlmostEqual(self.G.descriptor[0], -0.0002392)
 
 	def test_isoelectric(self):
 		self.G.isoelectric_point()
-		self.assertAlmostEqual(self.G.descriptor[0], 8.59100341)
+		self.assertAlmostEqual(self.G.descriptor[0], 9.84, places=2)
 
 	def test_molweight(self):
 		self.G.calculate_MW()
@@ -30,7 +34,9 @@ class TestGlobalDescriptor(unittest.TestCase):
 
 	def test_charge_density(self):
 		self.G.charge_density()
-		self.assertAlmostEqual(self.G.descriptor[0], 0.00070636)
+		self.assertAlmostEqual(self.G.descriptor[0], 0.00070349)
+		self.G.charge_density(amide=True)
+		self.assertAlmostEqual(self.G.descriptor[0], 0.00141078)
 
 	def test_instability_index(self):
 		self.G.instability_index()

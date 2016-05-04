@@ -99,48 +99,73 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
+	def _charge(self, seq, pH=7.0, amide=False):
+		"""
+		Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
+		The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
+		Cterm is added to the pos_pKs dictionary.
+		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
+		For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
+
+			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+			neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+
+		:param pH: {float} pH at which to calculate peptide charge.
+		:param amide: {boolean} whether the sequences have an amidated C-terminus.
+		:return: {array} descriptor values in the attribute :py:attr:`descriptor
+		"""
+
+		if amide:
+			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+			neg_pKs = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+		else:
+			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+			neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+
+		aa_content = ProteinAnalysis(seq).count_amino_acids()
+		aa_content['Nterm'] = 1.0
+		aa_content['Cterm'] = 1.0
+		PositiveCharge = 0.0
+		for aa, pK in pos_pKs.items():
+			CR = 10 ** (pK - pH)
+			partial_charge = CR / (CR + 1.0)
+			PositiveCharge += aa_content[aa] * partial_charge
+		NegativeCharge = 0.0
+		for aa, pK in neg_pKs.items():
+			CR = 10 ** (pH - pK)
+			partial_charge = CR / (CR + 1.0)
+			NegativeCharge += aa_content[aa] * partial_charge
+		return PositiveCharge - NegativeCharge
+
+
 	def calculate_charge(self, pH=7.0, amide=False, append=False):
 		"""
 		Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
 		Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
-		The pK scale and method used is Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15.
+		The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
+		Cterm is added to the pos_pKs dictionary.
+		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
 		For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
 
-		positive_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
-		negative_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
+			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+			neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
 		:param pH: {float} pH at which to calculate peptide charge.
 		:param amide: {boolean} whether the sequences have an amidated C-terminus.
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		:return: {array} descriptor values in the attribute :py:attr:`descriptor`
 		"""
-		pos_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
-		if amide:
-			neg_pKs = {'Cterm': 15., 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
-		else:
-			neg_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
+
 		desc = []
 		for seq in self.sequences:
-			charged_aas_content = ProteinAnalysis(seq).count_amino_acids()
-			charged_aas_content['Nterm']=1.0
-			charged_aas_content['Cterm']=1.0
-			PositiveCharge = 0.0
-			for aa, pK in pos_pKs.items():
-				CR = 10 ** (pK - pH)
-				partial_charge = CR / (CR + 1.0)
-				PositiveCharge += charged_aas_content[aa] * partial_charge
-			NegativeCharge = 0.0
-			for aa, pK in neg_pKs.items():
-				CR = 10 ** (pH - pK)
-				partial_charge = CR / (CR + 1.0)
-				NegativeCharge += charged_aas_content[aa] * partial_charge
-			desc.append(PositiveCharge - NegativeCharge)
+			desc.append(self._charge(seq, pH, amide))
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
 		else:
 			self.descriptor = np.array(desc)
+
 
 	def charge_density(self, pH=7.0, amide=False, append=False):
 		"""Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
@@ -161,23 +186,63 @@ class GlobalDescriptor(object):
 		else:
 			self.descriptor = np.array(desc)
 
-
-
-	def isoelectric_point(self, append=False):
+	def isoelectric_point(self, amide=False, append=False):
 		"""
 		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
-		The pK scale and method used is Bjellqvist. For further references, see the `Biopython <http://biopython.org/>`_
+		The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
+		The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
 		module :mod:`Bio.SeqUtils.ProtParam`.
 
-		positive_pKs = {'Nterm': 7.5, 'K': 10.0, 'R': 12.0, 'H': 5.98}
-		negative_pKs = {'Cterm': 3.55, 'D': 4.05, 'E': 4.45, 'C': 9.0, 'Y': 10.0}
+			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+			neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
+
 		desc = []
 		for seq in self.sequences:
-			desc.append(ProteinAnalysis(seq).isoelectric_point())
+
+			# Bracket between pH1 and pH2
+			pH = 7.0
+			charge = self._charge(seq, pH, amide)
+			if charge > 0.0:
+				pH1 = pH
+				charge1 = charge
+				while charge1 > 0.0:
+					pH = pH1 + 1.0
+					charge = self._charge(seq, pH, amide)
+					if charge > 0.0:
+						pH1 = pH
+						charge1 = charge
+					else:
+						pH2 = pH
+						charge2 = charge
+						break
+			else:
+				pH2 = pH
+				charge2 = charge
+				while charge2 < 0.0:
+					pH = pH2 - 1.0
+					charge = self._charge(seq, pH, amide)
+					if charge < 0.0:
+						pH2 = pH
+						charge2 = charge
+					else:
+						pH1 = pH
+						charge1 = charge
+						break
+			# Bisection
+			while pH2 - pH1 > 0.0001 and charge != 0.0:
+				pH = (pH1 + pH2) / 2.0
+				charge = self._charge(seq, pH, amide)
+				if charge > 0.0:
+					pH1 = pH
+					charge1 = charge
+				else:
+					pH2 = pH
+					charge2 = charge
+			desc.append(pH)
 		desc = np.asarray(desc).reshape(len(desc), 1)
 		if append:
 			self.descriptor = np.hstack((self.descriptor, np.array(desc)))
