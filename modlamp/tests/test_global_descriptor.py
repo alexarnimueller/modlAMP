@@ -29,14 +29,14 @@ class TestGlobalDescriptor(unittest.TestCase):
 		self.assertAlmostEqual(self.G.descriptor[0], 0.00070636)
 
 	def test_filter_aa(self):
-		D = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
+		D = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
 		D.calculate_charge()
 		D.filter_aa(['D'])
 		self.assertEqual(D.sequences, ['LLLLLL', 'KKKKKKKKKK'])
 		self.assertEqual(len(D.descriptor), 2)
 
 	def test_filter_values(self):
-		D = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
+		D = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
 		D.calculate_charge()
 		D.filter_values(values=[1.], operator='>=')
 		self.assertEqual(D.sequences, ['GLFDIVKKVVGALG', 'KKKKKKKKKK'])

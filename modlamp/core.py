@@ -350,7 +350,7 @@ def filter_unnatural(self):
 
 	self.sequences = lst
 
-
+# TODO: change default argument to None, so its not mutable
 def filter_aa(self, aminoacids=['X']):
 	"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 
