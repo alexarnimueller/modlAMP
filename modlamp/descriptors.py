@@ -153,7 +153,7 @@ class GlobalDescriptor(object):
 		:param pH: {float} pH at which to calculate peptide charge.
 		:param amide: {boolean} whether the sequences have an amidated C-terminus.
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-		:return: {array} descriptor values in the attribute :py:attr:`descriptor`
+		:return: array of descriptor values in the attribute :py:attr:`descriptor`
 		"""
 
 		desc = []
