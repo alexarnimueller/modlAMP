@@ -68,7 +68,7 @@ class GlobalDescriptor(object):
 		Method to calculate the length (total AA count) of every sequence in the attribute :py:attr:`sequences`.
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-		:return: array of descriptor values in the attribute :py:attr:`descriptor`
+		:return: array of sequence lengths in the attribute :py:attr:`descriptor`
 		"""
 		desc = []
 		for seq in self.sequences:
