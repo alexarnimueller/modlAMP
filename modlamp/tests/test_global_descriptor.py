@@ -48,11 +48,11 @@ class TestGlobalDescriptor(unittest.TestCase):
 		self.assertEqual(len(D.descriptor), 2)
 
 	def test_filter_values(self):
-		D = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
-		D.calculate_charge()
-		D.filter_values(values=[1.], operator='>=')
-		self.assertEqual(D.sequences, ['GLFDIVKKVVGALG', 'KKKKKKKKKK'])
-		self.assertEqual(len(D.descriptor), 2)
+		E = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
+		E.calculate_charge()
+		E.filter_values(values=[1.], operator='>=')
+		self.assertEqual(E.sequences, ['KKKKKKKKKK'])
+		self.assertEqual(len(E.descriptor), 1)
 
 	def test_instability_index(self):
 		self.G.instability_index()
