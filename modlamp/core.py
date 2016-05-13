@@ -8,6 +8,7 @@ Core helper functions for other modules.
 
 import numpy as np
 import os
+from Bio.SeqIO.FastaIO import FastaIterator
 import difflib #imported but unused. Delete?
 import random
 import re
@@ -191,16 +192,12 @@ def read_fasta(inputfile):
 	:param inputfile: .fasta file with sequences and headers to read
 	:return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in :py:attr:`names`.
 	"""
-	fasta = open(inputfile)
 	names = list()  # list for storing names
 	sequences = list()  # list for storing sequences
-	for line in fasta:
-		if line.startswith('>'):
-			names.append(line[1:].rstrip('\n'))  # strip newline characters at the end of the line
-		elif line == '\n':  # skip empty lines
-			continue
-		else:
-			sequences.append(line[0:].rstrip('\n'))
+	with open(inputfile) as handle:
+		for record in FastaIterator(handle):
+			names.append(record.id)
+			sequences.append(record.seq)
 	return sequences, names
 
 
