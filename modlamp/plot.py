@@ -359,6 +359,10 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 	else:
 		ax.set_xlim(-1.4, 1.4)
 		ax.set_ylim(-1.4, 1.4)
+	ax.spines['right'].set_visible(False)
+	ax.spines['top'].set_visible(False)
+	ax.spines['left'].set_visible(False)
+	ax.spines['bottom'].set_visible(False)
 	cur_axes = plt.gca()
 	cur_axes.axes.get_xaxis().set_visible(False)
 	cur_axes.axes.get_yaxis().set_visible(False)
