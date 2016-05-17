@@ -277,8 +277,8 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 	f_rainbow = ['#3e3e28', '#ffcc33', '#b30047', '#b30047', '#ffcc33', '#3e3e28', '#80d4ff', '#ffcc33', '#0047b3',
 				'#ffcc33', '#ffcc33', '#b366ff', '#29a329', '#b366ff', '#0047b3', '#ff66cc', '#ff66cc', '#ffcc33',
 				'#ffcc33', '#ffcc33']
-	f_charge = ['#000000', '#000000', '#b30047', '#b30047', '#000000', '#000000', '#80d4ff', '#000000', '#0047b3',
-				'#000000', '#000000', '#000000', '#000000', '#000000', '#0047b3', '#000000', '#000000', '#000000',
+	f_charge = ['#000000', '#000000', '#ff4d94', '#ff4d94', '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff',
+				'#000000', '#000000', '#000000', '#000000', '#000000', '#80d4ff', '#000000', '#000000', '#000000',
 				'#000000', '#000000']
 	f_none = ['#ffffff'] * 20
 	t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
@@ -342,13 +342,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 		# check if N- or C-terminus and add subscript, then plot AA letter
 		if i == 0:
 			ax.text(new[0], new[1], sequence[i] + r'$_N$', va='center', ha='center', transform=ax.transData,
-					size=20, color=dt[sequence[i]])
+					size=20, color=dt[sequence[i]], fontweight='bold')
 		elif i == len(sequence) - 1:
 			ax.text(new[0], new[1], sequence[i] + r'$_C$', va='center', ha='center', transform=ax.transData,
-					size=20, color=dt[sequence[i]])
+					size=20, color=dt[sequence[i]], fontweight='bold')
 		else:
 			ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
-					size=20, color=dt[sequence[i]])
+					size=20, color=dt[sequence[i]], fontweight='bold')
 
 		old = new  # save as previous coordinates
 
