@@ -197,7 +197,7 @@ def read_fasta(inputfile):
 	with open(inputfile) as handle:
 		for record in FastaIterator(handle):
 			names.append(record.id)
-			sequences.append(record.seq)
+			sequences.append(str(record.seq))
 	return sequences, names
 
 
