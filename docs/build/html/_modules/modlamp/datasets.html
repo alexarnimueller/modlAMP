@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>modlamp.datasets &mdash; modlamp v2.1.5 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v2.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="modlamp v2.1.5 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for modlamp.datasets</h1><div class="highlight"><pre>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: modlamp.datasets</span>
+
+<span class="sd">.. moduleauthor:: modlab Alex Mueller ETH Zurich &lt;alex.mueller@pharma.ethz.ch&gt;</span>
+
+<span class="sd">This module incorporates functions to load different peptide datasets used for classification.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
+
+
+<div class="viewcode-block" id="Bunch"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch">[docs]</a><span class="k">class</span> <span class="nc">Bunch</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Container object for datasets</span>
+
+<span class="sd">	Dictionary-like object that exposes its keys as attributes. Taken from the ``sklearn`` package.</span>
+
+<span class="sd">	:Example:</span>
+
+<span class="sd">	&gt;&gt;&gt; b = Bunch(a=1, b=2)</span>
+<span class="sd">	&gt;&gt;&gt; b[&#39;b&#39;]</span>
+<span class="sd">	2</span>
+<span class="sd">	&gt;&gt;&gt; b.b  # key can also be called as attribute</span>
+<span class="sd">	2</span>
+<span class="sd">	&gt;&gt;&gt; b.a = 3</span>
+<span class="sd">	&gt;&gt;&gt; b[&#39;a&#39;]</span>
+<span class="sd">	3</span>
+<span class="sd">	&gt;&gt;&gt; b.c = 6</span>
+<span class="sd">	&gt;&gt;&gt; b[&#39;c&#39;]</span>
+<span class="sd">	6</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Bunch.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+		<span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+	<span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+		<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+		<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="load_AMPvsTMset"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_AMPvsTMset">[docs]</a><span class="k">def</span> <span class="nf">load_AMPvsTMset</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **AMP sequences and transmembrane regions of proteins** for classification.</span>
+
+<span class="sd">	The AMP class consists of an intersection of all activity annotations of the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
+<span class="sd">	`CAMP &lt;http://camp.bicnirrh.res.in/&gt;`_ databases, where for gram positive, gram negative and antifungal exact</span>
+<span class="sd">	matches were observed. A detailed description of how the dataset was compiled can be found in the following</span>
+<span class="sd">	publication: *Schneider P. et al. 2016, Mol. Inf.*</span>
+
+<span class="sd">	=================	====</span>
+<span class="sd">	Classes				2</span>
+<span class="sd">	Samples per class	206</span>
+<span class="sd">	Samples total		412</span>
+<span class="sd">	Dimensionality		1</span>
+<span class="sd">	=================	====</span>
+
+<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the</span>
+<span class="sd">		classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.</span>
+<span class="sd">	:Example:</span>
+
+<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_AMPvsTMset</span>
+<span class="sd">	&gt;&gt;&gt; data = load_AMPvsTMset()</span>
+<span class="sd">	&gt;&gt;&gt; data.sequences[:5]</span>
+<span class="sd">	array([[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;],[&#39;LWIVIACLACVGSAAALTLRA&#39;],[&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;],[&#39;GTLELGVDYGRAN&#39;],[&#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;]])</span>
+<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">	[&#39;TM&#39;, &#39;AMP&#39;]</span>
+<span class="sd">	&gt;&gt;&gt; data.sequences.shape</span>
+<span class="sd">	(412, 1)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AMPvsTMset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+		<span class="c1"># n_samples = int(temp[0])</span>
+		<span class="c1"># n_features = int(temp[1])</span>
+		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+		<span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># np.empty((n_samples, n_features), dtype=&#39;|S100&#39;)</span>
+		<span class="n">target</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># np.empty((n_samples,), dtype=np.int)</span>
+
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+			<span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># sequences[i] = ir[0]</span>
+			<span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># target[i] = ir[-1]</span>
+
+	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="load_helicalAMPset"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_helicalAMPset">[docs]</a><span class="k">def</span> <span class="nf">load_helicalAMPset</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **helical AMP sequences and other helical peptides** for classification.</span>
+
+<span class="sd">	The AMP class consists of 363 helical annotated sequences from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_</span>
+<span class="sd">	(extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the</span>
+<span class="sd">	`PDB &lt;http://www.rcsb.org/pdb/home/home.do&gt;`_, out of which alpha helical regions were extracted. 363 sequences</span>
+<span class="sd">	were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.</span>
+
+<span class="sd">	=================	====</span>
+<span class="sd">	Classes				2</span>
+<span class="sd">	Samples per class	363</span>
+<span class="sd">	Samples total		726</span>
+<span class="sd">	Dimensionality		1</span>
+<span class="sd">	=================	====</span>
+
+<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the</span>
+<span class="sd">			classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.</span>
+<span class="sd">	:Example:</span>
+
+<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_helicalAMPset</span>
+<span class="sd">	&gt;&gt;&gt; data = load_helicalAMPset()</span>
+<span class="sd">	&gt;&gt;&gt; data.sequences[:5]</span>
+<span class="sd">	array([[&#39;FDQAQTEIQATMEEN&#39;],[&#39;DVDAALHYLARLVEAG&#39;],[&#39;RCPLVIDYLIDLATRS&#39;],[&#39;NPATLMMFFK&#39;],[&#39;NLEDSIQILRTD&#39;]])</span>
+<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">	[&#39;HEL&#39;, &#39;AMP&#39;]</span>
+<span class="sd">	&gt;&gt;&gt; data.sequences.shape</span>
+<span class="sd">	(726, 1)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;helicalAMPset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+		<span class="c1"># n_samples = int(temp[0])</span>
+		<span class="c1"># n_features = int(temp[1])</span>
+		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+		<span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># np.empty((n_samples, n_features), dtype=&#39;|S100&#39;)</span>
+		<span class="n">target</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># np.empty((n_samples,), dtype=np.int)</span>
+
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+			<span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># sequences[i] = ir[0]</span>
+			<span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># target[i] = ir[-1]</span>
+
+	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+
+<span class="c1"># TODO: add more data set loading functions</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/modlab.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

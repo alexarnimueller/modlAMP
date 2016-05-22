@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. README &mdash; modlamp v2.1.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v2.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="modlamp v2.1.5 documentation" href="index.html" />
+    <link rel="next" title="2. Package Documentation" href="modlamp.html" />
+    <link rel="prev" title="Welcome to modlamp’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modlamp.html" title="2. Package Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to modlamp’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="readme">
+<h1>1. README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<p><strong>modlamp</strong></p>
+<p>This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids.
+It incorporates several modules, like descriptor calculation (module <strong>descriptors</strong>) or sequence generation (module <strong>sequences</strong>).
+For basic instructions how to use the package, see <a class="reference internal" href="#usage">Usage</a> or this <a class="reference external" href="examplescript.html">example script</a>.</p>
+<div class="section" id="installation">
+<h2>1.1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>For the installation to work, <code class="docutils literal"><span class="pre">pip</span></code> needs to be installed. If you&#8217;re not sure whether you already have pip, type
+<code class="docutils literal"><span class="pre">pip</span> <span class="pre">--version</span></code>. If you don&#8217;t have pip installed, install it via <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">easy_install</span> <span class="pre">pip</span></code>.</p>
+<p>When pip is installed, run the following command when located in the modlAMP package directory:</p>
+<div class="highlight-python"><div class="highlight"><pre>make
+sudo make install
+make doc
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>1.2. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="importing-modules">
+<h3>1.2.1. Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h3>
+<p>After installation, you should be able to import and use the different modules like shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">Centrosymmetric</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-sequences">
+<h3>1.2.2. Generating Sequences<a class="headerlink" href="#generating-sequences" title="Permalink to this headline">¶</a></h3>
+<p>The following example shows how to generate a library of 1000 sequences out of all available sequence generation methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">MixedLibrary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span> <span class="o">=</span> <span class="n">MixedLibrary</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">generate_library</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">[&#39;VIVRVLKIAA&#39;,&#39;VGAKALRGIGPVVK&#39;,&#39;QTGKAKIKLVKLRAGPYANGKLF&#39;,&#39;RLIKGALKLVRIVGPGLRVIVRGAR&#39;,&#39;DGQTNRFCGI&#39;,&#39;ILRVGKLAAKV&#39;,...]</span>
+</pre></div>
+</div>
+<p>These commands generated a mixed peptide library comprising of 1000 sequences.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If duplicates are present in <code class="xref py py-attr docutils literal"><span class="pre">self.sequences</span></code>, these are removed during generation. Therefore it is possible
+that less than the specified sequences are obtained.</p>
+</div>
+<p>The module <code class="xref py py-mod docutils literal"><span class="pre">sequences</span></code> incorporates different sequence generation classes. For documentation thereof, consider the
+docs for <a class="reference external" href="modlamp.html#module-modlamp.sequences">sequences</a>.</p>
+</div>
+<div class="section" id="calculating-descriptor-values">
+<h3>1.2.3. Calculating Descriptor Values<a class="headerlink" href="#calculating-descriptor-values" title="Permalink to this headline">¶</a></h3>
+<p>Now, different descriptor values can be calculated for the generated sequences: (see <a class="reference internal" href="#generating-sequences">Generating Sequences</a>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([[ 0.60138255],[ 0.61232763],[ 0.01474009],[ 0.72333858],[ 0.20390763],[ 0.68818279],...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([ 10.09735107,   8.75006104,  12.30743408,  11.26385498, ...]</span>
+</pre></div>
+</div>
+<p>We calculated the global hydrophobic moments from the Eisenberg hydrophobicity scale and the isoelectric points.
+Many more descriptors can be calculated, from global descriptors to concoluted / correlated descriptors from different
+amino acid scales. For further information consider the docs for <a class="reference external" href="modlamp.html#module-modlamp.descriptors">descriptors</a>.</p>
+</div>
+<div class="section" id="plotting-features">
+<h3>1.2.4. Plotting Features<a class="headerlink" href="#plotting-features" title="Permalink to this headline">¶</a></h3>
+<p>We can now plot these values as a boxplot, for example the hydrophobic moment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_feature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
+are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now lets compare the values by plotting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span> <span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/uH_APD3.png"><img alt="_images/uH_APD3.png" src="_images/uH_APD3.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>It is also possible to plot 2 or 3 different features in a scatter plot:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><strong>2D Scatter Plot</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_2_features</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><strong>3D Scatter Plot</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_3_features</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p>Further plotting methods, like helical wheel plots are available. See the documentation for the
+<a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
+</div>
+<div class="section" id="database-connection">
+<h3>1.2.5. Database Connection<a class="headerlink" href="#database-connection" title="Permalink to this headline">¶</a></h3>
+<p>modlamp hosts a module for connecting to the modlab internal peptide database on the gsdelta641 server.
+Peptide sequences included in any table in the peptides database can be downloaded directly in python.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This module only works in the modlab intranet at ETH Zurich</p>
+</div>
+<p>For querying sequences from a given table, the sequences must be stored in a column called &#8220;sequences&#8221; in the mysql table.
+The query then works as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query_database</span><span class="p">(</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
+<span class="go">Password: &gt;? ***********</span>
+<span class="go">Connecting to MySQL database...</span>
+<span class="go">connection established!</span>
+<span class="go">[&#39;ILGTILGILKGL&#39;,&#39;ILGTILGFLKGL&#39;,&#39;ILGNILGFLKGL&#39;,&#39;ILGQILGILKGL&#39;,&#39;ILGHILGYLKGL&#39;,&#39;PAGHILGWWKGL&#39;,&#39;GLFDIVKKVVGALG&#39;,...]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-prepared-datasets">
+<h3>1.2.6. Loading Prepared Datasets<a class="headerlink" href="#loading-prepared-datasets" title="Permalink to this headline">¶</a></h3>
+<p>For AMP QSAR models, different options exist of choosing negative / inactive peptide examples. We assembled several
+datasets for classification tasks, that can be read by the <a class="reference internal" href="modlamp.html#module-modlamp.datasets" title="modlamp.datasets"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.datasets</span></code></a> module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><strong>Helical AMPs vs. random all helical peptides</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;target_names&#39;, &#39;target&#39;, &#39;feature_names&#39;, &#39;sequences&#39;]</span>
+</pre></div>
+</div>
+<p>The variable <code class="docutils literal"><span class="pre">data</span></code> holds <strong>four different keys, which can also be called as its attributes</strong>. The available attributes
+for <code class="xref py py-func docutils literal"><span class="pre">load_helicalAMPset()</span></code> are <code class="xref py py-attr docutils literal"><span class="pre">target_names</span></code> (target names), <code class="xref py py-attr docutils literal"><span class="pre">target</span></code> (the target class vector),
+<code class="xref py py-attr docutils literal"><span class="pre">feature_names</span></code> (the name of the data features, here: &#8216;Sequence&#8217;) and <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> (the loaded sequences).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span>
+<span class="go">array([&#39;HEL&#39;, &#39;AMP&#39;], dtype=&#39;|S3&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;FDQAQTEIQATMEEN&#39;, &#39;DVDAALHYLARLVEAG&#39;, &#39;RCPLVIDYLIDLATRS&#39;, &#39;NPATLMMFFK&#39;, &#39;NLEDSIQILRTD&#39;]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/modlab.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. README</a><ul>
+<li><a class="reference internal" href="#installation">1.1. Installation</a></li>
+<li><a class="reference internal" href="#usage">1.2. Usage</a><ul>
+<li><a class="reference internal" href="#importing-modules">1.2.1. Importing modules</a></li>
+<li><a class="reference internal" href="#generating-sequences">1.2.2. Generating Sequences</a></li>
+<li><a class="reference internal" href="#calculating-descriptor-values">1.2.3. Calculating Descriptor Values</a></li>
+<li><a class="reference internal" href="#plotting-features">1.2.4. Plotting Features</a></li>
+<li><a class="reference internal" href="#database-connection">1.2.5. Database Connection</a></li>
+<li><a class="reference internal" href="#loading-prepared-datasets">1.2.6. Loading Prepared Datasets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to modlamp&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modlamp.html"
+                        title="next chapter">2. Package Documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/readme.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modlamp.html" title="2. Package Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to modlamp’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

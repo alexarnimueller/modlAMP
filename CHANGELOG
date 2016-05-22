@@ -1,0 +1,11 @@
+v1.2.6, 01.03.2016 -- First tracked release
+v1.3.0, 03.03.2016 -- Added plot module
+v1.5.0, 11.03.2016 -- Changed package architecture to one submodules in modlamp
+v2.0.4  17.03.2016 -- Updated docs and AA probabilities, added capability of reading sequences from numpy.ndarrays
+v2.0.5  17.03.2016 -- Added new sequences dataset to be loaded: ``load_helicalAMPset()``
+v2.1.0  17.03.2016 -- Added example script of usage and corrected some behaviour of core functions.
+v2.1.1  22.03.2016 -- Fixed different docstrings, added methods to load and save descriptor data
+v2.1.2  22.03.2016 -- New Documentation reference and file names
+v2.1.3  23.03.2016 -- Added filtering methods for amino acids and descriptor values, as well as test cases
+v2.1.4  31.03.2016 -- New function to query experimental data from the peptides database
+v2.1.5  08.04.2016 -- Helical wheel plot function added to modlamp.plot
