@@ -8,7 +8,7 @@ This module contains different functions to facilitate machine learning mainly u
 Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
 check the scikit-learn documentation.
 
-=============================		=============================================================================================
+=============================	    =============================================================================================
 Model  								Reference
 =============================		=============================================================================================
 Support Vector Machine              http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
@@ -33,11 +33,44 @@ __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
 def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=make_scorer(matthews_corrcoef),
-					param_grid=None, param_range=None, cv=10):
+					param_grid=None, cv=10):
 	"""
-	Returns estimator pipeline that performs standard scaling and trains
+	Returns pipeline that performs standard scaling and trains
 	the best Support Vector Machine or Random forest classifier found by grid search.
 	(see sklearn.preprocessing, sklearn.grid_search, sklearn.pipeline).
+
+	Default parameter grids:
+
+	===========		===============
+	Model			Parameter grid
+	===========		===============
+	SVM Model		param_grid = [{'clf__C': param_range,
+						'clf__kernel': ['linear']},
+						{'clf__C': param_range,
+						'clf__gamma': param_range,
+						'clf__kernel': ['rbf']}]
+
+	Random Forest	param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
+						'clf__max_depth': [3, None],
+						'clf__max_features': [1, 2, 3, 5, 10],
+						'clf__min_samples_split': [1, 3, 5, 10],
+						'clf__min_samples_leaf': [1, 3, 5, 10],
+						'clf__bootstrap': [True, False],
+						'clf__criterion': ["gini", "entropy"]}]
+	===========		===============
+
+
+
+	Important methods implemented in scikit-learn:
+	===========			===========================================================
+	Method				Description
+	===========			===========================================================
+	fit(X,y) 			fit the model with the same parameters to new training data.
+	score(X,y) 			get the score of the model for test data.
+	predict(X) 			get predictions for new data.
+	predict_proba(X)	get probability predicitons for [class0, class1]
+	================	===========================================================
+
 	:param model: {str} model to train. Choose between 'svm' (Support Vector Machine) or 'rf' (Random Forest).
 	:param x_train: {array} descriptor values for training data.
 	:param y_train: {array} class values for training data.
@@ -49,16 +82,83 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	:param param_range: {list} parameter range for the parameter grid.
 	:param cv: {int} number of folds for cross-validation.
 	:return: best estimator pipeline.
+
+	:Example:
+
+	>>> from modlamp.ml import train_best_model
+	>>> from modlamp.datasets import load_ACPvsNeg
+	>>> from modlamp import descriptors
+
+	Loading a dataset for training.
+	>>> data = load_ACPvsNeg()
+	>>> data.sequences[188]
+	'FLFKLIPKAIKGLVKAIRK'
+	>>> data.target[188]
+	'1'
+	>>> data.target_names
+	array(['Neg', 'ACP'],
+      dtype='|S3')
+
+	Calculating Pepcats descriptor in autocorrelation:
+	>>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
+	>>> descr.calculate_autocorr(7)
+	>>> descr.descriptor[0]
+	array([ 0.77777778,  0.11111111,  0.22222222,  0.16666667,  0.        ,
+        0.        ,  0.52941176,  0.        ,  0.        ,  0.        ,
+        0.        ,  0.        ,  0.5625    ,  0.        ,  0.        ,
+        0.        ,  0.        ,  0.        ,  0.6       ,  0.        ,
+        0.13333333,  0.        ,  0.        ,  0.        ,  0.71428571,
+        0.        ,  0.07142857,  0.07142857,  0.        ,  0.        ,
+        0.53846154,  0.07692308,  0.        ,  0.        ,  0.        ,
+        0.        ,  0.66666667,  0.        ,  0.08333333,  0.08333333,
+        0.        ,  0.        ])
+
+	Training an SVM model with this data:
+	>>> X_train = descr.descriptor
+	>>> y_train = data.target
+	>>> best_svm_model = train_best_model('svm', X_train, y_train)
+
+	Best score and parameters from a 10-fold cross validation:
+	mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
+
+	>>> best_svm_model.get_params()
+	{'clf': SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+	   decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+	   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+	   verbose=False),
+	 'clf__C': 100.0,
+	 'clf__cache_size': 200,
+	 'clf__class_weight': None,
+	 'clf__coef0': 0.0,
+	 'clf__decision_function_shape': None,
+	 'clf__degree': 3,
+	 'clf__gamma': 0.001,
+	 'clf__kernel': 'rbf',
+	 'clf__max_iter': -1,
+	 'clf__probability': True,
+	 'clf__random_state': 1,
+	 'clf__shrinking': True,
+	 'clf__tol': 0.001,
+	 'clf__verbose': False,
+	 'scl': StandardScaler(copy=True, with_mean=True, with_std=True),
+	 'scl__copy': True,
+	 'scl__with_mean': True,
+	 'scl__with_std': True,
+	 'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
+	  ('clf', SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+		 decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+		 max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+		 verbose=False))]}
+
+
 	"""
 	if model == 'svm':
 
 		pipe_svc = Pipeline([('scl', scaler),
 							('clf', SVC(random_state=1, probability=True))])
 
-		if param_range is None:
-			param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
-
 		if param_grid is None:
+			param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
 			param_grid = [{'clf__C': param_range,
 						'clf__kernel': ['linear']},
 						{'clf__C': param_range,
