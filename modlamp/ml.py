@@ -61,7 +61,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
 
 
-	Important methods implemented in scikit-learn:
+	Useful methods implemented in scikit-learn:
 	===========			===========================================================
 	Method				Description
 	===========			===========================================================
@@ -69,6 +69,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	score(X,y) 			get the score of the model for test data.
 	predict(X) 			get predictions for new data.
 	predict_proba(X)	get probability predicitons for [class0, class1]
+	get_params()		get parameters of the trained model
 	================	===========================================================
 
 	:param model: {str} model to train. Choose between 'svm' (Support Vector Machine) or 'rf' (Random Forest).
@@ -79,7 +80,6 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	:param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
 		(choose from http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
 	:param param_grid: {dict} parameter grid for the gridsearch (see sklearn.grid_search).
-	:param param_range: {list} parameter range for the parameter grid.
 	:param cv: {int} number of folds for cross-validation.
 	:return: best estimator pipeline.
 
@@ -209,7 +209,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	return best_classifier.fit(x_train, y_train)
 
 
-def validation_curve(classifier, x_train, y_train, param_name,
+def plot_validation_curve(classifier, x_train, y_train, param_name,
 					param_range=None,
 					cv=10, score=make_scorer(matthews_corrcoef),
 					title="Validation Curve", xlab="parameter range", ylab="MCC"):
@@ -219,9 +219,9 @@ def validation_curve(classifier, x_train, y_train, param_name,
 	:param x_train: {array} descriptor values for training data.
 	:param y_train: {array} class values for training data.
 	:param param_name: {string} parameter to assess in the validation curve plot. For SVM,
-		"clf__C" (C parameter), "clf__gamma" (gamma parameter). For RF, "n_estimators" (number of trees), "max_depth" (max num of
-		branches per tree, "min_samples_split" (min number of samples required to split an internal tree node),
-		"min_samples_leaf" (min number of samples in newly created leaf).
+		"clf__C" (C parameter), "clf__gamma" (gamma parameter). For RF, "clf__n_estimators" (number of trees),
+		"clf__max_depth" (max num of branches per tree, "clf__min_samples_split" (min number of samples required to split an
+		internal tree node), "clf__min_samples_leaf" (min number of samples in newly created leaf).
 	:param param_range: {list} parameter range for the validation curve.
 	:param cv: {int} number of folds for cross-validation.
 	:param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
@@ -257,9 +257,9 @@ def validation_curve(classifier, x_train, y_train, param_name,
 	plt.show()
 
 
-def predictions(classifier, x_test, names_test, seqs_test, y_test=None, filename=None):
+def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, filename=None, save_csv=True):
 	"""
-	Returns predictions using the specified estimator and test data. If true class is provided,
+	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
 	it returns the scoring value for the test data.
 	:param classifier: {classifier instance} classifier used for predictions.
 	:param x_test: {array} descriptor values for testing data.
@@ -267,7 +267,8 @@ def predictions(classifier, x_test, names_test, seqs_test, y_test=None, filename
 	:param seqs_test: {list} sequences of the peptides in test data.
 	:param y_test: {array} true classes for testing data (optional).
 	:param filename: {string} valid path for the file to store the predictions.
-	:return: csv file containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
+	:param save_csv: {bool} if true additionally saves csv file with predicitons.
+	:return: pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
 		are the predicted probability of the peptide belonging to class0 and class1, respectively.
 	"""
 
@@ -276,10 +277,23 @@ def predictions(classifier, x_test, names_test, seqs_test, y_test=None, filename
 
 	pred_probs = classifier.predict_proba(x_test)
 
-	if y_test is None:
+	if (y_test and names_test) is None:
+		dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
+					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
+		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
+
+	elif y_test is None:
 		dictpred = {'ID': range(len(x_test)), 'Name': names_test, 'Sequence': seqs_test,
 					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
 		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
+
+	elif names_test is None:
+		dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
+					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
+					'True_class': y_test}
+		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Sequence', 'Pred_prob_class0',
+												 'Pred_prob_class1', 'True_class'])
+
 	else:
 		dictpred = {'ID': range(len(x_test)), 'Name': names_test, 'Sequence': seqs_test,
 					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
@@ -287,5 +301,7 @@ def predictions(classifier, x_test, names_test, seqs_test, y_test=None, filename
 		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0',
 												'Pred_prob_class1', 'True_class'])
 
-	dfpred.to_csv(filename + time.strftime("-%Y%m%d-%H%M%S.csv"))
+	if save_csv:
+		dfpred.to_csv(filename + time.strftime("-%Y%m%d-%H%M%S.csv"))
+
 	return dfpred
