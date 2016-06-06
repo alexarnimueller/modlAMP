@@ -282,7 +282,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 				'#000000', '#000000']
 	f_none = ['#ffffff'] * 20
 	t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
-	t_charge = ['w'] * 20
+	t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
 	t_none = ['k'] * 20
 	if lineweights == True:
 		lw = np.arange(1, 6, 5. / (len(sequence) - 1))  # line thickness array
