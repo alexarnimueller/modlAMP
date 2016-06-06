@@ -202,12 +202,12 @@ def read_fasta(inputfile):
 
 
 def save_fasta(self, filename):
-	'''
+	"""
 	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
 	:param filename: output filename (ending .fasta)
 	:return: a FASTA formatted file containing the generated sequences
-	'''
+	"""
 	if os.path.exists(filename):
 		os.remove(filename)  # remove outputfile, it it exists
 	with open(filename, 'w') as o:

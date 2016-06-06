@@ -449,6 +449,14 @@ class GlobalDescriptor(object):
 			data = np.hstack((names, self.descriptor))
 		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
 
+	def save_fasta(self, outputfile):
+		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
+
+		:param outputfile: filename of the output FASTA file
+		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
+		"""
+		save_fasta(self, outputfile)
+
 
 class PeptideDescriptor(object):
 	"""
