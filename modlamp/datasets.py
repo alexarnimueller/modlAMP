@@ -74,11 +74,11 @@ def load_AMPvsTMset():
 	>>> from modlamp.datasets import load_AMPvsTMset
 	>>> data = load_AMPvsTMset()
 	>>> data.sequences[:5]
-	array([['AAGAATVLLVIVLLAGSYLAVLA'],['LWIVIACLACVGSAAALTLRA'],['FYRFYMLREGTAVPAVWFSIELIFGLFA'],['GTLELGVDYGRAN'],['KLFWRAVVAEFLATTLFVFISIGSALGFK']])
+	['AAGAATVLLVIVLLAGSYLAVLA','LWIVIACLACVGSAAALTLRA','FYRFYMLREGTAVPAVWFSIELIFGLFA','GTLELGVDYGRAN','KLFWRAVVAEFLATTLFVFISIGSALGFK']
 	>>> list(data.target_names)
 	['TM', 'AMP']
-	>>> data.sequences.shape
-	(412, 1)
+	>>> len(data.sequences)
+	412
 	"""
 
 	module_path = dirname(__file__)
@@ -122,11 +122,11 @@ def load_helicalAMPset():
 	>>> from modlamp.datasets import load_helicalAMPset
 	>>> data = load_helicalAMPset()
 	>>> data.sequences[:5]
-	array([['FDQAQTEIQATMEEN'],['DVDAALHYLARLVEAG'],['RCPLVIDYLIDLATRS'],['NPATLMMFFK'],['NLEDSIQILRTD']])
+	['FDQAQTEIQATMEEN','DVDAALHYLARLVEAG','RCPLVIDYLIDLATRS','NPATLMMFFK','NLEDSIQILRTD']
 	>>> list(data.target_names)
 	['HEL', 'AMP']
-	>>> data.sequences.shape
-	(726, 1)
+	>>> len(data.sequences)
+	726
 	"""
 
 	module_path = dirname(__file__)
@@ -146,5 +146,61 @@ def load_helicalAMPset():
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,
 				 feature_names=['Sequence'])
+
+
+def load_ACPvsNeg():
+	"""Function to load a dataset consisting of **alpha-helical ACP sequences and negative peptides extracted from
+	alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.
+
+	The ACP class consists of a collection of ACPs from the `APD2 <http://aps.unmc.edu/AP/>`_ and
+	`CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by Gisela Gabernet at
+	modlab ETH Zuerich <gisela.gabernet@pharma.ethz.ch>, checking the original literature and annotated active against
+	at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and cervical.
+	Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+
+	The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from the
+	 `PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
+	<http://www.rcsb.org/pdb/home/home.do>`) isolated directly from the proteins crystal structure.
+
+	=================	====
+	Classes				2
+	ACP peptides 		95
+	Negative peptides	94
+	Total peptides		189
+	Dimensionality		1
+	=================	====
+
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
+		classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:Example:
+
+	>>> from modlamp.datasets import load_ACPvsNeg
+	>>> data = load_ACPvsNeg()
+	>>> data.sequences[:5]
+	['VLTIIATIFMPLTFIAGI', 'QLGAGLSVGLSGLAAGFAIGIVG', 'WLYLILGIIFGIFGPIFNKWVL', 'VTWLLFLLGFVAILI', 'TRELFLNFTIVLITVILMWLLV']
+	>>> list(data.target_names)
+	['Neg', 'ACP']
+	>>> len(data.sequences)
+	189
+	"""
+
+	module_path = dirname(__file__)
+	with open(join(module_path, 'data', 'ACPvsNeg.csv')) as csv_file:
+		data_file = csv.reader(csv_file)
+		temp = next(data_file)
+		# n_samples = int(temp[0])
+		# n_features = int(temp[1])
+		target_names = np.array(temp[2:])
+		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
+		target = []  # np.empty((n_samples,), dtype=np.int)
+
+		for i, ir in enumerate(data_file):
+			sequences.append(ir[0])  # sequences[i] = ir[0]
+			target.append(ir[-1])  # target[i] = ir[-1]
+
+	return Bunch(sequences=sequences, target=target,
+				 target_names=target_names,
+				 feature_names=['Sequence'])
+
 
 # TODO: add more data set loading functions

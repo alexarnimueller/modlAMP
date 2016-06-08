@@ -8,7 +8,7 @@ class TestCore(unittest.TestCase):
 	R.sequences = sequences
 
 	def test_filter_unnatural(self):
-		self.R.filter_unnatrual()
+		self.R.filter_unnatural()
 		self.assertNotIn('ABCDEFGHAJKLMNOPQRSTUVWXYZ', self.R.sequences)
 
 	def test_mutate(self):
