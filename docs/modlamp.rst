@@ -11,6 +11,7 @@ Module                      Characteristics
 :mod:`modlamp.database`     Module incorporating functions to connect to the modlab in-house peptide database server.
 :mod:`modlamp.datasets`     Module incorporating functions to load different peptide datasets used for ML classification tasks.
 :mod:`modlamp.plot`         Module incorporating functions to visualize descriptor.
+:mod:`modlamp.ml`           Module incorporating machine learning functions for training SVM or RF models on peptides.
 :mod:`modlamp.core`         Module incorporating helper functions for other modules.
 =========================== ==========================================================================================================
 
@@ -43,6 +44,12 @@ modlamp.plot
 ------------
 
 .. automodule:: modlamp.plot
+    :members:
+
+modlamp.ml
+----------
+
+.. automodule:: modlamp.ml
     :members:
 
 modlamp.core

@@ -159,7 +159,7 @@ def load_ACPvsNeg():
 	Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
 
 	The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from the
-	 `PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
+	`PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
 	<http://www.rcsb.org/pdb/home/home.do>`) isolated directly from the proteins crystal structure.
 
 	=================	====

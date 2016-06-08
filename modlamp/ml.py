@@ -8,13 +8,14 @@ This module contains different functions to facilitate machine learning mainly u
 Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
 check the scikit-learn documentation.
 
-=============================	    =============================================================================================
-Model  								Reference
-=============================		=============================================================================================
-Support Vector Machine              http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-Random Forest                       http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-=============================		=============================================================================================
+=============================	=============================================================================================
+Model  							Reference
+=============================	=============================================================================================
+Support Vector Machine          http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+Random Forest                   http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+=============================	=============================================================================================
 
+.. versionadded:: 2.2.0
 """
 
 import numpy as np
@@ -41,36 +42,34 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
 	Default parameter grids:
 
-	===========		===============
-	Model			Parameter grid
-	===========		===============
-	SVM Model		param_grid = [{'clf__C': param_range,
-						'clf__kernel': ['linear']},
-						{'clf__C': param_range,
-						'clf__gamma': param_range,
-						'clf__kernel': ['rbf']}]
+	==============		============================================================================
+	Model				Parameter grid
+	==============		============================================================================
+	SVM Model			param_grid = [{'clf__C': param_range, 'clf__kernel': ['linear']},
+						{'clf__C': param_range,	'clf__gamma': param_range, 'clf__kernel': ['rbf']}]
 
-	Random Forest	param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
+	Random Forest		param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
 						'clf__max_depth': [3, None],
 						'clf__max_features': [1, 2, 3, 5, 10],
 						'clf__min_samples_split': [1, 3, 5, 10],
 						'clf__min_samples_leaf': [1, 3, 5, 10],
 						'clf__bootstrap': [True, False],
 						'clf__criterion': ["gini", "entropy"]}]
-	===========		===============
+	==============		============================================================================
 
 
 
 	Useful methods implemented in scikit-learn:
-	===========			===========================================================
-	Method				Description
-	===========			===========================================================
-	fit(X,y) 			fit the model with the same parameters to new training data.
-	score(X,y) 			get the score of the model for test data.
-	predict(X) 			get predictions for new data.
-	predict_proba(X)	get probability predicitons for [class0, class1]
-	get_params()		get parameters of the trained model
-	================	===========================================================
+
+	=================			=============================================================
+	Method						Description
+	=================			=============================================================
+	fit(X,y) 					fit the model with the same parameters to new training data.
+	score(X,y) 					get the score of the model for test data.
+	predict(X) 					get predictions for new data.
+	predict_proba(X)				get probability predicitons for [class0, class1]
+	get_params()					get parameters of the trained model
+	=================			=============================================================
 
 	:param model: {str} model to train. Choose between 'svm' (Support Vector Machine) or 'rf' (Random Forest).
 	:param x_train: {array} descriptor values for training data.
@@ -90,16 +89,17 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	>>> from modlamp import descriptors
 
 	Loading a dataset for training.
+
 	>>> data = load_ACPvsNeg()
 	>>> data.sequences[188]
 	'FLFKLIPKAIKGLVKAIRK'
 	>>> data.target[188]
 	'1'
 	>>> data.target_names
-	array(['Neg', 'ACP'],
-      dtype='|S3')
+	array(['Neg', 'ACP'], dtype='|S3')
 
 	Calculating Pepcats descriptor in autocorrelation:
+
 	>>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
 	>>> descr.calculate_autocorr(7)
 	>>> descr.descriptor[0]
@@ -114,10 +114,10 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         0.        ,  0.        ])
 
 	Training an SVM model with this data:
+
 	>>> X_train = descr.descriptor
 	>>> y_train = data.target
 	>>> best_svm_model = train_best_model('svm', X_train, y_train)
-
 	Best score and parameters from a 10-fold cross validation:
 	mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
 
@@ -149,7 +149,6 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 		 decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
 		 max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
 		 verbose=False))]}
-
 
 	"""
 	if model == 'svm':
@@ -213,8 +212,8 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 					param_range=None,
 					cv=10, score=make_scorer(matthews_corrcoef),
 					title="Validation Curve", xlab="parameter range", ylab="MCC"):
-	"""
-	Plotting cross-validation curve for the specified classifier, training data and parameter.
+	"""Plotting cross-validation curve for the specified classifier, training data and parameter.
+
 	:param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).
 	:param x_train: {array} descriptor values for training data.
 	:param y_train: {array} class values for training data.
@@ -230,6 +229,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 	:param xlab: {str} x axis label.
 	:param ylab: {str} y axis label.
 	:return: plot of the validation curve.
+
 	"""
 
 	if param_range is None:
@@ -258,9 +258,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
 
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, filename=None, save_csv=True):
-	"""
-	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
+	"""	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
 	it returns the scoring value for the test data.
+
 	:param classifier: {classifier instance} classifier used for predictions.
 	:param x_test: {array} descriptor values for testing data.
 	:param names_test: {list} names of the peptides in test data.
@@ -270,6 +270,7 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, 
 	:param save_csv: {bool} if true additionally saves csv file with predicitons.
 	:return: pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
 		are the predicted probability of the peptide belonging to class0 and class1, respectively.
+
 	"""
 
 	if filename is None:

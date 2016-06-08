@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.1.5 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.1.5',
+        VERSION:     'v2.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.1.5 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.2.0 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -81,7 +81,10 @@
 <tr class="row-even"><td><a class="reference internal" href="#module-modlamp.plot" title="modlamp.plot"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.plot</span></code></a></td>
 <td>Module incorporating functions to visualize descriptor.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.ml" title="modlamp.ml"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.ml</span></code></a></td>
+<td>Module incorporating machine learning functions for training SVM or RF models on peptides.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
 <td>Module incorporating helper functions for other modules.</td>
 </tr>
 </tbody>
@@ -158,7 +161,7 @@ the <strong>methods</strong> linked below:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of sequence lengths in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -190,14 +193,23 @@ the <strong>methods</strong> linked below:</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.calculate_charge">
-<code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to calculate the overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>pH=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
+Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</p>
+<p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15 (and
+Cterm is added to the pos_pKs dictionary.
+The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
+For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.</p>
+<blockquote>
+<div>pos_pKs = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}
+neg_pKs = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus (+1 charge)</li>
+<li><strong>pH</strong> &#8211; {float} pH at which to calculate peptide charge.</li>
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
 <li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
@@ -207,22 +219,25 @@ the <strong>methods</strong> linked below:</p>
 </tr>
 </tbody>
 </table>
-<p>The following dictionary shows the used side chain charges:</p>
-<blockquote>
-<div>AACharge = {&#8220;C&#8221;: -.1, &#8220;D&#8221;: -1., &#8220;E&#8221;: -1., &#8220;H&#8221;: .1, &#8220;K&#8221;: 1., &#8220;R&#8221;: 1.}</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.charge_density">
-<code class="descname">charge_density</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.charge_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.charge_density" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to calculate the charge density (charge / MW) of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<code class="descname">charge_density</code><span class="sig-paren">(</span><em>pH=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.charge_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.charge_density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to calculate the charge density (charge / MW) of every sequences in the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pH</strong> &#8211; {float} pH at which to calculate peptide charge.</li>
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -230,12 +245,14 @@ the <strong>methods</strong> linked below:</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.isoelectric_point">
-<code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
+<code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-The pK scale and method used is Bjellqvist. For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a>
+The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
+The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
 module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
-<p>positive_pKs = {&#8216;Nterm&#8217;: 7.5, &#8216;K&#8217;: 10.0, &#8216;R&#8217;: 12.0, &#8216;H&#8217;: 5.98}
-negative_pKs = {&#8216;Cterm&#8217;: 3.55, &#8216;D&#8217;: 4.05, &#8216;E&#8217;: 4.45, &#8216;C&#8217;: 9.0, &#8216;Y&#8217;: 10.0}</p>
+<blockquote>
+<div>pos_pKs = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}
+neg_pKs = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -350,7 +367,7 @@ frequency of the amino acids [A,C,F,I,L,M &amp; V].</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>type</strong> &#8211; <strong>&#8216;standard&#8217;</strong> or <strong>&#8216;minmax&#8217;</strong>, type of scaling to be used</li>
-<li><strong>fit</strong> &#8211; <strong>True</strong> or <strong>False</strong>, defines whether the used scaler is first fitting on the data (True) or
+<li><strong>fit</strong> &#8211; {boolean}, defines whether the used scaler is first fitting on the data (True) or
 whether the already fitted scaler in <code class="xref py py-attr docutils literal"><span class="pre">scaler</span></code> should be used to transform (False).</li>
 </ul>
 </td>
@@ -454,7 +471,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; filenam of the data file to be loaded</li>
+<li><strong>filename</strong> &#8211; filename of the data file to be loaded</li>
 <li><strong>delimiter</strong> &#8211; column delimiter</li>
 <li><strong>targets</strong> &#8211; {boolean} whether last column in the file contains a target class vector</li>
 </ul>
@@ -489,6 +506,22 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>outputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for saving sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a FASTA formatted file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>outputfile</strong> &#8211; filename of the output FASTA file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -499,6 +532,8 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <li><strong>AASI</strong>                      (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
 <li><strong>argos</strong>                     (Argos hydrophobicity amino acid scale, <em>[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
 <li><strong>bulkiness</strong>         (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
+<li><strong>charge_physio</strong>     (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
+<li><strong>charge_acidic</strong>     (Amino acid charge at acidic pH - Hystidine charge +1.0.)</li>
 <li><strong>cougar</strong>            (modlabs inhouse selection of global peptide descriptors)</li>
 <li><strong>eisenberg</strong>         (the Eisenberg hydrophobicity consensus amino acid scale, <em>[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.</em>)</li>
 <li><strong>Ez</strong>                        (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, <em>[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.</em>)</li>
@@ -508,13 +543,15 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <li><strong>ISAECI</strong>            (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, <em>[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.</em>)</li>
 <li><strong>janin</strong>             (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)</li>
 <li><strong>kytedoolittle</strong>     (Kyte &amp; Doolittle hydrophobicity amino acid scale, <em>[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.</em>)</li>
-<li><strong>MSS</strong>                       (A graph-theoretical index that reflects topological shape and size of amino acid side chains, <em>[12] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.</em>)</li>
-<li><strong>MSW</strong>                       (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, <em>[13] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.</em>)</li>
-<li><strong>pepcats</strong>           (modlabs pharmacophoric feature based PEPCATS scale, <em>[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
+<li><strong>Levitt_alpha</strong>      (Levitt amino acid alpha-helix propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>. <em>[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.</em>)</li>
+<li><strong>MSS</strong>                       (A graph-theoretical index that reflects topological shape and size of amino acid side chains, <em>[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.</em>)</li>
+<li><strong>MSW</strong>                       (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, <em>[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.</em>)</li>
+<li><strong>pepcats</strong>           (modlabs pharmacophoric feature based PEPCATS scale, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
 <li><strong>polarity</strong>          (Amino acid polarity scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
-<li><strong>PPCALI</strong>            (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, <em>[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
-<li><strong>refractivity</strong>      (Relative amino acid refractivity values, <em>[15] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.</em>)</li>
-<li><strong>t_scale</strong>           (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, <em>[16] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.</em>)</li>
+<li><strong>PPCALI</strong>            (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
+<li><strong>refractivity</strong>      (Relative amino acid refractivity values, <em>[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.</em>)</li>
+<li><strong>t_scale</strong>           (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, <em>[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.</em>)</li>
+<li><strong>TM_tend</strong>           (Amino acid transmembrane propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>, <em>[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.</em>)</li>
 <li><strong>z3</strong>                        (The original three dimensional Z-scale, <em>[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.</em>)</li>
 <li><strong>z5</strong>                        (The extended five dimensional Z-scale, <em>[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.</em>)</li>
 </ul>
@@ -1252,8 +1289,8 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="modlamp.sequences.Random.filter_unnatrual">
-<code class="descname">filter_unnatrual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_unnatrual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_unnatrual" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.sequences.Random.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_unnatural" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> as well as duplicates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2157,11 +2194,11 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsTMset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTMset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">array([[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;],[&#39;LWIVIACLACVGSAAALTLRA&#39;],[&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;],[&#39;GTLELGVDYGRAN&#39;],[&#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;]])</span>
+<span class="go">[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;,&#39;LWIVIACLACVGSAAALTLRA&#39;,&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;,&#39;GTLELGVDYGRAN&#39;,&#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <span class="go">[&#39;TM&#39;, &#39;AMP&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(412, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">412</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2208,11 +2245,70 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">array([[&#39;FDQAQTEIQATMEEN&#39;],[&#39;DVDAALHYLARLVEAG&#39;],[&#39;RCPLVIDYLIDLATRS&#39;],[&#39;NPATLMMFFK&#39;],[&#39;NLEDSIQILRTD&#39;]])</span>
+<span class="go">[&#39;FDQAQTEIQATMEEN&#39;,&#39;DVDAALHYLARLVEAG&#39;,&#39;RCPLVIDYLIDLATRS&#39;,&#39;NPATLMMFFK&#39;,&#39;NLEDSIQILRTD&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <span class="go">[&#39;HEL&#39;, &#39;AMP&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(726, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">726</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_ACPvsNeg">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_ACPvsNeg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_ACPvsNeg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_ACPvsNeg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of <strong>alpha-helical ACP sequences and negative peptides extracted from
+alpha-helical transmembrane and non-transmembrane regions of proteins</strong> for classification.</p>
+<p>The ACP class consists of a collection of ACPs from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
+<a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> databases, manually curated by Gisela Gabernet at
+modlab ETH Zuerich &lt;<a class="reference external" href="mailto:gisela&#46;gabernet&#37;&#52;&#48;pharma&#46;ethz&#46;ch">gisela<span>&#46;</span>gabernet<span>&#64;</span>pharma<span>&#46;</span>ethz<span>&#46;</span>ch</a>&gt;, checking the original literature and annotated active against
+at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and cervical.
+Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.</p>
+<p>The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from the
+<cite>PDBTM &lt;http://pdbtm.enzim.hu/&gt;</cite> ) and 47 non-transmembrane helices (extracted from the <cite>PDB
+&lt;http://www.rcsb.org/pdb/home/home.do&gt;</cite>) isolated directly from the proteins crystal structure.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="65%" />
+<col width="35%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>ACP peptides</td>
+<td>95</td>
+</tr>
+<tr class="row-odd"><td>Negative peptides</td>
+<td>94</td>
+</tr>
+<tr class="row-even"><td>Total peptides</td>
+<td>189</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>, the
+classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_ACPvsNeg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;VLTIIATIFMPLTFIAGI&#39;, &#39;QLGAGLSVGLSGLAAGFAIGIVG&#39;, &#39;WLYLILGIIFGIFGPIFNKWVL&#39;, &#39;VTWLLFLLGFVAILI&#39;, &#39;TRELFLNFTIVLITVILMWLLV&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;Neg&#39;, &#39;ACP&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">189</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2422,8 +2518,259 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 </dd></dl>
 
 </div>
+<div class="section" id="module-modlamp.ml">
+<span id="modlamp-ml"></span><h2>2.6. modlamp.ml<a class="headerlink" href="#module-modlamp.ml" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-modlamp.ml"></span><p>This module contains different functions to facilitate machine learning mainly using the scikit-learn package.
+Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
+check the scikit-learn documentation.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Model</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Support Vector Machine</td>
+<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html</a></td>
+</tr>
+<tr class="row-odd"><td>Random Forest</td>
+<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html</a></td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.2.0.</span></p>
+</div>
+<dl class="function">
+<dt id="modlamp.ml.train_best_model">
+<code class="descclassname">modlamp.ml.</code><code class="descname">train_best_model</code><span class="sig-paren">(</span><em>model</em>, <em>x_train</em>, <em>y_train</em>, <em>scaler=StandardScaler(copy=True</em>, <em>with_mean=True</em>, <em>with_std=True)</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>param_grid=None</em>, <em>cv=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#train_best_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.train_best_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns pipeline that performs standard scaling and trains
+the best Support Vector Machine or Random forest classifier found by grid search.
+(see sklearn.preprocessing, sklearn.grid_search, sklearn.pipeline).</p>
+<p>Default parameter grids:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Model</th>
+<th class="head">Parameter grid</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SVM Model</td>
+<td><dl class="first last docutils">
+<dt>param_grid = [{&#8216;clf__C&#8217;: param_range, &#8216;clf__kernel&#8217;: [&#8216;linear&#8217;]},</dt>
+<dd>{&#8216;clf__C&#8217;: param_range, &#8216;clf__gamma&#8217;: param_range, &#8216;clf__kernel&#8217;: [&#8216;rbf&#8217;]}]</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td>Random Forest</td>
+<td><dl class="first last docutils">
+<dt>param_grid = [{&#8216;clf__n_estimators&#8217;: [10, 50, 100, 500],</dt>
+<dd>&#8216;clf__max_depth&#8217;: [3, None],
+&#8216;clf__max_features&#8217;: [1, 2, 3, 5, 10],
+&#8216;clf__min_samples_split&#8217;: [1, 3, 5, 10],
+&#8216;clf__min_samples_leaf&#8217;: [1, 3, 5, 10],
+&#8216;clf__bootstrap&#8217;: [True, False],
+&#8216;clf__criterion&#8217;: [&#8220;gini&#8221;, &#8220;entropy&#8221;]}]</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Useful methods implemented in scikit-learn:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>fit(X,y)</td>
+<td>fit the model with the same parameters to new training data.</td>
+</tr>
+<tr class="row-odd"><td>score(X,y)</td>
+<td>get the score of the model for test data.</td>
+</tr>
+<tr class="row-even"><td>predict(X)</td>
+<td>get predictions for new data.</td>
+</tr>
+<tr class="row-odd"><td>predict_proba(X)</td>
+<td>get probability predicitons for [class0, class1]</td>
+</tr>
+<tr class="row-even"><td>get_params()</td>
+<td>get parameters of the trained model</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> &#8211; {str} model to train. Choose between &#8216;svm&#8217; (Support Vector Machine) or &#8216;rf&#8217; (Random Forest).</li>
+<li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
+<li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
+<li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
+E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
+<li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
+(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
+<li><strong>param_grid</strong> &#8211; {dict} parameter grid for the gridsearch (see sklearn.grid_search).</li>
+<li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">best estimator pipeline.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="kn">import</span> <span class="n">train_best_model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_ACPvsNeg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="kn">import</span> <span class="n">descriptors</span>
+</pre></div>
+</div>
+<p>Loading a dataset for training.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">188</span><span class="p">]</span>
+<span class="go">&#39;FLFKLIPKAIKGLVKAIRK&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="mi">188</span><span class="p">]</span>
+<span class="go">&#39;1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span>
+<span class="go">array([&#39;Neg&#39;, &#39;ACP&#39;], dtype=&#39;|S3&#39;)</span>
+</pre></div>
+</div>
+<p>Calculating Pepcats descriptor in autocorrelation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">array([ 0.77777778,  0.11111111,  0.22222222,  0.16666667,  0.        ,</span>
+<span class="go">0.        ,  0.52941176,  0.        ,  0.        ,  0.        ,</span>
+<span class="go">0.        ,  0.        ,  0.5625    ,  0.        ,  0.        ,</span>
+<span class="go">0.        ,  0.        ,  0.        ,  0.6       ,  0.        ,</span>
+<span class="go">0.13333333,  0.        ,  0.        ,  0.        ,  0.71428571,</span>
+<span class="go">0.        ,  0.07142857,  0.07142857,  0.        ,  0.        ,</span>
+<span class="go">0.53846154,  0.07692308,  0.        ,  0.        ,  0.        ,</span>
+<span class="go">0.        ,  0.66666667,  0.        ,  0.08333333,  0.08333333,</span>
+<span class="go">0.        ,  0.        ])</span>
+</pre></div>
+</div>
+<p>Training an SVM model with this data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">Best score and parameters from a 10-fold cross validation:</span>
+<span class="go">mean: 0.86932, std: 0.10581, params: {&#39;clf__gamma&#39;: 0.001, &#39;clf__C&#39;: 100.0, &#39;clf__kernel&#39;: &#39;rbf&#39;}</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
+<span class="go">{&#39;clf&#39;: SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">   decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
+<span class="go">   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
+<span class="go">   verbose=False),</span>
+<span class="go"> &#39;clf__C&#39;: 100.0,</span>
+<span class="go"> &#39;clf__cache_size&#39;: 200,</span>
+<span class="go"> &#39;clf__class_weight&#39;: None,</span>
+<span class="go"> &#39;clf__coef0&#39;: 0.0,</span>
+<span class="go"> &#39;clf__decision_function_shape&#39;: None,</span>
+<span class="go"> &#39;clf__degree&#39;: 3,</span>
+<span class="go"> &#39;clf__gamma&#39;: 0.001,</span>
+<span class="go"> &#39;clf__kernel&#39;: &#39;rbf&#39;,</span>
+<span class="go"> &#39;clf__max_iter&#39;: -1,</span>
+<span class="go"> &#39;clf__probability&#39;: True,</span>
+<span class="go"> &#39;clf__random_state&#39;: 1,</span>
+<span class="go"> &#39;clf__shrinking&#39;: True,</span>
+<span class="go"> &#39;clf__tol&#39;: 0.001,</span>
+<span class="go"> &#39;clf__verbose&#39;: False,</span>
+<span class="go"> &#39;scl&#39;: StandardScaler(copy=True, with_mean=True, with_std=True),</span>
+<span class="go"> &#39;scl__copy&#39;: True,</span>
+<span class="go"> &#39;scl__with_mean&#39;: True,</span>
+<span class="go"> &#39;scl__with_std&#39;: True,</span>
+<span class="go"> &#39;steps&#39;: [(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)),</span>
+<span class="go">  (&#39;clf&#39;, SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">         decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
+<span class="go">         max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
+<span class="go">         verbose=False))]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.ml.plot_validation_curve">
+<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range=None</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plotting cross-validation curve for the specified classifier, training data and parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>classifier</strong> &#8211; {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).</li>
+<li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
+<li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
+<li><strong>param_name</strong> &#8211; {string} parameter to assess in the validation curve plot. For SVM,
+&#8220;clf__C&#8221; (C parameter), &#8220;clf__gamma&#8221; (gamma parameter). For RF, &#8220;clf__n_estimators&#8221; (number of trees),
+&#8220;clf__max_depth&#8221; (max num of branches per tree, &#8220;clf__min_samples_split&#8221; (min number of samples required to split an
+internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples in newly created leaf).</li>
+<li><strong>param_range</strong> &#8211; {list} parameter range for the validation curve.</li>
+<li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
+<li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
+(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
+<li><strong>title</strong> &#8211; {str} graph title</li>
+<li><strong>xlab</strong> &#8211; {str} x axis label.</li>
+<li><strong>ylab</strong> &#8211; {str} y axis label.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">plot of the validation curve.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.ml.df_predictions">
+<code class="descclassname">modlamp.ml.</code><code class="descname">df_predictions</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=None</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#df_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.df_predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
+it returns the scoring value for the test data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>classifier</strong> &#8211; {classifier instance} classifier used for predictions.</li>
+<li><strong>x_test</strong> &#8211; {array} descriptor values for testing data.</li>
+<li><strong>names_test</strong> &#8211; {list} names of the peptides in test data.</li>
+<li><strong>seqs_test</strong> &#8211; {list} sequences of the peptides in test data.</li>
+<li><strong>y_test</strong> &#8211; {array} true classes for testing data (optional).</li>
+<li><strong>filename</strong> &#8211; {string} valid path for the file to store the predictions.</li>
+<li><strong>save_csv</strong> &#8211; {bool} if true additionally saves csv file with predicitons.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
+are the predicted probability of the peptide belonging to class0 and class1, respectively.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-modlamp.core">
-<span id="modlamp-core"></span><h2>2.6. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
+<span id="modlamp-core"></span><h2>2.7. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-modlamp.core"></span><p>Core helper functions for other modules.</p>
 <dl class="function">
 <dt id="modlamp.core.load_scale">
@@ -2786,7 +3133,8 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 <li><a class="reference internal" href="#module-modlamp.database">2.3. modlamp.database</a></li>
 <li><a class="reference internal" href="#module-modlamp.datasets">2.4. modlamp.datasets</a></li>
 <li><a class="reference internal" href="#module-modlamp.plot">2.5. modlamp.plot</a></li>
-<li><a class="reference internal" href="#module-modlamp.core">2.6. modlamp.core</a></li>
+<li><a class="reference internal" href="#module-modlamp.ml">2.6. modlamp.ml</a></li>
+<li><a class="reference internal" href="#module-modlamp.core">2.7. modlamp.core</a></li>
 </ul>
 </li>
 </ul>
@@ -2836,7 +3184,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.1.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &mdash; modlamp v2.1.5 documentation</title>
+    <title>modlamp.descriptors &mdash; modlamp v2.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.1.5',
+        VERSION:     'v2.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.1.5 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -117,7 +117,7 @@
 <span class="sd">		Method to calculate the length (total AA count) of every sequence in the attribute :py:attr:`sequences`.</span>
 
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
-<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">		:return: array of sequence lengths in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
@@ -148,64 +148,148 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Method to calculate the overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
+	<span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
+<span class="sd">		The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
+<span class="sd">		Cterm is added to the pos_pKs dictionary.</span>
+<span class="sd">		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
+<span class="sd">		For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
-<span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus (+1 charge)</span>
+<span class="sd">			pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+<span class="sd">			neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+
+<span class="sd">		:param pH: {float} pH at which to calculate peptide charge.</span>
+<span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
+<span class="sd">		:return: {array} descriptor values in the attribute :py:attr:`descriptor</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="n">amide</span><span class="p">:</span>
+			<span class="n">pos_pKs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Nterm&#39;</span><span class="p">:</span> <span class="mf">9.38</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="mf">10.67</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">12.10</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">6.04</span><span class="p">}</span>
+			<span class="n">neg_pKs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Cterm&#39;</span><span class="p">:</span> <span class="mf">15.</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">3.71</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">4.15</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">8.14</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">10.10</span><span class="p">}</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">pos_pKs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Nterm&#39;</span><span class="p">:</span> <span class="mf">9.38</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="mf">10.67</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">12.10</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">6.04</span><span class="p">}</span>
+			<span class="n">neg_pKs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Cterm&#39;</span><span class="p">:</span> <span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">3.71</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">4.15</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">8.14</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">10.10</span><span class="p">}</span>
+
+		<span class="n">aa_content</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
+		<span class="n">aa_content</span><span class="p">[</span><span class="s1">&#39;Nterm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+		<span class="n">aa_content</span><span class="p">[</span><span class="s1">&#39;Cterm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+		<span class="n">PositiveCharge</span> <span class="o">=</span> <span class="mf">0.0</span>
+		<span class="k">for</span> <span class="n">aa</span><span class="p">,</span> <span class="n">pK</span> <span class="ow">in</span> <span class="n">pos_pKs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="n">CR</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">pK</span> <span class="o">-</span> <span class="n">pH</span><span class="p">)</span>
+			<span class="n">partial_charge</span> <span class="o">=</span> <span class="n">CR</span> <span class="o">/</span> <span class="p">(</span><span class="n">CR</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
+			<span class="n">PositiveCharge</span> <span class="o">+=</span> <span class="n">aa_content</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">*</span> <span class="n">partial_charge</span>
+		<span class="n">NegativeCharge</span> <span class="o">=</span> <span class="mf">0.0</span>
+		<span class="k">for</span> <span class="n">aa</span><span class="p">,</span> <span class="n">pK</span> <span class="ow">in</span> <span class="n">neg_pKs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="n">CR</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">pH</span> <span class="o">-</span> <span class="n">pK</span><span class="p">)</span>
+			<span class="n">partial_charge</span> <span class="o">=</span> <span class="n">CR</span> <span class="o">/</span> <span class="p">(</span><span class="n">CR</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
+			<span class="n">NegativeCharge</span> <span class="o">+=</span> <span class="n">aa_content</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">*</span> <span class="n">partial_charge</span>
+		<span class="k">return</span> <span class="n">PositiveCharge</span> <span class="o">-</span> <span class="n">NegativeCharge</span>
+
+<div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Method to overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
+<span class="sd">		Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
+
+<span class="sd">		The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
+<span class="sd">		Cterm is added to the pos_pKs dictionary.</span>
+<span class="sd">		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
+<span class="sd">		For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.</span>
+
+<span class="sd">			pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+<span class="sd">			neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+
+<span class="sd">		:param pH: {float} pH at which to calculate peptide charge.</span>
+<span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
-
-<span class="sd">		The following dictionary shows the used side chain charges:</span>
-
-<span class="sd">			AACharge = {&quot;C&quot;: -.1, &quot;D&quot;: -1., &quot;E&quot;: -1., &quot;H&quot;: .1, &quot;K&quot;: 1., &quot;R&quot;: 1.}</span>
-
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">AACharge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="o">-.</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}</span>
+
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">charge</span> <span class="o">=</span> <span class="mf">0.</span>
-			<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
-				<span class="n">charge</span> <span class="o">+=</span> <span class="n">AACharge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">amide</span><span class="p">:</span>  <span class="c1"># add +1 charge if amidated C-terminus</span>
-				<span class="n">charge</span> <span class="o">+=</span> <span class="mi">1</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.charge_density"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">[docs]</a>	<span class="k">def</span> <span class="nf">charge_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Method to calculate the charge density (charge / MW) of every sequence in the attribute :py:attr:`sequences`.</span>
+<div class="viewcode-block" id="GlobalDescriptor.charge_density"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">[docs]</a>	<span class="k">def</span> <span class="nf">charge_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`</span>
 
+<span class="sd">		:param pH: {float} pH at which to calculate peptide charge.</span>
+<span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
-<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">()</span>
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+		<span class="n">charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_MW</span><span class="p">(</span><span class="n">amide</span><span class="p">)</span>
+		<span class="n">masses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span>
+		<span class="n">desc</span> <span class="o">=</span> <span class="n">charges</span> <span class="o">/</span> <span class="n">masses</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>	<span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>	<span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.</span>
-<span class="sd">		The pK scale and method used is Bjellqvist. For further references, see the `Biopython &lt;http://biopython.org/&gt;`_</span>
+<span class="sd">		The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
+<span class="sd">		The method used is based on the IsoelectricPoint module in `Biopython &lt;http://biopython.org/&gt;`_</span>
 <span class="sd">		module :mod:`Bio.SeqUtils.ProtParam`.</span>
 
-<span class="sd">		positive_pKs = {&#39;Nterm&#39;: 7.5, &#39;K&#39;: 10.0, &#39;R&#39;: 12.0, &#39;H&#39;: 5.98}</span>
-<span class="sd">		negative_pKs = {&#39;Cterm&#39;: 3.55, &#39;D&#39;: 4.05, &#39;E&#39;: 4.45, &#39;C&#39;: 9.0, &#39;Y&#39;: 10.0}</span>
+<span class="sd">			pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+<span class="sd">			neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
 
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+
 		<span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">())</span>
+
+			<span class="c1"># Bracket between pH1 and pH2</span>
+			<span class="n">pH</span> <span class="o">=</span> <span class="mf">7.0</span>
+			<span class="n">charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">charge</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+				<span class="n">pH1</span> <span class="o">=</span> <span class="n">pH</span>
+				<span class="n">charge1</span> <span class="o">=</span> <span class="n">charge</span>
+				<span class="k">while</span> <span class="n">charge1</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+					<span class="n">pH</span> <span class="o">=</span> <span class="n">pH1</span> <span class="o">+</span> <span class="mf">1.0</span>
+					<span class="n">charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">charge</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+						<span class="n">pH1</span> <span class="o">=</span> <span class="n">pH</span>
+						<span class="n">charge1</span> <span class="o">=</span> <span class="n">charge</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">pH2</span> <span class="o">=</span> <span class="n">pH</span>
+						<span class="n">charge2</span> <span class="o">=</span> <span class="n">charge</span>
+						<span class="k">break</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">pH2</span> <span class="o">=</span> <span class="n">pH</span>
+				<span class="n">charge2</span> <span class="o">=</span> <span class="n">charge</span>
+				<span class="k">while</span> <span class="n">charge2</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+					<span class="n">pH</span> <span class="o">=</span> <span class="n">pH2</span> <span class="o">-</span> <span class="mf">1.0</span>
+					<span class="n">charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">charge</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+						<span class="n">pH2</span> <span class="o">=</span> <span class="n">pH</span>
+						<span class="n">charge2</span> <span class="o">=</span> <span class="n">charge</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">pH1</span> <span class="o">=</span> <span class="n">pH</span>
+						<span class="n">charge1</span> <span class="o">=</span> <span class="n">charge</span>
+						<span class="k">break</span>
+			<span class="c1"># Bisection</span>
+			<span class="k">while</span> <span class="n">pH2</span> <span class="o">-</span> <span class="n">pH1</span> <span class="o">&gt;</span> <span class="mf">0.0001</span> <span class="ow">and</span> <span class="n">charge</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+				<span class="n">pH</span> <span class="o">=</span> <span class="p">(</span><span class="n">pH1</span> <span class="o">+</span> <span class="n">pH2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+				<span class="n">charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">charge</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+					<span class="n">pH1</span> <span class="o">=</span> <span class="n">pH</span>
+					<span class="n">charge1</span> <span class="o">=</span> <span class="n">charge</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">pH2</span> <span class="o">=</span> <span class="n">pH</span>
+					<span class="n">charge2</span> <span class="o">=</span> <span class="n">charge</span>
+			<span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">append</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
@@ -317,7 +401,7 @@
 		<span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
 
 <span class="sd">		:param type: **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
-<span class="sd">		:param fit: **True** or **False**, defines whether the used scaler is first fitting on the data (True) or</span>
+<span class="sd">		:param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or</span>
 <span class="sd">			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
 <span class="sd">		:return: scaled descriptor values in :py:attr`self.descriptor`</span>
 <span class="sd">		:Example:</span>
@@ -384,7 +468,7 @@
 <span class="sd">		.. note::</span>
 <span class="sd">			The data file should **not** have any headers</span>
 
-<span class="sd">		:param filename: filenam of the data file to be loaded</span>
+<span class="sd">		:param filename: filename of the data file to be loaded</span>
 <span class="sd">		:param delimiter: column delimiter</span>
 <span class="sd">		:param targets: {boolean} whether last column in the file contains a target class vector</span>
 <span class="sd">		:return: loaded sequences, descriptor values and targets in the corresponding attributes.</span>
@@ -412,7 +496,15 @@
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
-		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
+
+<span class="sd">		:param outputfile: filename of the output FASTA file</span>
+<span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PeptideDescriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor">[docs]</a><span class="k">class</span> <span class="nc">PeptideDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -422,6 +514,8 @@
 <span class="sd">	- **AASI**			(An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)</span>
 <span class="sd">	- **argos**			(Argos hydrophobicity amino acid scale, *[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.*)</span>
 <span class="sd">	- **bulkiness**		(Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)</span>
+<span class="sd">	- **charge_physio**	(Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</span>
+<span class="sd">	- **charge_acidic**	(Amino acid charge at acidic pH - Hystidine charge +1.0.)</span>
 <span class="sd">	- **cougar**		(modlabs inhouse selection of global peptide descriptors)</span>
 <span class="sd">	- **eisenberg**		(the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)</span>
 <span class="sd">	- **Ez** 			(potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)</span>
@@ -431,13 +525,15 @@
 <span class="sd">	- **ISAECI**		(Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)</span>
 <span class="sd">	- **janin** 		(Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)</span>
 <span class="sd">	- **kytedoolittle**	(Kyte &amp; Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)</span>
-<span class="sd">	- **MSS**			(A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[12] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)</span>
-<span class="sd">	- **MSW**			(Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[13] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)</span>
-<span class="sd">	- **pepcats**		(modlabs pharmacophoric feature based PEPCATS scale, *[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)</span>
+<span class="sd">	- **Levitt_alpha**	(Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)</span>
+<span class="sd">	- **MSS**			(A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)</span>
+<span class="sd">	- **MSW**			(Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)</span>
+<span class="sd">	- **pepcats**		(modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)</span>
 <span class="sd">	- **polarity**		(Amino acid polarity scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)</span>
-<span class="sd">	- **PPCALI**		(modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[14] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)</span>
-<span class="sd">	- **refractivity**	(Relative amino acid refractivity values, *[15] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)</span>
-<span class="sd">	- **t_scale**		(A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[16] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)</span>
+<span class="sd">	- **PPCALI**		(modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)</span>
+<span class="sd">	- **refractivity**	(Relative amino acid refractivity values, *[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)</span>
+<span class="sd">	- **t_scale**		(A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)</span>
+<span class="sd">	- **TM_tend**		(Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)</span>
 <span class="sd">	- **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)</span>
 <span class="sd">	- **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)</span>
 
@@ -906,7 +1002,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
