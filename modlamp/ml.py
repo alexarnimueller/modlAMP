@@ -277,17 +277,17 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, 
 
 	pred_probs = classifier.predict_proba(x_test)
 
-	if (y_test and names_test) is None:
+	if not (y_test.size and names_test):
 		dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
 					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
 		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
 
-	elif y_test is None:
+	elif not y_test.size:
 		dictpred = {'ID': range(len(x_test)), 'Name': names_test, 'Sequence': seqs_test,
 					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
 		dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
 
-	elif names_test is None:
+	elif not names_test:
 		dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
 					'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
 					'True_class': y_test}
