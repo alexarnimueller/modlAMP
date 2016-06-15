@@ -413,7 +413,7 @@ def plot_pde(data, axlabels=None, filename=None):
 	# prepare figure
 	fig, ax = plt.subplots()
 
-	# set axis labels
+	# set axis labels and limits
 	ax.set_xlabel(axlabels[0], fontsize=18)
 	ax.set_ylabel(axlabels[1], fontsize=18)
 	fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
