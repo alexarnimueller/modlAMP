@@ -382,10 +382,10 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
 
 def plot_pde(data, axlabels=None, filename=None):
-	"""A function to plot probability density estimations of given data vectors / matrices (format: *numpy.array*)
+	"""A function to plot probability density estimations of given data vectors / matrices (row wise)
 
-	:param data: {np.array} Data array of which underlying probability density function should be estimated and plotted.
-	:param axlabels: {list of str} List containing the axis labels for the plot
+	:param data: {list / array} data of which underlying probability density function should be estimated and plotted.
+	:param axlabels: {list of str} list containing the axis labels for the plot
 	:param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
 	:Example:
 
@@ -403,16 +403,17 @@ def plot_pde(data, axlabels=None, filename=None):
 	if not axlabels:
 		axlabels = ['Data', 'Density']
 
-	# transform input to pandas.DataFrame (check if it is pandas.DataFrame / numpy object already)
-	if not isinstance(data, pd.DataFrame):
-		if isinstance(data, np.object):
-			data = pd.DataFrame(data)
-		else:
-			data = pd.DataFrame(np.array(data))
+	# transform input to numpy array and reshape if it only contains one data row
+	data = np.array(data)
 
+	if len(data.shape) == 1:
+		data = data.reshape((1, -1))
+	shp = data.shape
+
+	# prepare figure
 	fig, ax = plt.subplots()
 
-	# set labels
+	# set axis labels
 	ax.set_xlabel(axlabels[0], fontsize=18)
 	ax.set_ylabel(axlabels[1], fontsize=18)
 	fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
@@ -424,17 +425,22 @@ def plot_pde(data, axlabels=None, filename=None):
 	ax.yaxis.set_ticks_position('left')
 
 	# plot PDE for every data row
-	for i, column in enumerate(data.T):
-		# this creates the kernel, given an array it will estimate the probability over that values
-		kde = gaussian_kde(data[column])
-		# these are the values over which the kernel will be evaluated
-		space = np.linspace(0, 1, 1000)
-		# plot line
-		line = ax.plot(space, kde(space))
-		# set line width and color
-		plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)
-		# fill area under line
-		ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)
+	# if one row only
+	if shp[0] == 1:
+		kde = gaussian_kde(data)  # this creates the kernel, given an array it will estimate the probability over that values
+		space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
+		line = ax.plot(space, kde(space))  # plot line
+		plt.setp(line, color=colors[0], linewidth=2.0, alpha=.5)  # set line width and color
+		ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.3)  # fill area under line
+
+	# if multiple rows
+	else:
+		for i, row in enumerate(data):
+			kde = gaussian_kde(row)  # this creates the kernel, given an array it will estimate the probability over that values
+			space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
+			line = ax.plot(space, kde(space))  # plot line
+			plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)  # set line width and color
+			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)  # fill area under line
 
 	# show or save plot
 	if filename:
