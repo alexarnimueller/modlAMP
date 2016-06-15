@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.2.0 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.0',
+        VERSION:     'v2.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.0 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.2.1 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -2343,6 +2343,9 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.plot.helical_wheel" title="modlamp.plot.helical_wheel"><code class="xref py py-func docutils literal"><span class="pre">helical_wheel()</span></code></a></td>
 <td>Generates a helical wheel projection plot of a given sequence.</td>
 </tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_pde" title="modlamp.plot.plot_pde"><code class="xref py py-func docutils literal"><span class="pre">plot_pde()</span></code></a></td>
+<td>Generates a probability density estimation plot of given data arrays</td>
+</tr>
 </tbody>
 </table>
 <dl class="function">
@@ -2514,6 +2517,35 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <a class="reference internal image-reference" href="_images/wheel4.png"><img alt="_images/wheel4.png" src="_images/wheel4.png" style="width: 375.0px; height: 375.0px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.plot.plot_pde">
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_pde</code><span class="sig-paren">(</span><em>data</em>, <em>axlabels=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_pde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_pde" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to plot probability density estimations of given data vectors / matrices (format: <em>numpy.array</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; {np.array} Data array of which underlying probability density function should be estimated and plotted.</li>
+<li><strong>axlabels</strong> &#8211; {list of str} List containing the axis labels for the plot</li>
+<li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_pde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="width: 480.0px; height: 360.0px;" /></a>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.1.</span></p>
 </div>
 </dd></dl>
 
@@ -3184,7 +3216,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

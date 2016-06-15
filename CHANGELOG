@@ -11,3 +11,4 @@ v2.1.4  31.03.2016 -- New function to query experimental data from the peptides 
 v2.1.5  08.04.2016 -- Helical wheel plot function added to modlamp.plot
 v2.1.6  07.06.2016 -- Saving Fasta files from descriptors, bug fixes
 v2.2.0  08.06.2016 -- ML Module for SVM and RF added
+v2.2.1  15.06.2016 -- PDE plot function plot_pde() added to modlab.plot

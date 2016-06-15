@@ -13,6 +13,7 @@ Function							Characteristics
 :py:func:`plot_3_features`			Generate a 3D scatter plot of 3 given features.
 :py:func:`plot_profile`				Generates a profile plot of a sequence to visualize potential linear gradients
 :py:func:`helical_wheel`			Generates a helical wheel projection plot of a given sequence.
+:py:func:`plot_pde`					Generates a probability density estimation plot of given data arrays
 ============================		==============================================================================
 
 """
@@ -381,7 +382,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
 
 def plot_pde(data, axlabels=None, filename=None):
-	"""A function to plot probability density estimations of given data vectors / matrices
+	"""A function to plot probability density estimations of given data vectors / matrices (format: *numpy.array*)
 
 	:param data: {np.array} Data array of which underlying probability density function should be estimated and plotted.
 	:param axlabels: {list of str} List containing the axis labels for the plot
@@ -392,7 +393,7 @@ def plot_pde(data, axlabels=None, filename=None):
 	>>> plot_pde(data)
 
 	.. image:: ../docs/static/pde.png
-		:scale: 25 %
+		:scale: 40 %
 
 	.. versionadded:: v2.2.1
 	"""
