@@ -22,6 +22,8 @@ import matplotlib.patches as patches
 import matplotlib.lines as lines
 from mpl_toolkits.mplot3d import Axes3D
 from modlamp.descriptors import PeptideDescriptor
+import pandas as pd
+from scipy.stats.kde import gaussian_kde
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -372,3 +374,48 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 		plt.savefig(filename, dpi=150)
 	else:
 		plt.show()
+
+
+def pde_plot(data, axlabels=None):
+	"""A function to plot probability density estimations of given data vectors / matrices
+
+	:param data: {array} Data array of which underlying probability density function should be estimated and plotted.
+	:param axlabels: {list of str} List containing the axis labels for the plot
+
+	.. versionadded:: v2.2.1
+	"""
+
+	# colors
+	colors = ['#0000ff', '#bf00ff', '#ff0040', '#009900', '#997300']
+	if not axlabels:
+		axlabels = ['Data', 'Density']
+
+	# transform input to pandas.DataFrame
+	data = pd.DataFrame(data)
+
+	for i, column in enumerate(data):
+
+		# this creates the kernel, given an array it will estimate the probability over that values
+		kde = gaussian_kde(data[column])
+		# these are the values over which the kernel will be evaluated
+		space = np.linspace(0, 1, 1000)
+		# plot
+		fig, ax = plt.subplots()
+		line = ax.plot(space, kde(space), label=i)
+
+		# set line width and color
+		plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)
+
+		# fill area
+		ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)
+
+		# set labels
+		ax.set_xlabel("P(AMP)", fontsize=18)
+		ax.set_ylabel("Density", fontsize=18)
+		fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
+		ax.legend()
+		# only left and bottom axes, no box
+		ax.spines['right'].set_visible(False)
+		ax.spines['top'].set_visible(False)
+		ax.xaxis.set_ticks_position('bottom')
+		ax.yaxis.set_ticks_position('left')
