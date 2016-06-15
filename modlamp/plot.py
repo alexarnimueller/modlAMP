@@ -403,8 +403,12 @@ def plot_pde(data, axlabels=None, filename=None):
 	if not axlabels:
 		axlabels = ['Data', 'Density']
 
-	# transform input to pandas.DataFrame
-	data = pd.DataFrame(data)
+	# transform input to pandas.DataFrame (check if it is pandas.DataFrame / numpy object already)
+	if not isinstance(data, pd.DataFrame):
+		if isinstance(data, np.object):
+			data = pd.DataFrame(data)
+		else:
+			data = pd.DataFrame(np.array(data))
 
 	fig, ax = plt.subplots()
 
