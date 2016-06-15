@@ -429,7 +429,7 @@ def plot_pde(data, axlabels=None, filename=None):
 	if shp[0] == 1:
 		kde = gaussian_kde(data)  # this creates the kernel, given an array it will estimate the probability over that values
 		space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
-		line = ax.plot(space, kde(space))  # plot line
+		line = ax.plot(space, kde(space), label='Data')  # plot line
 		plt.setp(line, color=colors[0], linewidth=2.0, alpha=.5)  # set line width and color
 		ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.3)  # fill area under line
 
@@ -438,11 +438,12 @@ def plot_pde(data, axlabels=None, filename=None):
 		for i, row in enumerate(data):
 			kde = gaussian_kde(row)  # this creates the kernel, given an array it will estimate the probability over that values
 			space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
-			line = ax.plot(space, kde(space))  # plot line
+			line = ax.plot(space, kde(space), label=str(i))  # plot line
 			plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)  # set line width and color
 			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)  # fill area under line
 
 	# show or save plot
+	ax.legend()
 	if filename:
 		plt.savefig(filename, dpi=150)
 	else:
