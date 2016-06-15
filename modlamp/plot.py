@@ -443,7 +443,7 @@ def plot_pde(data, axlabels=None, filename=None):
 			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)  # fill area under line
 
 	# show or save plot
-	ax.legend()
+	ax.legend(loc=2)
 	if filename:
 		plt.savefig(filename, dpi=150)
 	else:
