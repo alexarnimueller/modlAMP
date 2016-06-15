@@ -46,7 +46,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 	.. image:: ../docs/static/uH_Eisenberg.png
 		:scale: 50 %
 	"""
-	colors = ['dodgerblue','firebrick','gold','lightgreen','navy','black','hotpink']  # available colors
+	colors = ['dodgerblue', 'firebrick', 'gold', 'lightgreen', 'navy', 'black', 'hotpink']  # available colors
 
 	fig, ax = plt.subplots()
 
@@ -54,7 +54,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 		data = []
 		cntr = 0
 		for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
-			t = np.array([i for i,j in enumerate(targets) if j == n])
+			t = np.array([i for i, j in enumerate(targets) if j == n])
 			data.append([y_values[t]])
 			cntr += 1
 		if x_tick_labels:
@@ -117,7 +117,8 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
 			t = np.array([i for i, j in enumerate(targets) if j == n])
 			xt = x_values[t]  # find all values in x for the given target
 			yt = y_values[t]  # find all values in y for the given target
-			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25, label='class '+str(n))  # plot scatter for this target group
+			ax.scatter(xt, yt, c=colors[n], alpha=1., s=25,
+					   label='class ' + str(n))  # plot scatter for this target group
 			ax.legend(loc='lower right')
 
 	else:
@@ -166,7 +167,8 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
 			xt = x_values[t]  # find all values in x for the given target
 			yt = y_values[t]  # find all values in y for the given target
 			zt = z_values[t]  # find all values in y for the given target
-			ax.scatter(xt, yt, zt, c=colors[n], alpha=1., s=25, label='class '+str(n))  # plot 3Dscatter for this target
+			ax.scatter(xt, yt, zt, c=colors[n], alpha=1., s=25,
+					   label='class ' + str(n))  # plot 3Dscatter for this target
 			ax.legend(loc='best')
 
 	else:  # plot 3Dscatter for this target group
@@ -224,7 +226,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 
 		# plot
 		fig, ax = plt.subplots()
-		x_range = range(int(window)/2 + 1, len(sequence)-int(window)/2)
+		x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
 		line = ax.plot(x_range, seq_profile)
 		plt.setp(line, color='red', linewidth=2.0)
 
@@ -232,7 +234,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 		ax.set_xlabel('sequence position', fontweight='bold')
 		ax.set_ylabel(scalename + ' value', fontweight='bold')
 		ax.set_title('Sequence Profile For ' + sequence, fontsize=16, fontweight='bold')
-		ax.text(max(x_range)/2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)
+		ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)
 
 		# only left and bottom axes, no box
 		ax.spines['right'].set_visible(False)
@@ -277,8 +279,8 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 	# color mappings
 	aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	f_rainbow = ['#3e3e28', '#ffcc33', '#b30047', '#b30047', '#ffcc33', '#3e3e28', '#80d4ff', '#ffcc33', '#0047b3',
-				'#ffcc33', '#ffcc33', '#b366ff', '#29a329', '#b366ff', '#0047b3', '#ff66cc', '#ff66cc', '#ffcc33',
-				'#ffcc33', '#ffcc33']
+				 '#ffcc33', '#ffcc33', '#b366ff', '#29a329', '#b366ff', '#0047b3', '#ff66cc', '#ff66cc', '#ffcc33',
+				 '#ffcc33', '#ffcc33']
 	f_charge = ['#000000', '#000000', '#ff4d94', '#ff4d94', '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff',
 				'#000000', '#000000', '#000000', '#000000', '#000000', '#80d4ff', '#000000', '#000000', '#000000',
 				'#000000', '#000000']
@@ -324,12 +326,14 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
 			# plot the connecting lines
 			if old is not None:
-				line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k', linewidth=lw[i-1])
+				line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
+									linewidth=lw[i - 1])
 				line.set_zorder(1)  # 1 = level behind circles
 				ax.add_line(line)
 		elif i == 18:
 			new = (np.cos(r), np.sin(r))
-			line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k', linewidth=lw[i-1])
+			line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
+								linewidth=lw[i - 1])
 			line.set_zorder(1)  # 1 = level behind circles
 			ax.add_line(line)
 			new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
@@ -376,11 +380,19 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 		plt.show()
 
 
-def pde_plot(data, axlabels=None):
+def plot_pde(data, axlabels=None, filename=None):
 	"""A function to plot probability density estimations of given data vectors / matrices
 
-	:param data: {array} Data array of which underlying probability density function should be estimated and plotted.
+	:param data: {np.array} Data array of which underlying probability density function should be estimated and plotted.
 	:param axlabels: {list of str} List containing the axis labels for the plot
+	:param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
+	:Example:
+
+	>>> data = np.random.random([3,100])
+	>>> plot_pde(data)
+
+	.. image:: ../docs/static/pde.png
+		:scale: 25 %
 
 	.. versionadded:: v2.2.1
 	"""
@@ -393,29 +405,34 @@ def pde_plot(data, axlabels=None):
 	# transform input to pandas.DataFrame
 	data = pd.DataFrame(data)
 
-	for i, column in enumerate(data):
+	fig, ax = plt.subplots()
 
+	# set labels
+	ax.set_xlabel(axlabels[0], fontsize=18)
+	ax.set_ylabel(axlabels[1], fontsize=18)
+	fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
+
+	# only left and bottom axes, no box
+	ax.spines['right'].set_visible(False)
+	ax.spines['top'].set_visible(False)
+	ax.xaxis.set_ticks_position('bottom')
+	ax.yaxis.set_ticks_position('left')
+
+	# plot PDE for every data row
+	for i, column in enumerate(data.T):
 		# this creates the kernel, given an array it will estimate the probability over that values
 		kde = gaussian_kde(data[column])
 		# these are the values over which the kernel will be evaluated
 		space = np.linspace(0, 1, 1000)
-		# plot
-		fig, ax = plt.subplots()
-		line = ax.plot(space, kde(space), label=i)
-
+		# plot line
+		line = ax.plot(space, kde(space))
 		# set line width and color
 		plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)
-
-		# fill area
+		# fill area under line
 		ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)
 
-		# set labels
-		ax.set_xlabel("P(AMP)", fontsize=18)
-		ax.set_ylabel("Density", fontsize=18)
-		fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
-		ax.legend()
-		# only left and bottom axes, no box
-		ax.spines['right'].set_visible(False)
-		ax.spines['top'].set_visible(False)
-		ax.xaxis.set_ticks_position('bottom')
-		ax.yaxis.set_ticks_position('left')
+	# show or save plot
+	if filename:
+		plt.savefig(filename, dpi=150)
+	else:
+		plt.show()
