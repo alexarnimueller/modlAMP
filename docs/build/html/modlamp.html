@@ -2119,6 +2119,31 @@ is None (inactive).</p>
 <div class="section" id="module-modlamp.datasets">
 <span id="modlamp-datasets"></span><h2>2.4. modlamp.datasets<a class="headerlink" href="#module-modlamp.datasets" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-modlamp.datasets"></span><p>This module incorporates functions to load different peptide datasets used for classification.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Data</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsTMset" title="modlamp.datasets.load_AMPvsTMset"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsTMset()</span></code></a></td>
+<td>Antimicrobial peptides versus trans-membrane sequences</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_helicalAMPset" title="modlamp.datasets.load_helicalAMPset"><code class="xref py py-func docutils literal"><span class="pre">load_helicalAMPset()</span></code></a></td>
+<td>Helical antimicrobial peptides versus other helical peptides</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_ACPvsNeg" title="modlamp.datasets.load_ACPvsNeg"><code class="xref py py-func docutils literal"><span class="pre">load_ACPvsNeg()</span></code></a></td>
+<td>Helical anticancer peptides versus other mixed sequences</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsUniProt" title="modlamp.datasets.load_AMPvsUniProt"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsUniProt()</span></code></a></td>
+<td>AMPs from the <em>APD3</em> versus other peptides from <em>UniProt</em></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="modlamp.datasets.Bunch">
 <em class="property">class </em><code class="descclassname">modlamp.datasets.</code><code class="descname">Bunch</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#Bunch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.Bunch" title="Permalink to this definition">¶</a></dt>
@@ -2199,6 +2224,8 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <span class="go">[&#39;TM&#39;, &#39;AMP&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="go">412</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2309,6 +2336,65 @@ classification labels, <code class="docutils literal"><span class="pre">target_n
 <span class="go">[&#39;Neg&#39;, &#39;ACP&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="go">189</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_AMPvsUniProt">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsUniProt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsUniProt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsUniProt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of <strong>APD3 &lt; 80% internal similarity versus UniProt not antimicrobial,
+not secretory, 10-50 AA and verified</strong> for classification.</p>
+<p>The AMP class consists of 1609 AMP sequences from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD3</a>. The whole APD3 was
+extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the
+<a class="reference external" href="http://cd-hit.org">CD-Hit tool</a>. The UniProt class is constructed out of extracted protein sequences from the
+<a class="reference external" href="http://uniprot.org/">UniProt Database</a> with the search query <em>NOT secretory NOT antimicrobial
+AND length 10 TO 50</em>. These sequences were as well subjected to a similarity filtering of 80% yielding 4279
+sequences.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="41%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>AMP Samples</td>
+<td>1609</td>
+</tr>
+<tr class="row-odd"><td>UniProt Samples</td>
+<td>4279</td>
+</tr>
+<tr class="row-even"><td>Samples total</td>
+<td>5888</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>, the
+classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsUniProt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsUniProt</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV&#39;,&#39;YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY&#39;,&#39;DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC&#39;,&#39;NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC&#39;,&#39;VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;AMP&#39;, &#39;UniProt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">5888</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
 </pre></div>
 </div>
 </dd></dl>
