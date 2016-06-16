@@ -7,6 +7,10 @@ This is a python package that is designed for working with peptides, proteins or
 It incorporates several modules, like descriptor calculation (module **descriptors**) or sequence generation (module **sequences**).
 For basic instructions how to use the package, see Usage_ or this `example script <examplescript.html>`_.
 
+.. note::
+    If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
+    repository to your local machine and consider the documentation in *modlAMP/docs/build/html/index.html*.
+
 
 Installation
 ************

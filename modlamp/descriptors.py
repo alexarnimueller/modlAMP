@@ -107,8 +107,8 @@ class GlobalDescriptor(object):
 		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
 		For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
-			pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-			neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+		pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+		neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
 		:param pH: {float} pH at which to calculate peptide charge.
 		:param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -309,8 +309,8 @@ class GlobalDescriptor(object):
 		According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
 		summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
 		dividing by	sequence length.
-		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, FEBS Lett. 1989, 259, 103–106.
-		[2] A. Radzicka, R. Wolfenden, Biochemistry 1988, 27, 1664–1670.)
+		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
+		[2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
@@ -414,7 +414,7 @@ class GlobalDescriptor(object):
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
-		class :class:`modlamp.descriptors.PeptideDescriptor`.
+		class :class:`modlamp.descriptors.GlobalDescriptor`.
 
 		.. note::
 			The data file should **not** have any headers
@@ -433,16 +433,16 @@ class GlobalDescriptor(object):
 		self.sequences = seqs
 		self.descriptor = data
 
-	def save_descriptor(self, filename, delimiter=',', targets=[]):
+	def save_descriptor(self, filename, delimiter=',', targets=None):
 		"""Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: filename of the output file
 		:param delimiter: column delimiter
-		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)
 		:return: output file with peptide names and descriptor values
 		"""
 		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
-		if len(targets) == len(self.sequences):
+		if targets and len(targets) == len(self.sequences):
 			target = np.array(targets)[:, np.newaxis]
 			data = np.hstack((names, self.descriptor, target))
 		else:

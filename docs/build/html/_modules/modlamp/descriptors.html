@@ -156,8 +156,8 @@
 <span class="sd">		The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
 <span class="sd">		For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
-<span class="sd">			pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
-<span class="sd">			neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+<span class="sd">		pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+<span class="sd">		neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
 
 <span class="sd">		:param pH: {float} pH at which to calculate peptide charge.</span>
 <span class="sd">		:param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
@@ -358,8 +358,8 @@
 <span class="sd">		According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by</span>
 <span class="sd">		summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by</span>
 <span class="sd">		dividing by	sequence length.</span>
-<span class="sd">		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, FEBS Lett. 1989, 259, 103–106.</span>
-<span class="sd">		[2] A. Radzicka, R. Wolfenden, Biochemistry 1988, 27, 1664–1670.)</span>
+<span class="sd">		([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.</span>
+<span class="sd">		[2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)</span>
 
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
@@ -463,7 +463,7 @@
 
 <div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
-<span class="sd">		class :class:`modlamp.descriptors.PeptideDescriptor`.</span>
+<span class="sd">		class :class:`modlamp.descriptors.GlobalDescriptor`.</span>
 
 <span class="sd">		.. note::</span>
 <span class="sd">			The data file should **not** have any headers</span>

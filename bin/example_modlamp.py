@@ -1,5 +1,9 @@
 """
 An example script for a possible usage of the modlamp package for peptide QSAR studies with a Random Forest model.
+Give the number sequences to be generated as sys.argv[1]
+
+:Example:
+python example_modlamp.py 1000
 """
 
 import sys

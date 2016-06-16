@@ -15,6 +15,10 @@ amino acids. It incorporates several modules, like descriptor calculation (modul
 (module sequences). For basic instructions how to use the package, check the `README <readme.html>`_ or the
 `example script <examplescript.html>`_.
 
+.. note::
+    If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
+    repository to your local machine and consider the documentation in *modlAMP/docs/build/html/index.html*.
+
 The package has the following contents:
 
 .. toctree::

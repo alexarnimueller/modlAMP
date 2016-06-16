@@ -326,8 +326,8 @@ on the relative volume occupied by aliphatic amino acids (A,I,L &amp; V).
 According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
 summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
 dividing by     sequence length.
-([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, FEBS Lett. 1989, 259, 103–106.
-[2] A. Radzicka, R. Wolfenden, Biochemistry 1988, 27, 1664–1670.)</p>
+([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</em>. <strong>1989</strong>, <em>259</em>, 103–106.
+[2] A. Radzicka, R. Wolfenden, <em>Biochemistry</em> <strong>1988</strong>, <em>27</em>, 1664–1670.)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -461,7 +461,7 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <dt id="modlamp.descriptors.GlobalDescriptor.load_descriptordata">
 <code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
-class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a>.</p>
+class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor" title="modlamp.descriptors.GlobalDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.GlobalDescriptor</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The data file should <strong>not</strong> have any headers</p>
@@ -2523,14 +2523,14 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <dl class="function">
 <dt id="modlamp.plot.plot_pde">
 <code class="descclassname">modlamp.plot.</code><code class="descname">plot_pde</code><span class="sig-paren">(</span><em>data</em>, <em>axlabels=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_pde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_pde" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to plot probability density estimations of given data vectors / matrices (format: <em>numpy.array</em>)</p>
+<dd><p>A function to plot probability density estimations of given data vectors / matrices (row wise)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> &#8211; {np.array} Data array of which underlying probability density function should be estimated and plotted.</li>
-<li><strong>axlabels</strong> &#8211; {list of str} List containing the axis labels for the plot</li>
+<li><strong>data</strong> &#8211; {list / array} data of which underlying probability density function should be estimated and plotted.</li>
+<li><strong>axlabels</strong> &#8211; {list of str} list containing the axis labels for the plot</li>
 <li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
 </ul>
 </td>
