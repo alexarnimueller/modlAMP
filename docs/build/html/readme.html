@@ -58,6 +58,11 @@
 <p>This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids.
 It incorporates several modules, like descriptor calculation (module <strong>descriptors</strong>) or sequence generation (module <strong>sequences</strong>).
 For basic instructions how to use the package, see <a class="reference internal" href="#usage">Usage</a> or this <a class="reference external" href="examplescript.html">example script</a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You are advised to install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> python package manager before
+installing modlAMP. It will take care of all necessairy requirements and versions.</p>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are reading this on Gitlab, several links like the <em>example script</em> will not work. Please clone the
@@ -116,6 +121,10 @@ docs for <a class="reference external" href="modlamp.html#module-modlamp.sequenc
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([ 10.09735107,   8.75006104,  12.30743408,  11.26385498, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;sequence/file/to/be/loaded.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333,</span>
 </pre></div>
 </div>
 <p>We calculated the global hydrophobic moments from the Eisenberg hydrophobicity scale and the isoelectric points.
@@ -175,7 +184,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
-<p>Further plotting methods, like helical wheel plots are available. See the documentation for the
+<p>Further plotting methods like <strong>helical wheel plots</strong> are available. See the documentation for the
 <a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
 </div>
 <div class="section" id="database-connection">
