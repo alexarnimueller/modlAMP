@@ -85,15 +85,15 @@ def load_AMPvsTMset():
 	with open(join(module_path, 'data', 'AMPvsTMset.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
-		# n_samples = int(temp[0])
-		# n_features = int(temp[1])
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
-		target = []  # np.empty((n_samples,), dtype=np.int)
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
+		target = np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
-			sequences.append(ir[0])  # sequences[i] = ir[0]
-			target.append(ir[-1])  # target[i] = ir[-1]
+			sequences[i] = np.asarray(ir[0], dtype=np.str)
+			target[i] = np.asarray(ir[-1], dtype=np.int)
 
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,
@@ -133,15 +133,15 @@ def load_helicalAMPset():
 	with open(join(module_path, 'data', 'helicalAMPset.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
-		# n_samples = int(temp[0])
-		# n_features = int(temp[1])
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
-		target = []  # np.empty((n_samples,), dtype=np.int)
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
+		target = np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
-			sequences.append(ir[0])  # sequences[i] = ir[0]
-			target.append(ir[-1])  # target[i] = ir[-1]
+			sequences[i] = np.asarray(ir[0], dtype=np.str)
+			target[i] = np.asarray(ir[-1], dtype=np.int)
 
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,
@@ -188,19 +188,70 @@ def load_ACPvsNeg():
 	with open(join(module_path, 'data', 'ACPvsNeg.csv')) as csv_file:
 		data_file = csv.reader(csv_file)
 		temp = next(data_file)
-		# n_samples = int(temp[0])
-		# n_features = int(temp[1])
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
 		target_names = np.array(temp[2:])
-		sequences = []  # np.empty((n_samples, n_features), dtype='|S100')
-		target = []  # np.empty((n_samples,), dtype=np.int)
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
+		target = np.empty((n_samples,), dtype=np.int)
 
 		for i, ir in enumerate(data_file):
-			sequences.append(ir[0])  # sequences[i] = ir[0]
-			target.append(ir[-1])  # target[i] = ir[-1]
+			sequences[i] = np.asarray(ir[0], dtype=np.str)
+			target[i] = np.asarray(ir[-1], dtype=np.int)
 
 	return Bunch(sequences=sequences, target=target,
 				 target_names=target_names,
 				 feature_names=['Sequence'])
 
+
+def load_AMPvsUniProt():
+	"""Function to load a dataset consisting of **APD3 < 80% internal similarity versus UniProt not antimicrobial,
+	not secretory, 10-50 AA and verified** for classification.
+
+	The AMP class consists of 1609 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_. The whole APD3 was
+	extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the
+	`CD-Hit tool <http://cd-hit.org>`_. The UniProt class is constructed out of extracted protein sequences from the
+	`UniProt Database <http://uniprot.org/>`_ with the search query *NOT secretory NOT antimicrobial
+	AND length 10 TO 50*. These sequences were as well subjected to a similarity filtering of 80% yielding 4279
+	sequences.
+
+	=================	=====
+	Classes				2
+	AMP Samples			1609
+	UniProt Samples		4279
+	Samples total		5888
+	Dimensionality		1
+	=================	=====
+
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
+			classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:Example:
+
+	>>> from modlamp.datasets import load_AMPvsUniProt
+	>>> data = load_AMPvsUniProt()
+	>>> data.sequences[:5]
+	['GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV','YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY','DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC','NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC','VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK']
+	>>> list(data.target_names)
+	['AMP', 'UniProt']
+	>>> len(data.sequences)
+	5888
+	"""
+
+	module_path = dirname(__file__)
+	with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as csv_file:
+		data_file = csv.reader(csv_file)
+		temp = next(data_file)
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
+		target_names = np.array(temp[2:])
+		sequences = np.empty((n_samples, n_features), dtype='|S100')
+		target = np.empty((n_samples,), dtype=np.int)
+
+		for i, ir in enumerate(data_file):
+			sequences[i] = np.asarray(ir[0], dtype=np.str)
+			target[i] = np.asarray(ir[-1], dtype=np.int)
+
+	return Bunch(sequences=sequences, target=target,
+				 target_names=target_names,
+				 feature_names=['Sequence'])
 
 # TODO: add more data set loading functions
