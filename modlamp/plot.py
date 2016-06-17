@@ -462,7 +462,7 @@ def plot_violin(X, color=None, bp=False, filename=None):
 	:Example:
 
 	>>> data = np.random.normal(size=[5, 100])
-	>>> violin_plot(data, color=['green', 'green', 'green', 'red', 'red'], bp=True)
+	>>> plot_violin(data, color=['green', 'green', 'green', 'red', 'red'], bp=True)
 
 	.. image:: ../docs/static/violins.png
 		:scale: 50 %
@@ -471,6 +471,7 @@ def plot_violin(X, color=None, bp=False, filename=None):
 	"""
 
 	# transform input to list of arrays (better handled by plotting functions)
+	X = np.array(X)
 	X = [l for l in X]
 
 	# check color input and transform to list of right length
