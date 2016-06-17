@@ -451,7 +451,7 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 		plt.show()
 
 
-def violin_plot(X, color=None, bp=False, filename=None):
+def plot_violin(X, color=None, bp=False, filename=None):
 	"""	create violin plots out of given data array
 	(adapted from `Flavio Coelho <https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html>`_.)
 
