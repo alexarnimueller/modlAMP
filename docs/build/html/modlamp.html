@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.2.1 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.2.2 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.1',
+        VERSION:     'v2.2.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.1 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.2.2 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -2630,9 +2630,40 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_pde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="width: 480.0px; height: 360.0px;" /></a>
+<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="width: 600.0px; height: 450.0px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.plot.violin_plot">
+<code class="descclassname">modlamp.plot.</code><code class="descname">violin_plot</code><span class="sig-paren">(</span><em>X</em>, <em>color=None</em>, <em>bp=False</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#violin_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.violin_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>create violin plots out of given data array
+(adapted from <a class="reference external" href="https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html">Flavio Coelho</a>.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; {numpy.array} data to be plotted</li>
+<li><strong>color</strong> &#8211; {str or list} face color of the violin plots, can also be list of colors with same dimension as <strong>X</strong></li>
+<li><strong>bp</strong> &#8211; {bool} print a box blot inside violin</li>
+<li><strong>filename</strong> &#8211; {str} location / filename where to save the plot to. <em>default = None</em> &#8211;&gt; show the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">violin_plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">bp</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/violins.png"><img alt="_images/violins.png" src="_images/violins.png" style="width: 600.0px; height: 450.0px;" /></a>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.2.</span></p>
 </div>
 </dd></dl>
 
@@ -3303,7 +3334,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
