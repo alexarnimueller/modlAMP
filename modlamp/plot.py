@@ -400,7 +400,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	"""
 
 	# colors
-	colors = ['#0000ff', '#bf00ff', '#ff0040', '#009900', '#997300']
+	colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900',
+			  '#997300']
 	if not axlabels:
 		axlabels = ['Data', 'Density']
 
