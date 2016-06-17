@@ -400,8 +400,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	"""
 
 	# colors
-	colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900',
-			  '#997300']
+	colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+
 	if not axlabels:
 		axlabels = ['Data', 'Density']
 
@@ -452,18 +452,18 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 		plt.show()
 
 
-def plot_violin(X, color=None, bp=False, filename=None):
+def plot_violin(X, colors=None, bp=False, filename=None):
 	"""	create violin plots out of given data array
 	(adapted from `Flavio Coelho <https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html>`_.)
 
 	:param X: {numpy.array} data to be plotted
-	:param color: {str or list} face color of the violin plots, can also be list of colors with same dimension as **X**
+	:param colors: {str or list} face color of the violin plots, can also be list of colors with same dimension as **X**
 	:param bp: {bool} print a box blot inside violin
 	:param filename: {str} location / filename where to save the plot to. *default = None* --> show the plot
 	:Example:
 
 	>>> data = np.random.normal(size=[5, 100])
-	>>> plot_violin(data, color=['green', 'green', 'green', 'red', 'red'], bp=True)
+	>>> plot_violin(data, colors=['green', 'green', 'green', 'red', 'red'], bp=True)
 
 	.. image:: ../docs/static/violins.png
 		:scale: 50 %
@@ -476,10 +476,10 @@ def plot_violin(X, color=None, bp=False, filename=None):
 	X = [l for l in X]
 
 	# check color input and transform to list of right length
-	if not color:
-		color = ['blue'] * len(X)
-	if isinstance(color, basestring):
-		color = [color] * len(X)
+	if not colors:
+		colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+	if isinstance(colors, basestring):
+		colors = [colors] * len(X)
 
 	# scaling for available space
 	dist = len(X) - 1
@@ -495,15 +495,15 @@ def plot_violin(X, color=None, bp=False, filename=None):
 		x = np.arange(mi, ma, (ma - mi) / 100.)  # range over which the PDE is performed
 		v = k.evaluate(x)  # violin profile (density curve)
 		v = v / v.max() * w  # scaling the violin to the available space
-		ax.fill_betweenx(x, p, v + p, facecolor=color[p], alpha=0.4)
-		ax.fill_betweenx(x, p, -v + p, facecolor=color[p], alpha=0.4)
+		ax.fill_betweenx(x, p, v + p, facecolor=colors[p], alpha=0.4)
+		ax.fill_betweenx(x, p, -v + p, facecolor=colors[p], alpha=0.4)
 
 	if bp:  # print box plots if option is given
 		medprops = dict(linestyle='-', linewidth=1, color='black')
 		box = ax.boxplot(X, notch=1, positions=range(len(X)), vert=1, patch_artist=True, medianprops=medprops)
 		plt.setp(box['whiskers'], color='black')
 		for p, patch in enumerate(box['boxes']):
-			patch.set(facecolor=color[p], edgecolor='black', alpha=0.6)
+			patch.set(facecolor=colors[p], edgecolor='black', alpha=0.6)
 
 	# only left and bottom axes, no box
 	ax.spines['right'].set_visible(False)
