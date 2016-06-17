@@ -381,12 +381,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 		plt.show()
 
 
-def plot_pde(data, axlabels=None, filename=None):
+def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	"""A function to plot probability density estimations of given data vectors / matrices (row wise)
 
 	:param data: {list / array} data of which underlying probability density function should be estimated and plotted.
 	:param axlabels: {list of str} list containing the axis labels for the plot
 	:param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
+	:param legendloc: {int} location of the figures legend. 1 = top right, 2 = top left ...
 	:Example:
 
 	>>> data = np.random.random([3,100])
@@ -443,7 +444,7 @@ def plot_pde(data, axlabels=None, filename=None):
 			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)  # fill area under line
 
 	# show or save plot
-	ax.legend(loc=2)
+	ax.legend(loc=legendloc)
 	if filename:
 		plt.savefig(filename, dpi=150)
 	else:
