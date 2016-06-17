@@ -400,8 +400,7 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	"""
 
 	# colors
-	colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900']
-
+	colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
 	if not axlabels:
 		axlabels = ['Data', 'Density']
 
@@ -432,8 +431,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 		kde = gaussian_kde(data)  # this creates the kernel, given an array it will estimate the probability over that values
 		space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
 		line = ax.plot(space, kde(space), label='Data')  # plot line
-		plt.setp(line, color=colors[0], linewidth=2.0, alpha=.5)  # set line width and color
-		ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.3)  # fill area under line
+		plt.setp(line, color=colors[0], linewidth=2.0, alpha=.8)  # set line width and color
+		ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.6)  # fill area under line
 
 	# if multiple rows
 	else:
@@ -441,8 +440,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 			kde = gaussian_kde(row)  # this creates the kernel, given an array it will estimate the probability over that values
 			space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
 			line = ax.plot(space, kde(space), label=str(i))  # plot line
-			plt.setp(line, color=colors[i], linewidth=2.0, alpha=.5)  # set line width and color
-			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.3)  # fill area under line
+			plt.setp(line, color=colors[i], linewidth=2.0, alpha=.8)  # set line width and color
+			ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.6)  # fill area under line
 
 	# show or save plot
 	ax.legend(loc=legendloc)
@@ -477,7 +476,8 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 
 	# check color input and transform to list of right length
 	if not colors:
-		colors = ['#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686', '#0B486B', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+		colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+
 	if isinstance(colors, basestring):
 		colors = [colors] * len(X)
 
@@ -495,15 +495,15 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 		x = np.arange(mi, ma, (ma - mi) / 100.)  # range over which the PDE is performed
 		v = k.evaluate(x)  # violin profile (density curve)
 		v = v / v.max() * w  # scaling the violin to the available space
-		ax.fill_betweenx(x, p, v + p, facecolor=colors[p], alpha=0.4)
-		ax.fill_betweenx(x, p, -v + p, facecolor=colors[p], alpha=0.4)
+		ax.fill_betweenx(x, p, v + p, facecolor=colors[p], alpha=0.6)
+		ax.fill_betweenx(x, p, -v + p, facecolor=colors[p], alpha=0.6)
 
 	if bp:  # print box plots if option is given
 		medprops = dict(linestyle='-', linewidth=1, color='black')
 		box = ax.boxplot(X, notch=1, positions=range(len(X)), vert=1, patch_artist=True, medianprops=medprops)
 		plt.setp(box['whiskers'], color='black')
 		for p, patch in enumerate(box['boxes']):
-			patch.set(facecolor=colors[p], edgecolor='black', alpha=0.6)
+			patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
 
 	# only left and bottom axes, no box
 	ax.spines['right'].set_visible(False)
