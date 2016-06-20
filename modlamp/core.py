@@ -215,7 +215,7 @@ def save_fasta(self, filename, names=False):
 	with open(filename, 'w') as o:
 		for n, seq in enumerate(self.sequences):
 			if names:
-				print >> o, '>' + self.names[n]
+				print >> o, '>' + str(self.names[n])
 			else:
 				print >> o, '>Seq_' + str(n)
 			print >> o, seq
