@@ -17,7 +17,7 @@ Class								Characteristics
 
 import os
 import sys
-from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, random_selection
 import collections
 import numpy as np
 from scipy import stats
@@ -411,6 +411,19 @@ class GlobalDescriptor(object):
 		.. seealso:: :func:`modlamp.core.filter_aa_more()`
 		"""
 		filter_aa_more(self, aminoacids)
+
+	def random_selection(self, num):
+		"""Method to select a random number of sequences (with names and descriptors if present) out of a given
+		descriptor instance.
+
+		:param num: {int} number of entries to be randomly selected
+		:return: updated instance
+
+		.. seealso:: :func:`modlamp.core.random_selection()`
+
+		.. versionadded:: v2.2.3
+		"""
+		random_selection(self, num)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
@@ -836,8 +849,6 @@ class PeptideDescriptor(object):
 		"""
 		self.descriptor = shuffle(self.descriptor.transpose()).transpose()
 
-# TODO move to core for both sequences and descriptors
-
 	def sequence_order_shuffle(self):
 		"""Method for shuffling sequence order in self.sequences.
 
@@ -880,6 +891,19 @@ class PeptideDescriptor(object):
 		.. seealso:: :func:`modlamp.core.filter_aa_more()`
 		"""
 		filter_aa_more(self, aminoacids)
+
+	def random_selection(self, num):
+		"""Method to select a random number of sequences (with names and descriptors if present) out of a given
+		descriptor instance.
+
+		:param num: {int} number of entries to be randomly selected
+		:return: updated instance
+
+		.. seealso:: :func:`modlamp.core.random_selection()`
+
+		.. versionadded:: v2.2.2
+		"""
+		random_selection(self, num)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the

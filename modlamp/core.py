@@ -6,12 +6,12 @@
 Core helper functions for other modules.
 """
 
-import numpy as np
 import os
-from Bio.SeqIO.FastaIO import FastaIterator
-import difflib #imported but unused. Delete?
 import random
 import re
+
+import numpy as np
+from Bio.SeqIO.FastaIO import FastaIterator
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -35,11 +35,11 @@ def load_scale(scalename):
 					  'I': [0.985], 'K': [0.674], 'L': [0.985], 'M': [0.703], 'N': [0.516], 'P': [0.768], 'Q': [0.605],
 					  'R': [0.596], 'S': [0.332], 'T': [0.677], 'V': [0.995], 'W': [1], 'Y': [0.801]},
 		'charge_physio': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [0.1],
-						'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
-						'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
+						  'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
+						  'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
 		'charge_acidic': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [1.],
-						'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
-						'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
+						  'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
+						  'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
 		'cougar': {'A': [0.25, 0.62, 1.89], 'C': [0.208, 0.29, 1.73], 'D': [0.875, -0.9, 3.13],
 				   'E': [0.833, -0.74, 3.14], 'F': [0.042, 1.2, 1.53], 'G': [1, 0.48, 2.67], 'H': [0.083, -0.4, 3],
 				   'I': [0.667, 1.4, 1.97], 'K': [0.708, -1.5, 2.28], 'L': [0.292, 1.1, 1.74], 'M': [0, 0.64, 2.5],
@@ -347,11 +347,11 @@ def filter_unnatural(self):
 
 	self.sequences = lst
 
-# TODO: change default argument to None, so its not mutable
-def filter_aa(self, aminoacids=['X']):
+
+def filter_aa(self, aminoacids):
 	"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 
-	:param aminoacids: list of amino acids to be filtered
+	:param aminoacids: {list of str} list of amino acids to be filtered
 	:return: filtered list of sequences in the attribute :py:attr:`sequences`.
 	"""
 	pattern = re.compile('|'.join(aminoacids))
@@ -364,7 +364,7 @@ def filter_aa(self, aminoacids=['X']):
 	self.sequences = seqs
 
 
-def filter_aa_more(self, aminoacids=['X']):
+def filter_aa_more(self, aminoacids):
 	"""Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
 	argument list *aminoacids*.
 
@@ -415,3 +415,25 @@ def filter_values(self, values, operator='=='):
 		self.sequences = np.array(self.sequences)[indices].tolist()
 		if len(self.names) > 0:
 			self.names = np.array(self.names)[indices].tolist()
+
+
+def random_selection(self, num):
+	"""Method to select a random number of sequences (with names and descriptors if present) out of a given
+	descriptor instance.
+
+	:param num: {int} number of entries to be randomly selected
+	:return: updated instance
+
+	.. versionadded:: v2.2.2
+	"""
+	sel = np.random.randint(len(self.sequences), size=num)
+	self.sequences = np.array(self.sequences)[sel].tolist()
+
+	try:
+		self.names = np.array(self.names)[sel].tolist()
+	except IndexError:  # if no names in self.names
+		self.names = []
+	try:
+		self.descriptor = self.descriptor[sel]
+	except IndexError:  # if no values in self.descriptor
+		self.descriptor = np.empty((1, 0), dtype='float64')
