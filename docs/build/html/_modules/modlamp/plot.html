@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.plot &mdash; modlamp v2.2.2 documentation</title>
+    <title>modlamp.plot &mdash; modlamp v2.2.3 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.2',
+        VERSION:     'v2.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.2 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -449,7 +449,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="c1"># colors</span>
-	<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#0000ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#bf00ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff0040&#39;</span><span class="p">,</span> <span class="s1">&#39;#009900&#39;</span><span class="p">,</span> <span class="s1">&#39;#997300&#39;</span><span class="p">]</span>
+	<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#0B486B&#39;</span><span class="p">,</span> <span class="s1">&#39;#3B8686&#39;</span><span class="p">,</span> <span class="s1">&#39;#79BD9A&#39;</span><span class="p">,</span> <span class="s1">&#39;#A8DBA8&#39;</span><span class="p">,</span> <span class="s1">&#39;#CFF09E&#39;</span><span class="p">,</span> <span class="s1">&#39;#0000ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#bf00ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff0040&#39;</span><span class="p">,</span> <span class="s1">&#39;#009900&#39;</span><span class="p">]</span>
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">axlabels</span><span class="p">:</span>
 		<span class="n">axlabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="s1">&#39;Density&#39;</span><span class="p">]</span>
 
@@ -480,8 +480,8 @@
 		<span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># this creates the kernel, given an array it will estimate the probability over that values</span>
 		<span class="n">space</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>  <span class="c1"># these are the values over which the kernel will be evaluated</span>
 		<span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>  <span class="c1"># plot line</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># set line width and color</span>
-		<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># fill area under line</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># set line width and color</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># fill area under line</span>
 
 	<span class="c1"># if multiple rows</span>
 	<span class="k">else</span><span class="p">:</span>
@@ -489,8 +489,8 @@
 			<span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>  <span class="c1"># this creates the kernel, given an array it will estimate the probability over that values</span>
 			<span class="n">space</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>  <span class="c1"># these are the values over which the kernel will be evaluated</span>
 			<span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>  <span class="c1"># plot line</span>
-			<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># set line width and color</span>
-			<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># fill area under line</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># set line width and color</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kde</span><span class="p">(</span><span class="n">space</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># fill area under line</span>
 
 	<span class="c1"># show or save plot</span>
 	<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">legendloc</span><span class="p">)</span>
@@ -500,18 +500,18 @@
 		<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="violin_plot"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.violin_plot">[docs]</a><span class="k">def</span> <span class="nf">violin_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bp</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_violin"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_violin">[docs]</a><span class="k">def</span> <span class="nf">plot_violin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bp</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;	create violin plots out of given data array</span>
 <span class="sd">	(adapted from `Flavio Coelho &lt;https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html&gt;`_.)</span>
 
 <span class="sd">	:param X: {numpy.array} data to be plotted</span>
-<span class="sd">	:param color: {str or list} face color of the violin plots, can also be list of colors with same dimension as **X**</span>
+<span class="sd">	:param colors: {str or list} face color of the violin plots, can also be list of colors with same dimension as **X**</span>
 <span class="sd">	:param bp: {bool} print a box blot inside violin</span>
 <span class="sd">	:param filename: {str} location / filename where to save the plot to. *default = None* --&gt; show the plot</span>
 <span class="sd">	:Example:</span>
 
 <span class="sd">	&gt;&gt;&gt; data = np.random.normal(size=[5, 100])</span>
-<span class="sd">	&gt;&gt;&gt; violin_plot(data, color=[&#39;green&#39;, &#39;green&#39;, &#39;green&#39;, &#39;red&#39;, &#39;red&#39;], bp=True)</span>
+<span class="sd">	&gt;&gt;&gt; plot_violin(data, colors=[&#39;green&#39;, &#39;green&#39;, &#39;green&#39;, &#39;red&#39;, &#39;red&#39;], bp=True)</span>
 
 <span class="sd">	.. image:: ../docs/static/violins.png</span>
 <span class="sd">		:scale: 50 %</span>
@@ -520,13 +520,15 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="c1"># transform input to list of arrays (better handled by plotting functions)</span>
+	<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 	<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
 
 	<span class="c1"># check color input and transform to list of right length</span>
-	<span class="k">if</span> <span class="ow">not</span> <span class="n">color</span><span class="p">:</span>
-		<span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
-		<span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="n">color</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+		<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#0B486B&#39;</span><span class="p">,</span> <span class="s1">&#39;#3B8686&#39;</span><span class="p">,</span> <span class="s1">&#39;#79BD9A&#39;</span><span class="p">,</span> <span class="s1">&#39;#A8DBA8&#39;</span><span class="p">,</span> <span class="s1">&#39;#CFF09E&#39;</span><span class="p">,</span> <span class="s1">&#39;#0000ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#bf00ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff0040&#39;</span><span class="p">,</span> <span class="s1">&#39;#009900&#39;</span><span class="p">]</span>
+
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+		<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 	<span class="c1"># scaling for available space</span>
 	<span class="n">dist</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -542,15 +544,15 @@
 		<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="p">(</span><span class="n">ma</span> <span class="o">-</span> <span class="n">mi</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span>  <span class="c1"># range over which the PDE is performed</span>
 		<span class="n">v</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># violin profile (density curve)</span>
 		<span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="n">v</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="n">w</span>  <span class="c1"># scaling the violin to the available space</span>
-		<span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-		<span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="n">bp</span><span class="p">:</span>  <span class="c1"># print box plots if option is given</span>
 		<span class="n">medprops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 		<span class="n">box</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">notch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">vert</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">medianprops</span><span class="o">=</span><span class="n">medprops</span><span class="p">)</span>
 		<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s1">&#39;whiskers&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 		<span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">]):</span>
-			<span class="n">patch</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+			<span class="n">patch</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 	<span class="c1"># only left and bottom axes, no box</span>
 	<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
@@ -598,7 +600,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

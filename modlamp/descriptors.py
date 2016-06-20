@@ -901,7 +901,7 @@ class PeptideDescriptor(object):
 
 		.. seealso:: :func:`modlamp.core.random_selection()`
 
-		.. versionadded:: v2.2.2
+		.. versionadded:: v2.2.3
 		"""
 		random_selection(self, num)
 

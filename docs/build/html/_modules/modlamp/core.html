@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.core &mdash; modlamp v2.2.2 documentation</title>
+    <title>modlamp.core &mdash; modlamp v2.2.3 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.2',
+        VERSION:     'v2.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.2 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -55,12 +55,12 @@
 <span class="sd">Core helper functions for other modules.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="kn">import</span> <span class="n">FastaIterator</span>
-<span class="kn">import</span> <span class="nn">difflib</span> <span class="c1">#imported but unused. Delete?</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="kn">import</span> <span class="n">FastaIterator</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -84,11 +84,11 @@
 					  <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.985</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.674</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.985</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.703</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.516</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.768</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.605</span><span class="p">],</span>
 					  <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.596</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.332</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.677</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.995</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.801</span><span class="p">]},</span>
 		<span class="s1">&#39;charge_physio&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-.</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span>
-						<span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span>
-						<span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]},</span>
+						  <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span>
+						  <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]},</span>
 		<span class="s1">&#39;charge_acidic&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-.</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span>
-						<span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span>
-						<span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]},</span>
+						  <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span>
+						  <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]},</span>
 		<span class="s1">&#39;cougar&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.62</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.208</span><span class="p">,</span> <span class="mf">0.29</span><span class="p">,</span> <span class="mf">1.73</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.875</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.13</span><span class="p">],</span>
 				   <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.833</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.74</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.042</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.53</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">2.67</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.083</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
 				   <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.667</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.97</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.708</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.28</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.292</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.74</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.64</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
@@ -396,11 +396,11 @@
 
 	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">lst</span></div>
 
-<span class="c1"># TODO: change default argument to None, so its not mutable</span>
-<div class="viewcode-block" id="filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa">[docs]</a><span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa">[docs]</a><span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 
-<span class="sd">	:param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">	:param aminoacids: {list of str} list of amino acids to be filtered</span>
 <span class="sd">	:return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>
@@ -413,7 +413,7 @@
 	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span></div>
 
 
-<div class="viewcode-block" id="filter_aa_more"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa_more">[docs]</a><span class="k">def</span> <span class="nf">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="filter_aa_more"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_aa_more">[docs]</a><span class="k">def</span> <span class="nf">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Method to filter out corresponding names and descriptor values of sequences with given amino acids in the</span>
 <span class="sd">	argument list *aminoacids*.</span>
 
@@ -464,6 +464,43 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.random_selection">[docs]</a><span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
+<span class="sd">	descriptor instance.</span>
+
+<span class="sd">	:param num: {int} number of entries to be randomly selected</span>
+<span class="sd">	:return: updated instance</span>
+<span class="sd">	:Example:</span>
+
+<span class="sd">	&gt;&gt;&gt; h = Helices(7, 28, 100)</span>
+<span class="sd">	&gt;&gt;&gt; h.generate_helices()</span>
+<span class="sd">	&gt;&gt;&gt; D = PeptideDescriptor(h.sequences, &#39;eisenberg&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; D.calculate_moment()</span>
+<span class="sd">	&gt;&gt;&gt; len(D.sequences)</span>
+<span class="sd">	100</span>
+<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	100</span>
+<span class="sd">	&gt;&gt;&gt; D.random_selection(10)</span>
+<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	10</span>
+<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	10</span>
+
+<span class="sd">	.. versionadded:: v2.2.3</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no names in self.names</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+	<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no values in self.descriptor</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -500,7 +537,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

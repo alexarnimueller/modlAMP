@@ -423,8 +423,23 @@ def random_selection(self, num):
 
 	:param num: {int} number of entries to be randomly selected
 	:return: updated instance
+	:Example:
 
-	.. versionadded:: v2.2.2
+	>>> h = Helices(7, 28, 100)
+	>>> h.generate_helices()
+	>>> D = PeptideDescriptor(h.sequences, 'eisenberg')
+	>>> D.calculate_moment()
+	>>> len(D.sequences)
+	100
+	>>> len(D.descriptor)
+	100
+	>>> D.random_selection(10)
+	>>> len(D.descriptor)
+	10
+	>>> len(D.descriptor)
+	10
+
+	.. versionadded:: v2.2.3
 	"""
 	sel = np.random.randint(len(self.sequences), size=num)
 	self.sequences = np.array(self.sequences)[sel].tolist()

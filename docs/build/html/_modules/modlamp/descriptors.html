@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &mdash; modlamp v2.2.2 documentation</title>
+    <title>modlamp.descriptors &mdash; modlamp v2.2.3 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.2',
+        VERSION:     'v2.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.2 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -66,7 +66,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa_more</span>
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa_more</span><span class="p">,</span> <span class="n">random_selection</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
@@ -460,6 +460,19 @@
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.random_selection">[docs]</a>	<span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
+<span class="sd">		descriptor instance.</span>
+
+<span class="sd">		:param num: {int} number of entries to be randomly selected</span>
+<span class="sd">		:return: updated instance</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.random_selection()`</span>
+
+<span class="sd">		.. versionadded:: v2.2.3</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
@@ -885,8 +898,6 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
 
-<span class="c1"># TODO move to core for both sequences and descriptors</span>
-
 <div class="viewcode-block" id="PeptideDescriptor.sequence_order_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.sequence_order_shuffle">[docs]</a>	<span class="k">def</span> <span class="nf">sequence_order_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for shuffling sequence order in self.sequences.</span>
 
@@ -929,6 +940,19 @@
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.random_selection">[docs]</a>	<span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
+<span class="sd">		descriptor instance.</span>
+
+<span class="sd">		:param num: {int} number of entries to be randomly selected</span>
+<span class="sd">		:return: updated instance</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.random_selection()`</span>
+
+<span class="sd">		.. versionadded:: v2.2.3</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
@@ -1002,7 +1026,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.2 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

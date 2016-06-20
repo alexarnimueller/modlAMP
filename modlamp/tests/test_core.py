@@ -10,6 +10,7 @@ class TestCore(unittest.TestCase):
 	l = Random(7, 28, 100)
 	l.generate_sequences()
 	d = PeptideDescriptor(l.sequences, 'eisenberg')
+	d.calculate_moment()
 
 	def test_filter_unnatural(self):
 		self.r.filter_unnatural()
@@ -26,6 +27,7 @@ class TestCore(unittest.TestCase):
 	def test_rand_selection(self):
 		self.d.random_selection(10)
 		self.assertEqual(len(self.d.sequences), 10)
+		self.assertEqual(len(self.d.descriptor), 10)
 
 if __name__ == '__main__':
 	unittest.main()
