@@ -201,18 +201,23 @@ def read_fasta(inputfile):
 	return sequences, names
 
 
-def save_fasta(self, filename):
+def save_fasta(self, filename, names=False):
 	"""
 	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
 	:param filename: output filename (ending .fasta)
+	:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 	:return: a FASTA formatted file containing the generated sequences
 	"""
 	if os.path.exists(filename):
 		os.remove(filename)  # remove outputfile, it it exists
+
 	with open(filename, 'w') as o:
 		for n, seq in enumerate(self.sequences):
-			print >> o, '>Seq_' + str(n)
+			if names:
+				print >> o, '>' + self.names[n]
+			else:
+				print >> o, '>Seq_' + str(n)
 			print >> o, seq
 
 

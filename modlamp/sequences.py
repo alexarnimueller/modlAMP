@@ -109,22 +109,16 @@ class Random:
 												 p=self.prob))  # weighed random selection of amino acid, probabilities = prob
 			self.sequences.append(''.join(self.seq))
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method to save generated sequences in a .fasta formatted file.
 
 		:param filename: output filename in which the sequences are safed in fasta format.
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a fasta file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		if os.path.exists(filename):
-			os.remove(filename)  # remove outputfile, it it exists
-		o = open(filename, 'a')
-
-		for n in range(len(self.sequences)):
-			print >> o, '>Seq_' + str(n)
-			print >> o, self.sequences[n]
-		o.close()
+		save_fasta(self, filename, names=names)
 
 	def mutate_AA(self, nr, prob):
 		"""Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
@@ -231,15 +225,16 @@ class Helices:
 		"""
 		mutate_AA(self, nr, prob)
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a FASTA formatted file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		save_fasta(self, filename)
+		save_fasta(self, filename, names=names)
 
 	def filter_unnatrual(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
@@ -337,15 +332,16 @@ class Kinked:
 		"""
 		mutate_AA(self, nr, prob)
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a FASTA formatted file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		save_fasta(self, filename)
+		save_fasta(self, filename, names=names)
 
 	def filter_unnatrual(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
@@ -438,15 +434,16 @@ class Oblique(object):
 		"""
 		mutate_AA(self, nr, prob)
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a FASTA formatted file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		save_fasta(self, filename)
+		save_fasta(self, filename, names=names)
 
 	def filter_unnatrual(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
@@ -576,15 +573,16 @@ class Centrosymmetric:
 		"""
 		mutate_AA(self, nr, prob)
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a FASTA formatted file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		save_fasta(self, filename)
+		save_fasta(self, filename, names=names)
 
 	def filter_unnatrual(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
@@ -721,17 +719,18 @@ class MixedLibrary:
 		self.libsize = len(self.sequences)
 		self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
-	def save_fasta(self, filename):
+	def save_fasta(self, filename, names=False):
 		"""Method for saving sequences in the instance self.sequences to a file in FASTA format.
 
 		:param filename: output filename (ending .fasta)
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: a FASTA formatted file containing the generated sequences
 
 		.. seealso:: :func:`modlamp.core.save_fasta()`
 		"""
-		save_fasta(self, filename)
+		save_fasta(self, filename, names=names)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 

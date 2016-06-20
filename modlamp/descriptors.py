@@ -462,13 +462,14 @@ class GlobalDescriptor(object):
 			data = np.hstack((names, self.descriptor))
 		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
 
-	def save_fasta(self, outputfile):
+	def save_fasta(self, outputfile, names=False):
 		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
 		:param outputfile: filename of the output FASTA file
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
 		"""
-		save_fasta(self, outputfile)
+		save_fasta(self, outputfile, names=names)
 
 
 class PeptideDescriptor(object):
@@ -554,13 +555,14 @@ class PeptideDescriptor(object):
 		"""
 		self.sequences, self.names = read_fasta(filename)
 
-	def save_fasta(self, outputfile):
+	def save_fasta(self, outputfile, names=False):
 		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
 		:param outputfile: filename of the output FASTA file
+		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
 		"""
-		save_fasta(self,outputfile)
+		save_fasta(self, outputfile, names=names)
 
 	def calculate_autocorr(self, window, append=False):
 		"""Method for auto-correlating the amino acid values for a given descriptor scale
