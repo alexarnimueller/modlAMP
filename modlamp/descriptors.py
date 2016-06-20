@@ -15,15 +15,18 @@ Class								Characteristics
 
 """
 
+import collections
 import os
 import sys
-from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, random_selection
-import collections
+
 import numpy as np
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
-from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, \
+	random_selection, filter_sequences
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -401,7 +404,7 @@ class GlobalDescriptor(object):
 		"""
 		filter_values(self, values, operator)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 		amino acids in the argument list **aminoacids**.
 
@@ -411,6 +414,20 @@ class GlobalDescriptor(object):
 		.. seealso:: :func:`modlamp.core.filter_aa_more()`
 		"""
 		filter_aa_more(self, aminoacids)
+
+	def filter_sequences(self, sequences):
+		"""Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
+		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
+		descriptor instance.
+
+		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
+		:return: updated instance
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.4
+		"""
+		filter_sequences(self, sequences)
 
 	def random_selection(self, num):
 		"""Method to select a random number of sequences (with names and descriptors if present) out of a given
@@ -883,7 +900,7 @@ class PeptideDescriptor(object):
 		"""
 		filter_values(self, values, operator)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 		amino acids in the argument list **aminoacids**.
 
@@ -893,6 +910,20 @@ class PeptideDescriptor(object):
 		.. seealso:: :func:`modlamp.core.filter_aa_more()`
 		"""
 		filter_aa_more(self, aminoacids)
+
+	def filter_sequences(self, sequences):
+		"""Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
+		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
+		descriptor instance.
+
+		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
+		:return: updated instance
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.4
+		"""
+		filter_sequences(self, sequences)
 
 	def random_selection(self, num):
 		"""Method to select a random number of sequences (with names and descriptors if present) out of a given

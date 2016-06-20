@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.2.3 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.2.4 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.3',
+        VERSION:     'v2.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.3 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.2.4 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -438,7 +438,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 amino acids in the argument list <strong>aminoacids</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -454,6 +454,31 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_aa_more" title="modlamp.core.filter_aa_more"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa_more()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.filter_sequences">
+<code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out entries for given sequences in <em>sequences</em> out of a descriptor instance. All
+corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an updated
+descriptor instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; list of sequences to be filtered out of the whole instance, including corresponding data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.4.</span></p>
 </div>
 </dd></dl>
 
@@ -532,15 +557,20 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>outputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>outputfile</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a FASTA formatted file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>outputfile</strong> &#8211; filename of the output FASTA file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>outputfile</strong> &#8211; filename of the output FASTA file</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -646,15 +676,20 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>outputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>outputfile</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a FASTA formatted file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>outputfile</strong> &#8211; filename of the output FASTA file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>outputfile</strong> &#8211; filename of the output FASTA file</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -955,7 +990,7 @@ size as the number of features in the descriptor matrix!)</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 amino acids in the argument list <strong>aminoacids</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -971,6 +1006,31 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_aa_more" title="modlamp.core.filter_aa_more"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa_more()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.PeptideDescriptor.filter_sequences">
+<code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out entries for given sequences in <em>sequences</em> out of a descriptor instance. All
+corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an updated
+descriptor instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; list of sequences to be filtered out of the whole instance, including corresponding data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.4.</span></p>
 </div>
 </dd></dl>
 
@@ -1284,15 +1344,20 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Random.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save generated sequences in a .fasta formatted file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename in which the sequences are safed in fasta format.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which the sequences are safed in fasta format.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a fasta file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1463,15 +1528,20 @@ The remaining empty spots are filled up by hydrophobic AAs.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Helices.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1610,15 +1680,20 @@ leading to a kink in the hydrophobic face of the amphipathic helices.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Kinked.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1755,15 +1830,20 @@ tilted/oblique in membrane environment.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Oblique.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1924,15 +2004,20 @@ hydrophobic     moment.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Centrosymmetric.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -2076,15 +2161,20 @@ All sequences are between 7 and 28 amino acids in length.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.MixedLibrary.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance self.sequences to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -2096,7 +2186,7 @@ All sequences are between 7 and 28 amino acids in length.</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.MixedLibrary.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
 <strong>Dublicates</strong> sequences are removed as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3005,15 +3095,20 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 
 <dl class="function">
 <dt id="modlamp.core.save_fasta">
-<code class="descclassname">modlamp.core.</code><code class="descname">save_fasta</code><span class="sig-paren">(</span><em>self</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.save_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.core.</code><code class="descname">save_fasta</code><span class="sig-paren">(</span><em>self</em>, <em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.save_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for saving sequences in the instance <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a file in FASTA format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; output filename (ending .fasta)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a FASTA formatted file containing the generated sequences</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -3312,6 +3407,38 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 </dd></dl>
 
 <dl class="function">
+<dt id="modlamp.core.filter_sequences">
+<code class="descclassname">modlamp.core.</code><code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>self</em>, <em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out entries for given sequences in <strong>sequences</strong> out of a descriptor instance. All
+corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an updated
+descriptor instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; list of sequences to be filtered out of the whole instance, including corresponding data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHIK&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVV&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGALG&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">filter_sequences</span><span class="p">(</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="modlamp.core.random_selection">
 <code class="descclassname">modlamp.core.</code><code class="descname">random_selection</code><span class="sig-paren">(</span><em>self</em>, <em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#random_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.random_selection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to select a random number of sequences (with names and descriptors if present) out of a given
@@ -3419,7 +3546,7 @@ descriptor instance.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.4 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

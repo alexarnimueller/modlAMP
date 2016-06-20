@@ -422,6 +422,37 @@ def filter_values(self, values, operator='=='):
 			self.names = np.array(self.names)[indices].tolist()
 
 
+def filter_sequences(self, sequences):
+	"""Method to filter out entries for given sequences in **sequences** out of a descriptor instance. All
+	corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
+	descriptor instance.
+
+	:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
+	:return: updated instance
+	:Example:
+
+	>>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
+	>>> D = PeptideDescriptor(sequences, 'pepcats')
+	>>> D.calculate_crosscorr(7)
+	>>> len(D.descriptor)
+	5
+	>>> D.filter_sequences('KLLKLLKKLLKLLK')
+	>>> len(D.descriptor)
+	4
+	>>> D.sequences
+	['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
+	"""
+	indices = list()
+	if isinstance(sequences, basestring):
+		sequences = [sequences]
+	for s in sequences:  # get indices of queried sequences
+		indices.append(self.sequences.index(s))
+
+	self.names = np.delete(np.array(self.names), indices, 0).tolist()
+	self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
+	self.descriptor = np.delete(self.descriptor, indices, 0)
+
+
 def random_selection(self, num):
 	"""Method to select a random number of sequences (with names and descriptors if present) out of a given
 	descriptor instance.

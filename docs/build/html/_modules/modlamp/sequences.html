@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlamp v2.2.3 documentation</title>
+    <title>modlamp.sequences &mdash; modlamp v2.2.4 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.3',
+        VERSION:     'v2.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.4 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -158,22 +158,16 @@
 												 <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed random selection of amino acid, probabilities = prob</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">		:param filename: output filename in which the sequences are safed in fasta format.</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a fasta file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># remove outputfile, it it exists</span>
-		<span class="n">o</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
-
-		<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
-			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-		<span class="n">o</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Random.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.mutate_AA">[docs]</a>	<span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
@@ -280,15 +274,16 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Helices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Helices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Helices.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.</span>
@@ -386,15 +381,16 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Kinked.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Kinked.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Kinked.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.</span>
@@ -487,15 +483,16 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Oblique.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Oblique.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Oblique.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.</span>
@@ -625,15 +622,16 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Centrosymmetric.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Centrosymmetric.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Centrosymmetric.filter_unnatrual"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_unnatrual">[docs]</a>	<span class="k">def</span> <span class="nf">filter_unnatrual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.</span>
@@ -770,17 +768,18 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">libsize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># update the number of sequences for every class</span></div>
 
-<div class="viewcode-block" id="MixedLibrary.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedLibrary.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance self.sequences to a file in FASTA format.</span>
 
 <span class="sd">		:param filename: output filename (ending .fasta)</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: a FASTA formatted file containing the generated sequences</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.save_fasta()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MixedLibrary.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="MixedLibrary.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -826,7 +825,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

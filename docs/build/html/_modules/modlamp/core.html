@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.core &mdash; modlamp v2.2.3 documentation</title>
+    <title>modlamp.core &mdash; modlamp v2.2.4 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.3',
+        VERSION:     'v2.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.4 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -250,18 +250,23 @@
 	<span class="k">return</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">names</span></div>
 
 
-<div class="viewcode-block" id="save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.save_fasta">[docs]</a><span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.save_fasta">[docs]</a><span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
 
 <span class="sd">	:param filename: output filename (ending .fasta)</span>
+<span class="sd">	:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">	:return: a FASTA formatted file containing the generated sequences</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 		<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># remove outputfile, it it exists</span>
+
 	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">o</span><span class="p">:</span>
 		<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
-			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+				<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 			<span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="n">seq</span></div>
 
 
@@ -466,6 +471,37 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="filter_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_sequences">[docs]</a><span class="k">def</span> <span class="nf">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Method to filter out entries for given sequences in **sequences** out of a descriptor instance. All</span>
+<span class="sd">	corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated</span>
+<span class="sd">	descriptor instance.</span>
+
+<span class="sd">	:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data</span>
+<span class="sd">	:return: updated instance</span>
+<span class="sd">	:Example:</span>
+
+<span class="sd">	&gt;&gt;&gt; sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
+<span class="sd">	&gt;&gt;&gt; D = PeptideDescriptor(sequences, &#39;pepcats&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; D.calculate_crosscorr(7)</span>
+<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	5</span>
+<span class="sd">	&gt;&gt;&gt; D.filter_sequences(&#39;KLLKLLKKLLKLLK&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	4</span>
+<span class="sd">	&gt;&gt;&gt; D.sequences</span>
+<span class="sd">	[&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+		<span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sequences</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>  <span class="c1"># get indices of queried sequences</span>
+		<span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+	<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">),</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.random_selection">[docs]</a><span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
 <span class="sd">	descriptor instance.</span>
@@ -537,7 +573,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

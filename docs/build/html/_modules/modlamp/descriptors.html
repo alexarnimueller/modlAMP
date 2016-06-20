@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &mdash; modlamp v2.2.3 documentation</title>
+    <title>modlamp.descriptors &mdash; modlamp v2.2.4 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.3',
+        VERSION:     'v2.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.3 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.4 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -64,15 +64,18 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa_more</span><span class="p">,</span> <span class="n">random_selection</span>
-<span class="kn">import</span> <span class="nn">collections</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span>
+
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa_more</span><span class="p">,</span> \
+	<span class="n">random_selection</span><span class="p">,</span> <span class="n">filter_sequences</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;modlab&#39;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -450,7 +453,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="GlobalDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
 <span class="sd">		amino acids in the argument list **aminoacids**.</span>
 
@@ -460,6 +463,20 @@
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GlobalDescriptor.filter_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All</span>
+<span class="sd">		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated</span>
+<span class="sd">		descriptor instance.</span>
+
+<span class="sd">		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data</span>
+<span class="sd">		:return: updated instance</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_sequences()`</span>
+
+<span class="sd">		.. versionadded:: v2.2.4</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.random_selection">[docs]</a>	<span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
@@ -511,13 +528,14 @@
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
 		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
 <span class="sd">		:param outputfile: filename of the output FASTA file</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span></div></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PeptideDescriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor">[docs]</a><span class="k">class</span> <span class="nc">PeptideDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -603,13 +621,14 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">):</span>
+<div class="viewcode-block" id="PeptideDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
 <span class="sd">		:param outputfile: filename of the output FASTA file</span>
+<span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">outputfile</span><span class="p">)</span></div>
+		<span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.calculate_autocorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_autocorr">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_autocorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for auto-correlating the amino acid values for a given descriptor scale</span>
@@ -930,7 +949,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="PeptideDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
 <span class="sd">		amino acids in the argument list **aminoacids**.</span>
 
@@ -940,6 +959,20 @@
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_aa_more</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PeptideDescriptor.filter_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All</span>
+<span class="sd">		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated</span>
+<span class="sd">		descriptor instance.</span>
+
+<span class="sd">		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data</span>
+<span class="sd">		:return: updated instance</span>
+
+<span class="sd">		.. seealso:: :func:`modlamp.core.filter_sequences()`</span>
+
+<span class="sd">		.. versionadded:: v2.2.4</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.random_selection">[docs]</a>	<span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
@@ -1026,7 +1059,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.3 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
