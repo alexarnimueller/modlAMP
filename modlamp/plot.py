@@ -517,10 +517,11 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 		plt.show()
 
 
-def plot_aa_distr(sequences, filename=None):
+def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 	"""Method to plot the amino acid distribution of a given list of sequences
 
 	:param sequences: {list} list of sequences to calculate the amino acid distribution fore
+	:param color: {str} color to be used (matplotlib style / hex)
 	:param filename: {str} location / filename where to save the plot to. *default = None* --> show the plot
 	:Example:
 
@@ -533,18 +534,18 @@ def plot_aa_distr(sequences, filename=None):
 	"""
 	AA = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	d = PeptideDescriptor(sequences, 'eisenberg')
-	d.count_aa(scale='absolute')
-	cnts = np.sum(d.descriptor, axis=0)
+	d.count_aa(scale='relative')
+	perc = np.mean(d.descriptor, axis=0)
 
 	fig, ax = plt.subplots()
 
 	for a in range(20):
-		plt.bar(a - 0.45, cnts[a], 0.9, alpha=0.9, color='#83AF9B')
+		plt.bar(a - 0.45, perc[a], 0.9, color=color)
 
 	plt.xlim([-0.75, 19.75])
-	plt.ylim([0, max(cnts) + 1])
+	plt.ylim([0, max(perc) + 0.05])
 	plt.xticks(range(20), AA, fontweight='bold')
-	plt.ylabel('Amino Acid Count', fontweight='bold')
+	plt.ylabel('Amino Acid Frequency', fontweight='bold')
 	plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
 
 	# only left and bottom axes, no box
