@@ -147,7 +147,7 @@ class Random:
 		"""
 		filter_unnatural(self)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 
@@ -690,6 +690,8 @@ class MixedLibrary:
 		Ra.generate_sequences('AMP')
 		Rc = Random(7, 28, self.nums['nCM'])
 		Rc.generate_sequences('AMPnoCM')
+
+# TODO: update libnums according to real numbers
 
 		sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
 		names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \

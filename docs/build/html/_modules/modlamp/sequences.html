@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlamp v2.2.4 documentation</title>
+    <title>modlamp.sequences &mdash; modlamp v2.2.5 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.4',
+        VERSION:     'v2.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.4 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.5 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -196,7 +196,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Random.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="Random.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -740,6 +740,8 @@
 		<span class="n">Rc</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">])</span>
 		<span class="n">Rc</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="s1">&#39;AMPnoCM&#39;</span><span class="p">)</span>
 
+<span class="c1"># TODO: update libnums according to real numbers</span>
+
 		<span class="n">sequences</span> <span class="o">=</span> <span class="n">Cs</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ca</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">H</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">K</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">O</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">R</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ra</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Rc</span><span class="o">.</span><span class="n">sequences</span>
 		<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span> <span class="o">+</span> \
 				<span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">]</span> <span class="o">+</span> \
@@ -825,7 +827,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.4 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

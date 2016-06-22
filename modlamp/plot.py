@@ -515,3 +515,45 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 		plt.savefig(filename, dpi=150)
 	else:
 		plt.show()
+
+
+def plot_aa_distr(sequences, filename=None):
+	"""Method to plot the amino acid distribution of a given list of sequences
+
+	:param sequences: {list} list of sequences to calculate the amino acid distribution fore
+	:param filename: {str} location / filename where to save the plot to. *default = None* --> show the plot
+	:Example:
+
+	>>> plot_aa_distr(['KLLKLLKKLLKLLK', 'WWRRWWRAARWWRRWWRR', 'ACDEFGHKLCMNPQRSTVWY', 'GGGGGIIKLWGGGGGGGGGGGGG'])
+
+	.. image:: ../docs/static/AA_dist.png
+		:scale: 50 %
+
+	.. versionadded:: v2.2.5
+	"""
+	AA = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+	d = PeptideDescriptor(sequences, 'eisenberg')
+	d.count_aa(scale='absolute')
+	cnts = np.sum(d.descriptor, axis=0)
+
+	fig, ax = plt.subplots()
+
+	for a in range(20):
+		plt.bar(a - 0.45, cnts[a], 0.9, alpha=0.9, color='#83AF9B')
+
+	plt.xlim([-0.75, 19.75])
+	plt.ylim([0, max(cnts) + 1])
+	plt.xticks(range(20), AA, fontweight='bold')
+	plt.ylabel('Amino Acid Count', fontweight='bold')
+	plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
+
+	# only left and bottom axes, no box
+	ax.spines['right'].set_visible(False)
+	ax.spines['top'].set_visible(False)
+	ax.xaxis.set_ticks_position('bottom')
+	ax.yaxis.set_ticks_position('left')
+
+	if filename:
+		plt.savefig(filename, dpi=150)
+	else:
+		plt.show()

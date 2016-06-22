@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.2.4 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.2.5 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.4',
+        VERSION:     'v2.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.4 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.2.5 documentation" href="index.html" />
     <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -1421,7 +1421,7 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 
 <dl class="method">
 <dt id="modlamp.sequences.Random.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids=['X']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
 <strong>Dublicates</strong> sequences are removed as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2805,6 +2805,33 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 </div>
 </dd></dl>
 
+<dl class="function">
+<dt id="modlamp.plot.plot_aa_distr">
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_aa_distr</code><span class="sig-paren">(</span><em>sequences</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_aa_distr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_aa_distr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot the amino acid distribution of a given list of sequences</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sequences</strong> &#8211; {list} list of sequences to calculate the amino acid distribution fore</li>
+<li><strong>filename</strong> &#8211; {str} location / filename where to save the plot to. <em>default = None</em> &#8211;&gt; show the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_aa_distr</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;WWRRWWRAARWWRRWWRR&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHKLCMNPQRSTVWY&#39;</span><span class="p">,</span> <span class="s1">&#39;GGGGGIIKLWGGGGGGGGGGGGG&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/AA_dist.png"><img alt="_images/AA_dist.png" src="_images/AA_dist.png" style="width: 600.0px; height: 450.0px;" /></a>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
 </div>
 <div class="section" id="module-modlamp.ml">
 <span id="modlamp-ml"></span><h2>2.6. modlamp.ml<a class="headerlink" href="#module-modlamp.ml" title="Permalink to this headline">¶</a></h2>
@@ -3546,7 +3573,7 @@ descriptor instance.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.4 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
