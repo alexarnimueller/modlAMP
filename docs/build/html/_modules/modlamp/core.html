@@ -230,7 +230,7 @@
 			   <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.18</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.12</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.46</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.59</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.64</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.54</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.02</span><span class="p">],</span>
 			   <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">4.36</span><span class="p">,</span> <span class="mf">3.94</span><span class="p">,</span> <span class="mf">0.59</span><span class="p">,</span> <span class="mf">3.44</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.59</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.54</span><span class="p">,</span> <span class="mf">2.44</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.47</span><span class="p">]}</span>
 	<span class="p">}</span>
-	<span class="k">return</span> <span class="n">scales</span><span class="p">[</span><span class="n">scalename</span><span class="p">]</span></div>
+	<span class="k">return</span> <span class="n">scalename</span><span class="p">,</span> <span class="n">scales</span><span class="p">[</span><span class="n">scalename</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.read_fasta">[docs]</a><span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
@@ -447,7 +447,7 @@
 <span class="sd">	size as the number of features in the descriptor matrix!) The operator option tells the method whether to</span>
 <span class="sd">	filter for values equal, lower, higher ect. to the given values in the **values** array.</span>
 
-<span class="sd">	:param values: List/array of values to filter</span>
+<span class="sd">	:param values: List/array of values to filter the attribute :py:attr:`descriptor` for</span>
 <span class="sd">	:param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
 <span class="sd">	:return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
 <span class="sd">	&quot;&quot;&quot;</span>

@@ -384,7 +384,7 @@
 <div class="viewcode-block" id="GlobalDescriptor.hydrophobic_ratio"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">[docs]</a>	<span class="k">def</span> <span class="nf">hydrophobic_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the relative</span>
-<span class="sd">		frequency of the amino acids [A,C,F,I,L,M &amp; V].</span>
+<span class="sd">		frequency of the amino acids **A,C,F,I,L,M &amp; V**.</span>
 
 <span class="sd">		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">		:return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
@@ -403,10 +403,10 @@
 <div class="viewcode-block" id="GlobalDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.feature_scaling">[docs]</a>	<span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
 
-<span class="sd">		:param type: **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
+<span class="sd">		:param type: {str} **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
 <span class="sd">		:param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or</span>
 <span class="sd">			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
-<span class="sd">		:return: scaled descriptor values in :py:attr`self.descriptor`</span>
+<span class="sd">		:return: scaled descriptor values in :py:attr:`self.descriptor`</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; D.descriptor</span>
@@ -445,7 +445,7 @@
 <span class="sd">		size as the number of features in the descriptor matrix!) The operator option tells the method whether to</span>
 <span class="sd">		filter for values equal, lower, higher ect. to the given values in the **values** array.</span>
 
-<span class="sd">		:param values: List/array of values to filter</span>
+<span class="sd">		:param values: List/array of values to filter the attribute :py:attr:`descriptor` for</span>
 <span class="sd">		:param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
 <span class="sd">		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
 
@@ -457,7 +457,7 @@
 		<span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
 <span class="sd">		amino acids in the argument list **aminoacids**.</span>
 
-<span class="sd">		:param aminoacids: List/array of amino acids to filter for</span>
+<span class="sd">		:param aminoacids: List/array of amino acids {upper str} to filter for</span>
 <span class="sd">		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_aa_more()`</span>
@@ -469,7 +469,7 @@
 <span class="sd">		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated</span>
 <span class="sd">		descriptor instance.</span>
 
-<span class="sd">		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data</span>
+<span class="sd">		:param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data</span>
 <span class="sd">		:return: updated instance</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.filter_sequences()`</span>
@@ -491,19 +491,17 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
 <span class="sd">		class :class:`modlamp.descriptors.GlobalDescriptor`.</span>
 
-<span class="sd">		.. note::</span>
-<span class="sd">			The data file should **not** have any headers</span>
-
-<span class="sd">		:param filename: filename of the data file to be loaded</span>
-<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param filename: {str} filename of the data file to be loaded</span>
+<span class="sd">		:param delimiter: {str} column delimiter</span>
 <span class="sd">		:param targets: {boolean} whether last column in the file contains a target class vector</span>
+<span class="sd">		:param header: {int} number of header lines to skip in the file</span>
 <span class="sd">		:return: loaded sequences, descriptor values and targets in the corresponding attributes.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
 		<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># skip sequences as they are &quot;nan&quot; when read as float</span>
 		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 		<span class="n">seqs</span> <span class="o">=</span> <span class="n">seqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -512,26 +510,32 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to save the descriptor values to a .csv/.txt file</span>
 
-<span class="sd">		:param filename: filename of the output file</span>
-<span class="sd">		:param delimiter: column delimiter</span>
+<span class="sd">		:param filename: {str} filename of the output file</span>
+<span class="sd">		:param delimiter: {str} column delimiter</span>
 <span class="sd">		:param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)</span>
+<span class="sd">		:param header: {str} header to be written at the beginning of the file</span>
 <span class="sd">		:return: output file with peptide names and descriptor values</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">ids</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">seqs</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+			<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">ids</span><span class="p">,</span> <span class="n">seqs</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">names</span> <span class="o">=</span> <span class="n">seqs</span>
 		<span class="k">if</span> <span class="n">targets</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
 			<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
-		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div>
+		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
-<span class="sd">		:param outputfile: filename of the output FASTA file</span>
+<span class="sd">		:param outputfile: {str} filename of the output FASTA file</span>
 <span class="sd">		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -597,8 +601,7 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">print</span> <span class="s2">&quot;&#39;inputfile&#39; does not exist, is not a valid list of sequences or is not a valid sequence string&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">scalename</span> <span class="o">=</span> <span class="n">scalename</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scalename</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scalename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
 
@@ -610,7 +613,7 @@
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.load_scale()`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scalename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.read_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and</span>
@@ -920,7 +923,7 @@
 <div class="viewcode-block" id="PeptideDescriptor.sequence_order_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.sequence_order_shuffle">[docs]</a>	<span class="k">def</span> <span class="nf">sequence_order_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method for shuffling sequence order in self.sequences.</span>
 
-<span class="sd">		:return: sequences in :py:attr`self.sequences` with shuffled order in the list.</span>
+<span class="sd">		:return: sequences in :py:attr:`self.sequences` with shuffled order in the list.</span>
 <span class="sd">		:Example:</span>
 
 <span class="sd">		&gt;&gt;&gt; D.sequences</span>
@@ -987,7 +990,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="PeptideDescriptor.load_descriptordata"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_descriptordata">[docs]</a>	<span class="k">def</span> <span class="nf">load_descriptordata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to load any data file with sequences and descriptor values and save it to a new insatnce of the</span>
 <span class="sd">		class :class:`modlamp.descriptors.PeptideDescriptor`.</span>
 
@@ -997,9 +1000,10 @@
 <span class="sd">		:param filename: filenam of the data file to be loaded</span>
 <span class="sd">		:param delimiter: column delimiter</span>
 <span class="sd">		:param targets: {boolean} whether last column in the file contains a target class vector</span>
+<span class="sd">		:param header: {int} number of header lines to skip in the file</span>
 <span class="sd">		:return: loaded sequences, descriptor values and targets in the corresponding attributes.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
 		<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># skip sequences as they are &quot;nan&quot; when read as float</span>
 		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 		<span class="n">seqs</span> <span class="o">=</span> <span class="n">seqs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -1008,21 +1012,27 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PeptideDescriptor.save_descriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_descriptor">[docs]</a>	<span class="k">def</span> <span class="nf">save_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to save the descriptor values to a .csv/.txt file</span>
 
 <span class="sd">		:param filename: filename of the output file</span>
 <span class="sd">		:param delimiter: column delimiter</span>
 <span class="sd">		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)</span>
+<span class="sd">		:param header: {str} header to be written at the beginning of the file</span>
 <span class="sd">		:return: output file with peptide names and descriptor values</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
+		<span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S80&#39;</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">ids</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">seqs</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+			<span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">ids</span><span class="p">,</span> <span class="n">seqs</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">names</span> <span class="o">=</span> <span class="n">seqs</span>
+		<span class="k">if</span> <span class="n">targets</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
 			<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">))</span>
-		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+		<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

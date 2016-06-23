@@ -344,7 +344,7 @@ dividing by     sequence length.
 <dt id="modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">
 <code class="descname">hydrophobic_ratio</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.hydrophobic_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the hydrophobic ratio of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, which is the relative
-frequency of the amino acids [A,C,F,I,L,M &amp; V].</p>
+frequency of the amino acids <strong>A,C,F,I,L,M &amp; V</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -366,13 +366,13 @@ frequency of the amino acids [A,C,F,I,L,M &amp; V].</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>type</strong> &#8211; <strong>&#8216;standard&#8217;</strong> or <strong>&#8216;minmax&#8217;</strong>, type of scaling to be used</li>
+<li><strong>type</strong> &#8211; {str} <strong>&#8216;standard&#8217;</strong> or <strong>&#8216;minmax&#8217;</strong>, type of scaling to be used</li>
 <li><strong>fit</strong> &#8211; {boolean}, defines whether the used scaler is first fitting on the data (True) or
 whether the already fitted scaler in <code class="xref py py-attr docutils literal"><span class="pre">scaler</span></code> should be used to transform (False).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scaled descriptor values in :py:attr`self.descriptor`</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scaled descriptor values in <code class="xref py py-attr docutils literal"><span class="pre">self.descriptor</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -420,7 +420,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>values</strong> &#8211; List/array of values to filter</li>
+<li><strong>values</strong> &#8211; List/array of values to filter the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> for</li>
 <li><strong>operator</strong> &#8211; filter criterion, available are all SQL like operators: <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=``and</span> <span class="pre">``&gt;=</span></code>.</li>
 </ul>
 </td>
@@ -445,7 +445,7 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids to filter for</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids {upper str} to filter for</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered descriptor matrix and updated sequences and names in the corresponding attributes.</td>
 </tr>
@@ -467,7 +467,7 @@ descriptor instance.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; list of sequences to be filtered out of the whole instance, including corresponding data</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; {list} sequences to be filtered out of the whole instance, including corresponding data</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
 </tr>
@@ -508,21 +508,18 @@ descriptor instance.</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.load_descriptordata">
-<code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em>, <em>header=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor" title="modlamp.descriptors.GlobalDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.GlobalDescriptor</span></code></a>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The data file should <strong>not</strong> have any headers</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; filename of the data file to be loaded</li>
-<li><strong>delimiter</strong> &#8211; column delimiter</li>
+<li><strong>filename</strong> &#8211; {str} filename of the data file to be loaded</li>
+<li><strong>delimiter</strong> &#8211; {str} column delimiter</li>
 <li><strong>targets</strong> &#8211; {boolean} whether last column in the file contains a target class vector</li>
+<li><strong>header</strong> &#8211; {int} number of header lines to skip in the file</li>
 </ul>
 </td>
 </tr>
@@ -535,16 +532,17 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.save_descriptor">
-<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em>, <em>header=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save the descriptor values to a .csv/.txt file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; filename of the output file</li>
-<li><strong>delimiter</strong> &#8211; column delimiter</li>
+<li><strong>filename</strong> &#8211; {str} filename of the output file</li>
+<li><strong>delimiter</strong> &#8211; {str} column delimiter</li>
 <li><strong>targets</strong> &#8211; {list} target class vector to be added to descriptor (same length as <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>)</li>
+<li><strong>header</strong> &#8211; {str} header to be written at the beginning of the file</li>
 </ul>
 </td>
 </tr>
@@ -564,7 +562,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>outputfile</strong> &#8211; filename of the output FASTA file</li>
+<li><strong>outputfile</strong> &#8211; {str} filename of the output FASTA file</li>
 <li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
 </ul>
 </td>
@@ -940,7 +938,7 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sequences in :py:attr`self.sequences` with shuffled order in the list.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sequences in <code class="xref py py-attr docutils literal"><span class="pre">self.sequences</span></code> with shuffled order in the list.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -1060,7 +1058,7 @@ descriptor instance.</p>
 
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.load_descriptordata">
-<code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em>, <em>header=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a>.</p>
 <div class="admonition note">
@@ -1075,6 +1073,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <li><strong>filename</strong> &#8211; filenam of the data file to be loaded</li>
 <li><strong>delimiter</strong> &#8211; column delimiter</li>
 <li><strong>targets</strong> &#8211; {boolean} whether last column in the file contains a target class vector</li>
+<li><strong>header</strong> &#8211; {int} number of header lines to skip in the file</li>
 </ul>
 </td>
 </tr>
@@ -1087,7 +1086,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.save_descriptor">
-<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em>, <em>header=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save the descriptor values to a .csv/.txt file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1097,6 +1096,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <li><strong>filename</strong> &#8211; filename of the output file</li>
 <li><strong>delimiter</strong> &#8211; column delimiter</li>
 <li><strong>targets</strong> &#8211; target class vector to be added to descriptor (same length as <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>)</li>
+<li><strong>header</strong> &#8211; {str} header to be written at the beginning of the file</li>
 </ul>
 </td>
 </tr>
@@ -3422,7 +3422,7 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>values</strong> &#8211; List/array of values to filter</li>
+<li><strong>values</strong> &#8211; List/array of values to filter the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> for</li>
 <li><strong>operator</strong> &#8211; filter criterion, available are all SQL like operators: <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=``and</span> <span class="pre">``&gt;=</span></code>.</li>
 </ul>
 </td>

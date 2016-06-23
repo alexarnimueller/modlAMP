@@ -357,7 +357,7 @@ class GlobalDescriptor(object):
 		:param type: {str} **'standard'** or **'minmax'**, type of scaling to be used
 		:param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
 			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
-		:return: scaled descriptor values in :py:attr`self.descriptor`
+		:return: scaled descriptor values in :py:attr:`self.descriptor`
 		:Example:
 
 		>>> D.descriptor
@@ -461,12 +461,13 @@ class GlobalDescriptor(object):
 		self.sequences = seqs
 		self.descriptor = data
 
-	def save_descriptor(self, filename, delimiter=',', targets=None):
+	def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
 		"""Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: {str} filename of the output file
 		:param delimiter: {str} column delimiter
 		:param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:param header: {str} header to be written at the beginning of the file
 		:return: output file with peptide names and descriptor values
 		"""
 		seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
@@ -480,7 +481,7 @@ class GlobalDescriptor(object):
 			data = np.hstack((names, self.descriptor, target))
 		else:
 			data = np.hstack((names, self.descriptor))
-		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
+		np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)
 
 	def save_fasta(self, outputfile, names=False):
 		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
@@ -873,7 +874,7 @@ class PeptideDescriptor(object):
 	def sequence_order_shuffle(self):
 		"""Method for shuffling sequence order in self.sequences.
 
-		:return: sequences in :py:attr`self.sequences` with shuffled order in the list.
+		:return: sequences in :py:attr:`self.sequences` with shuffled order in the list.
 		:Example:
 
 		>>> D.sequences
@@ -962,12 +963,13 @@ class PeptideDescriptor(object):
 		self.sequences = seqs
 		self.descriptor = data
 
-	def save_descriptor(self, filename, delimiter=',', targets=None):
+	def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
 		"""Method to save the descriptor values to a .csv/.txt file
 
 		:param filename: filename of the output file
 		:param delimiter: column delimiter
 		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+		:param header: {str} header to be written at the beginning of the file
 		:return: output file with peptide names and descriptor values
 		"""
 		seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
@@ -981,4 +983,4 @@ class PeptideDescriptor(object):
 			data = np.hstack((names, self.descriptor, target))
 		else:
 			data = np.hstack((names, self.descriptor))
-		np.savetxt(filename, data, delimiter=delimiter, fmt='%s')
+		np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)
