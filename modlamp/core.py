@@ -181,7 +181,7 @@ def load_scale(scalename):
 			   'T': [0.75, -2.18, -1.12, -1.46, -0.4], 'V': [-2.59, -2.64, -1.54, -0.85, -0.02],
 			   'W': [-4.36, 3.94, 0.59, 3.44, -1.59], 'Y': [-2.54, 2.44, 0.43, 0.04, -1.47]}
 	}
-	return scales[scalename]
+	return scalename, scales[scalename]
 
 
 def read_fasta(inputfile):

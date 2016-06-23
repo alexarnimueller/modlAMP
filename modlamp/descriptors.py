@@ -471,7 +471,12 @@ class GlobalDescriptor(object):
 		:param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)
 		:return: output file with peptide names and descriptor values
 		"""
-		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		ids = np.array(self.names, dtype='|S80')[:, np.newaxis]
+		if ids.shape == seqs.shape:
+			names = np.hstack((ids, seqs))
+		else:
+			names = seqs
 		if targets and len(targets) == len(self.sequences):
 			target = np.array(targets)[:, np.newaxis]
 			data = np.hstack((names, self.descriptor, target))
@@ -548,8 +553,7 @@ class PeptideDescriptor(object):
 		else:
 			print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
-		self.scalename = scalename
-		self.scale = load_scale(self.scalename)
+		self.scalename, self.scale = load_scale(scalename)
 		self.descriptor = np.array([[]])
 		self.target = np.array([], dtype='int')
 
@@ -561,7 +565,7 @@ class PeptideDescriptor(object):
 
 		.. seealso:: :func:`modlamp.core.load_scale()`
 		"""
-		self.scale = load_scale(scalename)
+		self.scalename, self.scale = load_scale(scalename)
 
 	def read_fasta(self, filename):
 		"""Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
@@ -967,8 +971,13 @@ class PeptideDescriptor(object):
 		:param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
 		:return: output file with peptide names and descriptor values
 		"""
-		names = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
-		if len(targets) == len(self.sequences):
+		seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+		ids = np.array(self.names, dtype='|S80')[:, np.newaxis]
+		if ids.shape == seqs.shape:
+			names = np.hstack((ids, seqs))
+		else:
+			names = seqs
+		if targets and len(targets) == len(self.sequences):
 			target = np.array(targets)[:, np.newaxis]
 			data = np.hstack((names, self.descriptor, target))
 		else:
