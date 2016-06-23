@@ -335,7 +335,7 @@ class GlobalDescriptor(object):
 	def hydrophobic_ratio(self, append=False):
 		"""
 		Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the relative
-		frequency of the amino acids [A,C,F,I,L,M & V].
+		frequency of the amino acids **A,C,F,I,L,M & V**.
 
 		:param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
 		:return: array of descriptor values in the attribute :py:attr:`descriptor`
@@ -354,7 +354,7 @@ class GlobalDescriptor(object):
 	def feature_scaling(self, type='standard', fit=True):
 		"""Method for feature scaling of the calculated descriptor matrix.
 
-		:param type: **'standard'** or **'minmax'**, type of scaling to be used
+		:param type: {str} **'standard'** or **'minmax'**, type of scaling to be used
 		:param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
 			whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
 		:return: scaled descriptor values in :py:attr`self.descriptor`
@@ -396,7 +396,7 @@ class GlobalDescriptor(object):
 		size as the number of features in the descriptor matrix!) The operator option tells the method whether to
 		filter for values equal, lower, higher ect. to the given values in the **values** array.
 
-		:param values: List/array of values to filter
+		:param values: List/array of values to filter the attribute :py:attr:`descriptor` for
 		:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
 		:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
 
@@ -408,7 +408,7 @@ class GlobalDescriptor(object):
 		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 		amino acids in the argument list **aminoacids**.
 
-		:param aminoacids: List/array of amino acids to filter for
+		:param aminoacids: List/array of amino acids {upper str} to filter for
 		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
 
 		.. seealso:: :func:`modlamp.core.filter_aa_more()`
@@ -420,7 +420,7 @@ class GlobalDescriptor(object):
 		corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
 		descriptor instance.
 
-		:param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
+		:param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
 		:return: updated instance
 
 		.. seealso:: :func:`modlamp.core.filter_sequences()`
@@ -446,11 +446,8 @@ class GlobalDescriptor(object):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 		class :class:`modlamp.descriptors.GlobalDescriptor`.
 
-		.. note::
-			The data file should **not** have any headers
-
-		:param filename: filename of the data file to be loaded
-		:param delimiter: column delimiter
+		:param filename: {str} filename of the data file to be loaded
+		:param delimiter: {str} column delimiter
 		:param targets: {boolean} whether last column in the file contains a target class vector
 		:param header: {int} number of header lines to skip in the file
 		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
@@ -467,8 +464,8 @@ class GlobalDescriptor(object):
 	def save_descriptor(self, filename, delimiter=',', targets=None):
 		"""Method to save the descriptor values to a .csv/.txt file
 
-		:param filename: filename of the output file
-		:param delimiter: column delimiter
+		:param filename: {str} filename of the output file
+		:param delimiter: {str} column delimiter
 		:param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)
 		:return: output file with peptide names and descriptor values
 		"""
@@ -488,7 +485,7 @@ class GlobalDescriptor(object):
 	def save_fasta(self, outputfile, names=False):
 		"""Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
-		:param outputfile: filename of the output FASTA file
+		:param outputfile: {str} filename of the output FASTA file
 		:param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
 		:return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
 		"""

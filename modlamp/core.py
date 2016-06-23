@@ -398,7 +398,7 @@ def filter_values(self, values, operator='=='):
 	size as the number of features in the descriptor matrix!) The operator option tells the method whether to
 	filter for values equal, lower, higher ect. to the given values in the **values** array.
 
-	:param values: List/array of values to filter
+	:param values: List/array of values to filter the attribute :py:attr:`descriptor` for
 	:param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
 	:return: filtered descriptor matrix and updated sequences in the corresponding attributes.
 	"""
