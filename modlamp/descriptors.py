@@ -442,7 +442,7 @@ class GlobalDescriptor(object):
 		"""
 		random_selection(self, num)
 
-	def load_descriptordata(self, filename, delimiter=",", targets=False):
+	def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 		class :class:`modlamp.descriptors.GlobalDescriptor`.
 
@@ -452,9 +452,10 @@ class GlobalDescriptor(object):
 		:param filename: filename of the data file to be loaded
 		:param delimiter: column delimiter
 		:param targets: {boolean} whether last column in the file contains a target class vector
+		:param header: {int} number of header lines to skip in the file
 		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
 		"""
-		data = np.genfromtxt(filename, delimiter=delimiter)
+		data = np.genfromtxt(filename, delimiter=delimiter, skip_header=header)
 		data = data[:, 1:]  # skip sequences as they are "nan" when read as float
 		seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
 		seqs = seqs[:, 0]
@@ -942,7 +943,7 @@ class PeptideDescriptor(object):
 		"""
 		random_selection(self, num)
 
-	def load_descriptordata(self, filename, delimiter=",", targets=False):
+	def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 		class :class:`modlamp.descriptors.PeptideDescriptor`.
 
@@ -952,9 +953,10 @@ class PeptideDescriptor(object):
 		:param filename: filenam of the data file to be loaded
 		:param delimiter: column delimiter
 		:param targets: {boolean} whether last column in the file contains a target class vector
+		:param header: {int} number of header lines to skip in the file
 		:return: loaded sequences, descriptor values and targets in the corresponding attributes.
 		"""
-		data = np.genfromtxt(filename, delimiter=delimiter)
+		data = np.genfromtxt(filename, delimiter=delimiter, skip_header=header)
 		data = data[:, 1:]  # skip sequences as they are "nan" when read as float
 		seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
 		seqs = seqs[:, 0]
