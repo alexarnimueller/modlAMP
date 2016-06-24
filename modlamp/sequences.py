@@ -236,7 +236,7 @@ class Helices:
 		"""
 		save_fasta(self, filename, names=names)
 
-	def filter_unnatrual(self):
+	def filter_unnatural(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
@@ -343,7 +343,7 @@ class Kinked:
 		"""
 		save_fasta(self, filename, names=names)
 
-	def filter_unnatrual(self):
+	def filter_unnatural(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
@@ -445,7 +445,7 @@ class Oblique(object):
 		"""
 		save_fasta(self, filename, names=names)
 
-	def filter_unnatrual(self):
+	def filter_unnatural(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
@@ -584,7 +584,7 @@ class Centrosymmetric:
 		"""
 		save_fasta(self, filename, names=names)
 
-	def filter_unnatrual(self):
+	def filter_unnatural(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`

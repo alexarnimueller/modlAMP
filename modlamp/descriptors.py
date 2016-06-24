@@ -885,7 +885,7 @@ class PeptideDescriptor(object):
 		"""
 		self.sequences = shuffle(self.sequences)
 
-	def filter_unnatrual(self):
+	def filter_unnatural(self):
 		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 		"""
