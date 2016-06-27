@@ -245,7 +245,7 @@ class Helices:
 		"""
 		filter_unnatural(self)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 
@@ -352,7 +352,7 @@ class Kinked:
 		"""
 		filter_unnatural(self)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 
@@ -454,7 +454,7 @@ class Oblique(object):
 		"""
 		filter_unnatural(self)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 
@@ -593,7 +593,7 @@ class Centrosymmetric:
 		"""
 		filter_unnatural(self)
 
-	def filter_aa(self, aminoacids=['X']):
+	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
 		**Dublicates** sequences are removed as well.
 
