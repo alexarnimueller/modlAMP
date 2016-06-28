@@ -122,7 +122,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
 
 	>>> best_svm_model.get_params()
-	{'clf': SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+	{'clf': SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
 	   decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
 	   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
 	   verbose=False),
@@ -145,7 +145,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	 'scl__with_mean': True,
 	 'scl__with_std': True,
 	 'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
-	  ('clf', SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+	  ('clf', SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
 		 decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
 		 max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
 		 verbose=False))]}
@@ -154,7 +154,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	if model == 'svm':
 
 		pipe_svc = Pipeline([('scl', scaler),
-							('clf', SVC(random_state=1, probability=True))])
+							('clf', SVC(class_weight='balanced', random_state=1, probability=True))])
 
 		if param_grid is None:
 			param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
@@ -175,7 +175,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 	elif model == 'rf':
 
 		pipe_rf = Pipeline([('scl', scaler),
-							('clf', RandomForestClassifier(random_state=1))])
+							('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
 		if param_grid is None:
 			param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
