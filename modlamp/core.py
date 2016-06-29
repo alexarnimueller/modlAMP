@@ -334,42 +334,43 @@ def clean(self):
 	self.descriptor = []
 
 
+def filter_duplicates(self):
+	"""
+	Method to filter duplicates in the sequences from the class attribute
+	:py:attr:`sequences`.
+
+	:return: filtered sequence list in the attribute :py:attr:`sequences`.
+	"""
+	seq_list = [x for x in set(self.sequences)] # remove duplicates
+	self.sequences = seq_list
+
+
 def filter_unnatural(self):
 	"""
 	Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
-	amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
+	amino acids [B,J,O,U,X,Z]. **Duplicates** are removed as well.
 
-	:return: Filtered sequence list in the attribute :py:attr:`sequences`.
+	:return: filtered sequence list in the attribute :py:attr:`sequences`.
 	"""
-	seq_list = [x for x in set(self.sequences)]  # remove duplicates
 	pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z']))
+	seqs = []
+	desc = []
+	names = []
 
-	lst = []
-
-	for s in seq_list:
+	for i, s in enumerate(self.sequences):
 		if not pattern.search(s):
-			lst.append(s)
+			seqs.append(s)
+			if hasattr(self, 'descriptor') and self.descriptor.size:
+					desc.append(self.descriptor[i])
+			if hasattr(self, 'names') and self.names:
+					names.append(self.names[i])
 
-	self.sequences = lst
+	self.sequences = seqs
+	self.names = names
+	self.descriptor = np.array(desc)
 
 
 def filter_aa(self, aminoacids):
-	"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-
-	:param aminoacids: {list of str} list of amino acids to be filtered
-	:return: filtered list of sequences in the attribute :py:attr:`sequences`.
-	"""
-	pattern = re.compile('|'.join(aminoacids))
-	seqs = []
-
-	for s in self.sequences:
-		if not pattern.search(s):
-			seqs.append(s)
-
-	self.sequences = seqs
-
-
-def filter_aa_more(self, aminoacids):
 	"""Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
 	argument list *aminoacids*.
 
@@ -384,8 +385,9 @@ def filter_aa_more(self, aminoacids):
 	for i, s in enumerate(self.sequences):
 		if not pattern.search(s):
 			seqs.append(s)
-			desc.append(self.descriptor[i])
-			if len(self.names) > 0:
+			if hasattr(self, 'descriptor') and self.descriptor.size:
+				desc.append(self.descriptor[i])
+			if hasattr(self, 'names') and self.names:
 				names.append(self.names[i])
 
 	self.sequences = seqs

@@ -25,8 +25,8 @@ from scipy import stats
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
-from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, \
-	random_selection, minmax_selection, filter_sequences
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
+	random_selection, minmax_selection, filter_sequences, filter_duplicates
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -404,6 +404,18 @@ class GlobalDescriptor(object):
 		"""
 		filter_values(self, values, operator)
 
+	def filter_duplicates(self):
+		"""
+		Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
+
 	def filter_aa(self, aminoacids):
 		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 		amino acids in the argument list **aminoacids**.
@@ -411,9 +423,9 @@ class GlobalDescriptor(object):
 		:param aminoacids: List/array of amino acids {upper str} to filter for
 		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
 
-		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_aa_more(self, aminoacids)
+		filter_aa(self, aminoacids)
 
 	def filter_sequences(self, sequences):
 		"""Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
@@ -903,8 +915,10 @@ class PeptideDescriptor(object):
 		self.sequences = shuffle(self.sequences)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
 
@@ -920,6 +934,18 @@ class PeptideDescriptor(object):
 		"""
 		filter_values(self, values, operator)
 
+	def filter_duplicates(self):
+		"""
+        Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+		filter_duplicates(self)
+
 	def filter_aa(self, aminoacids):
 		"""Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
 		amino acids in the argument list **aminoacids**.
@@ -927,9 +953,9 @@ class PeptideDescriptor(object):
 		:param aminoacids: List/array of amino acids to filter for
 		:return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
 
-		.. seealso:: :func:`modlamp.core.filter_aa_more()`
+		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
-		filter_aa_more(self, aminoacids)
+		filter_aa(self, aminoacids)
 
 	def filter_sequences(self, sequences):
 		"""Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All

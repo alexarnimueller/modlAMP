@@ -25,7 +25,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa, filter_duplicates
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -139,13 +139,24 @@ class Random:
 		mutate_AA(self, nr, prob)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
 
 	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -237,13 +248,24 @@ class Helices:
 		save_fasta(self, filename, names=names)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
 
 	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -344,13 +366,24 @@ class Kinked:
 		save_fasta(self, filename, names=names)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
 
 	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -446,13 +479,24 @@ class Oblique(object):
 		save_fasta(self, filename, names=names)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
 
 	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -585,13 +629,24 @@ class Centrosymmetric:
 		save_fasta(self, filename, names=names)
 
 	def filter_unnatural(self):
-		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+		"""Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
 		:return: Filtered sequence list in the attribute :py:attr:`sequences`
 
 		.. seealso:: :func:`modlamp.core.filter_unnatural()`
 		"""
 		filter_unnatural(self)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
 
 	def filter_aa(self, aminoacids):
 		"""Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -742,3 +797,14 @@ class MixedLibrary:
 		.. seealso:: :func:`modlamp.core.filter_aa()`
 		"""
 		filter_aa(self, aminoacids=aminoacids)
+
+	def filter_duplicates(self):
+		"""Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+		:return: filtered sequences list in the attribute :py:attr:`sequences`
+
+		.. seealso:: :func:`modlamp.core.filter_sequences()`
+
+		.. versionadded:: v2.2.5
+		"""
+		filter_duplicates(self)
