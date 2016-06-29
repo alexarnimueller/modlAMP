@@ -26,7 +26,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, \
-	random_selection, filter_sequences
+	random_selection, minmax_selection, filter_sequences
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -441,6 +441,23 @@ class GlobalDescriptor(object):
 		.. versionadded:: v2.2.3
 		"""
 		random_selection(self, num)
+
+	def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+		"""Method to select a specified number of sequences out of a given descriptor instance according to the
+        minmax algorithm.
+
+        :param iterations: {int} number of sequences to retrieve.
+        :param distmetric: distance metric to calculate the distances between the sequences in descriptor space.
+            Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
+            E.g. 'euclidean', 'minkowsky'.
+        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.minmax_selection()`
+
+        .. versionadded:: v2.2.6
+        """
+		minmax_selection(self, iterations, distmetric, randseed)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
@@ -929,7 +946,7 @@ class PeptideDescriptor(object):
 		filter_sequences(self, sequences)
 
 	def random_selection(self, num):
-		"""Method to select a random number of sequences (with names and descriptors if present) out of a given
+		"""Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
 		descriptor instance.
 
 		:param num: {int} number of entries to be randomly selected
@@ -940,6 +957,23 @@ class PeptideDescriptor(object):
 		.. versionadded:: v2.2.3
 		"""
 		random_selection(self, num)
+
+	def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+		"""Method to select a specified number of sequences out of a given descriptor instance according to the
+		minmax algorithm.
+
+        :param iterations: {int} Number of sequences to retrieve.
+        :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
+            Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
+            E.g. 'euclidean', 'minkowsky'.
+        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.minmax_selection()`
+
+        .. versionadded:: v2.2.6
+        """
+		minmax_selection(self, iterations, distmetric, randseed)
 
 	def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
 		"""Method to load any data file with sequences and descriptor values and save it to a new insatnce of the

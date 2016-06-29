@@ -9,9 +9,9 @@ Core helper functions for other modules.
 import os
 import random
 import re
-
 import numpy as np
 from Bio.SeqIO.FastaIO import FastaIterator
+from scipy.spatial import distance
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -454,7 +454,7 @@ def filter_sequences(self, sequences):
 
 
 def random_selection(self, num):
-	"""Method to select a random number of sequences (with names and descriptors if present) out of a given
+	"""Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
 	descriptor instance.
 
 	:param num: {int} number of entries to be randomly selected
@@ -488,3 +488,60 @@ def random_selection(self, num):
 		self.descriptor = self.descriptor[sel]
 	except IndexError:  # if no values in self.descriptor
 		self.descriptor = np.empty((1, 0), dtype='float64')
+
+def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+	"""Method to select a specified number of sequences according to the minmax algorithm.
+
+	:param iterations: {int} Number of sequences to retrieve.
+	:param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
+		Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
+		E.g. 'euclidean', 'minkowsky'.
+	:param randseed: {int} Set a random seed for numpy to pick the first sequence.
+	:return: updated instance
+	:Example:
+	"""
+
+	# Storing M into pool, where selections get deleted
+	pool = self.descriptor  # Store pool where selections get deleted
+	minmaxidx = list()  # Store original indices of selections to return
+
+	# Randomly selecting first peptide into the sele
+	np.random.seed(randseed)
+	idx = int(np.random.random_integers(0, len(pool), 1))
+	sele = pool[idx:idx + 1, :]
+	minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
+
+	# Deleting peptide in selection from pool
+	pool = np.delete(pool, idx, axis=0)
+
+	for i in range(iterations - 1):
+		# Calculating distance from sele to the rest of the peptides
+		dist = distance.cdist(pool, sele, distmetric)
+
+		# Choosing maximal distances for every sele instance
+		maxidx = np.argmax(dist, axis=0)
+		maxcols = np.max(dist, axis=0)
+
+		# Choosing minimal distance among the maximal distances
+		minmax = np.argmin(maxcols)
+		maxidx = int(maxidx[minmax])
+
+		# Adding it to selection and removing from pool
+		sele = np.append(sele, pool[maxidx:maxidx + 1, :], axis=0)
+		pool = np.delete(pool, maxidx, axis=0)
+		minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
+
+	self.sequences = np.array(self.sequences)[minmaxidx].tolist()
+
+	try:
+		self.names = np.array(self.names)[minmaxidx].tolist()
+	except IndexError:  # if no names in self.names
+		self.names = []
+	try:
+		self.descriptor = self.descriptor[minmaxidx]
+	except IndexError:  # if no values in self.descriptor
+		self.descriptor = np.empty((1, 0), dtype='float64')
+
+
+
+
