@@ -331,7 +331,7 @@ def clean(self):
 	"""
 	self.names = []
 	self.sequences = []
-	self.descriptor = []
+	self.descriptor = np.array([])
 
 
 def filter_duplicates(self):
