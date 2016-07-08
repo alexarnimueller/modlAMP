@@ -12,6 +12,7 @@ For basic instructions how to use the package, see Usage_ or this `example scrip
     installing modlAMP. It will take care of all necessairy requirements and versions.
     You also need to install the biopython package::
         conda install biopython
+        conda install mysql-connector-python
         
 
 .. note::
