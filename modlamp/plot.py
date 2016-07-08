@@ -17,14 +17,13 @@ Function							Characteristics
 ============================		==============================================================================
 
 """
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import matplotlib.lines as lines
-from mpl_toolkits.mplot3d import Axes3D
-from modlamp.descriptors import PeptideDescriptor
-import pandas as pd
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import numpy as np
 from scipy.stats.kde import gaussian_kde
+
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -32,7 +31,8 @@ __docformat__ = "restructuredtext en"
 
 def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None):
 	"""
-	Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet as separate boxes.
+	Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet
+	as separate boxes.
 
 	:param y_values: Array of feature values to be plotted.
 	:param targets: List of target class values [string/binary] for the given feature data.
@@ -42,12 +42,12 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 	:return: A feature box plot.
 	:Example:
 
-	>>> plot_feature(P.descriptor,y_label='uH Eisenberg')
+	>>> plot_feature(d.descriptor,y_label='uH Eisenberg')  # d: PeptideDescriptor instance
 
 	.. image:: ../docs/static/uH_Eisenberg.png
 		:scale: 50 %
 	"""
-	colors = ['dodgerblue', 'firebrick', 'gold', 'lightgreen', 'navy', 'black', 'hotpink']  # available colors
+	colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
 	fig, ax = plt.subplots()
 
@@ -103,13 +103,13 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
 	:return: A 2D feature scatter plot.
 	:Example:
 
-	>>> plot_2_features(A.descriptor,B.descriptor,x_label='uH',y_label='pI',targets=targets)
+	>>> plot_2_features(a.descriptor,b.descriptor,x_label='uH',y_label='pI',targets=targets)
 
 	.. image:: ../docs/static/2D_scatter.png
 		:scale: 50 %
 	"""
 
-	colors = ['dodgerblue', 'firebrick', 'gold', 'lightgreen', 'navy', 'black']  # available colors
+	colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
 	fig, ax = plt.subplots()
 
@@ -151,13 +151,13 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
 	:return: A 3D feature scatter plot.
 	:Example:
 
-	>>> plot_3_features(A.descriptor,B.descriptor,C.descriptor,x_label='uH',y_label='pI',z_label='length')
+	>>> plot_3_features(a.descriptor,b.descriptor,c.descriptor,x_label='uH',y_label='pI',z_label='length')
 
 	.. image:: ../docs/static/3D_scatter.png
 		:scale: 50 %
 	"""
 
-	colors = ['dodgerblue', 'firebrick', 'gold', 'lightgreen', 'navy', 'black']  # available colors
+	colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
 	fig = plt.figure()
 	ax = fig.add_subplot(111, projection='3d')
@@ -209,7 +209,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 	"""
 	# check if given scale is defined in PeptideDescriptor
 	try:
-		D = PeptideDescriptor(sequence, scalename)
+		d = PeptideDescriptor(sequence, scalename)
 	except TypeError:
 		print("\nError\nNo sequence given!")
 	except KeyError:
@@ -219,7 +219,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
 		seq_data = list()
 		seq_profile = list()
 		for a in sequence:
-			seq_data.append(D.scale[a])  # describe sequence by given scale
+			seq_data.append(d.scale[a])  # describe sequence by given scale
 		i = 0  # AA index
 		while (i + window) < len(sequence):
 			seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
@@ -289,7 +289,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 	t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
 	t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
 	t_none = ['k'] * 20
-	if lineweights == True:
+	if lineweights:
 		lw = np.arange(1, 6, 5. / (len(sequence) - 1))  # line thickness array
 		lw = lw[::-1]  # inverse order
 	else:
@@ -428,7 +428,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	# plot PDE for every data row
 	# if one row only
 	if shp[0] == 1:
-		kde = gaussian_kde(data)  # this creates the kernel, given an array it will estimate the probability over that values
+		kde = gaussian_kde(
+			data)  # this creates the kernel, given an array it will estimate the probability over that values
 		space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
 		line = ax.plot(space, kde(space), label='Data')  # plot line
 		plt.setp(line, color=colors[0], linewidth=2.0, alpha=.8)  # set line width and color
@@ -437,7 +438,8 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 	# if multiple rows
 	else:
 		for i, row in enumerate(data):
-			kde = gaussian_kde(row)  # this creates the kernel, given an array it will estimate the probability over that values
+			kde = gaussian_kde(
+				row)  # this creates the kernel, given an array it will estimate the probability over that values
 			space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
 			line = ax.plot(space, kde(space), label=str(i))  # plot line
 			plt.setp(line, color=colors[i], linewidth=2.0, alpha=.8)  # set line width and color
@@ -451,12 +453,12 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
 		plt.show()
 
 
-def plot_violin(X, colors=None, bp=False, filename=None):
+def plot_violin(x, colors=None, bp=False, filename=None):
 	"""	create violin plots out of given data array
 	(adapted from `Flavio Coelho <https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html>`_.)
 
-	:param X: {numpy.array} data to be plotted
-	:param colors: {str or list} face color of the violin plots, can also be list of colors with same dimension as **X**
+	:param x: {numpy.array} data to be plotted
+	:param colors: {str or list} face color of the violin plots, can also be list of colors with same dimension as **x**
 	:param bp: {bool} print a box blot inside violin
 	:param filename: {str} location / filename where to save the plot to. *default = None* --> show the plot
 	:Example:
@@ -471,24 +473,24 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 	"""
 
 	# transform input to list of arrays (better handled by plotting functions)
-	X = np.array(X)
-	X = [l for l in X]
+	x = np.array(x)
+	x = [l for l in x]
 
 	# check color input and transform to list of right length
 	if not colors:
 		colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
 
 	if isinstance(colors, basestring):
-		colors = [colors] * len(X)
+		colors = [colors] * len(x)
 
 	# scaling for available space
-	dist = len(X) - 1
+	dist = len(x) - 1
 	w = min(0.15 * max(dist, 1.0), 0.5)
 
 	fig, ax = plt.subplots()
 
 	# one violin for every data element
-	for p, d in enumerate(X):
+	for p, d in enumerate(x):
 		k = gaussian_kde(d)  # kernel density estimation
 		mi = k.dataset.min()  # lower bound of violin
 		ma = k.dataset.max()  # upper bound of violin
@@ -500,7 +502,7 @@ def plot_violin(X, colors=None, bp=False, filename=None):
 
 	if bp:  # print box plots if option is given
 		medprops = dict(linestyle='-', linewidth=1, color='black')
-		box = ax.boxplot(X, notch=1, positions=range(len(X)), vert=1, patch_artist=True, medianprops=medprops)
+		box = ax.boxplot(x, notch=1, positions=range(len(x)), vert=1, patch_artist=True, medianprops=medprops)
 		plt.setp(box['whiskers'], color='black')
 		for p, patch in enumerate(box['boxes']):
 			patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
@@ -532,7 +534,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
 	.. versionadded:: v2.2.5
 	"""
-	AA = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+	aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	d = PeptideDescriptor(sequences, 'eisenberg')
 	d.count_aa(scale='relative')
 	perc = np.mean(d.descriptor, axis=0)
@@ -544,7 +546,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
 	plt.xlim([-0.75, 19.75])
 	plt.ylim([0, max(perc) + 0.05])
-	plt.xticks(range(20), AA, fontweight='bold')
+	plt.xticks(range(20), aa, fontweight='bold')
 	plt.ylabel('Amino Acid Frequency', fontweight='bold')
 	plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
 

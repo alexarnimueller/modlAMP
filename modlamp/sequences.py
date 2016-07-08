@@ -19,13 +19,12 @@ Class								Characteristics
 
 """
 
-import os
 import random
 from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, filter_aa
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -38,7 +37,8 @@ class Random:
 	The amino acid probabilities can be chosen from different probabilities:
 
 	- **rand**: equal probabilities for all amino acids
-	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
+	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database
+		`APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
 	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
 	- **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
@@ -78,8 +78,9 @@ class Random:
 		:param seqnum: number of sequences to generate
 		:return: initialized class attributes for sequence number and length
 		"""
-		aminoacids(self)
-		template(self, lenmin, lenmax, seqnum)
+		self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
+		self.prob_rand, self.prob_randnoCM = aminoacids()
+		self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
 
 	def generate_sequences(self, proba='rand'):
 		"""Method to actually generate the sequences.
@@ -106,7 +107,7 @@ class Random:
 			self.seq = []
 			for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
 				self.seq.append(np.random.choice(self.AAs,
-												 p=self.prob))  # weighed random selection of amino acid, probabilities = prob
+												 p=self.prob))  # weighed rand sel of amino acid, probabilities = prob
 			self.sequences.append(''.join(self.seq))
 
 	def save_fasta(self, filename, names=False):
@@ -174,8 +175,9 @@ class Helices:
 		:param seqnum: number of sequences to generate
 		:return: defined variables as instances
 		"""
-		aminoacids(self)
-		template(self, lenmin, lenmax, seqnum)
+		self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
+		self.prob_rand, self.prob_randnoCM = aminoacids()
+		self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
 
 	def generate_helices(self):
 		"""Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`
@@ -273,8 +275,9 @@ class Kinked:
 		:param seqnum: number of sequences to generate
 		:return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
 		"""
-		aminoacids(self)
-		template(self, lenmin, lenmax, seqnum)
+		self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
+		self.prob_rand, self.prob_randnoCM = aminoacids()
+		self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
 
 	def generate_kinked(self):
 		"""Method to actually generate the presumed kinked sequences with features defined in the class instances.
@@ -379,8 +382,9 @@ class Oblique(object):
 		:param seqnum: number of sequences to generate
 		:return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
 		"""
-		aminoacids(self)
-		template(self, lenmin, lenmax, seqnum)
+		self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
+		self.prob_rand, self.prob_randnoCM = aminoacids()
+		self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
 
 	def generate_oblique(self):
 		"""Method to generate the possible oblique sequences.
@@ -482,7 +486,8 @@ class Centrosymmetric:
 		:param seqnum: number of sequences to generate
 		:return: defined number of sequences to generate, empty list to store produced sequences
 		"""
-		aminoacids(self)
+		self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
+		self.prob_rand, self.prob_randnoCM = aminoacids()
 		self.seqnum = int(seqnum)
 
 	def generate_symmetric(self):
@@ -633,8 +638,8 @@ class MixedLibrary:
 			probable that you will not get the exact size of library that you entered as the parameter **number**. If you
 			generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
 		"""
-		self.names = []
-		self.sequences = []
+		self.names = list()
+		self.sequences = list()
 		self.libsize = int(number)
 		norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
 		self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
@@ -650,8 +655,8 @@ class MixedLibrary:
 					 'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
 
 	def generate_library(self):
-		"""This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
-		All sequences are between 7 and 28 amino acids in length.
+		"""This method generates a virtual sequence library with the subtype ratios initialized in class
+		:class:`MixedLibrary()`. All sequences are between 7 and 28 amino acids in length.
 
 		:return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in
 			:py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in
@@ -691,9 +696,10 @@ class MixedLibrary:
 		Rc = Random(7, 28, self.nums['nCM'])
 		Rc.generate_sequences('AMPnoCM')
 
-# TODO: update libnums according to real numbers
+		# TODO: update libnums according to real numbers
 
-		sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
+		sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + \
+					Ra.sequences + Rc.sequences
 		names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
 				['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['ran'] + \
 				['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']

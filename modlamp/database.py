@@ -8,16 +8,17 @@ This module incorporates functions to connect to the modlab internal peptide dat
 the different database tables.
 """
 
-import pandas as pd
-import mysql.connector
 from getpass import getpass
+
+import mysql.connector
+import pandas as pd
 from mysql.connector import Error
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
 
-def _read_db_config(host='gsdelta641.ethz.ch',database='peptides',user='modlab',password=None):
+def _read_db_config(host='gsdelta641.ethz.ch', database='peptides', user='modlab', password=None):
 	"""
 	Read database configuration and return a dictionary object.
 	This function generally does not need to be used as it is called by the function :func:`query_sequences` directly.
@@ -27,14 +28,13 @@ def _read_db_config(host='gsdelta641.ethz.ch',database='peptides',user='modlab',
 	:param user: Username
 	:return: a dictionary of database parameters
 	"""
-	if password == None:
+	if not password:
 		password = getpass()
 
-	db = {	'host' : host,
-			'database' : database,
-			'user' : user,
-			'password' : password
-			}
+	db = {'host': host,
+		  'database': database,
+		  'user': user,
+		  'password': password}
 
 	return db
 

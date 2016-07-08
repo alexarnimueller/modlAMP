@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlamp v2.2.5 documentation</title>
+    <title>modlamp.sequences &mdash; modlamp v2.2.6 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.5',
+        VERSION:     'v2.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.5 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.6 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -68,13 +68,12 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span>
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_aa</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -87,7 +86,8 @@
 <span class="sd">	The amino acid probabilities can be chosen from different probabilities:</span>
 
 <span class="sd">	- **rand**: equal probabilities for all amino acids</span>
-<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016, containing 2674 sequences.</span>
+<span class="sd">	- **AMP**: amino acid probabilities taken from the antimicrobial peptide database</span>
+<span class="sd">		`APD3 &lt;http://aps.unmc.edu/AP/statistic/statistic.php&gt;`_, March 17, 2016, containing 2674 sequences.</span>
 <span class="sd">	- **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)</span>
 <span class="sd">	- **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)</span>
 
@@ -127,8 +127,9 @@
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: initialized class attributes for sequence number and length</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span><span class="p">,</span> \
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="n">aminoacids</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span></div>
 
 <div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>	<span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to actually generate the sequences.</span>
@@ -155,7 +156,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
 			<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span>
-												 <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed random selection of amino acid, probabilities = prob</span>
+												 <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed rand sel of amino acid, probabilities = prob</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>	<span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -223,8 +224,9 @@
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined variables as instances</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span><span class="p">,</span> \
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="n">aminoacids</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span></div>
 
 <div class="viewcode-block" id="Helices.generate_helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.generate_helices">[docs]</a>	<span class="k">def</span> <span class="nf">generate_helices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`</span>
@@ -294,7 +296,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Helices.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="Helices.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -322,8 +324,9 @@
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span><span class="p">,</span> \
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="n">aminoacids</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span></div>
 
 <div class="viewcode-block" id="Kinked.generate_kinked"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.generate_kinked">[docs]</a>	<span class="k">def</span> <span class="nf">generate_kinked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to actually generate the presumed kinked sequences with features defined in the class instances.</span>
@@ -401,7 +404,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Kinked.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="Kinked.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -428,8 +431,9 @@
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span><span class="p">,</span> \
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="n">aminoacids</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span></div>
 
 <div class="viewcode-block" id="Oblique.generate_oblique"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.generate_oblique">[docs]</a>	<span class="k">def</span> <span class="nf">generate_oblique</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to generate the possible oblique sequences.</span>
@@ -503,7 +507,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Oblique.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="Oblique.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -531,7 +535,8 @@
 <span class="sd">		:param seqnum: number of sequences to generate</span>
 <span class="sd">		:return: defined number of sequences to generate, empty list to store produced sequences</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span><span class="p">,</span> \
+		<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="n">aminoacids</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Centrosymmetric.generate_symmetric"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.generate_symmetric">[docs]</a>	<span class="k">def</span> <span class="nf">generate_symmetric</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -642,7 +647,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Centrosymmetric.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]):</span>
+<div class="viewcode-block" id="Centrosymmetric.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_aa">[docs]</a>	<span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
 <span class="sd">		**Dublicates** sequences are removed as well.</span>
 
@@ -682,8 +687,8 @@
 <span class="sd">			probable that you will not get the exact size of library that you entered as the parameter **number**. If you</span>
 <span class="sd">			generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">libsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 		<span class="n">norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">centrosymmetric</span><span class="p">,</span> <span class="n">centroasymmetric</span><span class="p">,</span> <span class="n">helix</span><span class="p">,</span> <span class="n">kinked</span><span class="p">,</span> <span class="n">oblique</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">randAMP</span><span class="p">,</span> <span class="n">randAMPnoCM</span><span class="p">)))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ratios</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sym&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">centrosymmetric</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;asy&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">centroasymmetric</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span>
@@ -699,8 +704,8 @@
 					 <span class="s1">&#39;nCM&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">libsize</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratios</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">],</span> <span class="n">ndigits</span><span class="o">=</span><span class="mi">0</span><span class="p">))}</span></div>
 
 <div class="viewcode-block" id="MixedLibrary.generate_library"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.generate_library">[docs]</a>	<span class="k">def</span> <span class="nf">generate_library</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.</span>
-<span class="sd">		All sequences are between 7 and 28 amino acids in length.</span>
+		<span class="sd">&quot;&quot;&quot;This method generates a virtual sequence library with the subtype ratios initialized in class</span>
+<span class="sd">		:class:`MixedLibrary()`. All sequences are between 7 and 28 amino acids in length.</span>
 
 <span class="sd">		:return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in</span>
 <span class="sd">			:py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in</span>
@@ -740,9 +745,10 @@
 		<span class="n">Rc</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">])</span>
 		<span class="n">Rc</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="s1">&#39;AMPnoCM&#39;</span><span class="p">)</span>
 
-<span class="c1"># TODO: update libnums according to real numbers</span>
+		<span class="c1"># TODO: update libnums according to real numbers</span>
 
-		<span class="n">sequences</span> <span class="o">=</span> <span class="n">Cs</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ca</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">H</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">K</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">O</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">R</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ra</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Rc</span><span class="o">.</span><span class="n">sequences</span>
+		<span class="n">sequences</span> <span class="o">=</span> <span class="n">Cs</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ca</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">H</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">K</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">O</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">R</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> \
+					<span class="n">Ra</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Rc</span><span class="o">.</span><span class="n">sequences</span>
 		<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span> <span class="o">+</span> \
 				<span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">]</span> <span class="o">+</span> \
 				<span class="p">[</span><span class="s1">&#39;AMP&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;AMP&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">]</span>
@@ -827,7 +833,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

@@ -21,7 +21,8 @@ def load_scale(scalename):
 	"""
 	Method to load scale values for a given amino acid scale
 
-	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
+	:param scalename: amino acid scale name, for available scales see the
+		:class:`modlamp.descriptors.PeptideDescriptor()` documentation.
 	:return: amino acid scale values in dictionary format.
 	"""
 	scales = {
@@ -74,7 +75,7 @@ def load_scale(scalename):
 		'kytedoolittle': {'I': [1.7], 'F': [1.1], 'V': [1.6], 'L': [1.4], 'W': [-0.14], 'M': [0.8], 'A': [0.77],
 						  'G': [0.03], 'C': [1], 'Y': [-0.27], 'P': [-0.37], 'T': [-0.07], 'S': [-0.1], 'H': [-0.91],
 						  'E': [-1], 'N': [-1], 'Q': [-1], 'D': [-1], 'K': [-1.1], 'R': [-1.3]},
-		'Levitt_alpha': {'A': [1.29], 'C': [1.11], 'D': [1.04], 'E': [1.44], 'F': [1.07], 'G': [0.56], 'H': [1.22],
+		'levitt_alpha': {'A': [1.29], 'C': [1.11], 'D': [1.04], 'E': [1.44], 'F': [1.07], 'G': [0.56], 'H': [1.22],
 						 'I': [0.97], 'K': [1.23], 'L': [1.3], 'M': [1.47], 'N': [0.9], 'P': [0.52], 'Q': [1.27],
 						 'R': [0.96], 'S': [0.82], 'T': [0.82], 'V': [0.91], 'W': [0.99], 'Y': [0.72]},
 		'MSS': {'A': [13.02], 'C': [23.7067], 'D': [22.02], 'E': [20.0233], 'F': [23.5288], 'G': [1.01], 'H': [23.5283],
@@ -229,10 +230,10 @@ def mutate_AA(self, nr, prob):
 	:return: In the attribute :py:attr:`sequences`: mutated sequences
 	:Example:
 
-	>>> H.sequences
+	>>> h.sequences
 	['IAKAGRAIIK']
-	>>> H.mutate_AA(3,1)
-	>>> H.sequences
+	>>> h.mutate_AA(3,1)
+	>>> h.sequences
 	['NAKAGRAWIK']
 	"""
 	for s in range(len(self.sequences)):
@@ -247,8 +248,9 @@ def mutate_AA(self, nr, prob):
 			self.sequences[s] = ''.join(seq)
 
 
-def aminoacids(self):
+def aminoacids():
 	"""
+
 	Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
 
 	:return: all needed instances of the classes in this package
@@ -282,45 +284,32 @@ def aminoacids(self):
 	===	====	======	=========	==========
 
 	"""
-	self.sequences = []
+	sequences = list()
 	# AA classes:
-	self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
-	self.AA_basic = ['K', 'R']
-	self.AA_anchor = ['W', 'Y', 'F']
+	AA_hyd = ['G', 'A', 'L', 'I', 'V']
+	AA_basic = ['K', 'R']
+	AA_anchor = ['W', 'Y', 'F']
 	# AA labels:
-	self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+	AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	# AA probability from the APD3 database:
-	self.prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
+	prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
 					 0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
 	# AA probability from the APD2 database without Cys and Met (synthesis reasons)
-	self.prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
+	prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
 						 0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
 						 0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
 						 0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
 						 0.02012777777777778, 0.02902777777777778]
 	# equal AA probabilities:
-	self.prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+	prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
 					  0.05, 0.05, 0.05, 0.05]
 	# equal AA probabilities but 0 for Cys and Met:
-	self.prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+	prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
 						  0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
 						  0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
 						  0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
 						  0.05555555555, 0.05555555555]
-
-
-def template(self, lenmin, lenmax, seqnum):
-	"""
-	Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
-
-	:param lenmin: minimal length of the generated sequences
-	:param lenmax: maximal length of the generated sequences
-	:param seqnum: number of sequences to generate
-	:return: all needed instances (involving numbers and lengths) of the classes in this package
-	"""
-	self.lenmin = int(lenmin)
-	self.lenmax = int(lenmax)
-	self.seqnum = int(seqnum)
+	return sequences, AA_hyd, AA_basic, AA_anchor, AAs, prob_AMP, prob_AMPnoCM, prob_rand, prob_randnoCM
 
 
 def clean(self):
@@ -432,14 +421,14 @@ def filter_sequences(self, sequences):
 	:Example:
 
 	>>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
-	>>> D = PeptideDescriptor(sequences, 'pepcats')
-	>>> D.calculate_crosscorr(7)
-	>>> len(D.descriptor)
+	>>> d = PeptideDescriptor(sequences, 'pepcats')
+	>>> d.calculate_crosscorr(7)
+	>>> len(d.descriptor)
 	5
-	>>> D.filter_sequences('KLLKLLKKLLKLLK')
-	>>> len(D.descriptor)
+	>>> d.filter_sequences('KLLKLLKKLLKLLK')
+	>>> len(d.descriptor)
 	4
-	>>> D.sequences
+	>>> d.sequences
 	['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
 	"""
 	indices = list()
@@ -463,16 +452,16 @@ def random_selection(self, num):
 
 	>>> h = Helices(7, 28, 100)
 	>>> h.generate_helices()
-	>>> D = PeptideDescriptor(h.sequences, 'eisenberg')
-	>>> D.calculate_moment()
-	>>> len(D.sequences)
+	>>> d = PeptideDescriptor(h.sequences, 'eisenberg')
+	>>> d.calculate_moment()
+	>>> len(d.sequences)
 	100
-	>>> len(D.descriptor)
+	>>> len(d.descriptor)
 	100
-	>>> D.random_selection(10)
-	>>> len(D.descriptor)
+	>>> d.random_selection(10)
+	>>> len(d.descriptor)
 	10
-	>>> len(D.descriptor)
+	>>> len(d.descriptor)
 	10
 
 	.. versionadded:: v2.2.3

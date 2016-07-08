@@ -18,7 +18,7 @@ class TestGlobalDescriptor(unittest.TestCase):
 		self.assertAlmostEqual(self.G.descriptor[0], 0.9959478)
 		self.G.calculate_charge(amide=True)
 		self.assertAlmostEqual(self.G.descriptor[0], 1.9959337)
-		self.G.calculate_charge(pH=9.84)
+		self.G.calculate_charge(ph=9.84)
 		self.assertAlmostEqual(self.G.descriptor[0], -0.0002392)
 
 	def test_isoelectric(self):

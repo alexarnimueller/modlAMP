@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.core &mdash; modlamp v2.2.5 documentation</title>
+    <title>modlamp.core &mdash; modlamp v2.2.6 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.5',
+        VERSION:     'v2.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.5 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.2.6 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -70,7 +70,8 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Method to load scale values for a given amino acid scale</span>
 
-<span class="sd">	:param scalename: amino acid scale name, for available scales see the :class:`modlamp.descriptors.PeptideDescriptor()` documentation.</span>
+<span class="sd">	:param scalename: amino acid scale name, for available scales see the</span>
+<span class="sd">		:class:`modlamp.descriptors.PeptideDescriptor()` documentation.</span>
 <span class="sd">	:return: amino acid scale values in dictionary format.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">scales</span> <span class="o">=</span> <span class="p">{</span>
@@ -123,7 +124,7 @@
 		<span class="s1">&#39;kytedoolittle&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.7</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.6</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.4</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.14</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.77</span><span class="p">],</span>
 						  <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.03</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.27</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.37</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.07</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.91</span><span class="p">],</span>
 						  <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.1</span><span class="p">],</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.3</span><span class="p">]},</span>
-		<span class="s1">&#39;Levitt_alpha&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.29</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.11</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.04</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.44</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.07</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.56</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.22</span><span class="p">],</span>
+		<span class="s1">&#39;levitt_alpha&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.29</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.11</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.04</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.44</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.07</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.56</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.22</span><span class="p">],</span>
 						 <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.97</span><span class="p">],</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.23</span><span class="p">],</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.3</span><span class="p">],</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.47</span><span class="p">],</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">],</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.52</span><span class="p">],</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.27</span><span class="p">],</span>
 						 <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.96</span><span class="p">],</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.82</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.82</span><span class="p">],</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.91</span><span class="p">],</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.99</span><span class="p">],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.72</span><span class="p">]},</span>
 		<span class="s1">&#39;MSS&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">13.02</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">23.7067</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">22.02</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">20.0233</span><span class="p">],</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">23.5288</span><span class="p">],</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.01</span><span class="p">],</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">23.5283</span><span class="p">],</span>
@@ -278,10 +279,10 @@
 <span class="sd">	:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">	:Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; H.sequences</span>
+<span class="sd">	&gt;&gt;&gt; h.sequences</span>
 <span class="sd">	[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">	&gt;&gt;&gt; H.sequences</span>
+<span class="sd">	&gt;&gt;&gt; h.mutate_AA(3,1)</span>
+<span class="sd">	&gt;&gt;&gt; h.sequences</span>
 <span class="sd">	[&#39;NAKAGRAWIK&#39;]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
@@ -296,8 +297,9 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="aminoacids"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.aminoacids">[docs]</a><span class="k">def</span> <span class="nf">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="aminoacids"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.aminoacids">[docs]</a><span class="k">def</span> <span class="nf">aminoacids</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="sd">	Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.</span>
 
 <span class="sd">	:return: all needed instances of the classes in this package</span>
@@ -331,45 +333,32 @@
 <span class="sd">	===	====	======	=========	==========</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 	<span class="c1"># AA classes:</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">]</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">AA_basic</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">]</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">AA_anchor</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
+	<span class="n">AA_hyd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">]</span>
+	<span class="n">AA_basic</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">]</span>
+	<span class="n">AA_anchor</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
 	<span class="c1"># AA labels:</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">AAs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">]</span>
+	<span class="n">AAs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">]</span>
 	<span class="c1"># AA probability from the APD3 database:</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0766</span><span class="p">,</span> <span class="mf">0.071</span><span class="p">,</span> <span class="mf">0.026</span><span class="p">,</span> <span class="mf">0.0264</span><span class="p">,</span> <span class="mf">0.0405</span><span class="p">,</span> <span class="mf">0.1172</span><span class="p">,</span> <span class="mf">0.021</span><span class="p">,</span> <span class="mf">0.061</span><span class="p">,</span> <span class="mf">0.0958</span><span class="p">,</span> <span class="mf">0.0838</span><span class="p">,</span> <span class="mf">0.0123</span><span class="p">,</span> <span class="mf">0.0386</span><span class="p">,</span> <span class="mf">0.0463</span><span class="p">,</span>
+	<span class="n">prob_AMP</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0766</span><span class="p">,</span> <span class="mf">0.071</span><span class="p">,</span> <span class="mf">0.026</span><span class="p">,</span> <span class="mf">0.0264</span><span class="p">,</span> <span class="mf">0.0405</span><span class="p">,</span> <span class="mf">0.1172</span><span class="p">,</span> <span class="mf">0.021</span><span class="p">,</span> <span class="mf">0.061</span><span class="p">,</span> <span class="mf">0.0958</span><span class="p">,</span> <span class="mf">0.0838</span><span class="p">,</span> <span class="mf">0.0123</span><span class="p">,</span> <span class="mf">0.0386</span><span class="p">,</span> <span class="mf">0.0463</span><span class="p">,</span>
 					 <span class="mf">0.0251</span><span class="p">,</span> <span class="mf">0.0545</span><span class="p">,</span> <span class="mf">0.0613</span><span class="p">,</span> <span class="mf">0.0455</span><span class="p">,</span> <span class="mf">0.0572</span><span class="p">,</span> <span class="mf">0.0155</span><span class="p">,</span> <span class="mf">0.0244</span><span class="p">]</span>
 	<span class="c1"># AA probability from the APD2 database without Cys and Met (synthesis reasons)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.08122777777777779</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.030627777777777778</span><span class="p">,</span> <span class="mf">0.03102777777777778</span><span class="p">,</span> <span class="mf">0.04512777777777778</span><span class="p">,</span>
+	<span class="n">prob_AMPnoCM</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.08122777777777779</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.030627777777777778</span><span class="p">,</span> <span class="mf">0.03102777777777778</span><span class="p">,</span> <span class="mf">0.04512777777777778</span><span class="p">,</span>
 						 <span class="mf">0.12182777777777778</span><span class="p">,</span> <span class="mf">0.02562777777777778</span><span class="p">,</span> <span class="mf">0.06562777777777778</span><span class="p">,</span> <span class="mf">0.10042777777777778</span><span class="p">,</span>
 						 <span class="mf">0.08842777777777779</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.04322777777777778</span><span class="p">,</span> <span class="mf">0.05092777777777778</span><span class="p">,</span> <span class="mf">0.02972777777777778</span><span class="p">,</span>
 						 <span class="mf">0.05912777777777778</span><span class="p">,</span> <span class="mf">0.06592777777777778</span><span class="p">,</span> <span class="mf">0.05012777777777778</span><span class="p">,</span> <span class="mf">0.06182777777777778</span><span class="p">,</span>
 						 <span class="mf">0.02012777777777778</span><span class="p">,</span> <span class="mf">0.02902777777777778</span><span class="p">]</span>
 	<span class="c1"># equal AA probabilities:</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span>
+	<span class="n">prob_rand</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span>
 					  <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
 	<span class="c1"># equal AA probabilities but 0 for Cys and Met:</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
+	<span class="n">prob_randnoCM</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
 						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
 						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
 						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">,</span>
-						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="template"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.template">[docs]</a><span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.</span>
-
-<span class="sd">	:param lenmin: minimal length of the generated sequences</span>
-<span class="sd">	:param lenmax: maximal length of the generated sequences</span>
-<span class="sd">	:param seqnum: number of sequences to generate</span>
-<span class="sd">	:return: all needed instances (involving numbers and lengths) of the classes in this package</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lenmin</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lenmax</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span></div>
+						  <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">AA_hyd</span><span class="p">,</span> <span class="n">AA_basic</span><span class="p">,</span> <span class="n">AA_anchor</span><span class="p">,</span> <span class="n">AAs</span><span class="p">,</span> <span class="n">prob_AMP</span><span class="p">,</span> <span class="n">prob_AMPnoCM</span><span class="p">,</span> <span class="n">prob_rand</span><span class="p">,</span> <span class="n">prob_randnoCM</span></div>
 
 
 <div class="viewcode-block" id="clean"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.clean">[docs]</a><span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -481,14 +470,14 @@
 <span class="sd">	:Example:</span>
 
 <span class="sd">	&gt;&gt;&gt; sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; D = PeptideDescriptor(sequences, &#39;pepcats&#39;)</span>
-<span class="sd">	&gt;&gt;&gt; D.calculate_crosscorr(7)</span>
-<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	&gt;&gt;&gt; d = PeptideDescriptor(sequences, &#39;pepcats&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; d.calculate_crosscorr(7)</span>
+<span class="sd">	&gt;&gt;&gt; len(d.descriptor)</span>
 <span class="sd">	5</span>
-<span class="sd">	&gt;&gt;&gt; D.filter_sequences(&#39;KLLKLLKKLLKLLK&#39;)</span>
-<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	&gt;&gt;&gt; d.filter_sequences(&#39;KLLKLLKKLLKLLK&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; len(d.descriptor)</span>
 <span class="sd">	4</span>
-<span class="sd">	&gt;&gt;&gt; D.sequences</span>
+<span class="sd">	&gt;&gt;&gt; d.sequences</span>
 <span class="sd">	[&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -512,16 +501,16 @@
 
 <span class="sd">	&gt;&gt;&gt; h = Helices(7, 28, 100)</span>
 <span class="sd">	&gt;&gt;&gt; h.generate_helices()</span>
-<span class="sd">	&gt;&gt;&gt; D = PeptideDescriptor(h.sequences, &#39;eisenberg&#39;)</span>
-<span class="sd">	&gt;&gt;&gt; D.calculate_moment()</span>
-<span class="sd">	&gt;&gt;&gt; len(D.sequences)</span>
+<span class="sd">	&gt;&gt;&gt; d = PeptideDescriptor(h.sequences, &#39;eisenberg&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; d.calculate_moment()</span>
+<span class="sd">	&gt;&gt;&gt; len(d.sequences)</span>
 <span class="sd">	100</span>
-<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	&gt;&gt;&gt; len(d.descriptor)</span>
 <span class="sd">	100</span>
-<span class="sd">	&gt;&gt;&gt; D.random_selection(10)</span>
-<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	&gt;&gt;&gt; d.random_selection(10)</span>
+<span class="sd">	&gt;&gt;&gt; len(d.descriptor)</span>
 <span class="sd">	10</span>
-<span class="sd">	&gt;&gt;&gt; len(D.descriptor)</span>
+<span class="sd">	&gt;&gt;&gt; len(d.descriptor)</span>
 <span class="sd">	10</span>
 
 <span class="sd">	.. versionadded:: v2.2.3</span>
@@ -573,7 +562,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

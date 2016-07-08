@@ -16,9 +16,10 @@ Function							Data
 =============================		============================================================================
 """
 
+import csv
 from os.path import dirname
 from os.path import join
-import csv
+
 import numpy as np
 
 __author__ = "modlab"
@@ -76,14 +77,15 @@ def load_AMPvsTMset():
 	Dimensionality		1
 	=================	====
 
-	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
-		classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+		the	classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+		features.
 	:Example:
 
 	>>> from modlamp.datasets import load_AMPvsTMset
 	>>> data = load_AMPvsTMset()
-	>>> data.sequences[:5]
-	['AAGAATVLLVIVLLAGSYLAVLA','LWIVIACLACVGSAAALTLRA','FYRFYMLREGTAVPAVWFSIELIFGLFA','GTLELGVDYGRAN','KLFWRAVVAEFLATTLFVFISIGSALGFK']
+	>>> data.sequences
+	['AAGAATVLLVIVLLAGSYLAVLA','LWIVIACLACVGSAAALTLRA','FYRFYMLREGTAVPAVWFSIELIFGLFA','GTLELGVDYGRAN',...]
 	>>> list(data.target_names)
 	['TM', 'AMP']
 	>>> len(data.sequences)
@@ -126,8 +128,9 @@ def load_helicalAMPset():
 	Dimensionality		1
 	=================	====
 
-	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
-			classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+		features.
 	:Example:
 
 	>>> from modlamp.datasets import load_helicalAMPset
@@ -166,11 +169,11 @@ def load_ACPvsNeg():
 	The ACP class consists of a collection of ACPs from the `APD2 <http://aps.unmc.edu/AP/>`_ and
 	`CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by Gisela Gabernet at
 	modlab ETH Zuerich <gisela.gabernet@pharma.ethz.ch>, checking the original literature and annotated active against
-	at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and cervical.
-	Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+	at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and
+	cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
 
-	The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from the
-	`PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
+	The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
+	the `PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
 	<http://www.rcsb.org/pdb/home/home.do>`) isolated directly from the proteins crystal structure.
 
 	=================	====
@@ -181,14 +184,15 @@ def load_ACPvsNeg():
 	Dimensionality		1
 	=================	====
 
-	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
-		classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+		features.
 	:Example:
 
 	>>> from modlamp.datasets import load_ACPvsNeg
 	>>> data = load_ACPvsNeg()
-	>>> data.sequences[:5]
-	['VLTIIATIFMPLTFIAGI', 'QLGAGLSVGLSGLAAGFAIGIVG', 'WLYLILGIIFGIFGPIFNKWVL', 'VTWLLFLLGFVAILI', 'TRELFLNFTIVLITVILMWLLV']
+	>>> data.sequences
+	['VLTIIATIFMPLTFIAGI', 'QLGAGLSVGLSGLAAGFAIGIVG', 'WLYLILGIIFGIFGPIFNKWVL', 'VTWLLFLLGFVAILI'...]
 	>>> list(data.target_names)
 	['Neg', 'ACP']
 	>>> len(data.sequences)
@@ -233,14 +237,19 @@ def load_AMPvsUniProt():
 	Dimensionality		1
 	=================	=====
 
-	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``, the
-			classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the features.
+	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+		features.
 	:Example:
 
 	>>> from modlamp.datasets import load_AMPvsUniProt
 	>>> data = load_AMPvsUniProt()
 	>>> data.sequences[:5]
-	['GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV','YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY','DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC','NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC','VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK']
+	['GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV',
+	'YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY',
+	'DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC',
+	'NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC',
+	'VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK']
 	>>> list(data.target_names)
 	['AMP', 'UniProt']
 	>>> len(data.sequences)
