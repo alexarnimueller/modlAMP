@@ -10,6 +10,8 @@ For basic instructions how to use the package, see Usage_ or this `example scrip
 .. warning::
     You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
     installing modlAMP. It will take care of all necessairy requirements and versions.
+    You need to install the biopython package
+    conda install biopython
 
 .. note::
     If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
