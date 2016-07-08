@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 .. module:: modlamp.sequences
 
@@ -89,9 +90,9 @@ class Random:
 		:return: A list of random AMP sequences with defined AA probabilities
 		:Example:
 
-		>>> R = Random(5,20,6)
-		>>> R.generate_sequences(proba='AMP')
-		>>> R.sequences
+		>>> r = Random(5,20,6)
+		>>> r.generate_sequences(proba='AMP')
+		>>> r.sequences
 		['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
 		"""
 		clean(self)
@@ -129,10 +130,10 @@ class Random:
 		:return: In the attribute :py:attr:`sequences`: mutated sequences
 		:Example:
 
-		>>> H.sequences
+		>>> r.sequences
 		['IAKAGRAIIK']
-		>>> H.mutate_AA(3,1)
-		>>> H.sequences
+		>>> r.mutate_AA(3,1)
+		>>> r.sequences
 		['NAKAGRAWIK']
 
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
@@ -185,9 +186,9 @@ class Helices:
 		:return: In the attribute :py:attr:`sequences`: a list of sequences with presumed amphipathic helical structure.
 		:Example:
 
-		>>> H = Helices(7,21,5)
-		>>> H.generate_helices()
-		>>> H.sequences
+		>>> h = Helices(7,21,5)
+		>>> h.generate_helices()
+		>>> h.sequences
 		['KGIKVILKLAKAGVKAVRL','IILKVGKV','IAKAGRAIIK','LKILKVVGKGIRLIVRIIKAL','KAGKLVAKGAKVAAKAIKI']
 		"""
 		clean(self)
@@ -217,10 +218,10 @@ class Helices:
 		:return: In the attribute :py:attr:`sequences`: mutated sequences
 		:Example:
 
-		>>> H.sequences
+		>>> h.sequences
 		['IAKAGRAIIK']
-		>>> H.mutate_AA(3,1)
-		>>> H.sequences
+		>>> h.mutate_AA(3,1)
+		>>> h.sequences
 		['NAKAGRAWIK']
 
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
@@ -285,9 +286,9 @@ class Kinked:
 		:return: sequence list with strings stored in the attribute :py:attr:`sequences`
 		:Example:
 
-		>>> K = Kinked(7,28,8)
-		>>> K.generate_kinked()
-		>>> K.sequences
+		>>> k = Kinked(7,28,8)
+		>>> k.generate_kinked()
+		>>> k.sequences
 		['IILRLHPIG','ARGAKVAIKAIRGIAPGGRVVAKVVKVG','GGKVGRGVAFLVRIILK','KAVKALAKGAPVILCVAKVI',
 		'IGIRVWRAVIKVIPVAVRGLRL','RIGRVIVPVIRGL','AKAARIVAMLAR','LGAKGWRLALKGIPAAIKLGKV']
 		"""
@@ -325,10 +326,10 @@ class Kinked:
 		:return: In the attribute :py:attr:`sequences`: mutated sequences
 		:Example:
 
-		>>> S.sequences
+		>>> k.sequences
 		['IAKAGRAIIK']
-		>>> S.mutate_AA(3,1)
-		>>> S.sequences
+		>>> k.mutate_AA(3,1)
+		>>> k.sequences
 		['NAKAGRAWIK']
 
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
@@ -392,9 +393,9 @@ class Oblique(object):
 		:return: A list of sequences in the attribute :py:attr:`sequences`.
 		:Example:
 
-		>>> O = Oblique(10,30,4)
-		>>> O.generate_oblique()
-		>>> O.sequences
+		>>> o = Oblique(10,30,4)
+		>>> o.generate_oblique()
+		>>> o.sequences
 		['GLLKVIRIAAKVLKVAVLVGIIAI','AIGKAGRLALKVIKVVIKVALILLAAVA','KILRAAARVIKGGIKAIVIL','VRLVKAIGKLLRIILRLARLAVGGILA']
 		"""
 		clean(self)
@@ -428,10 +429,10 @@ class Oblique(object):
 		:return: In the attribute :py:attr:`sequences`: mutated sequences
 		:Example:
 
-		>>> H.sequences
+		>>> o.sequences
 		['IAKAGRAIIK']
-		>>> H.mutate_AA(3,1)
-		>>> H.sequences
+		>>> o.mutate_AA(3,1)
+		>>> o.sequences
 		['NAKAGRAWIK']
 
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
@@ -499,9 +500,9 @@ class Centrosymmetric:
 			h = hydrophobic AA, + = basic AA, a = anchor AA (F,Y,W,(P)), sequence length is 14 or 21 AA
 		:Example:
 
-		>>> S = Centrosymmetric(5)
-		>>> S.generate_symmetric()
-		>>> S.sequences
+		>>> s = Centrosymmetric(5)
+		>>> s.generate_symmetric()
+		>>> s.sequences
 		['ARIFIRAARIFIRA','GRIYIRGGRIYIRGGRIYIRG','IRGFGRIIRGFGRIIRGFGRI','GKAYAKGGKAYAKG','AKGYGKAAKGYGKAAKGYGKA']
 		"""
 		clean(self)
@@ -532,9 +533,9 @@ class Centrosymmetric:
 		:return: In the attribute :py:attr:`sequences`: a list of peptide sequences as strings of length 14 or 21
 		:Example:
 
-		>>> S = Centrosymmetric(5)
-		>>> S.generate_asymmetric()
-		>>> S.sequences
+		>>> s = Centrosymmetric(5)
+		>>> s.generate_asymmetric()
+		>>> s.sequences
 		['GRLFLRGAKGFGKAVRVWVRV','IKGWGKILKLYLKL','LKAYAKLVKAWAKVLRLFLRL','IRLWLRIIKAFAKI','LRIFIRLVKLWLKVIRLWLRI']
 		"""
 		clean(self)
@@ -568,10 +569,10 @@ class Centrosymmetric:
 		:return: In the attribute :py:attr:`sequences`: mutated sequences
 		:Example:
 
-		>>> S.sequences
+		>>> s.sequences
 		['IAKAGRAIIK']
-		>>> S.mutate_AA(3,1)
-		>>> S.sequences
+		>>> s.mutate_AA(3,1)
+		>>> s.sequences
 		['NAKAGRAWIK']
 
 		.. seealso:: :func:`modlamp.core.mutate_AA()`
@@ -663,13 +664,14 @@ class MixedLibrary:
 			:py:attr:`libsize`.
 		:Example:
 
-		>>> Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)
-		>>> Lib.generate_library()
-		>>> Lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
+		>>> lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,
+		randAMP=10,randAMPnoCM=5)
+		>>> lib.generate_library()
+		>>> lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
 		9126
-		>>> Lib.sequences
+		>>> lib.sequences
 		['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
-		>>> Lib.nums
+		>>> lib.nums
 		{'AMP': 2326,
 		'asy': 1163,
 		'hel': 698,

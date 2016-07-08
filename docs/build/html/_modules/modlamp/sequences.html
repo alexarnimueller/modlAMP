@@ -47,6 +47,7 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.sequences</h1><div class="highlight"><pre>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: modlamp.sequences</span>
 
@@ -138,9 +139,9 @@
 <span class="sd">		:return: A list of random AMP sequences with defined AA probabilities</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; R = Random(5,20,6)</span>
-<span class="sd">		&gt;&gt;&gt; R.generate_sequences(proba=&#39;AMP&#39;)</span>
-<span class="sd">		&gt;&gt;&gt; R.sequences</span>
+<span class="sd">		&gt;&gt;&gt; r = Random(5,20,6)</span>
+<span class="sd">		&gt;&gt;&gt; r.generate_sequences(proba=&#39;AMP&#39;)</span>
+<span class="sd">		&gt;&gt;&gt; r.sequences</span>
 <span class="sd">		[&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -178,10 +179,10 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; r.sequences</span>
 <span class="sd">		[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; r.mutate_AA(3,1)</span>
+<span class="sd">		&gt;&gt;&gt; r.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
@@ -234,9 +235,9 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: a list of sequences with presumed amphipathic helical structure.</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; H = Helices(7,21,5)</span>
-<span class="sd">		&gt;&gt;&gt; H.generate_helices()</span>
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; h = Helices(7,21,5)</span>
+<span class="sd">		&gt;&gt;&gt; h.generate_helices()</span>
+<span class="sd">		&gt;&gt;&gt; h.sequences</span>
 <span class="sd">		[&#39;KGIKVILKLAKAGVKAVRL&#39;,&#39;IILKVGKV&#39;,&#39;IAKAGRAIIK&#39;,&#39;LKILKVVGKGIRLIVRIIKAL&#39;,&#39;KAGKLVAKGAKVAAKAIKI&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -266,10 +267,10 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; h.sequences</span>
 <span class="sd">		[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; h.mutate_AA(3,1)</span>
+<span class="sd">		&gt;&gt;&gt; h.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
@@ -334,9 +335,9 @@
 <span class="sd">		:return: sequence list with strings stored in the attribute :py:attr:`sequences`</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; K = Kinked(7,28,8)</span>
-<span class="sd">		&gt;&gt;&gt; K.generate_kinked()</span>
-<span class="sd">		&gt;&gt;&gt; K.sequences</span>
+<span class="sd">		&gt;&gt;&gt; k = Kinked(7,28,8)</span>
+<span class="sd">		&gt;&gt;&gt; k.generate_kinked()</span>
+<span class="sd">		&gt;&gt;&gt; k.sequences</span>
 <span class="sd">		[&#39;IILRLHPIG&#39;,&#39;ARGAKVAIKAIRGIAPGGRVVAKVVKVG&#39;,&#39;GGKVGRGVAFLVRIILK&#39;,&#39;KAVKALAKGAPVILCVAKVI&#39;,</span>
 <span class="sd">		&#39;IGIRVWRAVIKVIPVAVRGLRL&#39;,&#39;RIGRVIVPVIRGL&#39;,&#39;AKAARIVAMLAR&#39;,&#39;LGAKGWRLALKGIPAAIKLGKV&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -374,10 +375,10 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; k.sequences</span>
 <span class="sd">		[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">		&gt;&gt;&gt; S.mutate_AA(3,1)</span>
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; k.mutate_AA(3,1)</span>
+<span class="sd">		&gt;&gt;&gt; k.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
@@ -441,9 +442,9 @@
 <span class="sd">		:return: A list of sequences in the attribute :py:attr:`sequences`.</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; O = Oblique(10,30,4)</span>
-<span class="sd">		&gt;&gt;&gt; O.generate_oblique()</span>
-<span class="sd">		&gt;&gt;&gt; O.sequences</span>
+<span class="sd">		&gt;&gt;&gt; o = Oblique(10,30,4)</span>
+<span class="sd">		&gt;&gt;&gt; o.generate_oblique()</span>
+<span class="sd">		&gt;&gt;&gt; o.sequences</span>
 <span class="sd">		[&#39;GLLKVIRIAAKVLKVAVLVGIIAI&#39;,&#39;AIGKAGRLALKVIKVVIKVALILLAAVA&#39;,&#39;KILRAAARVIKGGIKAIVIL&#39;,&#39;VRLVKAIGKLLRIILRLARLAVGGILA&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -477,10 +478,10 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; o.sequences</span>
 <span class="sd">		[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">		&gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">		&gt;&gt;&gt; H.sequences</span>
+<span class="sd">		&gt;&gt;&gt; o.mutate_AA(3,1)</span>
+<span class="sd">		&gt;&gt;&gt; o.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
@@ -548,9 +549,9 @@
 <span class="sd">			h = hydrophobic AA, + = basic AA, a = anchor AA (F,Y,W,(P)), sequence length is 14 or 21 AA</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; S = Centrosymmetric(5)</span>
-<span class="sd">		&gt;&gt;&gt; S.generate_symmetric()</span>
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; s = Centrosymmetric(5)</span>
+<span class="sd">		&gt;&gt;&gt; s.generate_symmetric()</span>
+<span class="sd">		&gt;&gt;&gt; s.sequences</span>
 <span class="sd">		[&#39;ARIFIRAARIFIRA&#39;,&#39;GRIYIRGGRIYIRGGRIYIRG&#39;,&#39;IRGFGRIIRGFGRIIRGFGRI&#39;,&#39;GKAYAKGGKAYAKG&#39;,&#39;AKGYGKAAKGYGKAAKGYGKA&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -581,9 +582,9 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: a list of peptide sequences as strings of length 14 or 21</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; S = Centrosymmetric(5)</span>
-<span class="sd">		&gt;&gt;&gt; S.generate_asymmetric()</span>
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; s = Centrosymmetric(5)</span>
+<span class="sd">		&gt;&gt;&gt; s.generate_asymmetric()</span>
+<span class="sd">		&gt;&gt;&gt; s.sequences</span>
 <span class="sd">		[&#39;GRLFLRGAKGFGKAVRVWVRV&#39;,&#39;IKGWGKILKLYLKL&#39;,&#39;LKAYAKLVKAWAKVLRLFLRL&#39;,&#39;IRLWLRIIKAFAKI&#39;,&#39;LRIFIRLVKLWLKVIRLWLRI&#39;]</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -617,10 +618,10 @@
 <span class="sd">		:return: In the attribute :py:attr:`sequences`: mutated sequences</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; s.sequences</span>
 <span class="sd">		[&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">		&gt;&gt;&gt; S.mutate_AA(3,1)</span>
-<span class="sd">		&gt;&gt;&gt; S.sequences</span>
+<span class="sd">		&gt;&gt;&gt; s.mutate_AA(3,1)</span>
+<span class="sd">		&gt;&gt;&gt; s.sequences</span>
 <span class="sd">		[&#39;NAKAGRAWIK&#39;]</span>
 
 <span class="sd">		.. seealso:: :func:`modlamp.core.mutate_AA()`</span>
@@ -712,13 +713,14 @@
 <span class="sd">			:py:attr:`libsize`.</span>
 <span class="sd">		:Example:</span>
 
-<span class="sd">		&gt;&gt;&gt; Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)</span>
-<span class="sd">		&gt;&gt;&gt; Lib.generate_library()</span>
-<span class="sd">		&gt;&gt;&gt; Lib.libsize  # as duplicates were present, the library does not have the size that was sepecified</span>
+<span class="sd">		&gt;&gt;&gt; lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,</span>
+<span class="sd">		randAMP=10,randAMPnoCM=5)</span>
+<span class="sd">		&gt;&gt;&gt; lib.generate_library()</span>
+<span class="sd">		&gt;&gt;&gt; lib.libsize  # as duplicates were present, the library does not have the size that was sepecified</span>
 <span class="sd">		9126</span>
-<span class="sd">		&gt;&gt;&gt; Lib.sequences</span>
+<span class="sd">		&gt;&gt;&gt; lib.sequences</span>
 <span class="sd">		[&#39;RHTHVAGSWYGKMPPSPQTL&#39;,&#39;MRIKLRKIPCILAC&#39;,&#39;DGINKEVKDSYGVFLK&#39;,&#39;LRLYLRLGRVWVRG&#39;,&#39;GKLFLKGGKLFLKGGKLFLKG&#39;,...]</span>
-<span class="sd">		&gt;&gt;&gt; Lib.nums</span>
+<span class="sd">		&gt;&gt;&gt; lib.nums</span>
 <span class="sd">		{&#39;AMP&#39;: 2326,</span>
 <span class="sd">		&#39;asy&#39;: 1163,</span>
 <span class="sd">		&#39;hel&#39;: 698,</span>
