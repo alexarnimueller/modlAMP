@@ -62,43 +62,43 @@
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">MixedLibrary</span>
 
-<span class="c1"># define the size of the peptide library to screen</span>
+<span class="c"># define the size of the peptide library to screen</span>
 <span class="n">libsize</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Chosen library size is </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libsize</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Chosen library size is </span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">libsize</span><span class="p">)</span>
 
-<span class="c1"># load training sequences</span>
+<span class="c"># load training sequences</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
 
-<span class="c1"># describe sequences with PEPCATS descriptor</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="c"># describe sequences with PEPCATS descriptor</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="n">X</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="c1"># initialize Random Forest classifier</span>
+<span class="c"># initialize Random Forest classifier</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">oob_score</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># fit the classifier on the PEPCATS data</span>
+<span class="c"># fit the classifier on the PEPCATS data</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 
-<span class="c1"># evaluate classifier performance as RF out of bag score</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;RandomForest OOB classifcation score: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">oob_score_</span><span class="p">)</span>
+<span class="c"># evaluate classifier performance as RF out of bag score</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;RandomForest OOB classifcation score: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">oob_score_</span><span class="p">)</span>
 
-<span class="c1"># generate a virtual peptide library of `libsize` sequences to screen</span>
+<span class="c"># generate a virtual peptide library of `libsize` sequences to screen</span>
 <span class="n">Lib</span> <span class="o">=</span> <span class="n">MixedLibrary</span><span class="p">(</span><span class="n">libsize</span><span class="p">)</span>
 <span class="n">Lib</span><span class="o">.</span><span class="n">generate_library</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Actual lirutal library size (without duplicates): </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Actual lirutal library size (without duplicates): </span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">))</span>
 
-<span class="c1"># describe library with PEPCATS descriptor</span>
-<span class="n">X_lib</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="c"># describe library with PEPCATS descriptor</span>
+<span class="n">X_lib</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="n">X_lib</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="c1"># predict class probabilities for sequences in Library</span>
+<span class="c"># predict class probabilities for sequences in Library</span>
 <span class="n">proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_lib</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 
-<span class="c1"># create ordered dictionary with sequences and prediction values and order it according to AMP predictions</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">proba</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]})</span>
-<span class="n">d50</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>  <span class="c1"># 50 top AMP predictions</span>
+<span class="c"># create ordered dictionary with sequences and prediction values and order it according to AMP predictions</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">proba</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]})</span>
+<span class="n">d50</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>  <span class="c"># 50 top AMP predictions</span>
 
-<span class="c1"># print the 50 top ranked predictions with their predicted probabilities</span>
+<span class="c"># print the 50 top ranked predictions with their predicted probabilities</span>
 <span class="k">print</span> <span class="n">d50</span>
 </pre></div>
 </div>

@@ -31,6 +31,8 @@ When pip is installed, run the following command when located in the modlAMP pac
 Usage
 *****
 
+For a detailed description of all modules see the documentation in ``docs/build/html/index.html``.
+
 Importing modules
 -----------------
 

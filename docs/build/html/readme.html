@@ -81,6 +81,7 @@ make doc
 </div>
 <div class="section" id="usage">
 <h2>1.2. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>For a detailed description of all modules see the documentation in <code class="docutils literal"><span class="pre">docs/build/html/index.html</span></code>.</p>
 <div class="section" id="importing-modules">
 <h3>1.2.1. Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h3>
 <p>After installation, you should be able to import and use the different modules like shown below:</p>
@@ -113,7 +114,7 @@ docs for <a class="reference external" href="modlamp.html#module-modlamp.sequenc
 <h3>1.2.3. Calculating Descriptor Values<a class="headerlink" href="#calculating-descriptor-values" title="Permalink to this headline">¶</a></h3>
 <p>Now, different descriptor values can be calculated for the generated sequences: (see <a class="reference internal" href="#generating-sequences">Generating Sequences</a>)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="s">&#39;eisenberg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([[ 0.60138255],[ 0.61232763],[ 0.01474009],[ 0.72333858],[ 0.20390763],[ 0.68818279],...]</span>
@@ -121,7 +122,7 @@ docs for <a class="reference external" href="modlamp.html#module-modlamp.sequenc
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([ 10.09735107,   8.75006104,  12.30743408,  11.26385498, ...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;sequence/file/to/be/loaded.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s">&#39;sequence/file/to/be/loaded.fasta&#39;</span><span class="p">,</span> <span class="s">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pepCATS</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333,</span>
@@ -135,18 +136,18 @@ amino acid scales. For further information consider the docs for <a class="refer
 <h3>1.2.4. Plotting Features<a class="headerlink" href="#plotting-features" title="Permalink to this headline">¶</a></h3>
 <p>We can now plot these values as a boxplot, for example the hydrophobic moment:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_feature</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s">&#39;eisenberg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Now lets compare the values by plotting:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span> <span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Library&#39;</span><span class="p">,</span> <span class="s">&#39;APD3&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/uH_APD3.png"><img alt="_images/uH_APD3.png" src="_images/uH_APD3.png" style="width: 400.0px; height: 300.0px;" /></a>
@@ -160,15 +161,15 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 </tbody>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_2_features</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">,</span> <span class="s">&#39;eisenberg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s">&#39;/Path/to/file/class1&amp;2.fasta&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -178,12 +179,12 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 </tbody>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.plot</span> <span class="kn">import</span> <span class="n">plot_3_features</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>Further plotting methods like <strong>helical wheel plots</strong> are available. See the documentation for the
 <a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
 </div>
@@ -198,7 +199,7 @@ Peptide sequences included in any table in the peptides database can be download
 <p>For querying sequences from a given table, the sequences must be stored in a column called &#8220;sequences&#8221; in the mysql table.
 The query then works as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query_database</span><span class="p">(</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query_database</span><span class="p">(</span><span class="s">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;sequence&#39;</span><span class="p">])</span>
 <span class="go">Password: &gt;? ***********</span>
 <span class="go">Connecting to MySQL database...</span>
 <span class="go">connection established!</span>
