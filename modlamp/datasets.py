@@ -7,12 +7,12 @@
 This module incorporates functions to load different peptide datasets used for classification.
 
 =============================        ============================================================================
-Function                            Data
+Function                             Data
 =============================        ============================================================================
-:py:func:`load_AMPvsTMset`            Antimicrobial peptides versus trans-membrane sequences
+:py:func:`load_AMPvsTMset`           Antimicrobial peptides versus trans-membrane sequences
 :py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides
-:py:func:`load_ACPvsNeg`            Helical anticancer peptides versus other mixed sequences
-:py:func:`load_AMPvsUniProt`        AMPs from the *APD3* versus other peptides from *UniProt*
+:py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences
+:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*
 =============================        ============================================================================
 """
 

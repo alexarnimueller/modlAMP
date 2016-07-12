@@ -42,33 +42,33 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
     Default parameter grids:
 
-    ==============        ============================================================================
-    Model                Parameter grid
-    ==============        ============================================================================
-    SVM Model            param_grid = [{'clf__C': param_range, 'clf__kernel': ['linear']},
-                        {'clf__C': param_range,    'clf__gamma': param_range, 'clf__kernel': ['rbf']}]
+    ==============        ==============================================================================
+    Model                 Parameter grid
+    ==============        ==============================================================================
+    SVM Model             param_grid = [{'clf__C': param_range, 'clf__kernel': ['linear']},
+                          {'clf__C': param_range,    'clf__gamma': param_range, 'clf__kernel': ['rbf']}]
 
-    Random Forest        param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
-                        'clf__max_depth': [3, None],
-                        'clf__max_features': [1, 2, 3, 5, 10],
-                        'clf__min_samples_split': [1, 3, 5, 10],
-                        'clf__min_samples_leaf': [1, 3, 5, 10],
-                        'clf__bootstrap': [True, False],
-                        'clf__criterion': ["gini", "entropy"]}]
-    ==============        ============================================================================
+    Random Forest         param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
+                          'clf__max_depth': [3, None],
+                          'clf__max_features': [1, 2, 3, 5, 10],
+                          'clf__min_samples_split': [1, 3, 5, 10],
+                          'clf__min_samples_leaf': [1, 3, 5, 10],
+                          'clf__bootstrap': [True, False],
+                          'clf__criterion': ["gini", "entropy"]}]
+    ==============        ==============================================================================
 
 
 
     Useful methods implemented in scikit-learn:
 
     =================            =============================================================
-    Method                        Description
+    Method                       Description
     =================            =============================================================
     fit(X,y)                     fit the model with the same parameters to new training data.
-    score(X,y)                     get the score of the model for test data.
-    predict(X)                     get predictions for new data.
-    predict_proba(X)                get probability predicitons for [class0, class1]
-    get_params()                    get parameters of the trained model
+    score(X,y)                   get the score of the model for test data.
+    predict(X)                   get predictions for new data.
+    predict_proba(X)             get probability predicitons for [class0, class1]
+    get_params()                 get parameters of the trained model
     =================            =============================================================
 
     :param model: {str} model to train. Choose between 'svm' (Support Vector Machine) or 'rf' (Random Forest).

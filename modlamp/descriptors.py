@@ -9,7 +9,7 @@ This module incorporates different classes to calculate peptide descriptor value
 =============================        ============================================================================
 Class                                Characteristics
 =============================        ============================================================================
-:py:class:`GlobalDescriptor`        Global one-dimensional peptide descriptors calculated from the AA sequence.
+:py:class:`GlobalDescriptor`         Global one-dimensional peptide descriptors calculated from the AA sequence.
 :py:class:`PeptideDescriptor`        AA scale based global or convoluted descriptors (auto-/cross-correlated).
 =============================        ============================================================================
 
