@@ -6,7 +6,7 @@ from setuptools import setup
 with open('README.rst') as f:
     readme = f.read()
 
-with open('LICENSE') as f:
+with open('LICENSE.rst') as f:
     license = f.read()
 
 setup(
@@ -18,10 +18,10 @@ setup(
     author_email='alex.mueller@pharma.ethz.ch',
     url='https://www.cadd.ethz.ch',
     license=license,
-    keywords = "antimicrobial peptide descriptor sequences QSAR machine learning",
+    keywords="antimicrobial peptide descriptor sequences QSAR machine learning",
     packages=['modlamp', 'modlamp.tests'],
-    package_data = {'modlamp': ['data/*.csv', 'data/*.fasta']},
-    scripts = ['bin/example_modlamp.py'],
+    package_data={'modlamp': ['data/*.csv', 'data/*.fasta']},
+    scripts=['bin/example_modlamp.py'],
     classifiers=[
     'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Science/Research',

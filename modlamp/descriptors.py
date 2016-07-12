@@ -376,7 +376,7 @@ class GlobalDescriptor(object):
         :param stype: {str} **'standard'** or **'minmax'**, type of scaling to be used
         :param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
             whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
-        :return: scaled descriptor values in :py:attr:`self.descriptor`
+        :return: scaled descriptor values in :py:attr:`descriptor`
         :Example:
 
         >>> d.descriptor  # peptide descriptor instance from before
@@ -638,7 +638,7 @@ class PeptideDescriptor(object):
         :param window: correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: calculated descriptor numpy.array in self.descriptor
+        :return: calculated descriptor numpy.array in :py:attr:`descriptor`.
         :Example:
 
         >>> amp = PeptideDescriptor('GLFDIVKKVVGALGSL','PPCALI')
@@ -679,7 +679,7 @@ class PeptideDescriptor(object):
         :param window: correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: calculated descriptor numpy.array in self.descriptor
+        :return: calculated descriptor numpy.array in :py:attr:`descriptor`
         :Example:
 
         >>> amp = PeptideDescriptor('GLFDIVKKVVGALGSL','pepcats')
@@ -728,8 +728,8 @@ class PeptideDescriptor(object):
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in
-            :py:attr:`all_moms` (needed for calculate_profile method)
+        :return: Calculated descriptor as a `numpy.array` in :py:attr:`descriptor` and all possible global values in
+            :py:attr:`all_moms` (needed for :py:func:`calculate_profile` method)
         :Example:
 
         >>> amp = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -782,8 +782,8 @@ class PeptideDescriptor(object):
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in
-            :py:attr:`all_globs` (needed for calculate_profile method)
+        :return: Calculated descriptor as a `numpy.array` in :py:attr:`descriptor` and all possible global values in
+            :py:attr:`all_moms` (needed for :py:func:`calculate_profile` method)
         :Example:
 
         >>> amp = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -830,7 +830,7 @@ class PeptideDescriptor(object):
         :param window: {int} size of sliding window used (odd-numbered).
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor
+        :return: Fitted slope and intercept of calculated profile for every given sequence in :py:attr:`descriptor`.
         :Example:
 
         >>> AMP = PeptideDescriptor('KLLKLLKKVVGALG','kytedoolittle')
@@ -938,9 +938,9 @@ class PeptideDescriptor(object):
         self.descriptor = shuffle(self.descriptor.transpose()).transpose()
 
     def sequence_order_shuffle(self):
-        """Method for shuffling sequence order in self.sequences.
+        """Method for shuffling sequence order in the attribute :py:attr:`sequences`.
 
-        :return: sequences in :py:attr:`self.sequences` with shuffled order in the list.
+        :return: sequences in :py:attr:`sequences` with shuffled order in the list.
         :Example:
 
         >>> d.sequences  # d: PeptideDescriptor instance
@@ -1017,9 +1017,6 @@ class PeptideDescriptor(object):
     def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
         """Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
         class :class:`modlamp.descriptors.PeptideDescriptor`.
-
-        .. note::
-            The data file should **not** have any headers
 
         :param filename: filenam of the data file to be loaded
         :param delimiter: column delimiter

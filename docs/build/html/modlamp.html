@@ -391,7 +391,7 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scaled descriptor values in <code class="xref py py-attr docutils literal"><span class="pre">self.descriptor</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scaled descriptor values in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -843,7 +843,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">calculated descriptor numpy.array in self.descriptor</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">calculated descriptor numpy.array in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -875,7 +875,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">calculated descriptor numpy.array in self.descriptor</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">calculated descriptor numpy.array in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -913,8 +913,8 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as a numpy.array in self.descriptor and all possible global values in
-<code class="xref py py-attr docutils literal"><span class="pre">all_moms</span></code> (needed for calculate_profile method)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as a <cite>numpy.array</cite> in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> and all possible global values in
+<code class="xref py py-attr docutils literal"><span class="pre">all_moms</span></code> (needed for <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="modlamp.descriptors.PeptideDescriptor.calculate_profile"><code class="xref py py-func docutils literal"><span class="pre">calculate_profile()</span></code></a> method)</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -946,8 +946,8 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as numpy.array in self.descriptor and all possible global values in
-<code class="xref py py-attr docutils literal"><span class="pre">all_globs</span></code> (needed for calculate_profile method)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as a <cite>numpy.array</cite> in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> and all possible global values in
+<code class="xref py py-attr docutils literal"><span class="pre">all_moms</span></code> (needed for <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="modlamp.descriptors.PeptideDescriptor.calculate_profile"><code class="xref py py-func docutils literal"><span class="pre">calculate_profile()</span></code></a> method)</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -979,7 +979,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fitted slope and intercept of calculated profile for every given sequence in self.descriptor</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fitted slope and intercept of calculated profile for every given sequence in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -1082,12 +1082,12 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.sequence_order_shuffle">
 <code class="descname">sequence_order_shuffle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.sequence_order_shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.sequence_order_shuffle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for shuffling sequence order in self.sequences.</p>
+<dd><p>Method for shuffling sequence order in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sequences in <code class="xref py py-attr docutils literal"><span class="pre">self.sequences</span></code> with shuffled order in the list.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with shuffled order in the list.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -1218,10 +1218,6 @@ descriptor instance.</p>
 <code class="descname">load_descriptordata</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=False</em>, <em>header=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.load_descriptordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.load_descriptordata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
 class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The data file should <strong>not</strong> have any headers</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
