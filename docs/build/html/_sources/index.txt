@@ -17,7 +17,8 @@ amino acids. It incorporates several modules, like descriptor calculation (modul
 
 .. note::
     If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
-    repository to your local machine and consider the documentation in *modlAMP/docs/build/html/index.html*.
+    repository to your local machine and consider the documentation in ``modlAMP/docs/build/html/index.html``.
+    Use ``git clone git@gitlab.ethz.ch:CADD/modlAMP.git`` to clone modlAMP to your current working directory.
 
 The package has the following contents:
 
@@ -29,6 +30,8 @@ The package has the following contents:
    readme
    modlamp
    examplescript
+   contributing
+   license
    todo
 
 Indices and tables

@@ -47,7 +47,7 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.datasets</h1><div class="highlight"><pre>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: modlamp.datasets</span>
 
@@ -55,14 +55,14 @@
 
 <span class="sd">This module incorporates functions to load different peptide datasets used for classification.</span>
 
-<span class="sd">=============================		============================================================================</span>
-<span class="sd">Function							Data</span>
-<span class="sd">=============================		============================================================================</span>
-<span class="sd">:py:func:`load_AMPvsTMset`			Antimicrobial peptides versus trans-membrane sequences</span>
-<span class="sd">:py:func:`load_helicalAMPset`		Helical antimicrobial peptides versus other helical peptides</span>
-<span class="sd">:py:func:`load_ACPvsNeg`			Helical anticancer peptides versus other mixed sequences</span>
-<span class="sd">:py:func:`load_AMPvsUniProt`		AMPs from the *APD3* versus other peptides from *UniProt*</span>
-<span class="sd">=============================		============================================================================</span>
+<span class="sd">=============================        ============================================================================</span>
+<span class="sd">Function                             Data</span>
+<span class="sd">=============================        ============================================================================</span>
+<span class="sd">:py:func:`load_AMPvsTMset`           Antimicrobial peptides versus trans-membrane sequences</span>
+<span class="sd">:py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides</span>
+<span class="sd">:py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences</span>
+<span class="sd">:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*</span>
+<span class="sd">=============================        ============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">csv</span>
@@ -71,261 +71,261 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&quot;modlab&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;restructuredtext en&quot;</span>
 
 
 <div class="viewcode-block" id="Bunch"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch">[docs]</a><span class="k">class</span> <span class="nc">Bunch</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Container object for datasets</span>
+    <span class="sd">&quot;&quot;&quot;Container object for datasets</span>
 
-<span class="sd">	Dictionary-like object that exposes its keys as attributes. Taken from the ``sklearn`` package.</span>
+<span class="sd">    Dictionary-like object that exposes its keys as attributes. Taken from the ``sklearn`` package.</span>
 
-<span class="sd">	:Example:</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; b = Bunch(a=1, b=2)</span>
-<span class="sd">	&gt;&gt;&gt; b[&#39;b&#39;]</span>
-<span class="sd">	2</span>
-<span class="sd">	&gt;&gt;&gt; b.b  # key can also be called as attribute</span>
-<span class="sd">	2</span>
-<span class="sd">	&gt;&gt;&gt; b.a = 3</span>
-<span class="sd">	&gt;&gt;&gt; b[&#39;a&#39;]</span>
-<span class="sd">	3</span>
-<span class="sd">	&gt;&gt;&gt; b.c = 6</span>
-<span class="sd">	&gt;&gt;&gt; b[&#39;c&#39;]</span>
-<span class="sd">	6</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; b = Bunch(a=1, b=2)</span>
+<span class="sd">    &gt;&gt;&gt; b[&#39;b&#39;]</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; b.b  # key can also be called as attribute</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; b.a = 3</span>
+<span class="sd">    &gt;&gt;&gt; b[&#39;a&#39;]</span>
+<span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; b.c = 6</span>
+<span class="sd">    &gt;&gt;&gt; b[&#39;c&#39;]</span>
+<span class="sd">    6</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Bunch.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Bunch.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
 
-	<span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-	<span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-		<span class="k">try</span><span class="p">:</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-		<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-		<span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="load_AMPvsTMset"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_AMPvsTMset">[docs]</a><span class="k">def</span> <span class="nf">load_AMPvsTMset</span><span class="p">():</span>
-	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **AMP sequences and transmembrane regions of proteins** for classification.</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **AMP sequences and transmembrane regions of proteins** for classification.</span>
 
-<span class="sd">	The AMP class consists of an intersection of all activity annotations of the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
-<span class="sd">	`CAMP &lt;http://camp.bicnirrh.res.in/&gt;`_ databases, where for gram positive, gram negative and antifungal exact</span>
-<span class="sd">	matches were observed. A detailed description of how the dataset was compiled can be found in the following</span>
-<span class="sd">	publication: *Schneider P. et al. 2016, Mol. Inf.*</span>
+<span class="sd">    The AMP class consists of an intersection of all activity annotations of the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
+<span class="sd">    `CAMP &lt;http://camp.bicnirrh.res.in/&gt;`_ databases, where for gram positive, gram negative and antifungal exact</span>
+<span class="sd">    matches were observed. A detailed description of how the dataset was compiled can be found in the following</span>
+<span class="sd">    publication: *Schneider P. et al. 2016, Mol. Inf.*</span>
 
-<span class="sd">	=================	====</span>
-<span class="sd">	Classes				2</span>
-<span class="sd">	Samples per class	206</span>
-<span class="sd">	Samples total		412</span>
-<span class="sd">	Dimensionality		1</span>
-<span class="sd">	=================	====</span>
+<span class="sd">    =================    ====</span>
+<span class="sd">    Classes                2</span>
+<span class="sd">    Samples per class    206</span>
+<span class="sd">    Samples total        412</span>
+<span class="sd">    Dimensionality        1</span>
+<span class="sd">    =================    ====</span>
 
-<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
-<span class="sd">		the	classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
-<span class="sd">		features.</span>
-<span class="sd">	:Example:</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the    classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_AMPvsTMset</span>
-<span class="sd">	&gt;&gt;&gt; data = load_AMPvsTMset()</span>
-<span class="sd">	&gt;&gt;&gt; data.sequences</span>
-<span class="sd">	[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;,&#39;LWIVIACLACVGSAAALTLRA&#39;,&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;,&#39;GTLELGVDYGRAN&#39;,...]</span>
-<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
-<span class="sd">	[&#39;TM&#39;, &#39;AMP&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; len(data.sequences)</span>
-<span class="sd">	412</span>
-<span class="sd">	&gt;&gt;&gt; data.target[:10]</span>
-<span class="sd">	array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_AMPvsTMset</span>
+<span class="sd">    &gt;&gt;&gt; data = load_AMPvsTMset()</span>
+<span class="sd">    &gt;&gt;&gt; data.sequences</span>
+<span class="sd">    [&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;,&#39;LWIVIACLACVGSAAALTLRA&#39;,&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;,&#39;GTLELGVDYGRAN&#39;,...]</span>
+<span class="sd">    &gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">    [&#39;TM&#39;, &#39;AMP&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(data.sequences)</span>
+<span class="sd">    412</span>
+<span class="sd">    &gt;&gt;&gt; data.target[:10]</span>
+<span class="sd">    array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AMPvsTMset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
-		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
-		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-		<span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-		<span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-		<span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
-		<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;AMPvsTMset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-			<span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-			<span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
-				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_helicalAMPset"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_helicalAMPset">[docs]</a><span class="k">def</span> <span class="nf">load_helicalAMPset</span><span class="p">():</span>
-	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **helical AMP sequences and other helical peptides** for classification.</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **helical AMP sequences and other helical peptides** for classification.</span>
 
-<span class="sd">	The AMP class consists of 363 helical annotated sequences from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_</span>
-<span class="sd">	(extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the</span>
-<span class="sd">	`PDB &lt;http://www.rcsb.org/pdb/home/home.do&gt;`_, out of which alpha helical regions were extracted. 363 sequences</span>
-<span class="sd">	were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.</span>
+<span class="sd">    The AMP class consists of 363 helical annotated sequences from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_</span>
+<span class="sd">    (extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the</span>
+<span class="sd">    `PDB &lt;http://www.rcsb.org/pdb/home/home.do&gt;`_, out of which alpha helical regions were extracted. 363 sequences</span>
+<span class="sd">    were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.</span>
 
-<span class="sd">	=================	====</span>
-<span class="sd">	Classes				2</span>
-<span class="sd">	Samples per class	363</span>
-<span class="sd">	Samples total		726</span>
-<span class="sd">	Dimensionality		1</span>
-<span class="sd">	=================	====</span>
+<span class="sd">    =================    ====</span>
+<span class="sd">    Classes                2</span>
+<span class="sd">    Samples per class    363</span>
+<span class="sd">    Samples total        726</span>
+<span class="sd">    Dimensionality        1</span>
+<span class="sd">    =================    ====</span>
 
-<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
-<span class="sd">		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
-<span class="sd">		features.</span>
-<span class="sd">	:Example:</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_helicalAMPset</span>
-<span class="sd">	&gt;&gt;&gt; data = load_helicalAMPset()</span>
-<span class="sd">	&gt;&gt;&gt; data.sequences[:5]</span>
-<span class="sd">	[&#39;FDQAQTEIQATMEEN&#39;,&#39;DVDAALHYLARLVEAG&#39;,&#39;RCPLVIDYLIDLATRS&#39;,&#39;NPATLMMFFK&#39;,&#39;NLEDSIQILRTD&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
-<span class="sd">	[&#39;HEL&#39;, &#39;AMP&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; len(data.sequences)</span>
-<span class="sd">	726</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_helicalAMPset</span>
+<span class="sd">    &gt;&gt;&gt; data = load_helicalAMPset()</span>
+<span class="sd">    &gt;&gt;&gt; data.sequences[:5]</span>
+<span class="sd">    [&#39;FDQAQTEIQATMEEN&#39;,&#39;DVDAALHYLARLVEAG&#39;,&#39;RCPLVIDYLIDLATRS&#39;,&#39;NPATLMMFFK&#39;,&#39;NLEDSIQILRTD&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">    [&#39;HEL&#39;, &#39;AMP&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(data.sequences)</span>
+<span class="sd">    726</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;helicalAMPset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
-		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
-		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-		<span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-		<span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-		<span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
-		<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;helicalAMPset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-			<span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-			<span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
-				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_ACPvsNeg"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_ACPvsNeg">[docs]</a><span class="k">def</span> <span class="nf">load_ACPvsNeg</span><span class="p">():</span>
-	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **alpha-helical ACP sequences and negative peptides extracted from</span>
-<span class="sd">	alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **alpha-helical ACP sequences and negative peptides extracted from</span>
+<span class="sd">    alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.</span>
 
-<span class="sd">	The ACP class consists of a collection of ACPs from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
-<span class="sd">	`CancerPPD &lt;http://crdd.osdd.net/raghava/cancerppd/index.php&gt;`_ databases, manually curated by Gisela Gabernet at</span>
-<span class="sd">	modlab ETH Zuerich &lt;gisela.gabernet@pharma.ethz.ch&gt;, checking the original literature and annotated active against</span>
-<span class="sd">	at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and</span>
-<span class="sd">	cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.</span>
+<span class="sd">    The ACP class consists of a collection of ACPs from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
+<span class="sd">    `CancerPPD &lt;http://crdd.osdd.net/raghava/cancerppd/index.php&gt;`_ databases, manually curated by Gisela Gabernet at</span>
+<span class="sd">    modlab ETH Zuerich &lt;gisela.gabernet@pharma.ethz.ch&gt;, checking the original literature and annotated active against</span>
+<span class="sd">    at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and</span>
+<span class="sd">    cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.</span>
 
-<span class="sd">	The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from</span>
-<span class="sd">	the `PDBTM &lt;http://pdbtm.enzim.hu/&gt;` ) and 47 non-transmembrane helices (extracted from the `PDB</span>
-<span class="sd">	&lt;http://www.rcsb.org/pdb/home/home.do&gt;`) isolated directly from the proteins crystal structure.</span>
+<span class="sd">    The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from</span>
+<span class="sd">    the `PDBTM &lt;http://pdbtm.enzim.hu/&gt;` ) and 47 non-transmembrane helices (extracted from the `PDB</span>
+<span class="sd">    &lt;http://www.rcsb.org/pdb/home/home.do&gt;`) isolated directly from the proteins crystal structure.</span>
 
-<span class="sd">	=================	====</span>
-<span class="sd">	Classes				2</span>
-<span class="sd">	ACP peptides 		95</span>
-<span class="sd">	Negative peptides	94</span>
-<span class="sd">	Total peptides		189</span>
-<span class="sd">	Dimensionality		1</span>
-<span class="sd">	=================	====</span>
+<span class="sd">    =================    ====</span>
+<span class="sd">    Classes                2</span>
+<span class="sd">    ACP peptides         95</span>
+<span class="sd">    Negative peptides    94</span>
+<span class="sd">    Total peptides        189</span>
+<span class="sd">    Dimensionality        1</span>
+<span class="sd">    =================    ====</span>
 
-<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
-<span class="sd">		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
-<span class="sd">		features.</span>
-<span class="sd">	:Example:</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_ACPvsNeg</span>
-<span class="sd">	&gt;&gt;&gt; data = load_ACPvsNeg()</span>
-<span class="sd">	&gt;&gt;&gt; data.sequences</span>
-<span class="sd">	[&#39;VLTIIATIFMPLTFIAGI&#39;, &#39;QLGAGLSVGLSGLAAGFAIGIVG&#39;, &#39;WLYLILGIIFGIFGPIFNKWVL&#39;, &#39;VTWLLFLLGFVAILI&#39;...]</span>
-<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
-<span class="sd">	[&#39;Neg&#39;, &#39;ACP&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; len(data.sequences)</span>
-<span class="sd">	189</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_ACPvsNeg</span>
+<span class="sd">    &gt;&gt;&gt; data = load_ACPvsNeg()</span>
+<span class="sd">    &gt;&gt;&gt; data.sequences</span>
+<span class="sd">    [&#39;VLTIIATIFMPLTFIAGI&#39;, &#39;QLGAGLSVGLSGLAAGFAIGIVG&#39;, &#39;WLYLILGIIFGIFGPIFNKWVL&#39;, &#39;VTWLLFLLGFVAILI&#39;...]</span>
+<span class="sd">    &gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">    [&#39;Neg&#39;, &#39;ACP&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(data.sequences)</span>
+<span class="sd">    189</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;ACPvsNeg.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
-		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
-		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-		<span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-		<span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-		<span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
-		<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;ACPvsNeg.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-			<span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-			<span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
-				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_AMPvsUniProt"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_AMPvsUniProt">[docs]</a><span class="k">def</span> <span class="nf">load_AMPvsUniProt</span><span class="p">():</span>
-	<span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **APD3 &lt; 80% internal similarity versus UniProt not antimicrobial,</span>
-<span class="sd">	not secretory, 10-50 AA and verified** for classification.</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a dataset consisting of **APD3 &lt; 80% internal similarity versus UniProt not antimicrobial,</span>
+<span class="sd">    not secretory, 10-50 AA and verified** for classification.</span>
 
-<span class="sd">	The AMP class consists of 1609 AMP sequences from the `APD3 &lt;http://aps.unmc.edu/AP/&gt;`_. The whole APD3 was</span>
-<span class="sd">	extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the</span>
-<span class="sd">	`CD-Hit tool &lt;http://cd-hit.org&gt;`_. The UniProt class is constructed out of extracted protein sequences from the</span>
-<span class="sd">	`UniProt Database &lt;http://uniprot.org/&gt;`_ with the search query *NOT secretory NOT antimicrobial</span>
-<span class="sd">	AND length 10 TO 50*. These sequences were as well subjected to a similarity filtering of 80% yielding 4279</span>
-<span class="sd">	sequences.</span>
+<span class="sd">    The AMP class consists of 1609 AMP sequences from the `APD3 &lt;http://aps.unmc.edu/AP/&gt;`_. The whole APD3 was</span>
+<span class="sd">    extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the</span>
+<span class="sd">    `CD-Hit tool &lt;http://cd-hit.org&gt;`_. The UniProt class is constructed out of extracted protein sequences from the</span>
+<span class="sd">    `UniProt Database &lt;http://uniprot.org/&gt;`_ with the search query *NOT secretory NOT antimicrobial</span>
+<span class="sd">    AND length 10 TO 50*. These sequences were as well subjected to a similarity filtering of 80% yielding 4279</span>
+<span class="sd">    sequences.</span>
 
-<span class="sd">	=================	=====</span>
-<span class="sd">	Classes				2</span>
-<span class="sd">	AMP Samples			1609</span>
-<span class="sd">	UniProt Samples		4279</span>
-<span class="sd">	Samples total		5888</span>
-<span class="sd">	Dimensionality		1</span>
-<span class="sd">	=================	=====</span>
+<span class="sd">    =================    =====</span>
+<span class="sd">    Classes                2</span>
+<span class="sd">    AMP Samples            1609</span>
+<span class="sd">    UniProt Samples        4279</span>
+<span class="sd">    Samples total        5888</span>
+<span class="sd">    Dimensionality        1</span>
+<span class="sd">    =================    =====</span>
 
-<span class="sd">	:return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
-<span class="sd">		the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
-<span class="sd">		features.</span>
-<span class="sd">	:Example:</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; from modlamp.datasets import load_AMPvsUniProt</span>
-<span class="sd">	&gt;&gt;&gt; data = load_AMPvsUniProt()</span>
-<span class="sd">	&gt;&gt;&gt; data.sequences[:5]</span>
-<span class="sd">	[&#39;GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV&#39;,</span>
-<span class="sd">	&#39;YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY&#39;,</span>
-<span class="sd">	&#39;DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC&#39;,</span>
-<span class="sd">	&#39;NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC&#39;,</span>
-<span class="sd">	&#39;VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; list(data.target_names)</span>
-<span class="sd">	[&#39;AMP&#39;, &#39;UniProt&#39;]</span>
-<span class="sd">	&gt;&gt;&gt; len(data.sequences)</span>
-<span class="sd">	5888</span>
-<span class="sd">	&gt;&gt;&gt; data.target[:10]</span>
-<span class="sd">	array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_AMPvsUniProt</span>
+<span class="sd">    &gt;&gt;&gt; data = load_AMPvsUniProt()</span>
+<span class="sd">    &gt;&gt;&gt; data.sequences[:5]</span>
+<span class="sd">    [&#39;GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV&#39;,</span>
+<span class="sd">    &#39;YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY&#39;,</span>
+<span class="sd">    &#39;DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC&#39;,</span>
+<span class="sd">    &#39;NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC&#39;,</span>
+<span class="sd">    &#39;VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(data.target_names)</span>
+<span class="sd">    [&#39;AMP&#39;, &#39;UniProt&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(data.sequences)</span>
+<span class="sd">    5888</span>
+<span class="sd">    &gt;&gt;&gt; data.target[:10]</span>
+<span class="sd">    array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AMPvsUniProt.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
-		<span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
-		<span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-		<span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-		<span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-		<span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
-		<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;AMPvsUniProt.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-			<span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-			<span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
-				 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-				 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
-<span class="c1"># TODO: add more data set loading functions</span>
+<span class="c"># TODO: add more data set loading functions</span>
 </pre></div>
 
           </div>
