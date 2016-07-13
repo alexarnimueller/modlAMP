@@ -102,6 +102,17 @@
 <span class="k">print</span> <span class="n">d50</span>
 </pre></div>
 </div>
+<p>A further example of how to load a list of own amino acid sequences from a <code class="docutils literal"><span class="pre">.FASTA</span></code> formatted file, calculate
+descriptors and save the values back to a <code class="docutils literal"><span class="pre">.csv</span></code> file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
+
+<span class="c1"># load sequences from FASTA file and calculate the pepcats cross-correlated descriptor</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/file.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="c1"># save calculated descriptor to a .csv file</span>
+<span class="n">x</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/outputfile.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
 
