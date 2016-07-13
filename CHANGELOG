@@ -17,3 +17,4 @@ v2.2.3  20.06.2016 -- random_selection() method to select a random number of seq
 v2.2.4  20.06.2016 -- filter_sequences() method to filter out specific sequences with corresponding values
 v2.2.5  22.06.2016 -- new plot method to plot amino acid distributions: plot_aa_distr()
 v2.2.6  08.07.2016 -- code refactoring according to PEP8 and simplification of core functions
+v2.3.0  13.07.2016 -- new parallel calculation of auto- and cross-correlated descriptors

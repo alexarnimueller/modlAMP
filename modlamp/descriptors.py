@@ -24,12 +24,67 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
+from sklearn.externals.joblib import Parallel, delayed
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa_more, \
     random_selection, filter_sequences
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
+
+
+def _one_autocorr(seq, window, scale):
+    """Private function used for calculating auto-correlated descriptors for 1 given sequence, window and an AA scale.
+    This function is used by the :py:func:`calculate_autocorr` method of :py:class:`PeptideDescriptor`.
+
+    :param seq: {str} amino acid sequence to calculate descriptor for
+    :param window: {int} correlation-window size
+    :param scale: {str} amino acid scale to be used to calculate descriptor
+    :return: {numpy.array} calculated descriptor data
+    """
+    m = list()  # list of lists to store translated sequence values
+    for l in range(len(seq)):  # translate AA sequence into values
+        m.append(scale[str(seq[l])])
+    # auto-correlation in defined sequence window
+    seqdesc = list()
+    for dist in range(window):  # for all correlation distances
+        for val in range(len(scale['A'])):  # for all features of the descriptor scale
+            valsum = list()
+            cntr = 0.
+            for pos in range(len(seq)):  # for every position in the sequence
+                if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence position
+                    cntr += 1  # counter to scale sum
+                    valsum.append(m[pos][val] * m[pos + dist][val])
+            seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
+    return seqdesc
+
+
+def _one_crosscorr(seq, window, scale):
+    """Private function used for calculating cross-correlated descriptors for 1 given sequence, window and an AA scale.
+    This function is used by the :py:func:`calculate_crosscorr` method of :py:class:`PeptideDescriptor`.
+
+    :param seq: {str} amino acid sequence to calculate descriptor for
+    :param window: {int} correlation-window size
+    :param scale: {str} amino acid scale to be used to calculate descriptor
+    :return: {numpy.array} calculated descriptor data
+    """
+    m = list()  # list of lists to store translated sequence values
+    for l in range(len(seq)):  # translate AA sequence into values
+        m.append(scale[str(seq[l])])
+    # auto-correlation in defined sequence window
+    seqdesc = list()
+    for val in range(len(scale['A'])):  # for all features of the descriptor scale
+        for cc in range(len(scale['A'])):  # for every feature cross correlation
+            if (val + cc) < len(scale['A']):  # check if corr distance is in range of the num of features
+                for dist in range(window):  # for all correlation distances
+                    cntr = float()
+                    valsum = list()
+                    for pos in range(len(seq)):  # for every position in the sequence
+                        if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence pos
+                            cntr += 1  # counter to scale sum
+                            valsum.append(m[pos][val] * m[pos + dist][val + cc])
+                    seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
+    return seqdesc
 
 
 class GlobalDescriptor(object):
@@ -647,27 +702,10 @@ class PeptideDescriptor(object):
         array([[  1.28442339e+00,   1.29025116e+00,   1.03240901e+00, .... ]])
         >>> amp.descriptor.shape
         (1, 133)
+
+        .. versionchanged:: v2.3.0
         """
-        desc = list()
-        for s in range(len(self.sequences)):  # iterate over all sequences
-            seq = self.sequences[s]
-            m = list()  # list of lists to store translated sequence values
-            for l in range(len(seq)):  # translate AA sequence into values
-                m.append(self.scale[str(seq[l])])
-
-            # auto-correlation in defined sequence window
-            seqdesc = list()
-            for dist in range(window):  # for all correlation distances
-                for val in range(len(self.scale['A'])):  # for all features of the descriptor scale
-                    valsum = list()
-                    cntr = 0.
-                    for pos in range(len(seq)):  # for every position in the sequence
-                        if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence position
-                            cntr += 1  # counter to scale sum
-                            valsum.append(m[pos][val] * m[pos + dist][val])
-                    seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
-
-            desc.append(seqdesc)  # store final descriptor values in "descriptor"
+        desc = Parallel(n_jobs=-1)(delayed(_one_autocorr)(seq, window, self.scale) for seq in self.sequences)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
@@ -688,29 +726,10 @@ class PeptideDescriptor(object):
         array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333, ... ]])
         >>> amp.descriptor.shape
         (1, 147)
+
+        .. versionchanged:: v2.3.0
         """
-        desc = list()
-        for s in range(len(self.sequences)):  # iterate over all sequences
-            seq = self.sequences[s]
-            m = list()  # list of lists to store translated sequence values
-            for l in range(len(seq)):  # translate AA sequence into values
-                m.append(self.scale[str(seq[l])])
-
-            # auto-correlation in defined sequence window
-            seqdesc = list()
-            for val in range(len(self.scale['A'])):  # for all features of the descriptor scale
-                for cc in range(len(self.scale['A'])):  # for every feature cross correlation
-                    if (val + cc) < len(self.scale['A']):  # check if corr distance is in range of the num of features
-                        for dist in range(window):  # for all correlation distances
-                            cntr = float()
-                            valsum = list()
-                            for pos in range(len(seq)):  # for every position in the sequence
-                                if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence pos
-                                    cntr += 1  # counter to scale sum
-                                    valsum.append(m[pos][val] * m[pos + dist][val + cc])
-                            seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
-
-            desc.append(seqdesc)  # store final descriptor values in "descriptor"
+        desc = Parallel(n_jobs=-1)(delayed(_one_crosscorr)(seq, window, self.scale) for seq in self.sequences)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.datasets &mdash; modlamp v2.2.6 documentation</title>
+    <title>modlamp.datasets &mdash; modlamp v2.3.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.2.6',
+        VERSION:     'v2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.6 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.3.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -47,7 +47,7 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.datasets</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: modlamp.datasets</span>
 
@@ -71,8 +71,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&quot;modlab&quot;</span>
-<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&quot;restructuredtext en&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 
 <div class="viewcode-block" id="Bunch"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.Bunch">[docs]</a><span class="k">class</span> <span class="nc">Bunch</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -144,13 +144,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;AMPvsTMset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AMPvsTMset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
         <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
@@ -159,7 +159,7 @@
 
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_helicalAMPset"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_helicalAMPset">[docs]</a><span class="k">def</span> <span class="nf">load_helicalAMPset</span><span class="p">():</span>
@@ -193,13 +193,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;helicalAMPset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;helicalAMPset.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
         <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
@@ -208,7 +208,7 @@
 
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_ACPvsNeg"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_ACPvsNeg">[docs]</a><span class="k">def</span> <span class="nf">load_ACPvsNeg</span><span class="p">():</span>
@@ -249,13 +249,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;ACPvsNeg.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;ACPvsNeg.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
         <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
@@ -264,7 +264,7 @@
 
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="load_AMPvsUniProt"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_AMPvsUniProt">[docs]</a><span class="k">def</span> <span class="nf">load_AMPvsUniProt</span><span class="p">():</span>
@@ -308,13 +308,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;AMPvsUniProt.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AMPvsUniProt.csv&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
         <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
@@ -323,9 +323,9 @@
 
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
-                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Sequence&#39;</span><span class="p">])</span></div>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 
-<span class="c"># TODO: add more data set loading functions</span>
+<span class="c1"># TODO: add more data set loading functions</span>
 </pre></div>
 
           </div>
@@ -362,7 +362,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.2.6 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
