@@ -25,7 +25,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, filter_aa
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, filter_aa, random_selection
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -160,6 +160,19 @@ class Random:
         """
         filter_aa(self, aminoacids=aminoacids)
 
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
+
 
 class Helices:
     """Base class for peptide sequences probable to form helices.
@@ -258,6 +271,19 @@ class Helices:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
+
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
 
 
 class Kinked:
@@ -367,6 +393,19 @@ class Kinked:
         """
         filter_aa(self, aminoacids=aminoacids)
 
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
+
 
 class Oblique(object):
     """Base class for oblique sequences with a so called linear hydrophobicity gradient.
@@ -469,6 +508,19 @@ class Oblique(object):
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
+
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
 
 
 class Centrosymmetric:
@@ -610,6 +662,19 @@ class Centrosymmetric:
         """
         filter_aa(self, aminoacids=aminoacids)
 
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
+
 
 class MixedLibrary:
     """Base class for holding a virtual peptide library.
@@ -641,19 +706,19 @@ class MixedLibrary:
         """
         self.names = list()
         self.sequences = list()
-        self.libsize = int(number)
+        self.size = int(number)
         norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
         self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
                        'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
                        'ran': float(rand) / norm, 'AMP': float(randAMP) / norm, 'nCM': float(randAMPnoCM) / norm}
-        self.nums = {'sym': int(round(float(self.libsize) * self.ratios['sym'], ndigits=0)),
-                     'asy': int(round(float(self.libsize) * self.ratios['asy'], ndigits=0)),
-                     'hel': int(round(float(self.libsize) * self.ratios['hel'], ndigits=0)),
-                     'knk': int(round(float(self.libsize) * self.ratios['knk'], ndigits=0)),
-                     'obl': int(round(float(self.libsize) * self.ratios['obl'], ndigits=0)),
-                     'ran': int(round(float(self.libsize) * self.ratios['ran'], ndigits=0)),
-                     'AMP': int(round(float(self.libsize) * self.ratios['AMP'], ndigits=0)),
-                     'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
+        self.nums = {'sym': int(round(float(self.size) * self.ratios['sym'], ndigits=0)),
+                     'asy': int(round(float(self.size) * self.ratios['asy'], ndigits=0)),
+                     'hel': int(round(float(self.size) * self.ratios['hel'], ndigits=0)),
+                     'knk': int(round(float(self.size) * self.ratios['knk'], ndigits=0)),
+                     'obl': int(round(float(self.size) * self.ratios['obl'], ndigits=0)),
+                     'ran': int(round(float(self.size) * self.ratios['ran'], ndigits=0)),
+                     'AMP': int(round(float(self.size) * self.ratios['AMP'], ndigits=0)),
+                     'nCM': int(round(float(self.size) * self.ratios['nCM'], ndigits=0))}
 
     def generate_library(self):
         """This method generates a virtual sequence library with the subtype ratios initialized in class
@@ -661,13 +726,13 @@ class MixedLibrary:
 
         :return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in
             :py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in
-            :py:attr:`libsize`.
+            :py:attr:`size`.
         :Example:
 
         >>> lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,
         randAMP=10,randAMPnoCM=5)
         >>> lib.generate_library()
-        >>> lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
+        >>> lib.size  # as duplicates were present, the library does not have the size that was sepecified
         9126
         >>> lib.sequences
         ['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
@@ -721,19 +786,19 @@ class MixedLibrary:
         for c in comb:
             self.sequences.append(c.split('_')[0])
             self.names.append(c.split('_')[1])
-        # update libsize and nums
-        self.libsize = len(self.sequences)
+        # update size and nums
+        self.size = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
     def prune_library(self, newsize):
         """Method to cut down a library to the given new size.
 
         :param newsize: new desired size of the mixed library
-        :return: adapted library with corresponding attributes (sequences, names, libsize, nums)
+        :return: adapted library with corresponding attributes (sequences, names, size, nums)
         """
         self.names = self.names[:newsize]
         self.sequences = self.sequences[:newsize]
-        self.libsize = len(self.sequences)
+        self.size = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
     def save_fasta(self, filename, names=False):
@@ -757,3 +822,18 @@ class MixedLibrary:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
+
+    def random_selection(self, num):
+        """Method to select a random number of sequences (with names and descriptors if present) out of a given
+        instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+
+        .. seealso:: :func:`modlamp.core.random_selection()`
+
+        .. versionadded:: v2.2.3
+        """
+        random_selection(self, num)
+        self.size = len(self.sequences)
+        self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class

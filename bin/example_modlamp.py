@@ -31,7 +31,7 @@ def main(libsize=1000):
 	# evaluate classifier performance as RF out of bag score
 	print("RandomForest OOB classifcation score: %.3f" % clf.oob_score_)
 
-	# generate a virtual peptide library of `libsize` sequences to screen
+	# generate a virtual peptide library of `size` sequences to screen
 	Lib = MixedLibrary(libsize)
 	Lib.generate_library()
 	print("Actual lirutal library size (without duplicates): %i" % len(Lib.sequences))

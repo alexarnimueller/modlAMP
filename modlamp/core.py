@@ -468,7 +468,7 @@ def random_selection(self, num):
 
     .. versionadded:: v2.2.3
     """
-    sel = np.random.randint(len(self.sequences), size=num)
+    sel = np.random.choice(len(self.sequences), size=num, replace=False)
     self.sequences = np.array(self.sequences)[sel].tolist()
 
     try:
@@ -476,6 +476,9 @@ def random_selection(self, num):
     except IndexError:  # if no names in self.names
         self.names = []
     try:
-        self.descriptor = self.descriptor[sel]
+        if hasattr(self, 'descriptor'):  # check, so that also instances from modlamp.sequences can be handled
+            self.descriptor = self.descriptor[sel]
+        else:
+            pass
     except IndexError:  # if no values in self.descriptor
         self.descriptor = np.empty((1, 0), dtype='float64')
