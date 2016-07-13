@@ -282,13 +282,13 @@
 
 <span class="sd">    &gt;&gt;&gt; h.sequences</span>
 <span class="sd">    [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; h.mutate_AA(3,1)</span>
+<span class="sd">    &gt;&gt;&gt; h.mutate_AA(3, 1.)</span>
 <span class="sd">    &gt;&gt;&gt; h.sequences</span>
-<span class="sd">    [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">    [&#39;NAKAARAWIK&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
         <span class="n">mutate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span>
-                                  <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span><span class="p">])</span>  <span class="c1"># mutate: yes or no? probability = mutation probability</span>
+                                  <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">prob</span><span class="p">)])</span>  <span class="c1"># mutate: yes or no? probability = mutation probability</span>
         <span class="k">if</span> <span class="n">mutate</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
             <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -439,7 +439,8 @@
 
 <span class="sd">    :param values: List/array of values to filter the attribute :py:attr:`descriptor` for</span>
 <span class="sd">    :param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
-<span class="sd">    :return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
+<span class="sd">    :return: descriptor matrix and updated sequences containing only entries with descriptor values given in</span>
+<span class="sd">        **values** in the corresponding attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>  <span class="c1"># for all the features in self.descriptor</span>
@@ -467,7 +468,7 @@
 <span class="sd">    descriptor instance.</span>
 
 <span class="sd">    :param sequences: list of sequences to be filtered out of the whole instance, including corresponding data</span>
-<span class="sd">    :return: updated instance</span>
+<span class="sd">    :return: updated instance without filtered sequences</span>
 <span class="sd">    :Example:</span>
 
 <span class="sd">    &gt;&gt;&gt; sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
@@ -482,7 +483,7 @@
 <span class="sd">    [&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>  <span class="c1"># check if sequences is only one sequence string and convert it to a list</span>
         <span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sequences</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>  <span class="c1"># get indices of queried sequences</span>
         <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>

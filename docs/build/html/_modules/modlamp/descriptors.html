@@ -158,9 +158,10 @@
 
 <div class="viewcode-block" id="GlobalDescriptor.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the</span>
-<span class="sd">            descriptor values for.</span>
-<span class="sd">        :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values</span>
+<span class="sd">        :param seqs: a ``.fasta`` file with sequences, a list of sequences or a single sequence as string to calculate</span>
+<span class="sd">            the descriptor values for.</span>
+<span class="sd">        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names`, :py:attr:`descriptor` and</span>
+<span class="sd">            :py:attr:`target`.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; P = GlobalDescriptor(&#39;KLAKLAKKLAKLAK&#39;)</span>
@@ -211,18 +212,19 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
-<span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
-<span class="sd">        Cterm is added to the pos_pks dictionary.</span>
-<span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
-<span class="sd">        For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
+    <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR</span>
+<span class="sd">        function. The method used is first described by Bjellqvist. In the case of amidation, the value for the</span>
+<span class="sd">        &#39;Cterm&#39; pKa is 15 (and Cterm is added to the pos_pks dictionary.</span>
+<span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics,</span>
+<span class="sd">        96th edition). For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module</span>
+<span class="sd">        :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
-<span class="sd">        pos_pks = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
-<span class="sd">        neg_pks = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+<span class="sd">        **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
 
-<span class="sd">        :param pH: {float} pH at which to calculate peptide charge.</span>
+<span class="sd">        **neg_pKs** = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+
+<span class="sd">        :param ph: {float} pH at which to calculate peptide charge.</span>
 <span class="sd">        :param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
 <span class="sd">        :return: {array} descriptor values in the attribute :py:attr:`descriptor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -239,12 +241,12 @@
         <span class="n">aa_content</span><span class="p">[</span><span class="s1">&#39;Cterm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">pos_charge</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">aa</span><span class="p">,</span> <span class="n">pK</span> <span class="ow">in</span> <span class="n">pos_pks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">cr</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">pK</span> <span class="o">-</span> <span class="n">pH</span><span class="p">)</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">pK</span> <span class="o">-</span> <span class="n">ph</span><span class="p">)</span>
             <span class="n">partial_charge</span> <span class="o">=</span> <span class="n">cr</span> <span class="o">/</span> <span class="p">(</span><span class="n">cr</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
             <span class="n">pos_charge</span> <span class="o">+=</span> <span class="n">aa_content</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">*</span> <span class="n">partial_charge</span>
         <span class="n">neg_charge</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">aa</span><span class="p">,</span> <span class="n">pK</span> <span class="ow">in</span> <span class="n">neg_pks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">cr</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">pH</span> <span class="o">-</span> <span class="n">pK</span><span class="p">)</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">ph</span> <span class="o">-</span> <span class="n">pK</span><span class="p">)</span>
             <span class="n">partial_charge</span> <span class="o">=</span> <span class="n">cr</span> <span class="o">/</span> <span class="p">(</span><span class="n">cr</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
             <span class="n">neg_charge</span> <span class="o">+=</span> <span class="n">aa_content</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">*</span> <span class="n">partial_charge</span>
         <span class="k">return</span> <span class="n">pos_charge</span> <span class="o">-</span> <span class="n">neg_charge</span>
@@ -254,10 +256,10 @@
 <span class="sd">        Method to overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
 
-<span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
-<span class="sd">        Cterm is added to the pos_pKs dictionary.</span>
-<span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
-<span class="sd">        For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.</span>
+<span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15</span>
+<span class="sd">        (and Cterm is added to the pos_pKs dictionary. The pKa scale is extracted from: http://www.hbcpnetbase.com/</span>
+<span class="sd">        (CRC Handbook of Chemistry and Physics, 96th edition). For further references, see the `Biopython</span>
+<span class="sd">        &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.</span>
 
 <span class="sd">        :param ph: {float} pH at which to calculate peptide charge.</span>
 <span class="sd">        :param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
@@ -301,10 +303,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.isoelectric_point"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">[docs]</a>    <span class="k">def</span> <span class="nf">isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.</span>
-<span class="sd">        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
-<span class="sd">        The method used is based on the IsoelectricPoint module in `Biopython &lt;http://biopython.org/&gt;`_</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.</span>
+<span class="sd">        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics,</span>
+<span class="sd">        96th edition). The method used is based on the IsoelectricPoint module in `Biopython &lt;http://biopython.org/&gt;`_</span>
 <span class="sd">        module :mod:`Bio.SeqUtils.ProtParam`.</span>
 
 <span class="sd">        :param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
@@ -356,10 +357,10 @@
                 <span class="n">charge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">charge</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="n">ph1</span> <span class="o">=</span> <span class="n">ph</span>
-                <span class="c1"># charge1 = charge</span>
+                    <span class="c1"># charge1 = charge</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ph2</span> <span class="o">=</span> <span class="n">ph</span>
-                <span class="c1"># charge2 = charge</span>
+                    <span class="c1"># charge2 = charge</span>
             <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ph</span><span class="p">)</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
@@ -368,8 +369,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.instability_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">[docs]</a>    <span class="k">def</span> <span class="nf">instability_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        The instability index is a prediction of protein stability based on the amino acid composition.</span>
 <span class="sd">        ([1] K. Guruprasad, B. V Reddy, M. W. Pandit, Protein Eng. 1990, 4, 155–161.)</span>
 
@@ -387,9 +387,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.aromaticity"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">[docs]</a>    <span class="k">def</span> <span class="nf">aromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.</span>
-<span class="sd">        According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.</span>
+<span class="sd">        According to Lobry, 1994, it is simply the relative frequency of the amino acids **Phe + Trp + Tyr**.</span>
 
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
@@ -405,8 +404,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.aliphatic_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">[docs]</a>    <span class="k">def</span> <span class="nf">aliphatic_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        According to Ikai, 1980, the aliphatic index is a measure of thermal stability of proteins and is dependant</span>
 <span class="sd">        on the relative volume occupied by aliphatic amino acids (A,I,L &amp; V).</span>
 <span class="sd">        ([1] A. Ikai, J. Biochem. 1980, 88, 1895–1898.)</span>
@@ -427,8 +425,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.boman_index"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index">[docs]</a>    <span class="k">def</span> <span class="nf">boman_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by</span>
 <span class="sd">        summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by</span>
 <span class="sd">        dividing by    sequence length.</span>
@@ -455,8 +452,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.hydrophobic_ratio"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">hydrophobic_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the</span>
+        <span class="sd">&quot;&quot;&quot;Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the</span>
 <span class="sd">        relative frequency of the amino acids **A,C,F,I,L,M &amp; V**.</span>
 
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
@@ -485,7 +481,7 @@
 
 <span class="sd">        &gt;&gt;&gt; d.descriptor  # peptide descriptor instance from before</span>
 <span class="sd">        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
-<span class="sd">        &gt;&gt;&gt; d.feature_scaling(type=&#39;minmax&#39;,fit=True)</span>
+<span class="sd">        &gt;&gt;&gt; d.feature_scaling(stype=&#39;minmax&#39;,fit=True)</span>
 <span class="sd">        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
@@ -613,7 +609,8 @@
 
 <span class="sd">        :param outputfile: {str} filename of the output FASTA file</span>
 <span class="sd">        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
-<span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
+<span class="sd">        :return: list of sequences in :py:attr:`sequences` with corresponding sequence names in the attribute</span>
+<span class="sd">            :py:attr:`names`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div></div>
 
@@ -720,10 +717,12 @@
 
 <div class="viewcode-block" id="PeptideDescriptor.read_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.read_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">read_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and</span>
-<span class="sd">        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.</span>
+<span class="sd">        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a ``.FASTA``</span>
+<span class="sd">        file.</span>
 
-<span class="sd">        :param filename: .fasta file with sequences and headers to read</span>
-<span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in self.names</span>
+<span class="sd">        :param filename: ``.fasta`` file with sequences and headers to read</span>
+<span class="sd">        :return: list of sequences in :py:attr:`sequences` with corresponding sequence names in the</span>
+<span class="sd">            attribute :py:attr:`names`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 

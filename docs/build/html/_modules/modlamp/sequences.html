@@ -181,9 +181,9 @@
 
 <span class="sd">        &gt;&gt;&gt; r.sequences</span>
 <span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; r.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; r.mutate_AA(3, 1.)</span>
 <span class="sd">        &gt;&gt;&gt; r.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">        [&#39;NAKAARAWIK&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -269,9 +269,9 @@
 
 <span class="sd">        &gt;&gt;&gt; h.sequences</span>
 <span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; h.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; h.mutate_AA(3, 1.)</span>
 <span class="sd">        &gt;&gt;&gt; h.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">        [&#39;NAKAARAWIK&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -377,9 +377,9 @@
 
 <span class="sd">        &gt;&gt;&gt; k.sequences</span>
 <span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; k.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; k.mutate_AA(3, 1.)</span>
 <span class="sd">        &gt;&gt;&gt; k.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">        [&#39;NAKAARAWIK&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -480,9 +480,9 @@
 
 <span class="sd">        &gt;&gt;&gt; o.sequences</span>
 <span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; o.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; o.mutate_AA(3, 1.)</span>
 <span class="sd">        &gt;&gt;&gt; o.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">        [&#39;NAKAARAWIK&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -620,9 +620,9 @@
 
 <span class="sd">        &gt;&gt;&gt; s.sequences</span>
 <span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; s.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; s.mutate_AA(3, 1.)</span>
 <span class="sd">        &gt;&gt;&gt; s.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+<span class="sd">        [&#39;NAKAARAWIK&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -730,24 +730,31 @@
 <span class="sd">        &#39;ran&#39;: 2326,</span>
 <span class="sd">        &#39;sym&#39;: 1163}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># generate sequences for every sublibrary</span>
         <span class="n">Cs</span> <span class="o">=</span> <span class="n">Centrosymmetric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">])</span>
         <span class="n">Cs</span><span class="o">.</span><span class="n">generate_symmetric</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;sym&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Cs</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">Ca</span> <span class="o">=</span> <span class="n">Centrosymmetric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">])</span>
         <span class="n">Ca</span><span class="o">.</span><span class="n">generate_asymmetric</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;asy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ca</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">Helices</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">])</span>
         <span class="n">H</span><span class="o">.</span><span class="n">generate_helices</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;hel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">K</span> <span class="o">=</span> <span class="n">Kinked</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">])</span>
         <span class="n">K</span><span class="o">.</span><span class="n">generate_kinked</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;knk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">K</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">O</span> <span class="o">=</span> <span class="n">Oblique</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">])</span>
         <span class="n">O</span><span class="o">.</span><span class="n">generate_oblique</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;obl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">O</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">])</span>
         <span class="n">R</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="s1">&#39;rand&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;ran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">Ra</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;AMP&#39;</span><span class="p">])</span>
         <span class="n">Ra</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="s1">&#39;AMP&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;AMP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ra</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="n">Rc</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">])</span>
         <span class="n">Rc</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="s1">&#39;AMPnoCM&#39;</span><span class="p">)</span>
-
-        <span class="c1"># TODO: update libnums according to real numbers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="s1">&#39;nCM&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rc</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 
         <span class="n">sequences</span> <span class="o">=</span> <span class="n">Cs</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Ca</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">H</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">K</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">O</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">R</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> \
                     <span class="n">Ra</span><span class="o">.</span><span class="n">sequences</span> <span class="o">+</span> <span class="n">Rc</span><span class="o">.</span><span class="n">sequences</span>

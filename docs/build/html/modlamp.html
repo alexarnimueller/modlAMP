@@ -137,10 +137,11 @@ the <strong>methods</strong> linked below:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
-descriptor values for.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a <code class="docutils literal"><span class="pre">.fasta</span></code> file with sequences, a list of sequences or a single sequence as string to calculate
+the descriptor values for.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code> and
+<code class="xref py py-attr docutils literal"><span class="pre">target</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -200,10 +201,9 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
 Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</p>
-<p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15 (and
-Cterm is added to the pos_pKs dictionary.
-The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
-For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.</p>
+<p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15
+(and Cterm is added to the pos_pKs dictionary. The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a>
+(CRC Handbook of Chemistry and Physics, 96th edition). For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -254,8 +254,8 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <dt id="modlamp.descriptors.GlobalDescriptor.isoelectric_point">
 <code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
-The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
+The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics,
+96th edition). The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
 module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -302,7 +302,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <dt id="modlamp.descriptors.GlobalDescriptor.aromaticity">
 <code class="descname">aromaticity</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.aromaticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.aromaticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the aromaticity of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.</p>
+According to Lobry, 1994, it is simply the relative frequency of the amino acids <strong>Phe + Trp + Tyr</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -400,7 +400,7 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span>  <span class="c1"># peptide descriptor instance from before</span>
 <span class="go">array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">feature_scaling</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;minmax&#39;</span><span class="p">,</span><span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">feature_scaling</span><span class="p">(</span><span class="n">stype</span><span class="o">=</span><span class="s1">&#39;minmax&#39;</span><span class="p">,</span><span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="go">array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 </pre></div>
 </div>
@@ -586,7 +586,8 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of sequences in self.sequences with corresponding sequence names in the attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with corresponding sequence names in the attribute
+<code class="xref py py-attr docutils literal"><span class="pre">names</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -794,14 +795,16 @@ amino acid scale values of the scale name in <code class="xref py py-attr docuti
 <dt id="modlamp.descriptors.PeptideDescriptor.read_fasta">
 <code class="descname">read_fasta</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.read_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.read_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for loading sequences from a FASTA formatted file into the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and
-<code class="xref py py-attr docutils literal"><span class="pre">names</span></code>. This method is used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">PeptideDescriptor</span></code></a> if the input is a FASTA file.</p>
+<code class="xref py py-attr docutils literal"><span class="pre">names</span></code>. This method is used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">PeptideDescriptor</span></code></a> if the input is a <code class="docutils literal"><span class="pre">.FASTA</span></code>
+file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; .fasta file with sequences and headers to read</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; <code class="docutils literal"><span class="pre">.fasta</span></code> file with sequences and headers to read</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in self.names</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with corresponding sequence names in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">names</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -1557,9 +1560,9 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -1682,9 +1685,9 @@ The remaining empty spots are filled up by hydrophobic AAs.</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -1834,9 +1837,9 @@ leading to a kink in the hydrophobic face of the amphipathic helices.</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -1984,9 +1987,9 @@ tilted/oblique in membrane environment.</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -2158,9 +2161,9 @@ hydrophobic    moment.</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -3337,9 +3340,9 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+<span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3577,7 +3580,8 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">descriptor matrix and updated sequences containing only entries with descriptor values given in
+<strong>values</strong> in the corresponding attributes.</p>
 </td>
 </tr>
 </tbody>
@@ -3596,7 +3600,7 @@ descriptor instance.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; list of sequences to be filtered out of the whole instance, including corresponding data</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance without filtered sequences</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>

@@ -233,13 +233,13 @@ def mutate_AA(self, nr, prob):
 
     >>> h.sequences
     ['IAKAGRAIIK']
-    >>> h.mutate_AA(3,1)
+    >>> h.mutate_AA(3, 1.)
     >>> h.sequences
-    ['NAKAGRAWIK']
+    ['NAKAARAWIK']
     """
     for s in range(len(self.sequences)):
         mutate = np.random.choice([1, 0], 1,
-                                  p=[prob, 1 - prob])  # mutate: yes or no? probability = mutation probability
+                                  p=[prob, 1 - float(prob)])  # mutate: yes or no? probability = mutation probability
         if mutate == 1:
             seq = list(self.sequences[s])
             cnt = 0
@@ -390,7 +390,8 @@ def filter_values(self, values, operator='=='):
 
     :param values: List/array of values to filter the attribute :py:attr:`descriptor` for
     :param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
-    :return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+    :return: descriptor matrix and updated sequences containing only entries with descriptor values given in
+        **values** in the corresponding attributes.
     """
     dim = self.descriptor.shape[1]
     for d in range(dim):  # for all the features in self.descriptor
@@ -418,7 +419,7 @@ def filter_sequences(self, sequences):
     descriptor instance.
 
     :param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
-    :return: updated instance
+    :return: updated instance without filtered sequences
     :Example:
 
     >>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
@@ -433,7 +434,7 @@ def filter_sequences(self, sequences):
     ['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
     """
     indices = list()
-    if isinstance(sequences, basestring):
+    if isinstance(sequences, basestring):  # check if sequences is only one sequence string and convert it to a list
         sequences = [sequences]
     for s in sequences:  # get indices of queried sequences
         indices.append(self.sequences.index(s))

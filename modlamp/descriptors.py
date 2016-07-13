@@ -109,9 +109,10 @@ class GlobalDescriptor(object):
 
     def __init__(self, seqs):
         """
-        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
-            descriptor values for.
-        :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
+        :param seqs: a ``.fasta`` file with sequences, a list of sequences or a single sequence as string to calculate
+            the descriptor values for.
+        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names`, :py:attr:`descriptor` and
+            :py:attr:`target`.
         :Example:
 
         >>> P = GlobalDescriptor('KLAKLAKKLAKLAK')
@@ -162,18 +163,19 @@ class GlobalDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def _charge(self, seq, pH=7.0, amide=False):
-        """
-        Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
-        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
-        Cterm is added to the pos_pks dictionary.
-        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
-        For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
+    def _charge(self, seq, ph=7.0, amide=False):
+        """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR
+        function. The method used is first described by Bjellqvist. In the case of amidation, the value for the
+        'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
+        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics,
+        96th edition). For further references, see the `Biopython <http://biopython.org/>`_ module
+        :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
-        pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pks = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
-        :param pH: {float} pH at which to calculate peptide charge.
+        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+
+        :param ph: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
         :return: {array} descriptor values in the attribute :py:attr:`descriptor
         """
@@ -190,12 +192,12 @@ class GlobalDescriptor(object):
         aa_content['Cterm'] = 1.0
         pos_charge = 0.0
         for aa, pK in pos_pks.items():
-            cr = 10 ** (pK - pH)
+            cr = 10 ** (pK - ph)
             partial_charge = cr / (cr + 1.0)
             pos_charge += aa_content[aa] * partial_charge
         neg_charge = 0.0
         for aa, pK in neg_pks.items():
-            cr = 10 ** (pH - pK)
+            cr = 10 ** (ph - pK)
             partial_charge = cr / (cr + 1.0)
             neg_charge += aa_content[aa] * partial_charge
         return pos_charge - neg_charge
@@ -205,10 +207,10 @@ class GlobalDescriptor(object):
         Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
         Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
-        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
-        Cterm is added to the pos_pKs dictionary.
-        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
-        For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
+        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
+        (and Cterm is added to the pos_pKs dictionary. The pKa scale is extracted from: http://www.hbcpnetbase.com/
+        (CRC Handbook of Chemistry and Physics, 96th edition). For further references, see the `Biopython
+        <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
 
         :param ph: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -252,10 +254,9 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def isoelectric_point(self, amide=False, append=False):
-        """
-        Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
-        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
-        The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
+        """Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
+        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics,
+        96th edition). The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
         module :mod:`Bio.SeqUtils.ProtParam`.
 
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -307,10 +308,10 @@ class GlobalDescriptor(object):
                 charge = self._charge(seq, ph, amide)
                 if charge > 0.0:
                     ph1 = ph
-                # charge1 = charge
+                    # charge1 = charge
                 else:
                     ph2 = ph
-                # charge2 = charge
+                    # charge2 = charge
             desc.append(ph)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
@@ -319,8 +320,7 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def instability_index(self, append=False):
-        """
-        Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.
+        """Method to calculate the instability of every sequence in the attribute :py:attr:`sequences`.
         The instability index is a prediction of protein stability based on the amino acid composition.
         ([1] K. Guruprasad, B. V Reddy, M. W. Pandit, Protein Eng. 1990, 4, 155–161.)
 
@@ -338,9 +338,8 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def aromaticity(self, append=False):
-        """
-        Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.
-        According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.
+        """Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.
+        According to Lobry, 1994, it is simply the relative frequency of the amino acids **Phe + Trp + Tyr**.
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
@@ -356,8 +355,7 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def aliphatic_index(self, append=False):
-        """
-        Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.
+        """Method to calculate the aliphatic index of every sequence in the attribute :py:attr:`sequences`.
         According to Ikai, 1980, the aliphatic index is a measure of thermal stability of proteins and is dependant
         on the relative volume occupied by aliphatic amino acids (A,I,L & V).
         ([1] A. Ikai, J. Biochem. 1980, 88, 1895–1898.)
@@ -378,8 +376,7 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def boman_index(self, append=False):
-        """
-        Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
+        """Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
         According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
         summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
         dividing by    sequence length.
@@ -406,8 +403,7 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def hydrophobic_ratio(self, append=False):
-        """
-        Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the
+        """Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the
         relative frequency of the amino acids **A,C,F,I,L,M & V**.
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
@@ -436,7 +432,7 @@ class GlobalDescriptor(object):
 
         >>> d.descriptor  # peptide descriptor instance from before
         array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> d.feature_scaling(type='minmax',fit=True)
+        >>> d.feature_scaling(stype='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         if stype == 'standard':
@@ -564,7 +560,8 @@ class GlobalDescriptor(object):
 
         :param outputfile: {str} filename of the output FASTA file
         :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
-        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
+        :return: list of sequences in :py:attr:`sequences` with corresponding sequence names in the attribute
+            :py:attr:`names`
         """
         save_fasta(self, outputfile, names=names)
 
@@ -671,10 +668,12 @@ class PeptideDescriptor(object):
 
     def read_fasta(self, filename):
         """Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
-        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
+        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a ``.FASTA``
+        file.
 
-        :param filename: .fasta file with sequences and headers to read
-        :return: list of sequences in self.sequences with corresponding sequence names in self.names
+        :param filename: ``.fasta`` file with sequences and headers to read
+        :return: list of sequences in :py:attr:`sequences` with corresponding sequence names in the
+            attribute :py:attr:`names`
         """
         self.sequences, self.names = read_fasta(filename)
 

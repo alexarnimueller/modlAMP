@@ -132,9 +132,9 @@ class Random:
 
         >>> r.sequences
         ['IAKAGRAIIK']
-        >>> r.mutate_AA(3,1)
+        >>> r.mutate_AA(3, 1.)
         >>> r.sequences
-        ['NAKAGRAWIK']
+        ['NAKAARAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -220,9 +220,9 @@ class Helices:
 
         >>> h.sequences
         ['IAKAGRAIIK']
-        >>> h.mutate_AA(3,1)
+        >>> h.mutate_AA(3, 1.)
         >>> h.sequences
-        ['NAKAGRAWIK']
+        ['NAKAARAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -328,9 +328,9 @@ class Kinked:
 
         >>> k.sequences
         ['IAKAGRAIIK']
-        >>> k.mutate_AA(3,1)
+        >>> k.mutate_AA(3, 1.)
         >>> k.sequences
-        ['NAKAGRAWIK']
+        ['NAKAARAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -431,9 +431,9 @@ class Oblique(object):
 
         >>> o.sequences
         ['IAKAGRAIIK']
-        >>> o.mutate_AA(3,1)
+        >>> o.mutate_AA(3, 1.)
         >>> o.sequences
-        ['NAKAGRAWIK']
+        ['NAKAARAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -571,9 +571,9 @@ class Centrosymmetric:
 
         >>> s.sequences
         ['IAKAGRAIIK']
-        >>> s.mutate_AA(3,1)
+        >>> s.mutate_AA(3, 1.)
         >>> s.sequences
-        ['NAKAGRAWIK']
+        ['NAKAARAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -681,24 +681,31 @@ class MixedLibrary:
         'ran': 2326,
         'sym': 1163}
         """
+        # generate sequences for every sublibrary
         Cs = Centrosymmetric(self.nums['sym'])
         Cs.generate_symmetric()
+        self.nums['sym'] = len(Cs.sequences)
         Ca = Centrosymmetric(self.nums['asy'])
         Ca.generate_asymmetric()
+        self.nums['asy'] = len(Ca.sequences)
         H = Helices(7, 28, self.nums['hel'])
         H.generate_helices()
+        self.nums['hel'] = len(H.sequences)
         K = Kinked(7, 28, self.nums['knk'])
         K.generate_kinked()
+        self.nums['knk'] = len(K.sequences)
         O = Oblique(7, 28, self.nums['obl'])
         O.generate_oblique()
+        self.nums['obl'] = len(O.sequences)
         R = Random(7, 28, self.nums['ran'])
         R.generate_sequences('rand')
+        self.nums['ran'] = len(R.sequences)
         Ra = Random(7, 28, self.nums['AMP'])
         Ra.generate_sequences('AMP')
+        self.nums['AMP'] = len(Ra.sequences)
         Rc = Random(7, 28, self.nums['nCM'])
         Rc.generate_sequences('AMPnoCM')
-
-        # TODO: update libnums according to real numbers
+        self.nums['nCM'] = len(Rc.sequences)
 
         sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + \
                     Ra.sequences + Rc.sequences
