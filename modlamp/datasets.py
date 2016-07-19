@@ -230,11 +230,11 @@ def load_AMPvsUniProt():
     sequences.
 
     =================    =====
-    Classes                2
-    AMP Samples            1609
-    UniProt Samples        4279
+    Classes                 2
+    AMP Samples          1609
+    UniProt Samples      4279
     Samples total        5888
-    Dimensionality        1
+    Dimensionality          1
     =================    =====
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
@@ -275,5 +275,3 @@ def load_AMPvsUniProt():
     return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
-
-# TODO: add more data set loading functions
