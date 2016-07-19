@@ -53,3 +53,15 @@ For documentation of the used modules see the the `Documentation <modlamp.html>`
     # print the 50 top ranked predictions with their predicted probabilities
     print d50
 
+A further example of how to load a list of own amino acid sequences from a ``.FASTA`` formatted file, calculate
+descriptors and save the values back to a ``.csv`` file.
+
+.. code-block:: python
+
+    from modlamp.descriptors import PeptideDescriptor
+
+    # load sequences from FASTA file and calculate the pepcats cross-correlated descriptor
+    x = PeptideDescriptor('Location/of/your/file.fasta', 'pepcats')
+    x.calculate_crosscorr(window=7)
+    # save calculated descriptor to a .csv file
+    x.save_descriptor('Location/of/your/outputfile.csv', delimiter=',')

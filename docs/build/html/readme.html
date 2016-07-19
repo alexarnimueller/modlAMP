@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1. README &mdash; modlamp v2.2.5 documentation</title>
+    <title>1. README &mdash; modlamp v2.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.5',
+        VERSION:     'v2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.5 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.3.0 documentation" href="index.html" />
     <link rel="next" title="2. Package Documentation" href="modlamp.html" />
     <link rel="prev" title="Welcome to modlamp’s documentation!" href="index.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to modlamp’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -66,7 +66,8 @@ installing modlAMP. It will take care of all necessairy requirements and version
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are reading this on Gitlab, several links like the <em>example script</em> will not work. Please clone the
-repository to your local machine and consider the documentation in <em>modlAMP/docs/build/html/index.html</em>.</p>
+repository to your local machine and consider the documentation in <code class="docutils literal"><span class="pre">modlAMP/docs/build/html/index.html</span></code>.
+Use <code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;gitlab.ethz.ch:CADD/modlAMP.git</span></code> to clone modlAMP to your current working directory.</p>
 </div>
 <div class="section" id="installation">
 <h2>1.1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -81,6 +82,7 @@ make doc
 </div>
 <div class="section" id="usage">
 <h2>1.2. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>For a detailed description of all modules see the documentation in <code class="docutils literal"><span class="pre">modlAMP/docs/build/html/index.html</span></code>.</p>
 <div class="section" id="importing-modules">
 <h3>1.2.1. Importing modules<a class="headerlink" href="#importing-modules" title="Permalink to this headline">¶</a></h3>
 <p>After installation, you should be able to import and use the different modules like shown below:</p>
@@ -138,7 +140,7 @@ amino acid scales. For further information consider the docs for <a class="refer
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -168,7 +170,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -183,7 +185,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>Further plotting methods like <strong>helical wheel plots</strong> are available. See the documentation for the
 <a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
 </div>
@@ -316,7 +318,7 @@ for <code class="xref py py-func docutils literal"><span class="pre">load_helica
         <li class="right" >
           <a href="index.html" title="Welcome to modlamp’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

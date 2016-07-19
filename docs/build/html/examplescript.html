@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. modlAMP example script &mdash; modlamp v2.2.5 documentation</title>
+    <title>3. modlAMP example script &mdash; modlamp v2.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.2.5',
+        VERSION:     'v2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.2.5 documentation" href="index.html" />
-    <link rel="next" title="4. TODOs" href="todo.html" />
+    <link rel="top" title="modlamp v2.3.0 documentation" href="index.html" />
+    <link rel="next" title="4. Contribution Guide" href="contributing.html" />
     <link rel="prev" title="2. Package Documentation" href="modlamp.html" /> 
   </head>
   <body role="document">
@@ -38,12 +38,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="todo.html" title="4. TODOs"
+          <a href="contributing.html" title="4. Contribution Guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -102,6 +102,17 @@
 <span class="k">print</span> <span class="n">d50</span>
 </pre></div>
 </div>
+<p>A further example of how to load a list of own amino acid sequences from a <code class="docutils literal"><span class="pre">.FASTA</span></code> formatted file, calculate
+descriptors and save the values back to a <code class="docutils literal"><span class="pre">.csv</span></code> file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
+
+<span class="c1"># load sequences from FASTA file and calculate the pepcats cross-correlated descriptor</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/file.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="c1"># save calculated descriptor to a .csv file</span>
+<span class="n">x</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/outputfile.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -117,8 +128,8 @@
   <p class="topless"><a href="modlamp.html"
                         title="previous chapter">2. Package Documentation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="todo.html"
-                        title="next chapter">4. TODOs</a></p>
+  <p class="topless"><a href="contributing.html"
+                        title="next chapter">4. Contribution Guide</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -153,12 +164,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="todo.html" title="4. TODOs"
+          <a href="contributing.html" title="4. Contribution Guide"
              >next</a> |</li>
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.2.5 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

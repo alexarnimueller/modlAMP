@@ -1,5 +1,5 @@
-Contribution Guide To modlAMP
-=============================
+Contribution Guide
+==================
 
 **Everyone is welcome to contribute!**
 
@@ -39,5 +39,7 @@ Git Workflow To Contribute
 3) change to your new branch: ``git checkout <branch-name>``
 4) start implementing your amazing new feature!
 5) regularly ``git add`` and ``git commit``
-6) if you feel like your amazing new feature is ready to be used by others, push your branch back to the origin: ``git push origin <branch-name>``
-7) if your finished implementing the feature, create a **merge request** on the GitLab server to include your branch into the master branch.
+6) if you feel like your amazing new feature is ready to be used by others, push your branch back to the origin:
+    ``git push origin <branch-name>``
+7) if your finished implementing the feature, create a **merge request** on the GitLab server to include your branch
+    into the master branch.

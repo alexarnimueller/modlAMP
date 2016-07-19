@@ -10,10 +10,12 @@ For basic instructions how to use the package, see Usage_ or this `example scrip
 .. warning::
     You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
     installing modlAMP. It will take care of all necessairy requirements and versions.
+        
 
 .. note::
     If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
-    repository to your local machine and consider the documentation in *modlAMP/docs/build/html/index.html*.
+    repository to your local machine and consider the documentation in ``modlAMP/docs/build/html/index.html``.
+    Use ``git clone git@gitlab.ethz.ch:CADD/modlAMP.git`` to clone modlAMP to your current working directory.
 
 
 Installation
@@ -30,6 +32,8 @@ When pip is installed, run the following command when located in the modlAMP pac
 
 Usage
 *****
+
+For a detailed description of all modules see the documentation in ``modlAMP/docs/build/html/index.html``.
 
 Importing modules
 -----------------
