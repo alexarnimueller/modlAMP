@@ -13,6 +13,7 @@ import re
 
 import numpy as np
 from Bio.SeqIO.FastaIO import FastaIterator
+from scipy.spatial import distance
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -198,7 +199,7 @@ def read_fasta(inputfile):
     sequences = list()  # list for storing sequences
     with open(inputfile) as handle:
         for record in FastaIterator(handle):
-            names.append(record.id)
+            names.append(record.description)
             sequences.append(str(record.seq))
     return sequences, names
 
@@ -294,23 +295,37 @@ def aminoacids():
     AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     # AA probability from the APD3 database:
     prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
-                     0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
+                0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
     # AA probability from the APD2 database without Cys and Met (synthesis reasons)
     prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
-                         0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
-                         0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
-                         0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
-                         0.02012777777777778, 0.02902777777777778]
+                    0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
+                    0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
+                    0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
+                    0.02012777777777778, 0.02902777777777778]
     # equal AA probabilities:
     prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
-                      0.05, 0.05, 0.05, 0.05]
+                 0.05, 0.05, 0.05, 0.05]
     # equal AA probabilities but 0 for Cys and Met:
     prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
-                          0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
-                          0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
-                          0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
-                          0.05555555555, 0.05555555555]
+                     0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+                     0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+                     0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+                     0.05555555555, 0.05555555555]
     return sequences, AA_hyd, AA_basic, AA_anchor, AAs, prob_AMP, prob_AMPnoCM, prob_rand, prob_randnoCM
+
+
+def template(self, lenmin, lenmax, seqnum):
+    """
+	Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
+
+	:param lenmin: minimal length of the generated sequences
+	:param lenmax: maximal length of the generated sequences
+	:param seqnum: number of sequences to generate
+	:return: all needed instances (involving numbers and lengths) of the classes in this package
+	"""
+    self.lenmin = int(lenmin)
+    self.lenmax = int(lenmax)
+    self.seqnum = int(seqnum)
 
 
 def clean(self):
@@ -321,51 +336,53 @@ def clean(self):
     """
     self.names = []
     self.sequences = []
-    self.descriptor = []
+    self.descriptor = np.array([])
+
+
+def filter_duplicates(self):
+    """
+    Method to filter duplicates in the sequences from the class attribute
+    :py:attr:`sequences`.
+
+    :return: filtered sequence list in the attribute :py:attr:`sequences`.
+    """
+    seq_list = [x for x in set(self.sequences)]  # remove duplicates
+    self.sequences = seq_list
 
 
 def filter_unnatural(self):
     """
     Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
-    amino acids [B,J,O,U,X,Z]. **Dublicates** are removed as well.
+    amino acids [B,J,O,U,X,Z]. **Duplicates** are removed as well.
 
-    :return: Filtered sequence list in the attribute :py:attr:`sequences`.
+    :return: filtered sequence list in the attribute :py:attr:`sequences`.
     """
-    seq_list = [x for x in set(self.sequences)]  # remove duplicates
     pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z']))
+    seqs = []
+    desc = []
+    names = []
 
-    lst = []
-
-    for s in seq_list:
+    for i, s in enumerate(self.sequences):
         if not pattern.search(s):
-            lst.append(s)
+            seqs.append(s)
+            if hasattr(self, 'descriptor') and self.descriptor.size:
+                desc.append(self.descriptor[i])
+            if hasattr(self, 'names') and self.names:
+                names.append(self.names[i])
 
-    self.sequences = lst
+    self.sequences = seqs
+    self.names = names
+    self.descriptor = np.array(desc)
 
 
 def filter_aa(self, aminoacids):
-    """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-
-    :param aminoacids: {list of str} list of amino acids to be filtered
-    :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-    """
-    pattern = re.compile('|'.join(aminoacids))
-    seqs = []
-
-    for s in self.sequences:
-        if not pattern.search(s):
-            seqs.append(s)
-
-    self.sequences = seqs
-
-
-def filter_aa_more(self, aminoacids):
     """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
     argument list *aminoacids*.
 
     :param aminoacids: list of amino acids to be filtered
     :return: filtered list of sequences, descriptor values and names in the corresponding attributes.
     """
+
     pattern = re.compile('|'.join(aminoacids))
     seqs = []
     desc = []
@@ -374,8 +391,9 @@ def filter_aa_more(self, aminoacids):
     for i, s in enumerate(self.sequences):
         if not pattern.search(s):
             seqs.append(s)
-            desc.append(self.descriptor[i])
-            if len(self.names) > 0:
+            if hasattr(self, 'descriptor') and self.descriptor.size:
+                desc.append(self.descriptor[i])
+            if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
 
     self.sequences = seqs
@@ -445,7 +463,7 @@ def filter_sequences(self, sequences):
 
 
 def random_selection(self, num):
-    """Method to select a random number of sequences (with names and descriptors if present) out of a given
+    """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
     descriptor instance.
 
     :param num: {int} number of entries to be randomly selected
@@ -468,6 +486,7 @@ def random_selection(self, num):
 
     .. versionadded:: v2.2.3
     """
+
     sel = np.random.choice(len(self.sequences), size=num, replace=False)
     self.sequences = np.array(self.sequences)[sel].tolist()
 
@@ -480,5 +499,59 @@ def random_selection(self, num):
             self.descriptor = self.descriptor[sel]
         else:
             pass
+    except IndexError:  # if no values in self.descriptor
+        self.descriptor = np.empty((1, 0), dtype='float64')
+
+
+def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+    """Method to select a specified number of sequences according to the minmax algorithm.
+
+    :param iterations: {int} Number of sequences to retrieve.
+    :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
+        Choose:// docs.scipy.org / doc / scipy / reference / spatial.distance.html).
+        E.g. 'euclidean', 'minkowsky'.
+    :param randseed: {int} Set a random seed for numpy to pick the first sequence.
+    :return: updated instance
+    :Example:
+    """
+
+    # Storing M into pool, where selections get deleted
+    pool = self.descriptor  # Store pool where selections get deleted
+    minmaxidx = list()  # Store original indices of selections to return
+
+    # Randomly selecting first peptide into the sele
+    np.random.seed(randseed)
+    idx = int(np.random.random_integers(0, len(pool), 1))
+    sele = pool[idx:idx + 1, :]
+    minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
+
+    # Deleting peptide in selection from pool
+    pool = np.delete(pool, idx, axis=0)
+
+    for i in range(iterations - 1):
+        # Calculating distance from sele to the rest of the peptides
+        dist = distance.cdist(pool, sele, distmetric)
+
+        # Choosing maximal distances for every sele instance
+        maxidx = np.argmax(dist, axis=0)
+        maxcols = np.max(dist, axis=0)
+
+        # Choosing minimal distance among the maximal distances
+        minmax = np.argmin(maxcols)
+        maxidx = int(maxidx[minmax])
+
+        # Adding it to selection and removing from pool
+        sele = np.append(sele, pool[maxidx:maxidx + 1, :], axis=0)
+        pool = np.delete(pool, maxidx, axis=0)
+        minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
+
+    self.sequences = np.array(self.sequences)[minmaxidx].tolist()
+
+    try:
+        self.names = np.array(self.names)[minmaxidx].tolist()
+    except IndexError:  # if no names in self.names
+        self.names = []
+    try:
+        self.descriptor = self.descriptor[minmaxidx]
     except IndexError:  # if no values in self.descriptor
         self.descriptor = np.empty((1, 0), dtype='float64')

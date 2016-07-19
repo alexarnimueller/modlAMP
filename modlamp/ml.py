@@ -18,23 +18,26 @@ Random Forest                    http://scikit-learn.org/stable/modules/generate
 .. versionadded:: 2.2.0
 """
 
+import time
+
+import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.preprocessing import *
-from sklearn.grid_search import GridSearchCV
-from sklearn.svm import SVC
+import pandas as pd
+from sklearn.cross_validation import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.grid_search import GridSearchCV
+from sklearn.learning_curve import validation_curve
 from sklearn.metrics import *
 from sklearn.pipeline import Pipeline
-from sklearn.learning_curve import validation_curve
-import matplotlib.pyplot as plt
-import time
-import pandas as pd
+from sklearn.preprocessing import *
+from sklearn.svm import SVC
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
+
 def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=make_scorer(matthews_corrcoef),
-                    param_grid=None, cv=10):
+                     param_grid=None, cv=10):
     """
     Returns pipeline that performs standard scaling and trains
     the best Support Vector Machine or Random forest classifier found by grid search.
@@ -113,84 +116,85 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         0.        ,  0.66666667,  0.        ,  0.08333333,  0.08333333,
         0.        ,  0.        ])
 
-    Training an SVM model with this data:
 
-    >>> X_train = descr.descriptor
-    >>> y_train = data.target
-    >>> best_svm_model = train_best_model('svm', X_train, y_train)
-    Best score and parameters from a 10-fold cross validation:
-    mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
+	Training an SVM model with this data:
 
-    >>> best_svm_model.get_params()
-    {'clf': SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
-       decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
-       max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
-       verbose=False),
-     'clf__C': 100.0,
-     'clf__cache_size': 200,
-     'clf__class_weight': None,
-     'clf__coef0': 0.0,
-     'clf__decision_function_shape': None,
-     'clf__degree': 3,
-     'clf__gamma': 0.001,
-     'clf__kernel': 'rbf',
-     'clf__max_iter': -1,
-     'clf__probability': True,
-     'clf__random_state': 1,
-     'clf__shrinking': True,
-     'clf__tol': 0.001,
-     'clf__verbose': False,
-     'scl': StandardScaler(copy=True, with_mean=True, with_std=True),
-     'scl__copy': True,
-     'scl__with_mean': True,
-     'scl__with_std': True,
-     'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
-      ('clf', SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
-         decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
-         max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
-         verbose=False))]}
+	>>> X_train = descr.descriptor
+	>>> y_train = data.target
+	>>> best_svm_model = train_best_model('svm', X_train, y_train)
+	Best score and parameters from a 10-fold cross validation:
+	mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
 
-    """
+	>>> best_svm_model.get_params()
+	{'clf': SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
+	   decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+	   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+	   verbose=False),
+	 'clf__C': 100.0,
+	 'clf__cache_size': 200,
+	 'clf__class_weight': None,
+	 'clf__coef0': 0.0,
+	 'clf__decision_function_shape': None,
+	 'clf__degree': 3,
+	 'clf__gamma': 0.001,
+	 'clf__kernel': 'rbf',
+	 'clf__max_iter': -1,
+	 'clf__probability': True,
+	 'clf__random_state': 1,
+	 'clf__shrinking': True,
+	 'clf__tol': 0.001,
+	 'clf__verbose': False,
+	 'scl': StandardScaler(copy=True, with_mean=True, with_std=True),
+	 'scl__copy': True,
+	 'scl__with_mean': True,
+	 'scl__with_std': True,
+	 'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
+	  ('clf', SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
+		 decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+		 max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+		 verbose=False))]}
+
+	"""
     if model == 'svm':
 
         pipe_svc = Pipeline([('scl', scaler),
-                            ('clf', SVC(random_state=1, probability=True))])
+                             ('clf', SVC(class_weight='balanced', random_state=1, probability=True))])
 
         if param_grid is None:
             param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
             param_grid = [{'clf__C': param_range,
-                        'clf__kernel': ['linear']},
-                        {'clf__C': param_range,
-                        'clf__gamma': param_range,
-                        'clf__kernel': ['rbf']}]
+                           'clf__kernel': ['linear']},
+                          {'clf__C': param_range,
+                           'clf__gamma': param_range,
+                           'clf__kernel': ['rbf']}]
 
         gs = GridSearchCV(estimator=pipe_svc,
-                        param_grid=param_grid,
-                        scoring=score,
-                        cv=cv,
-                        n_jobs=1)
+                          param_grid=param_grid,
+                          scoring=score,
+                          cv=cv,
+                          n_jobs=1)
 
         gs.fit(x_train, y_train)
 
     elif model == 'rf':
 
         pipe_rf = Pipeline([('scl', scaler),
-                            ('clf', RandomForestClassifier(random_state=1))])
+                            ('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
-                        'clf__max_depth': [3, None],
-                        'clf__max_features': [1, 2, 3, 5, 10],
-                        'clf__min_samples_split': [1, 3, 5, 10],
-                        'clf__min_samples_leaf': [1, 3, 5, 10],
-                        'clf__bootstrap': [True, False],
-                        'clf__criterion': ["gini", "entropy"]}]
+                           'clf__max_depth': [3, None],
+                           'clf__max_features': [1, 2, 3, 5, 10],
+                           'clf__min_samples_split': [1, 3, 5, 10],
+                           'clf__min_samples_leaf': [1, 3, 5, 10],
+                           'clf__bootstrap': [True, False],
+                           'clf__criterion': ["gini", "entropy"]}]
 
         gs = GridSearchCV(estimator=pipe_rf,
-                        param_grid=param_grid,
-                        scoring=score,
-                        cv=cv,
-                        n_jobs=1)
+                          param_grid=param_grid,
+                          scoring=score,
+                          cv=cv,
+                          n_jobs=1)
 
         gs.fit(x_train, y_train)
 
@@ -209,9 +213,9 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
 
 def plot_validation_curve(classifier, x_train, y_train, param_name,
-                    param_range=None,
-                    cv=10, score=make_scorer(matthews_corrcoef),
-                    title="Validation Curve", xlab="parameter range", ylab="MCC"):
+                          param_range=None,
+                          cv=10, score=make_scorer(matthews_corrcoef),
+                          title="Validation Curve", xlab="parameter range", ylab="MCC"):
     """Plotting cross-validation curve for the specified classifier, training data and parameter.
 
     :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).
@@ -236,7 +240,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
         param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
 
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
-                                cv=cv, scoring=score, n_jobs=1)
+                                                 cv=cv, scoring=score, n_jobs=1)
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
     test_scores_mean = np.mean(test_scores, axis=1)
@@ -248,17 +252,17 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     plt.ylim(0.0, 1.1)
     plt.semilogx(param_range, train_scores_mean, label="Training score", color="r")
     plt.fill_between(param_range, train_scores_mean - train_scores_std,
-                    train_scores_mean + train_scores_std, alpha=0.2, color="r")
+                     train_scores_mean + train_scores_std, alpha=0.2, color="r")
     plt.semilogx(param_range, test_scores_mean, label="Cross-validation score",
-                color="g")
+                 color="g")
     plt.fill_between(param_range, test_scores_mean - test_scores_std,
-                    test_scores_mean + test_scores_std, alpha=0.2, color="g")
+                     test_scores_mean + test_scores_std, alpha=0.2, color="g")
     plt.legend(loc="best")
     plt.show()
 
 
-def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, filename=None, save_csv=True):
-    """    Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
+def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
+    """	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.
@@ -300,9 +304,42 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, 
                     'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
                     'True_class': y_test}
         dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0',
-                                                'Pred_prob_class1', 'True_class'])
+                                                 'Pred_prob_class1', 'True_class'])
 
     if save_csv:
         dfpred.to_csv(filename + time.strftime("-%Y%m%d-%H%M%S.csv"))
 
     return dfpred
+
+
+def cv_scores(classifier, X, y, cv=10, metrics=None):
+    """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
+
+    :param classifier: {classifier instance} classifier used for predictions.
+    :param X: {array} descriptor values for training data.
+    :param y: {array} class values for training data.
+    :param cv: {int} number of folds for cross-validation.
+    :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
+                    (http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
+    :return: pandas dataframe containing the cross validation scores for the specified metrics.
+
+
+    """
+    if metrics is None:
+        metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+
+    means = []
+    sd = []
+    for metric in metrics:
+        scores = cross_val_score(classifier, X, y, cv=cv, scoring=metric)
+        means.append(scores.mean())
+        sd.append(scores.std())
+
+    dict_scores = {'Metrics': metrics,
+                   'Mean CV score': means,
+                   'StDev': sd}
+
+    df_scores = pd.DataFrame(dict_scores)
+    df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
+
+    return df_scores

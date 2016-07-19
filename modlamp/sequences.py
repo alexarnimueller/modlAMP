@@ -25,7 +25,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, filter_aa, random_selection
+from core import mutate_AA, aminoacids, clean, save_fasta, filter_unnatural, template, filter_aa, filter_duplicates
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -38,37 +38,36 @@ class Random:
     The amino acid probabilities can be chosen from different probabilities:
 
     - **rand**: equal probabilities for all amino acids
-    - **AMP**: amino acid probabilities taken from the antimicrobial peptide database
-        `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
+    - **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
     - **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
     - **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
     The probability values for all natural AA can be found in the following table:
 
-    ===  ====    ======   =========    ==========
-    AA   rand    AMP      AMPnoCM      randnoCM
-    ===  ====    ======   =========    ==========
-    A    0.05    0.0766   0.0812275    0.05555555
-    C    0.05    0.071    0.0          0.0
-    D    0.05    0.026    0.0306275    0.05555555
-    E    0.05    0.0264   0.0310275    0.05555555
-    F    0.05    0.0405   0.0451275    0.05555555
-    G    0.05    0.1172   0.1218275    0.05555555
-    H    0.05    0.021    0.0256275    0.05555555
-    I    0.05    0.061    0.0656275    0.05555555
-    K    0.05    0.0958   0.1004275    0.05555555
-    L    0.05    0.0838   0.0884275    0.05555555
-    M    0.05    0.0123   0.0          0.0
-    N    0.05    0.0386   0.0432275    0.05555555
-    P    0.05    0.0463   0.0509275    0.05555555
-    Q    0.05    0.0251   0.0297275    0.05555555
-    R    0.05    0.0545   0.0591275    0.05555555
-    S    0.05    0.0613   0.0659275    0.05555555
-    T    0.05    0.0455   0.0501275    0.05555555
-    V    0.05    0.0572   0.0618275    0.05555555
-    W    0.05    0.0155   0.0201275    0.05555555
-    Y    0.05    0.0244   0.0290275    0.05555555
-    ===  ====    ======   =========    ==========
+    ===	====	======	=========	==========
+    AA	rand	AMP	AMPnoCM		randnoCM
+    ===	====	======	=========	==========
+    A	0.05	0.0766	0.0812275	0.05555555
+    C	0.05	0.071	0.0		0.0
+    D	0.05	0.026	0.0306275	0.05555555
+    E	0.05	0.0264	0.0310275	0.05555555
+    F	0.05	0.0405	0.0451275	0.05555555
+    G	0.05	0.1172	0.1218275	0.05555555
+    H	0.05	0.021	0.0256275	0.05555555
+    I	0.05	0.061	0.0656275	0.05555555
+    K	0.05	0.0958	0.1004275	0.05555555
+    L	0.05	0.0838	0.0884275	0.05555555
+    M	0.05	0.0123	0.0		0.0
+    N	0.05	0.0386	0.0432275	0.05555555
+    P	0.05	0.0463	0.0509275	0.05555555
+    Q	0.05	0.0251	0.0297275	0.05555555
+    R	0.05	0.0545	0.0591275	0.05555555
+    S	0.05	0.0613	0.0659275	0.05555555
+    T	0.05	0.0455	0.0501275	0.05555555
+    V	0.05	0.0572	0.0618275	0.05555555
+    W	0.05	0.0155	0.0201275	0.05555555
+    Y	0.05	0.0244	0.0290275	0.05555555
+    ===	====	======	=========	==========
 
     """
 
@@ -79,9 +78,8 @@ class Random:
         :param seqnum: number of sequences to generate
         :return: initialized class attributes for sequence number and length
         """
-        self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
-        self.prob_rand, self.prob_randnoCM = aminoacids()
-        self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
 
     def generate_sequences(self, proba='rand'):
         """Method to actually generate the sequences.
@@ -90,9 +88,9 @@ class Random:
         :return: A list of random AMP sequences with defined AA probabilities
         :Example:
 
-        >>> r = Random(5,20,6)
-        >>> r.generate_sequences(proba='AMP')
-        >>> r.sequences
+        >>> R = Random(5,20,6)
+        >>> R.generate_sequences(proba='AMP')
+        >>> R.sequences
         ['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
         """
         clean(self)
@@ -108,7 +106,7 @@ class Random:
             self.seq = []
             for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
                 self.seq.append(np.random.choice(self.AAs,
-                                                 p=self.prob))  # weighed rand sel of amino acid, probabilities = prob
+                                                 p=self.prob))  # weighed random selection of amino acid, probabilities = prob
             self.sequences.append(''.join(self.seq))
 
     def save_fasta(self, filename, names=False):
@@ -130,24 +128,35 @@ class Random:
         :return: In the attribute :py:attr:`sequences`: mutated sequences
         :Example:
 
-        >>> r.sequences
+        >>> H.sequences
         ['IAKAGRAIIK']
-        >>> r.mutate_AA(3, 1.)
-        >>> r.sequences
-        ['NAKAARAWIK']
+        >>> H.mutate_AA(3,1)
+        >>> H.sequences
+        ['NAKAGRAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
         mutate_AA(self, nr, prob)
 
     def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
         :return: Filtered sequence list in the attribute :py:attr:`sequences`
 
         .. seealso:: :func:`modlamp.core.filter_unnatural()`
         """
         filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -159,19 +168,6 @@ class Random:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
 
 
 class Helices:
@@ -189,9 +185,8 @@ class Helices:
         :param seqnum: number of sequences to generate
         :return: defined variables as instances
         """
-        self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
-        self.prob_rand, self.prob_randnoCM = aminoacids()
-        self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
 
     def generate_helices(self):
         """Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`
@@ -199,9 +194,9 @@ class Helices:
         :return: In the attribute :py:attr:`sequences`: a list of sequences with presumed amphipathic helical structure.
         :Example:
 
-        >>> h = Helices(7,21,5)
-        >>> h.generate_helices()
-        >>> h.sequences
+        >>> H = Helices(7,21,5)
+        >>> H.generate_helices()
+        >>> H.sequences
         ['KGIKVILKLAKAGVKAVRL','IILKVGKV','IAKAGRAIIK','LKILKVVGKGIRLIVRIIKAL','KAGKLVAKGAKVAAKAIKI']
         """
         clean(self)
@@ -231,11 +226,11 @@ class Helices:
         :return: In the attribute :py:attr:`sequences`: mutated sequences
         :Example:
 
-        >>> h.sequences
+        >>> H.sequences
         ['IAKAGRAIIK']
-        >>> h.mutate_AA(3, 1.)
-        >>> h.sequences
-        ['NAKAARAWIK']
+        >>> H.mutate_AA(3,1)
+        >>> H.sequences
+        ['NAKAGRAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -253,13 +248,24 @@ class Helices:
         save_fasta(self, filename, names=names)
 
     def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
         :return: Filtered sequence list in the attribute :py:attr:`sequences`
 
         .. seealso:: :func:`modlamp.core.filter_unnatural()`
         """
         filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -271,19 +277,6 @@ class Helices:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
 
 
 class Kinked:
@@ -302,9 +295,8 @@ class Kinked:
         :param seqnum: number of sequences to generate
         :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
         """
-        self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
-        self.prob_rand, self.prob_randnoCM = aminoacids()
-        self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
 
     def generate_kinked(self):
         """Method to actually generate the presumed kinked sequences with features defined in the class instances.
@@ -312,9 +304,9 @@ class Kinked:
         :return: sequence list with strings stored in the attribute :py:attr:`sequences`
         :Example:
 
-        >>> k = Kinked(7,28,8)
-        >>> k.generate_kinked()
-        >>> k.sequences
+        >>> K = Kinked(7,28,8)
+        >>> K.generate_kinked()
+        >>> K.sequences
         ['IILRLHPIG','ARGAKVAIKAIRGIAPGGRVVAKVVKVG','GGKVGRGVAFLVRIILK','KAVKALAKGAPVILCVAKVI',
         'IGIRVWRAVIKVIPVAVRGLRL','RIGRVIVPVIRGL','AKAARIVAMLAR','LGAKGWRLALKGIPAAIKLGKV']
         """
@@ -352,11 +344,11 @@ class Kinked:
         :return: In the attribute :py:attr:`sequences`: mutated sequences
         :Example:
 
-        >>> k.sequences
+        >>> S.sequences
         ['IAKAGRAIIK']
-        >>> k.mutate_AA(3, 1.)
-        >>> k.sequences
-        ['NAKAARAWIK']
+        >>> S.mutate_AA(3,1)
+        >>> S.sequences
+        ['NAKAGRAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -374,13 +366,24 @@ class Kinked:
         save_fasta(self, filename, names=names)
 
     def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
         :return: Filtered sequence list in the attribute :py:attr:`sequences`
 
         .. seealso:: :func:`modlamp.core.filter_unnatural()`
         """
         filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -392,19 +395,6 @@ class Kinked:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
 
 
 class Oblique(object):
@@ -422,9 +412,8 @@ class Oblique(object):
         :param seqnum: number of sequences to generate
         :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
         """
-        self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
-        self.prob_rand, self.prob_randnoCM = aminoacids()
-        self.lenmin, self.lenmax, self.seqnum = lenmin, lenmax, seqnum
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
 
     def generate_oblique(self):
         """Method to generate the possible oblique sequences.
@@ -432,9 +421,9 @@ class Oblique(object):
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
-        >>> o = Oblique(10,30,4)
-        >>> o.generate_oblique()
-        >>> o.sequences
+        >>> O = Oblique(10,30,4)
+        >>> O.generate_oblique()
+        >>> O.sequences
         ['GLLKVIRIAAKVLKVAVLVGIIAI','AIGKAGRLALKVIKVVIKVALILLAAVA','KILRAAARVIKGGIKAIVIL','VRLVKAIGKLLRIILRLARLAVGGILA']
         """
         clean(self)
@@ -468,11 +457,11 @@ class Oblique(object):
         :return: In the attribute :py:attr:`sequences`: mutated sequences
         :Example:
 
-        >>> o.sequences
+        >>> H.sequences
         ['IAKAGRAIIK']
-        >>> o.mutate_AA(3, 1.)
-        >>> o.sequences
-        ['NAKAARAWIK']
+        >>> H.mutate_AA(3,1)
+        >>> H.sequences
+        ['NAKAGRAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -490,13 +479,24 @@ class Oblique(object):
         save_fasta(self, filename, names=names)
 
     def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
         :return: Filtered sequence list in the attribute :py:attr:`sequences`
 
         .. seealso:: :func:`modlamp.core.filter_unnatural()`
         """
         filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -508,19 +508,6 @@ class Oblique(object):
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
 
 
 class Centrosymmetric:
@@ -539,8 +526,7 @@ class Centrosymmetric:
         :param seqnum: number of sequences to generate
         :return: defined number of sequences to generate, empty list to store produced sequences
         """
-        self.sequences, self.AA_hyd, self.AA_basic, self.AA_anchor, self.AAs, self.prob_AMP, self.prob_AMPnoCM, \
-        self.prob_rand, self.prob_randnoCM = aminoacids()
+        aminoacids(self)
         self.seqnum = int(seqnum)
 
     def generate_symmetric(self):
@@ -552,9 +538,9 @@ class Centrosymmetric:
             h = hydrophobic AA, + = basic AA, a = anchor AA (F,Y,W,(P)), sequence length is 14 or 21 AA
         :Example:
 
-        >>> s = Centrosymmetric(5)
-        >>> s.generate_symmetric()
-        >>> s.sequences
+        >>> S = Centrosymmetric(5)
+        >>> S.generate_symmetric()
+        >>> S.sequences
         ['ARIFIRAARIFIRA','GRIYIRGGRIYIRGGRIYIRG','IRGFGRIIRGFGRIIRGFGRI','GKAYAKGGKAYAKG','AKGYGKAAKGYGKAAKGYGKA']
         """
         clean(self)
@@ -580,14 +566,14 @@ class Centrosymmetric:
     def generate_asymmetric(self):
         """The :func:`generate_asymmetric()` method generates overall asymmetric sequences out of two or three blocks of
         different centro-symmetric sequence blocks of 7 amino acids. The resulting sequence presumably has a large
-        hydrophobic    moment.
+        hydrophobic	moment.
 
         :return: In the attribute :py:attr:`sequences`: a list of peptide sequences as strings of length 14 or 21
         :Example:
 
-        >>> s = Centrosymmetric(5)
-        >>> s.generate_asymmetric()
-        >>> s.sequences
+        >>> S = Centrosymmetric(5)
+        >>> S.generate_asymmetric()
+        >>> S.sequences
         ['GRLFLRGAKGFGKAVRVWVRV','IKGWGKILKLYLKL','LKAYAKLVKAWAKVLRLFLRL','IRLWLRIIKAFAKI','LRIFIRLVKLWLKVIRLWLRI']
         """
         clean(self)
@@ -621,11 +607,11 @@ class Centrosymmetric:
         :return: In the attribute :py:attr:`sequences`: mutated sequences
         :Example:
 
-        >>> s.sequences
+        >>> S.sequences
         ['IAKAGRAIIK']
-        >>> s.mutate_AA(3, 1.)
-        >>> s.sequences
-        ['NAKAARAWIK']
+        >>> S.mutate_AA(3,1)
+        >>> S.sequences
+        ['NAKAGRAWIK']
 
         .. seealso:: :func:`modlamp.core.mutate_AA()`
         """
@@ -643,13 +629,24 @@ class Centrosymmetric:
         save_fasta(self, filename, names=names)
 
     def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences` as well as duplicates.
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
 
         :return: Filtered sequence list in the attribute :py:attr:`sequences`
 
         .. seealso:: :func:`modlamp.core.filter_unnatural()`
         """
         filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
@@ -661,19 +658,6 @@ class Centrosymmetric:
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids=aminoacids)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
 
 
 class MixedLibrary:
@@ -704,39 +688,38 @@ class MixedLibrary:
             probable that you will not get the exact size of library that you entered as the parameter **number**. If you
             generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
         """
-        self.names = list()
-        self.sequences = list()
-        self.size = int(number)
+        self.names = []
+        self.sequences = []
+        self.libsize = int(number)
         norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
         self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
                        'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
                        'ran': float(rand) / norm, 'AMP': float(randAMP) / norm, 'nCM': float(randAMPnoCM) / norm}
-        self.nums = {'sym': int(round(float(self.size) * self.ratios['sym'], ndigits=0)),
-                     'asy': int(round(float(self.size) * self.ratios['asy'], ndigits=0)),
-                     'hel': int(round(float(self.size) * self.ratios['hel'], ndigits=0)),
-                     'knk': int(round(float(self.size) * self.ratios['knk'], ndigits=0)),
-                     'obl': int(round(float(self.size) * self.ratios['obl'], ndigits=0)),
-                     'ran': int(round(float(self.size) * self.ratios['ran'], ndigits=0)),
-                     'AMP': int(round(float(self.size) * self.ratios['AMP'], ndigits=0)),
-                     'nCM': int(round(float(self.size) * self.ratios['nCM'], ndigits=0))}
+        self.nums = {'sym': int(round(float(self.libsize) * self.ratios['sym'], ndigits=0)),
+                     'asy': int(round(float(self.libsize) * self.ratios['asy'], ndigits=0)),
+                     'hel': int(round(float(self.libsize) * self.ratios['hel'], ndigits=0)),
+                     'knk': int(round(float(self.libsize) * self.ratios['knk'], ndigits=0)),
+                     'obl': int(round(float(self.libsize) * self.ratios['obl'], ndigits=0)),
+                     'ran': int(round(float(self.libsize) * self.ratios['ran'], ndigits=0)),
+                     'AMP': int(round(float(self.libsize) * self.ratios['AMP'], ndigits=0)),
+                     'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
 
     def generate_library(self):
-        """This method generates a virtual sequence library with the subtype ratios initialized in class
-        :class:`MixedLibrary()`. All sequences are between 7 and 28 amino acids in length.
+        """This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
+        All sequences are between 7 and 28 amino acids in length.
 
         :return: a virtual library of sequences in the attribute :py:attr:`sequences`, the sub-library class names in
             :py:attr:`names`, the number of sequences generated for each class in :py:attr:`nums` and the library size in
-            :py:attr:`size`.
+            :py:attr:`libsize`.
         :Example:
 
-        >>> lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,
-        randAMP=10,randAMPnoCM=5)
-        >>> lib.generate_library()
-        >>> lib.size  # as duplicates were present, the library does not have the size that was sepecified
+        >>> Lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,randAMP=10,randAMPnoCM=5)
+        >>> Lib.generate_library()
+        >>> Lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
         9126
-        >>> lib.sequences
+        >>> Lib.sequences
         ['RHTHVAGSWYGKMPPSPQTL','MRIKLRKIPCILAC','DGINKEVKDSYGVFLK','LRLYLRLGRVWVRG','GKLFLKGGKLFLKGGKLFLKG',...]
-        >>> lib.nums
+        >>> Lib.nums
         {'AMP': 2326,
         'asy': 1163,
         'hel': 698,
@@ -746,34 +729,26 @@ class MixedLibrary:
         'ran': 2326,
         'sym': 1163}
         """
-        # generate sequences for every sublibrary
         Cs = Centrosymmetric(self.nums['sym'])
         Cs.generate_symmetric()
-        self.nums['sym'] = len(Cs.sequences)
         Ca = Centrosymmetric(self.nums['asy'])
         Ca.generate_asymmetric()
-        self.nums['asy'] = len(Ca.sequences)
         H = Helices(7, 28, self.nums['hel'])
         H.generate_helices()
-        self.nums['hel'] = len(H.sequences)
         K = Kinked(7, 28, self.nums['knk'])
         K.generate_kinked()
-        self.nums['knk'] = len(K.sequences)
         O = Oblique(7, 28, self.nums['obl'])
         O.generate_oblique()
-        self.nums['obl'] = len(O.sequences)
         R = Random(7, 28, self.nums['ran'])
         R.generate_sequences('rand')
-        self.nums['ran'] = len(R.sequences)
         Ra = Random(7, 28, self.nums['AMP'])
         Ra.generate_sequences('AMP')
-        self.nums['AMP'] = len(Ra.sequences)
         Rc = Random(7, 28, self.nums['nCM'])
         Rc.generate_sequences('AMPnoCM')
-        self.nums['nCM'] = len(Rc.sequences)
 
-        sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + \
-                    Ra.sequences + Rc.sequences
+        # TODO: update libnums according to real numbers
+
+        sequences = Cs.sequences + Ca.sequences + H.sequences + K.sequences + O.sequences + R.sequences + Ra.sequences + Rc.sequences
         names = ['sym'] * self.nums['sym'] + ['asy'] * self.nums['asy'] + ['hel'] * self.nums['hel'] + \
                 ['knk'] * self.nums['knk'] + ['obl'] * self.nums['obl'] + ['ran'] * self.nums['ran'] + \
                 ['AMP'] * self.nums['AMP'] + ['nCM'] * self.nums['nCM']
@@ -786,19 +761,19 @@ class MixedLibrary:
         for c in comb:
             self.sequences.append(c.split('_')[0])
             self.names.append(c.split('_')[1])
-        # update size and nums
-        self.size = len(self.sequences)
+        # update libsize and nums
+        self.libsize = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
     def prune_library(self, newsize):
         """Method to cut down a library to the given new size.
 
         :param newsize: new desired size of the mixed library
-        :return: adapted library with corresponding attributes (sequences, names, size, nums)
+        :return: adapted library with corresponding attributes (sequences, names, libsize, nums)
         """
         self.names = self.names[:newsize]
         self.sequences = self.sequences[:newsize]
-        self.size = len(self.sequences)
+        self.libsize = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
     def save_fasta(self, filename, names=False):
@@ -823,17 +798,13 @@ class MixedLibrary:
         """
         filter_aa(self, aminoacids=aminoacids)
 
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        instance.
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
 
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
 
-        .. seealso:: :func:`modlamp.core.random_selection()`
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
 
-        .. versionadded:: v2.2.3
+        .. versionadded:: v2.2.5
         """
-        random_selection(self, num)
-        self.size = len(self.sequences)
-        self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
+        filter_duplicates(self)
