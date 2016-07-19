@@ -196,7 +196,7 @@ class GlobalDescriptor(object):
             NegativeCharge += aa_content[aa] * partial_charge
         return PositiveCharge - NegativeCharge
 
-    def calculate_charge(self, pH=7.0, amide=False, append=False):
+    def calculate_charge(self, ph=7.0, amide=False, append=False):
         """
         Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
         Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
@@ -209,7 +209,7 @@ class GlobalDescriptor(object):
             pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
             neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
-        :param pH: {float} pH at which to calculate peptide charge.
+        :param ph: {float} ph at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
@@ -217,7 +217,7 @@ class GlobalDescriptor(object):
 
         desc = []
         for seq in self.sequences:
-            desc.append(self._charge(seq, pH, amide))
+            desc.append(self._charge(seq, ph, amide))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -261,45 +261,41 @@ class GlobalDescriptor(object):
         for seq in self.sequences:
 
             # Bracket between pH1 and pH2
-            pH = 7.0
-            charge = self._charge(seq, pH, amide)
+            ph = 7.0
+            charge = self._charge(seq, ph, amide)
             if charge > 0.0:
-                pH1 = pH
+                pH1 = ph
                 charge1 = charge
                 while charge1 > 0.0:
-                    pH = pH1 + 1.0
-                    charge = self._charge(seq, pH, amide)
+                    ph = pH1 + 1.0
+                    charge = self._charge(seq, ph, amide)
                     if charge > 0.0:
-                        pH1 = pH
+                        pH1 = ph
                         charge1 = charge
                     else:
-                        pH2 = pH
-                        charge2 = charge
+                        pH2 = ph
                         break
             else:
-                pH2 = pH
+                pH2 = ph
                 charge2 = charge
                 while charge2 < 0.0:
-                    pH = pH2 - 1.0
-                    charge = self._charge(seq, pH, amide)
+                    ph = pH2 - 1.0
+                    charge = self._charge(seq, ph, amide)
                     if charge < 0.0:
-                        pH2 = pH
+                        pH2 = ph
                         charge2 = charge
                     else:
-                        pH1 = pH
-                        charge1 = charge
+                        pH1 = ph
                         break
             # Bisection
             while pH2 - pH1 > 0.0001 and charge != 0.0:
-                pH = (pH1 + pH2) / 2.0
-                charge = self._charge(seq, pH, amide)
+                ph = (pH1 + pH2) / 2.0
+                charge = self._charge(seq, ph, amide)
                 if charge > 0.0:
-                    pH1 = pH
-                    charge1 = charge
+                    pH1 = ph
                 else:
-                    pH2 = pH
-                    charge2 = charge
-            desc.append(pH)
+                    pH2 = ph
+            desc.append(ph)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))

@@ -31,7 +31,7 @@ gd.boman_index(append=True)
 gd.aromaticity(append=True)
 gd.aliphatic_index(append=True)
 gd.instability_index(append=True)
-gd.calculate_charge(pH=7.4, amide=False, append=True)
+gd.calculate_charge(ph=7.4, amide=False, append=True)
 gd.calculate_MW(amide=False, append=True)
 
 # save descriptor data to .csv file

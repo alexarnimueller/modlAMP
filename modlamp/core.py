@@ -250,7 +250,7 @@ def mutate_AA(self, nr, prob):
             self.sequences[s] = ''.join(seq)
 
 
-def aminoacids():
+def aminoacids(self):
     """
 
     Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
@@ -286,32 +286,31 @@ def aminoacids():
     ===  ====    ======   =========    ==========
 
     """
-    sequences = list()
+    self.sequences = list()
     # AA classes:
-    AA_hyd = ['G', 'A', 'L', 'I', 'V']
-    AA_basic = ['K', 'R']
-    AA_anchor = ['W', 'Y', 'F']
+    self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
+    self.AA_basic = ['K', 'R']
+    self.AA_anchor = ['W', 'Y', 'F']
     # AA labels:
-    AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+    self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     # AA probability from the APD3 database:
-    prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
+    self.prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
                 0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
     # AA probability from the APD2 database without Cys and Met (synthesis reasons)
-    prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
+    self.prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
                     0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
                     0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
                     0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
                     0.02012777777777778, 0.02902777777777778]
     # equal AA probabilities:
-    prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    self.prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
                  0.05, 0.05, 0.05, 0.05]
     # equal AA probabilities but 0 for Cys and Met:
-    prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+    self.prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
                      0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
                      0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
                      0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
                      0.05555555555, 0.05555555555]
-    return sequences, AA_hyd, AA_basic, AA_anchor, AAs, prob_AMP, prob_AMPnoCM, prob_rand, prob_randnoCM
 
 
 def template(self, lenmin, lenmax, seqnum):
