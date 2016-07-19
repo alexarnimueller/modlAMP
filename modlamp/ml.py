@@ -258,7 +258,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 	plt.show()
 
 
-def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=None, filename=None, save_csv=True):
+def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
 	"""	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
 	it returns the scoring value for the test data.
 

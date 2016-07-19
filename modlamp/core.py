@@ -196,7 +196,7 @@ def read_fasta(inputfile):
 	sequences = list()  # list for storing sequences
 	with open(inputfile) as handle:
 		for record in FastaIterator(handle):
-			names.append(record.id)
+			names.append(record.description)
 			sequences.append(str(record.seq))
 	return sequences, names
 
