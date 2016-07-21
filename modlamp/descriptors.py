@@ -27,7 +27,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
-    random_selection, minmax_selection, filter_sequences, filter_duplicates
+    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -468,6 +468,20 @@ class GlobalDescriptor(object):
         .. versionadded:: v2.2.5
         """
         filter_duplicates(self)
+
+    def check_natural_aa(self):
+        """
+        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
+        filtered accordingly.
+
+        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+
+        .. versionadded:: v2.2.5
+        """
+        check_natural_aa(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
@@ -960,6 +974,20 @@ class PeptideDescriptor(object):
         .. versionadded:: v2.2.5
         """
         filter_duplicates(self)
+
+    def check_natural_aa(self):
+        """
+        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
+        filtered accordingly.
+
+        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+
+        .. versionadded:: v2.2.5
+        """
+        check_natural_aa(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
