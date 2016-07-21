@@ -373,7 +373,7 @@ def check_natural_aa(self):
                 desc.append(self.descriptor[i])
             if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
-            if hasattr(self, 'target') and self.target:
+            if hasattr(self, 'target') and self.target.size:
                 target.append(self.target[i])
 
     self.sequences = seqs
@@ -403,7 +403,7 @@ def filter_unnatural(self):
                 desc.append(self.descriptor[i])
             if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
-            if hasattr(self, 'target') and self.target:
+            if hasattr(self, 'target') and self.target.size:
                 target.append(self.target[i])
 
     self.sequences = seqs
@@ -433,13 +433,13 @@ def filter_aa(self, aminoacids):
                 desc.append(self.descriptor[i])
             if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
-            if hasattr(self, 'target') and self.target:
+            if hasattr(self, 'target') and self.target.size:
                 target.append(self.target[i])
 
     self.sequences = seqs
     self.names = names
     self.descriptor = np.array(desc)
-    self.target = target
+    self.target = np.array(target, dtype='int')
 
 
 def filter_values(self, values, operator='=='):
@@ -468,8 +468,10 @@ def filter_values(self, values, operator='=='):
         # filter descriptor matrix, sequence list and names list according to obtained indices
         self.descriptor = self.descriptor[indices]
         self.sequences = np.array(self.sequences)[indices].tolist()
-        if len(self.names) > 0:
+        if self.names:
             self.names = np.array(self.names)[indices].tolist()
+        if self.target.size:
+            self.target = self.target[indices]
 
 
 def filter_sequences(self, sequences):
@@ -501,6 +503,7 @@ def filter_sequences(self, sequences):
     self.names = np.delete(np.array(self.names), indices, 0).tolist()
     self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
     self.descriptor = np.delete(self.descriptor, indices, 0)
+    self.target = np.delete(self.target, indices, 0)
 
 
 def random_selection(self, num):
@@ -542,6 +545,13 @@ def random_selection(self, num):
             pass
     except IndexError:  # if no values in self.descriptor
         self.descriptor = np.empty((1, 0), dtype='float64')
+    try:
+        if hasattr(self, 'target'):
+            self.target = self.target[sel]
+        else:
+            pass
+    except IndexError:
+        self.target = np.empty((1, 0), dtype='int')
 
 
 def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
@@ -596,3 +606,7 @@ def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
         self.descriptor = self.descriptor[minmaxidx]
     except IndexError:  # if no values in self.descriptor
         self.descriptor = np.empty((1, 0), dtype='float64')
+    try:
+        self.target = self.descriptor[minmaxidx]
+    except IndexError:  # if no values in self.descriptor
+        self.target = np.empty((1, 0), dtype='int')
