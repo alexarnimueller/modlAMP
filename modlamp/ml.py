@@ -312,7 +312,7 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
     return dfpred
 
 
-def cv_scores(classifier, X, y, cv=10, metrics=None):
+def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
     """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
 
     :param classifier: {classifier instance} classifier used for predictions.
@@ -321,6 +321,7 @@ def cv_scores(classifier, X, y, cv=10, metrics=None):
     :param cv: {int} number of folds for cross-validation.
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
                     (http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
+    :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
 
 
@@ -335,9 +336,14 @@ def cv_scores(classifier, X, y, cv=10, metrics=None):
         means.append(scores.mean())
         sd.append(scores.std())
 
-    dict_scores = {'Metrics': metrics,
-                   'Mean CV score': means,
-                   'StDev': sd}
+    if names is None:
+        dict_scores = {'Metrics': metrics,
+                       'Mean CV score': means,
+                       'StDev': sd}
+    else:
+        dict_scores = {'Metrics': names,
+                       'Mean CV score': means,
+                       'StDev': sd}
 
     df_scores = pd.DataFrame(dict_scores)
     df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
