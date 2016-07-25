@@ -215,7 +215,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 def plot_validation_curve(classifier, x_train, y_train, param_name,
                           param_range=None,
                           cv=10, score=make_scorer(matthews_corrcoef),
-                          title="Validation Curve", xlab="parameter range", ylab="MCC"):
+                          title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
     """Plotting cross-validation curve for the specified classifier, training data and parameter.
 
     :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).
@@ -232,6 +232,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
+    :param filename: {str} if filename given the figure is stored in the specified path.
     :return: plot of the validation curve.
 
     """
@@ -258,7 +259,11 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     plt.fill_between(param_range, test_scores_mean - test_scores_std,
                      test_scores_mean + test_scores_std, alpha=0.2, color="g")
     plt.legend(loc="best")
-    plt.show()
+
+    if filename:
+        plt.savefig(filename)
+    else:
+        plt.show()
 
 
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
