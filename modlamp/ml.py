@@ -247,6 +247,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     test_scores_mean = np.mean(test_scores, axis=1)
     test_scores_std = np.std(test_scores, axis=1)
 
+    plt.clf()
     plt.title(title)
     plt.xlabel(xlab)
     plt.ylabel(ylab)
@@ -262,7 +263,6 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
     if filename:
         plt.savefig(filename)
-        plt.show()
     else:
         plt.show()
 
