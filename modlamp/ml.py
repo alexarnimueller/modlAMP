@@ -262,6 +262,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
     if filename:
         plt.savefig(filename)
+        plt.show()
     else:
         plt.show()
 
