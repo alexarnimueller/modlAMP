@@ -290,7 +290,9 @@ def aminoacids(self):
     # AA classes:
     self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
     self.AA_basic = ['K', 'R']
+    self.AA_acidic = ['D', 'E']
     self.AA_anchor = ['W', 'Y', 'F']
+    self.AA_polar = ['S', 'T', 'Q', 'N']
     # AA labels:
     self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     # AA probability from the APD3 database:

@@ -20,7 +20,7 @@ Class                               Characteristics
 
 """
 
-import random
+from numpy import random
 from itertools import cycle
 
 import numpy as np
@@ -879,3 +879,63 @@ class MixedLibrary:
         .. versionadded:: v2.2.5
         """
         filter_duplicates(self)
+
+class Hepahelices:
+    """Base class for peptide sequences probable to form helices and include a heparin-binding-domain.
+
+    This class is used to construct amphipathic helices that include a heparin-binding-domain (HBD) probable to bind
+    heparin. The HBD sequence for alpha-helices usually has the following form: XBBBXXBX (B: basic AA, with Arg >
+    Lys; X: hydrophobic, uncharged AA, with mainly Ser & Gly).
+    *Munoz, E. M. & Linhardt, R. J. Heparin-Binding Domains in Vascular Biology. Arterioscler. Thromb. Vasc. Biol.
+    24, 1549–1557 (2004).*
+    """
+
+    def __init__(self, lenmin, lenmax, seqnum):
+        """
+        :param lenmin: minimal sequence length, minimal 8!
+        :param lenmax: maximal sequence length, maximal 50!
+        :param seqnum: number of sequences to generate
+        :return: defined variables as instances
+        """
+        aminoacids(self)
+        if lenmin < 8 or lenmax > 50:
+            print "Wrong sequence length.\nMinimum: 8\nMaximum: 50"
+        else:
+            template(self, lenmin, lenmax, seqnum)
+
+    def generate_sequences(self):
+        """Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`
+
+        :return: In the attribute :py:attr:`sequences`: a list of sequences with presumed amphipathic helical structure.
+        :Example:
+
+        >>> H = Hepahelices(7,21,5)
+        >>> H.generate_sequences()
+        >>> H.sequences
+        ['KGIKVILKLAKAGVKAVRL','IILKVGKV','IAKAGRAIIK','LKILKVVGKGIRLIVRIIKAL','KAGKLVAKGAKVAAKAIKI']
+        """
+        clean(self)
+        for s in range(self.seqnum):  # for the number of sequences to generate
+            # generate heparin binding domain with the from HBBBHPBH (H: hydrophobic, B: basic, P: polar)
+            hbd = [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + [random.choice(self.AA_basic)] + \
+                  [random.choice(self.AA_basic)] + [random.choice(self.AA_hyd)] + [random.choice(self.AA_polar)] + \
+                  [random.choice(self.AA_basic)] + [random.choice(self.AA_hyd)]
+            # generate amphipathic block to add in front of HBD
+            bef = [random.choice(self.AA_hyd)] + [random.choice(self.AA_polar)] + [random.choice(self.AA_basic)] + \
+                  [random.choice(self.AA_hyd)] + [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + \
+                  [random.choice(self.AA_basic)]
+            # generate amphipathic block to add after HBD
+            aft = [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + [random.choice(self.AA_basic)] + \
+                  [random.choice(self.AA_hyd)] + [random.choice(self.AA_polar)] + [random.choice(self.AA_basic)] + \
+                  [random.choice(self.AA_hyd)]
+            l = random.choice(range(self.lenmin, self.lenmax + 1))  # total sequence length
+            try:
+                r = l - 8  # remaining empty positions in sequence
+                b = random.choice(r)  # positions before HBD
+                a = r - b  # positions after HBD
+                seq = 3 * bef + hbd + 3 * aft
+                seq = seq[21 - b: 29 + a]
+            except ValueError:  # if sequence length is 8, take HBD as sequence
+                seq = hbd
+
+            self.sequences.append(''.join(seq))
