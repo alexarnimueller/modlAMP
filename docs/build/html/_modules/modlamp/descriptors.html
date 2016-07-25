@@ -211,15 +211,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
+        <span class="sd">&quot;&quot;&quot;Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
 <span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
 <span class="sd">        Cterm is added to the pos_pKs dictionary.</span>
 <span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
 <span class="sd">        For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
-<span class="sd">        pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
-<span class="sd">        neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+<span class="sd">        **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+
+<span class="sd">        **neg_pKs** = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
 
 <span class="sd">        :param pH: {float} pH at which to calculate peptide charge.</span>
 <span class="sd">        :param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
@@ -249,8 +249,7 @@
         <span class="k">return</span> <span class="n">PositiveCharge</span> <span class="o">-</span> <span class="n">NegativeCharge</span>
 
 <div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
+        <span class="sd">&quot;&quot;&quot;Method to overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
 
 <span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15 (and</span>
@@ -258,8 +257,9 @@
 <span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).</span>
 <span class="sd">        For further references, see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.</span>
 
-<span class="sd">            pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
-<span class="sd">            neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+<span class="sd">        **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+
+<span class="sd">        **neg_pKs** = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
 
 <span class="sd">        :param ph: {float} ph at which to calculate peptide charge.</span>
 <span class="sd">        :param amide: {boolean} whether the sequences have an amidated C-terminus.</span>
@@ -302,8 +302,9 @@
 <span class="sd">        The method used is based on the IsoelectricPoint module in `Biopython &lt;http://biopython.org/&gt;`_</span>
 <span class="sd">        module :mod:`Bio.SeqUtils.ProtParam`.</span>
 
-<span class="sd">            pos_pKs = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
-<span class="sd">            neg_pKs = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
+<span class="sd">         **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
+
+<span class="sd">         **neg_pKs** = {&#39;Cterm&#39;: 2.15, &#39;D&#39;: 3.71, &#39;E&#39;: 4.15, &#39;C&#39;: 8.14, &#39;Y&#39;: 10.10}</span>
 
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
@@ -519,20 +520,20 @@
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-	<span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">		that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
+<div class="viewcode-block" id="GlobalDescriptor.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
+<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
-<span class="sd">		:return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">			accordingly.</span>
+<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
+<span class="sd">            accordingly.</span>
 
-<span class="sd">		.. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
 
-<span class="sd">		.. versionadded:: v2.2.5</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
@@ -1027,20 +1028,20 @@
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-	<span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">		that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
+<div class="viewcode-block" id="PeptideDescriptor.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
+<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
-<span class="sd">		:return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">			accordingly.</span>
+<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
+<span class="sd">            accordingly.</span>
 
-<span class="sd">		.. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
 
-<span class="sd">		.. versionadded:: v2.2.5</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>

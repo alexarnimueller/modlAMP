@@ -203,9 +203,8 @@ Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</p
 Cterm is added to the pos_pKs dictionary.
 The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
 For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.</p>
-<blockquote>
-<div>pos_pKs = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}
-neg_pKs = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</div></blockquote>
+<p><strong>pos_pKs</strong> = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}</p>
+<p><strong>neg_pKs</strong> = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -254,8 +253,9 @@ The pK scale is extracted from: <a class="reference external" href="http://www.h
 The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
 module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
 <blockquote>
-<div>pos_pKs = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}
-neg_pKs = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</div></blockquote>
+<div><p><strong>pos_pKs</strong> = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}</p>
+<p><strong>neg_pKs</strong> = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</p>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -454,6 +454,29 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.check_natural_aa">
+<code class="descname">check_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.check_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.check_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.check_natural_aa" title="modlamp.core.check_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.check_natural_aa()</span></code></a></p>
 </div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.5.</span></p>
@@ -1067,6 +1090,29 @@ size as the number of features in the descriptor matrix!)</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.PeptideDescriptor.check_natural_aa">
+<code class="descname">check_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.check_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.check_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.check_natural_aa" title="modlamp.core.check_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.check_natural_aa()</span></code></a></p>
 </div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.5.</span></p>
@@ -2849,7 +2895,8 @@ is None (inactive).</p>
 <dt id="modlamp.datasets.Bunch">
 <em class="property">class </em><code class="descclassname">modlamp.datasets.</code><code class="descname">Bunch</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#Bunch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.Bunch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Container object for datasets</p>
-<p>Dictionary-like object that exposes its keys as attributes. Taken from the <code class="docutils literal"><span class="pre">sklearn</span></code> package.</p>
+<p>Dictionary-like object that exposes its keys as attributes. Taken from the <a class="reference external" href="http://scikit-learn.org">sklearn</a>
+package.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -162,15 +162,15 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def _charge(self, seq, pH=7.0, amide=False):
-        """
-        Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
+        """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
         Cterm is added to the pos_pKs dictionary.
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
         For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
-        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param pH: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -200,8 +200,7 @@ class GlobalDescriptor(object):
         return PositiveCharge - NegativeCharge
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
-        """
-        Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
+        """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
         Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
@@ -209,8 +208,9 @@ class GlobalDescriptor(object):
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
         For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
 
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param ph: {float} ph at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -253,8 +253,9 @@ class GlobalDescriptor(object):
         The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
         module :mod:`Bio.SeqUtils.ProtParam`.
 
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+         **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+         **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`

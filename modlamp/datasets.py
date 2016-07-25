@@ -29,7 +29,8 @@ __docformat__ = "restructuredtext en"
 class Bunch(dict):
     """Container object for datasets
 
-    Dictionary-like object that exposes its keys as attributes. Taken from the ``sklearn`` package.
+    Dictionary-like object that exposes its keys as attributes. Taken from the `sklearn <http://scikit-learn.org>`_
+    package.
 
     :Example:
 
