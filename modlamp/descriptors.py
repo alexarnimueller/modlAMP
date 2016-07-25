@@ -115,6 +115,9 @@ class GlobalDescriptor(object):
         >>> P = GlobalDescriptor('KLAKLAKKLAKLAK')
         >>> P.sequences
         ['KLAKLAKKLAKLAK']
+        >>> seqs = PeptideDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
+        >>> seqs.sequences
+        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         D = PeptideDescriptor(seqs, 'eisenberg')
         self.sequences = D.sequences
@@ -470,12 +473,11 @@ class GlobalDescriptor(object):
         filter_duplicates(self)
 
     def check_natural_aa(self):
-        """
-        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-        filtered accordingly.
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
 
         .. seealso:: :func:`modlamp.core.check_natural_aa()`
 
@@ -633,6 +635,9 @@ class PeptideDescriptor(object):
         >>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
         >>> AMP.sequences
         ['KLLKLLKKLLKLLK']
+        >>> seqs = PeptideDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
+        >>> seqs.sequences
+        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         if type(seqs) == list:
             self.sequences = seqs
@@ -976,12 +981,11 @@ class PeptideDescriptor(object):
         filter_duplicates(self)
 
     def check_natural_aa(self):
-        """
-        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-        filtered accordingly.
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
 
         .. seealso:: :func:`modlamp.core.check_natural_aa()`
 
