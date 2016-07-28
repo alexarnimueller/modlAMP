@@ -395,7 +395,7 @@ def filter_unnatural(self):
                 desc.append(self.descriptor[i])
             if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
-            if hasattr(self, 'target') and self.target.size:
+            if hasattr(self, 'target') and len(self.target):
                 target.append(self.target[i])
 
     self.sequences = seqs
@@ -462,7 +462,7 @@ def filter_values(self, values, operator='=='):
         self.sequences = np.array(self.sequences)[indices].tolist()
         if self.names:
             self.names = np.array(self.names)[indices].tolist()
-        if self.target.size:
+        if len(self.target):
             self.target = self.target[indices]
 
 

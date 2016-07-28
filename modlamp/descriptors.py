@@ -510,6 +510,14 @@ class GlobalDescriptor(object):
         .. versionadded:: v2.2.4
         """
         filter_sequences(self, sequences)
+    
+    def filter_unnatural(self):
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
+        :return: Filtered sequence list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_unnatural()`
+        """
+        filter_unnatural(self)
 
     def random_selection(self, num):
         """Method to select a random number of sequences (with names and descriptors if present) out of a given
