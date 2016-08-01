@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.database &mdash; modlamp v2.1.5 documentation</title>
+    <title>modlamp.database &mdash; modlamp v2.3.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.1.5',
+        VERSION:     'v2.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.1.5 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.3.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,91 +57,91 @@
 <span class="sd">the different database tables.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">mysql.connector</span>
 <span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+
+<span class="kn">import</span> <span class="nn">mysql.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="kn">import</span> <span class="n">Error</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_read_db_config</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;gsdelta641.ethz.ch&#39;</span><span class="p">,</span><span class="n">database</span><span class="o">=</span><span class="s1">&#39;peptides&#39;</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;modlab&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Read database configuration and return a dictionary object.</span>
-<span class="sd">	This function generally does not need to be used as it is called by the function :func:`query_sequences` directly.</span>
+<span class="k">def</span> <span class="nf">_read_db_config</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;gsdelta641.ethz.ch&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;peptides&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;modlab&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read database configuration and return a dictionary object.</span>
+<span class="sd">    This function generally does not need to be used as it is called by the function :func:`query_sequences` directly.</span>
 
-<span class="sd">	:param host: The host name of your server hosting the database.</span>
-<span class="sd">	:param database: Name of the database.</span>
-<span class="sd">	:param user: Username</span>
-<span class="sd">	:return: a dictionary of database parameters</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="n">password</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">()</span>
+<span class="sd">    :param host: The host name of your server hosting the database.</span>
+<span class="sd">    :param database: Name of the database.</span>
+<span class="sd">    :param user: Username</span>
+<span class="sd">    :return: a dictionary of database parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">()</span>
 
-	<span class="n">db</span> <span class="o">=</span> <span class="p">{</span>	<span class="s1">&#39;host&#39;</span> <span class="p">:</span> <span class="n">host</span><span class="p">,</span>
-			<span class="s1">&#39;database&#39;</span> <span class="p">:</span> <span class="n">database</span><span class="p">,</span>
-			<span class="s1">&#39;user&#39;</span> <span class="p">:</span> <span class="n">user</span><span class="p">,</span>
-			<span class="s1">&#39;password&#39;</span> <span class="p">:</span> <span class="n">password</span>
-			<span class="p">}</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
+          <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="n">database</span><span class="p">,</span>
+          <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">}</span>
 
-	<span class="k">return</span> <span class="n">db</span>
+    <span class="k">return</span> <span class="n">db</span>
 
 
 <span class="k">def</span> <span class="nf">_connect</span><span class="p">():</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Connect to a given MySQL database (in config.ini file).</span>
-<span class="sd">	This function is called by the function :func:`query_sequences`.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connect to a given MySQL database (in config.ini file).</span>
+<span class="sd">    This function is called by the function :func:`query_sequences`.</span>
 
-<span class="sd">	:return: a mysql.connector connection object</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
+<span class="sd">    :return: a mysql.connector connection object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
 
-	<span class="k">try</span><span class="p">:</span>
-		<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>
-		<span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-		<span class="k">print</span><span class="p">(</span><span class="s1">&#39;connection established!&#39;</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">conn</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;connection established!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">conn</span>
 
-	<span class="k">except</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-		<span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="query_database"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_database">[docs]</a><span class="k">def</span> <span class="nf">query_database</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	This function extracts experimental results from the modlab peptide database. All data from the given table and</span>
-<span class="sd">	column names is extracted and returned.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function extracts experimental results from the modlab peptide database. All data from the given table and</span>
+<span class="sd">    column names is extracted and returned.</span>
 
-<span class="sd">	:param table: the mysql database table to be queried</span>
-<span class="sd">	:param columns: a list of the column names {str} to be extracted from the table *default*: &#39;*&#39; (all columns)</span>
-<span class="sd">	:return: queried data as a numpy array</span>
-<span class="sd">	:Example:</span>
+<span class="sd">    :param table: the mysql database table to be queried</span>
+<span class="sd">    :param columns: a list of the column names {str} to be extracted from the table *default*: &#39;*&#39; (all columns)</span>
+<span class="sd">    :return: queried data as a numpy array</span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">	&gt;&gt;&gt; data = query_database(table=&#39;modlab_experiments&#39;, columns=[&#39;sequence&#39;, &#39;MCF7_activity&#39;, &#39;Saureus_activity&#39;])</span>
-<span class="sd">	Password: *********</span>
-<span class="sd">	Connecting to MySQL database...</span>
-<span class="sd">	connection established!</span>
-<span class="sd">	&gt;&gt;&gt; data[:5]</span>
-<span class="sd">	array([	[&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
-<span class="sd">		[&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
-<span class="sd">		[&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
-<span class="sd">		[&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
-<span class="sd">		[&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; data = query_database(table=&#39;modlab_experiments&#39;, columns=[&#39;sequence&#39;, &#39;MCF7_activity&#39;, &#39;Saureus_activity&#39;])</span>
+<span class="sd">    Password: *********</span>
+<span class="sd">    Connecting to MySQL database...</span>
+<span class="sd">    connection established!</span>
+<span class="sd">    &gt;&gt;&gt; data[:5]</span>
+<span class="sd">    array([    [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
+<span class="sd">        [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
+<span class="sd">        [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
+<span class="sd">        [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
+<span class="sd">        [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
 
-<span class="sd">	.. note::</span>
-<span class="sd">		If &#39;None&#39; or &#39;NULL&#39; appears as a value, this means no data was measured for this peptide and not that activity</span>
-<span class="sd">		is None (inactive).</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
-		<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
-	<span class="k">try</span><span class="p">:</span>
-		<span class="n">conn</span> <span class="o">=</span> <span class="n">_connect</span><span class="p">()</span>
-		<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT &quot;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; FROM &quot;</span> <span class="o">+</span> <span class="n">table</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        If &#39;None&#39; or &#39;NULL&#39; appears as a value, this means no data was measured for this peptide and not that activity</span>
+<span class="sd">        is None (inactive).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">_connect</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT &quot;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; FROM &quot;</span> <span class="o">+</span> <span class="n">table</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">df</span>
+        <span class="k">return</span> <span class="n">df</span>
 
-	<span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-		<span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+    <span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -178,7 +178,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.1.5 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

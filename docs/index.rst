@@ -10,10 +10,15 @@ Welcome to modlamp's documentation!
 
 **Copyright:** 2016 `modlab ETH Zurich <http://www.cadd.ethz.ch>`_.
 
-This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural
+This is a **python package** that is designed for working with peptides, proteins or any amino acid sequence of natural
 amino acids. It incorporates several modules, like descriptor calculation (module descriptors) or sequence generation
 (module sequences). For basic instructions how to use the package, check the `README <readme.html>`_ or the
 `example script <examplescript.html>`_.
+
+.. note::
+    If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
+    repository to your local machine and consider the documentation in ``modlAMP/docs/build/html/index.html``.
+    Use ``git clone git@gitlab.ethz.ch:CADD/modlAMP.git`` to clone modlAMP to your current working directory.
 
 The package has the following contents:
 
@@ -25,6 +30,8 @@ The package has the following contents:
    readme
    modlamp
    examplescript
+   contributing
+   license
    todo
 
 Indices and tables

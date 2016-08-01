@@ -7,6 +7,16 @@ This is a python package that is designed for working with peptides, proteins or
 It incorporates several modules, like descriptor calculation (module **descriptors**) or sequence generation (module **sequences**).
 For basic instructions how to use the package, see Usage_ or this `example script <examplescript.html>`_.
 
+.. warning::
+    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
+    installing modlAMP. It will take care of all necessairy requirements and versions.
+        
+
+.. note::
+    If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
+    repository to your local machine and consider the documentation in ``modlAMP/docs/build/html/index.html``.
+    Use ``git clone git@gitlab.ethz.ch:CADD/modlAMP.git`` to clone modlAMP to your current working directory.
+
 
 Installation
 ************
@@ -22,6 +32,8 @@ When pip is installed, run the following command when located in the modlAMP pac
 
 Usage
 *****
+
+For a detailed description of all modules see the documentation in ``modlAMP/docs/build/html/index.html``.
 
 Importing modules
 -----------------
@@ -68,6 +80,10 @@ array([[ 0.60138255],[ 0.61232763],[ 0.01474009],[ 0.72333858],[ 0.20390763],[ 0
 >>> G.isoelectric_point()
 >>> G.descriptor[:10]
 array([ 10.09735107,   8.75006104,  12.30743408,  11.26385498, ...]
+>>> pepCATS = PeptideDescriptor('sequence/file/to/be/loaded.fasta', 'pepcats')
+>>> pepCATS.calculate_crosscorr(7)
+>>> pepCATS.descriptor
+array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333,
 
 We calculated the global hydrophobic moments from the Eisenberg hydrophobicity scale and the isoelectric points.
 Many more descriptors can be calculated, from global descriptors to concoluted / correlated descriptors from different
@@ -123,7 +139,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 .. image:: static/3D_scatter.png
     :scale: 50 %
 
-Further plotting methods, like helical wheel plots are available. See the documentation for the
+Further plotting methods like **helical wheel plots** are available. See the documentation for the
 `plot <modlamp.html#module-modlamp.plot>`_ module.
 
 
