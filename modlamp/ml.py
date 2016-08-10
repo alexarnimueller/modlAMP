@@ -178,8 +178,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
     elif model == 'rf':
 
-        pipe_rf = Pipeline([('scl', scaler),
-                            ('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
+        pipe_rf = Pipeline([('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
