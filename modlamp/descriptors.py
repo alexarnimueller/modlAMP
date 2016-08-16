@@ -124,6 +124,7 @@ class GlobalDescriptor(object):
         self.names = D.names
         self.descriptor = D.descriptor
         self.target = D.target
+        self.scaler = None
 
     def length(self, append=False):
         """
@@ -408,10 +409,10 @@ class GlobalDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def feature_scaling(self, type='standard', fit=True):
+    def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
 
-        :param type: {str} **'standard'** or **'minmax'**, type of scaling to be used
+        :param stype: {str} **'standard'** or **'minmax'**, type of scaling to be used
         :param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
             whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
         :return: scaled descriptor values in :py:attr:`self.descriptor`
@@ -419,13 +420,13 @@ class GlobalDescriptor(object):
 
         >>> D.descriptor
         array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> D.feature_scaling(type='minmax',fit=True)
+        >>> D.feature_scaling(stype='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         try:
-            if type == 'standard':
+            if stype == 'standard':
                 self.scaler = StandardScaler()
-            elif type == 'minmax':
+            elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
 
             if fit:
@@ -665,6 +666,7 @@ class PeptideDescriptor(object):
         self.scalename, self.scale = load_scale(scalename)
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
+        self.scaler = None
 
     def load_scale(self, scalename):
         """Method to load amino acid values from a given scale
@@ -903,10 +905,10 @@ class PeptideDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def feature_scaling(self, type='standard', fit=True):
+    def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
 
-        :param type: {'standard' or 'minmax'} type of scaling to be used
+        :param stype: {'standard' or 'minmax'} type of scaling to be used
         :param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or
             whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
         :return: scaled descriptor values in :py:attr:`descriptor`
@@ -918,9 +920,9 @@ class PeptideDescriptor(object):
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         try:
-            if type == 'standard':
+            if stype == 'standard':
                 self.scaler = StandardScaler()
-            elif type == 'minmax':
+            elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
 
             if fit == True:
