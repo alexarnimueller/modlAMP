@@ -3787,7 +3787,7 @@ visit <a class="reference external" href="https://www.photophysics.com/resources
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">filenames</span>
 <span class="go">[&#39;160819_Ghel1_T_smooth.csv&#39;, &#39;160819_Ghel1_W_smooth.csv&#39;, &#39;160819_Ghel5_T_smooth.csv&#39;, ...]</span>
 </pre></div>
@@ -3799,8 +3799,9 @@ visit <a class="reference external" href="https://www.photophysics.com/resources
 <code class="descname">calc_molar_ellipticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.calc_molar_ellipticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.calc_molar_ellipticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the molar ellipticity for all loaded data in <code class="xref py py-attr docutils literal"><span class="pre">circular_dichroism</span></code> according
 to the following formula:</p>
-<p><em>molar ellipticity = (theta x MW x 100) / (conc x pathlength)</em></p>
-<table class="docutils field-list" frame="void" rules="none">
+<div class="math">
+<p><img src="_images/math/a58e1277ac441ba8ed84c4194dd7b661cf5a3e57.png" alt="[\Theta] = (\Theta * MW * 100) / (c * l)"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -3824,8 +3825,12 @@ to the following formula:</p>
 <code class="descname">calc_meanres_ellipticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.calc_meanres_ellipticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.calc_meanres_ellipticity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the mean residue ellipticity for all loaded data in <code class="xref py py-attr docutils literal"><span class="pre">circular_dichroism</span></code>
 according to the following formula:</p>
-<p><em>mean residue molar ellipticity = (theta x mean residue weight) / (10 x conc x pathlength)</em></p>
-<p><em>mean residue weight = MW / (n_residues - 1)</em></p>
+<div class="math">
+<p><img src="_images/math/0e5f3765db91482bfeb2bd0c561f98415547ddac.png" alt="[\Theta] = (\Theta * MRW) / (10 * c * l)
+
+MRW = MW / (n - 1)"/></p>
+</div><p>With <em>MRW</em> = mean residue weight, <em>n</em> = number of residues in the peptide, <em>c</em> = concentration and <em>l</em> =
+cuvette path length.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3867,7 +3872,7 @@ according to the following formula:</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;mean residue ellipticity&#39;</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
@@ -3890,6 +3895,33 @@ files can then directly be uploaded to the <a class="reference external" href="h
 <code class="docutils literal"><span class="pre">circular</span> <span class="pre">dichroism</span></code>)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">.csv data files saved to the directory containing the read files.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.wetlab.CD.helicity">
+<code class="descname">helicity</code><span class="sig-paren">(</span><em>temperature=24.0</em>, <em>k=3.492185008</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.helicity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to calculate the percentage of helicity out of the mean residue ellipticity data.
+The calculation is based on the fromula by Fairlie and co-workers:</p>
+<div class="math">
+<p><img src="_images/math/d7a80f463c89d0330ed85b2afd096d0c9f1713a3.png" alt="\Theta_{222\infty} = (-44000 * 250 * T) * (1 - k / N)"/></p>
+</div><p>The helicity is then calculated as the ratio of</p>
+<div class="math">
+<p><img src="_images/math/af8f1e6357810c2a17231e1f7e5328972efbb4cb.png" alt="(\Theta_{222} / \Theta_{222\infty}) * 100 \%"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>temperature</strong> &#8211; {float} experiment temperature in °C</li>
+<li><strong>k</strong> &#8211; {float, 2.4 - 4.5} finite length correction factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">approximate helicity for every sequence data in <code class="xref py py-attr docutils literal"><span class="pre">self.meanres_ellipticity</span></code>.</p>
+</td>
 </tr>
 </tbody>
 </table>

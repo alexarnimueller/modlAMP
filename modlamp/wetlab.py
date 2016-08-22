@@ -46,7 +46,7 @@ class CD:
         :param pathlen: {float} cuvette path length in cm
         :Example:
         
-        >>> cd = CD('/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8', 180, 260)
+        >>> cd = CD('/path/to/your/folder', 180, 260)
         >>> cd.filenames
         ['160819_Ghel1_T_smooth.csv', '160819_Ghel1_W_smooth.csv', '160819_Ghel5_T_smooth.csv', ...]
          """
@@ -114,7 +114,8 @@ class CD:
         """Method to calculate the molar ellipticity for all loaded data in :py:attr:`circular_dichroism` according
         to the following formula:
         
-        *molar ellipticity = (theta x MW x 100) / (conc x pathlength)*
+        .. math::
+            [\Theta] = (\Theta * MW * 100) / (c * l)
 
         :return: {numpy array} molar ellipticity in :py:attr:`molar_ellipticity`
         :Example:
@@ -135,9 +136,13 @@ class CD:
         """Method to calculate the mean residue ellipticity for all loaded data in :py:attr:`circular_dichroism`
         according to the following formula:
         
-        *mean residue molar ellipticity = (theta x mean residue weight) / (10 x conc x pathlength)*
+        .. math::
+            [\Theta] = (\Theta * MRW) / (10 * c * l)
         
-        *mean residue weight = MW / (n_residues - 1)*
+            MRW = MW / (n - 1)
+        
+        With *MRW* = mean residue weight, *n* = number of residues in the peptide, *c* = concentration and *l* =
+        cuvette path length.
         
         :return: {numpy array} molar ellipticity in :py:attr:`meanres_ellipticity`
         :Example:
@@ -159,7 +164,7 @@ class CD:
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting single CD plots"""
         
         fig, ax = plt.subplots()
-        line = ax.plot(w, d)
+        line = ax.plot(w, d / 1000)  # used legend is 10^3 so divide by 1000
         plt.setp(line, color=col, linewidth=2.0)
         plt.title(title, fontsize=18, fontweight='bold')
         ax.set_xlabel('Wavelength (nm)', fontsize=16)
@@ -168,7 +173,8 @@ class CD:
         ax.spines['top'].set_visible(False)
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
-        plt.ylim((y_min, y_max))
+        plt.xlim(np.min(w), np.max(w))
+        plt.ylim((y_min / 1000, y_max / 1000))
         img_name = splitext(filename)[0] + '.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
     
@@ -176,8 +182,8 @@ class CD:
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
         
         fig, ax = plt.subplots()
-        line1 = ax.plot(w, dt)
-        line2 = ax.plot(w, dw)
+        line1 = ax.plot(w, dt / 1000)
+        line2 = ax.plot(w, dw / 1000)
         plt.setp(line1, color='r', linewidth=2.0, label='TFE', linestyle='--')
         plt.setp(line2, color='b', linewidth=2.0, label='Water')
         plt.title(title, fontsize=18, fontweight='bold')
@@ -187,7 +193,8 @@ class CD:
         ax.spines['top'].set_visible(False)
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
-        plt.ylim((y_min, y_max))
+        plt.xlim(np.min(w), np.max(w))
+        plt.ylim((y_min / 1000, y_max / 1000))
         plt.legend(loc=1)
         img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
@@ -230,7 +237,7 @@ class CD:
         :return: .pdf plots saved to the directory containing the read files.
         :Example:
         
-        >>> cd = CD('/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8', 180, 260)
+        >>> cd = CD('/path/to/your/folder', 180, 260)
         >>> cd.calc_meanres_ellipticity()
         >>> cd.plot(data='mean residue ellipticity', combine=True)
         
@@ -241,40 +248,46 @@ class CD:
         .. image:: ../docs/static/cd3.png
             :scale: 30 %
         """
-        # prepare combination of solvent plots
-        d_flag = False
-        if combine:
-            d = {k: self.names.count(k) for k in set(self.names)}  # create dict with name counts for double plot
-            if d.values().count(2) == len(d.values()):
-                d_flag = True
-
-        # check if output folder exists already, else create one
-        if not exists(join(self.directory, 'PDF')):
-            makedirs(join(self.directory, 'PDF'))
-        
-        # check data option
-        if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
-            # loop through all data for single plots
-            for i, f in enumerate(self.filenames):
+        try:
+            # prepare combination of solvent plots
+            d_flag = False
+            if combine:
+                d = {k: self.names.count(k) for k in set(self.names)}  # create dict with name counts for double plot
+                if d.values().count(2) == len(d.values()):
+                    d_flag = True
+    
+            # check if output folder exists already, else create one
+            if not exists(join(self.directory, 'PDF')):
+                makedirs(join(self.directory, 'PDF'))
+    
+            w = range(self.wmax, self.wmin - 1, -1)  # wavelengths
+            
+            # check data option
+            if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
+                # loop through all data for single plots
+                for i, f in enumerate(self.filenames):
+                    
+                    # get data type to be plotted
+                    d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
+                    
+                    if self.solvent[i] == 'T':  # color
+                        col = 'r'
+                    else:
+                        col = 'b'
+                    
+                    # plot single plots
+                    self._plot_single(w, d, col, y_label, self.names[i] + ' ' + self.solvent[i], f, y_min, y_max)
+                    # plot mixed plots
+                    if d_flag and i % 2 == 0:
+                        self._plot_double(w, d, d2, y_label, self.names[i], f, y_min, y_max)
+    
+            else:
+                print("ERROR\nWrong data option given!\nAvailable:")
+                print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
                 
-                # get data type to be plotted
-                d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
-                w = self.circular_dichroism[i][:, 0]  # wavelengths
-                
-                if self.solvent[i] == 'T':  # color
-                    col = 'r'
-                else:
-                    col = 'b'
-                
-                # plot single plots
-                self._plot_single(w, d, col, y_label, self.names[i] + ' ' + self.solvent[i], f, y_min, y_max)
-                # plot mixed plots
-                if d_flag and i % 2 == 0:
-                    self._plot_double(w, d, d2, y_label, self.names[i], f, y_min, y_max)
-
-        else:
-            print("Wrong data option given!\nAvailable:")
-            print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
+        except IndexError:  # if data arrays are empty, no data was calculated
+            print("ERROR\nSpecified data array empty, call the calculate functions first!")
+            print("e.g. self.calc_molar_ellipticity()")
 
     def dichroweb(self, data='mean residue ellipticity'):
         """Method to save the calculated CD data into DichroWeb readable format (semi-colon separated). The produced
@@ -293,7 +306,34 @@ class CD:
             for i, f in enumerate(self.filenames):
                 # get data type to be plotted
                 d, _, _, _, _ = self._check_datatype(data, i, False)
-                w = self.circular_dichroism[i][:, 0]  # wavelengths
+                w = range(self.wmax, self.wmin - 1, -1)  # wavelengths
                 dichro = pd.DataFrame(data=zip(w, d), columns=["V1", "V2"], dtype='float')
                 fname = splitext(f)[0] + '.csv'
                 dichro.to_csv(join(self.directory, 'Dichro', fname), sep=';', index=False)
+
+    def helicity(self, temperature=24., k=3.492185008):
+        """Method to calculate the percentage of helicity out of the mean residue ellipticity data.
+        The calculation is based on the fromula by Fairlie and co-workers:
+        
+        .. math::
+            \Theta_{222\infty} = (-44000 * 250 * T) * (1 - k / N)
+        
+        The helicity is then calculated as the ratio of
+        
+        .. math::
+            (\Theta_{222} / \Theta_{222\infty}) * 100 \%
+        
+        :param temperature: {float} experiment temperature in °C
+        :param k: {float, 2.4 - 4.5} finite length correction factor
+        :return: approximate helicity for every sequence data in :py:attr:`self.meanres_ellipticity`.
+        """
+
+        values = self.meanres_ellipticity
+        if values:
+            for i, v in enumerate(values):
+                indx = np.where(v[:, 0] == 222.)[0][0]  # get index of wavelength 222 nm
+                hel_100 = (-44000. + 250. * temperature) * (1. - (k / len(self.sequences[i])))
+                print self.names[i], ',', self.solvent[i], ',', (v[indx, 1] / hel_100) * 100.
+        else:
+            print("ERROR\nSpecified data array empty, call the calculate functions first:")
+            print("calc_meanres_ellipticity()")
