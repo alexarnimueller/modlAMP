@@ -138,31 +138,88 @@ class CD:
                                                                                       self.pathlen))))
             self.meanres_ellipticity.append(mol_ellipt)
 
-    def plot(self, data='mean residue ellipticity'):
+    def _plot_single(self, w, d, col, y_label, title, filename, y_min, y_max):
+        """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting single CD plots"""
+        
+        fig, ax = plt.subplots()
+        line = ax.plot(w, d)
+        plt.setp(line, color=col, linewidth=2.0)
+        plt.title(title, fontsize=18, fontweight='bold')
+        ax.set_xlabel('Wavelength (nm)', fontsize=16)
+        ax.set_ylabel(y_label, fontsize=16)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.xaxis.set_ticks_position('bottom')
+        ax.yaxis.set_ticks_position('left')
+        plt.ylim((y_min, y_max))
+        img_name = splitext(filename)[0] + '.pdf'
+        plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
+    
+    def _plot_double(self, w, dt, dw, y_label, title, filename, y_min, y_max):
+        """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
+        
+        fig, ax = plt.subplots()
+        line1 = ax.plot(w, dt)
+        line2 = ax.plot(w, dw)
+        plt.setp(line1, color='r', linewidth=2.0, label='TFE', linestyle='--')
+        plt.setp(line2, color='b', linewidth=2.0, label='Water')
+        plt.title(title, fontsize=18, fontweight='bold')
+        ax.set_xlabel('Wavelength (nm)', fontsize=16)
+        ax.set_ylabel(y_label, fontsize=16)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.xaxis.set_ticks_position('bottom')
+        ax.yaxis.set_ticks_position('left')
+        plt.ylim((y_min, y_max))
+        plt.legend(loc=1)
+        img_name = splitext(filename)[0] + '.pdf'
+        plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
+
+    def plot(self, data='mean residue ellipticity', combine=True):
         """Method to generate CD plots for all read data in the initial directory.
         
         :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
-        ``circular dichroism``)
+            ``circular dichroism``)
+        :param combine: {bool} if ``True``, overlays of different solvents will be created for the same molecule.
         :return: .pdf plots saved to the directory containing the read files.
         """
-        
+        # prepare combination of solvent plots
+        d_flag = False
+        if combine:
+            d = {k: self.names.count(k) for k in set(self.names)}  # create dict with name counts for double plot
+            if d.values().count(2) == len(d.values()):
+                d_flag = True
+
         # check if output folder exists already, else create one
         if not exists(join(self.directory, 'PDF')):
             makedirs(join(self.directory, 'PDF'))
         
         # check data option
         if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
-            # loop through all data
+            # loop through all data for single plots
             for i, f in enumerate(self.filenames):
+                # get data type to be plotted
                 if data == 'mean residue ellipticity':
                     d = self.meanres_ellipticity[i][:, 1] / 1000
+                    if d_flag and i % 2 == 0:
+                        d2 = self.meanres_ellipticity[i + 1][:, 1] / 1000
                     y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
+                    y_min = np.min(self.meanres_ellipticity) * 1.1 / 1000
+                    y_max = np.max(self.meanres_ellipticity) * 1.1 / 1000
                 elif data == 'molar ellipticity':
                     d = self.molar_ellipticity[i][:, 1]
+                    if d_flag and i % 2 == 0:
+                        d2 = self.molar_ellipticity[i + 1][:, 1]
                     y_label = r"$[\Theta] (deg \ast cm^2 \ast dmol^-1)$"
+                    y_min = np.min(self.molar_ellipticity) * 1.1
+                    y_max = np.max(self.molar_ellipticity) * 1.1
                 else:
                     d = self.circular_dichroism[i][:, 1]
+                    if d_flag and i % 2 == 0:
+                        d2 = self.molar_ellipticity[i + 1][:, 1]
                     y_label = r"$\Delta A \ast 32.986$"
+                    y_min = np.min(self.circular_dichroism) * 1.1
+                    y_max = np.max(self.circular_dichroism) * 1.1
                 
                 w = self.circular_dichroism[i][:, 0]  # wavelengths
                 
@@ -171,21 +228,12 @@ class CD:
                 else:
                     col = 'b'
                 
-                # plotting
-                fig, ax = plt.subplots()
-                line = ax.plot(w, d)
-                plt.setp(line, color=col, linewidth=2.0)
-                ax.set_xlabel('Wavelength (nm)', fontsize=16)
-                ax.set_ylabel(y_label, fontsize=16)
-                plt.title(splitext(f)[0], fontsize=18, fontweight='bold')
-                img_name = splitext(f)[0] + '.pdf'
-                ax.spines['right'].set_visible(False)
-                ax.spines['top'].set_visible(False)
-                ax.xaxis.set_ticks_position('bottom')
-                ax.yaxis.set_ticks_position('left')
-                
-                plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
-                
+                # plot single plots
+                self._plot_single(w, d, col, y_label, self.names[i] + ' ' + self.solvent[i], f, y_min, y_max)
+                # plot mixed plots
+                if d_flag and i % 2 == 0:
+                    self._plot_double(w, d, d2, y_label, self.names[i], f, y_min, y_max)
+
         else:
             print("Wrong data option given!\nAvailable:")
             print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
