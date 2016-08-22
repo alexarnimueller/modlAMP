@@ -172,7 +172,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">sequences</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">descriptor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">target</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="bp">None</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.length"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.length">[docs]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -457,10 +458,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.feature_scaling">[docs]</a>    <span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.feature_scaling">[docs]</a>    <span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stype</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
 
-<span class="sd">        :param type: {str} **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
+<span class="sd">        :param stype: {str} **&#39;standard&#39;** or **&#39;minmax&#39;**, type of scaling to be used</span>
 <span class="sd">        :param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or</span>
 <span class="sd">            whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
 <span class="sd">        :return: scaled descriptor values in :py:attr:`self.descriptor`</span>
@@ -468,13 +469,13 @@
 
 <span class="sd">        &gt;&gt;&gt; D.descriptor</span>
 <span class="sd">        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
-<span class="sd">        &gt;&gt;&gt; D.feature_scaling(type=&#39;minmax&#39;,fit=True)</span>
+<span class="sd">        &gt;&gt;&gt; D.feature_scaling(stype=&#39;minmax&#39;,fit=True)</span>
 <span class="sd">        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;minmax&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;minmax&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">fit</span><span class="p">:</span>
@@ -559,6 +560,14 @@
 <span class="sd">        .. versionadded:: v2.2.4</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="GlobalDescriptor.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
+<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.random_selection">[docs]</a>    <span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to select a random number of sequences (with names and descriptors if present) out of a given</span>
@@ -705,7 +714,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scalename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">load_scale</span><span class="p">(</span><span class="n">scalename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="bp">None</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.load_scale"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_scale">[docs]</a>    <span class="k">def</span> <span class="nf">load_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to load amino acid values from a given scale</span>
@@ -944,10 +954,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.feature_scaling">[docs]</a>    <span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="PeptideDescriptor.feature_scaling"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.feature_scaling">[docs]</a>    <span class="k">def</span> <span class="nf">feature_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stype</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for feature scaling of the calculated descriptor matrix.</span>
 
-<span class="sd">        :param type: {&#39;standard&#39; or &#39;minmax&#39;} type of scaling to be used</span>
+<span class="sd">        :param stype: {&#39;standard&#39; or &#39;minmax&#39;} type of scaling to be used</span>
 <span class="sd">        :param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or</span>
 <span class="sd">            whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).</span>
 <span class="sd">        :return: scaled descriptor values in :py:attr:`descriptor`</span>
@@ -959,9 +969,9 @@
 <span class="sd">        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;minmax&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;minmax&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">fit</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>

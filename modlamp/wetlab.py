@@ -8,12 +8,9 @@ This module incorporates functions to load raw data files from wetlab experiment
 characteristics.
 
 =============================        ============================================================================
-Function                             Data
+Class                                Data
 =============================        ============================================================================
-:py:func:`load_AMPvsTMset`           Antimicrobial peptides versus trans-membrane sequences
-:py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides
-:py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences
-:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*
+:py:class:`CD`                       Class for handling Circular Dichroism data.
 =============================        ============================================================================
 """
 
@@ -22,6 +19,7 @@ from os.path import join, exists, splitext
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from modlamp.descriptors import GlobalDescriptor
 
@@ -46,7 +44,12 @@ class CD:
         :param wmax: {int} highest wavelength measured
         :param amide: {bool} specifies whether the sequences have amidated C-termini
         :param pathlen: {float} cuvette path length in cm
-        """
+        :Example:
+        
+        >>> cd = CD('/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8', 180, 260)
+        >>> cd.filenames
+        ['160819_Ghel1_T_smooth.csv', '160819_Ghel1_W_smooth.csv', '160819_Ghel5_T_smooth.csv', ...]
+         """
         
         # read filenames from directory
         files = listdir(directory)
@@ -114,6 +117,13 @@ class CD:
         *molar ellipticity = (theta x MW x 100) / (conc x pathlength)*
 
         :return: {numpy array} molar ellipticity in :py:attr:`molar_ellipticity`
+        :Example:
+        
+        >>> cd.calc_molar_ellipticity()
+        >>> cd.molar_ellipticity
+        array([[  2.60000000e+02,  -1.40893636e+07],
+              [  2.59000000e+02,  -1.00558182e+07],
+              [  2.58000000e+02,  -1.25173636e+07], ...
         """
 
         for i, data in enumerate(self.circular_dichroism):
@@ -130,6 +140,13 @@ class CD:
         *mean residue weight = MW / (n_residues - 1)*
         
         :return: {numpy array} molar ellipticity in :py:attr:`meanres_ellipticity`
+        :Example:
+        
+        >>> cd.calc_meanres_ellipticity()
+        >>> cd.meanres_ellipticity
+        array([[   260.        ,   -266.95804196],
+              [   259.        ,   -338.13286713],
+              [   258.        ,   -387.25174825], ...
         """
         
         for i, data in enumerate(self.circular_dichroism):
@@ -175,6 +192,35 @@ class CD:
         img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
 
+    def _check_datatype(self, data, i, d_flag):
+        """Private function to check data type; used by :py:func`modlamp.wetlab.CD.plot` and
+        :py:func`modlamp.wetlab.CD.dichroweb`"""
+    
+        d2 = []
+        if data == 'mean residue ellipticity':
+            d = self.meanres_ellipticity[i][:, 1]
+            if d_flag and i % 2 == 0:
+                d2 = self.meanres_ellipticity[i + 1][:, 1]
+            y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
+            y_min = np.min(self.meanres_ellipticity) * 1.1
+            y_max = np.max(self.meanres_ellipticity) * 1.1
+        elif data == 'molar ellipticity':
+            d = self.molar_ellipticity[i][:, 1]
+            if d_flag and i % 2 == 0:
+                d2 = self.molar_ellipticity[i + 1][:, 1]
+            y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
+            y_min = np.min(self.molar_ellipticity) * 1.1
+            y_max = np.max(self.molar_ellipticity) * 1.1
+        else:
+            d = self.circular_dichroism[i][:, 1]
+            if d_flag and i % 2 == 0:
+                d2 = self.molar_ellipticity[i + 1][:, 1]
+            y_label = r"$\Delta A \ast 32.986 \ast 10^-3$"
+            y_min = np.min(self.circular_dichroism) * 1.1
+            y_max = np.max(self.circular_dichroism) * 1.1
+    
+        return d, d2, y_label, y_min, y_max
+
     def plot(self, data='mean residue ellipticity', combine=True):
         """Method to generate CD plots for all read data in the initial directory.
         
@@ -188,11 +234,11 @@ class CD:
         >>> cd.calc_meanres_ellipticity()
         >>> cd.plot(data='mean residue ellipticity', combine=True)
         
-        .. image:: ../docs/static/cd1.pdf
+        .. image:: ../docs/static/cd1.png
             :scale: 30 %
-        .. image:: ../docs/static/cd2.pdf
+        .. image:: ../docs/static/cd2.png
             :scale: 30 %
-        .. image:: ../docs/static/cd3.pdf
+        .. image:: ../docs/static/cd3.png
             :scale: 30 %
         """
         # prepare combination of solvent plots
@@ -210,29 +256,9 @@ class CD:
         if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
             # loop through all data for single plots
             for i, f in enumerate(self.filenames):
-                # get data type to be plotted
-                if data == 'mean residue ellipticity':
-                    d = self.meanres_ellipticity[i][:, 1] / 1000
-                    if d_flag and i % 2 == 0:
-                        d2 = self.meanres_ellipticity[i + 1][:, 1] / 1000
-                    y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
-                    y_min = np.min(self.meanres_ellipticity) * 1.1 / 1000
-                    y_max = np.max(self.meanres_ellipticity) * 1.1 / 1000
-                elif data == 'molar ellipticity':
-                    d = self.molar_ellipticity[i][:, 1]
-                    if d_flag and i % 2 == 0:
-                        d2 = self.molar_ellipticity[i + 1][:, 1]
-                    y_label = r"$[\Theta] (deg \ast cm^2 \ast dmol^-1)$"
-                    y_min = np.min(self.molar_ellipticity) * 1.1
-                    y_max = np.max(self.molar_ellipticity) * 1.1
-                else:
-                    d = self.circular_dichroism[i][:, 1]
-                    if d_flag and i % 2 == 0:
-                        d2 = self.molar_ellipticity[i + 1][:, 1]
-                    y_label = r"$\Delta A \ast 32.986$"
-                    y_min = np.min(self.circular_dichroism) * 1.1
-                    y_max = np.max(self.circular_dichroism) * 1.1
                 
+                # get data type to be plotted
+                d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
                 w = self.circular_dichroism[i][:, 0]  # wavelengths
                 
                 if self.solvent[i] == 'T':  # color
@@ -249,3 +275,25 @@ class CD:
         else:
             print("Wrong data option given!\nAvailable:")
             print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
+
+    def dichroweb(self, data='mean residue ellipticity'):
+        """Method to save the calculated CD data into DichroWeb readable format (semi-colon separated). The produced
+        files can then directly be uploaded to the `DichroWeb <http://dichroweb.cryst.bbk.ac.uk>`_ analysis tool.
+        
+        :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
+            ``circular dichroism``)
+        :return: .csv data files saved to the directory containing the read files.
+        """
+        # check if output folder exists already, else create one
+        if not exists(join(self.directory, 'Dichro')):
+            makedirs(join(self.directory, 'Dichro'))
+        
+        if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
+            # loop through all data for single plots
+            for i, f in enumerate(self.filenames):
+                # get data type to be plotted
+                d, _, _, _, _ = self._check_datatype(data, i, False)
+                w = self.circular_dichroism[i][:, 0]  # wavelengths
+                dichro = pd.DataFrame(data=zip(w, d), columns=["V1", "V2"], dtype='float')
+                fname = splitext(f)[0] + '.csv'
+                dichro.to_csv(join(self.directory, 'Dichro', fname), sep=';', index=False)

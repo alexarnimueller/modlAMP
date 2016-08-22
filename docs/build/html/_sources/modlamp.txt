@@ -52,6 +52,12 @@ modlamp.ml
 .. automodule:: modlamp.ml
     :members:
 
+modlamp.wetlab
+--------------
+
+.. automodule:: modlamp.wetlab
+    :members:
+
 modlamp.core
 ------------
 
