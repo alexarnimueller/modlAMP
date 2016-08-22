@@ -172,7 +172,7 @@ class CD:
         ax.yaxis.set_ticks_position('left')
         plt.ylim((y_min, y_max))
         plt.legend(loc=1)
-        img_name = splitext(filename)[0] + '.pdf'
+        img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
 
     def plot(self, data='mean residue ellipticity', combine=True):
@@ -182,6 +182,18 @@ class CD:
             ``circular dichroism``)
         :param combine: {bool} if ``True``, overlays of different solvents will be created for the same molecule.
         :return: .pdf plots saved to the directory containing the read files.
+        :Example:
+        
+        >>> cd = CD('/Volumes/Platte1/x/projects/Ghels/wetlab/CD/20160819_G1,5,7,8', 180, 260)
+        >>> cd.calc_meanres_ellipticity()
+        >>> cd.plot(data='mean residue ellipticity', combine=True)
+        
+        .. image:: ../docs/static/cd1.pdf
+            :scale: 30 %
+        .. image:: ../docs/static/cd2.pdf
+            :scale: 30 %
+        .. image:: ../docs/static/cd3.pdf
+            :scale: 30 %
         """
         # prepare combination of solvent plots
         d_flag = False
