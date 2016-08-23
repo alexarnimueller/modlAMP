@@ -3787,9 +3787,15 @@ visit <a class="reference external" href="https://www.photophysics.com/resources
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">filenames</span>
 <span class="go">[&#39;160819_Ghel1_T_smooth.csv&#39;, &#39;160819_Ghel1_W_smooth.csv&#39;, &#39;160819_Ghel5_T_smooth.csv&#39;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">names</span>
+<span class="go">[&#39;Ghel 10&#39;, &#39;Ghel 10&#39;, &#39;Ghel 11&#39;, &#39;Ghel 11&#39;, ... ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">conc_umol</span>
+<span class="go">[33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  ... ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">meanres_mw</span>
+<span class="go">[114.29920769230768, 114.29920769230768, 111.68257692307689, 111.68257692307689, ... ]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3813,9 +3819,9 @@ to the following formula:</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_molar_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">molar_ellipticity</span>
-<span class="go">array([[  2.60000000e+02,  -1.40893636e+07],</span>
-<span class="go">      [  2.59000000e+02,  -1.00558182e+07],</span>
-<span class="go">      [  2.58000000e+02,  -1.25173636e+07], ...</span>
+<span class="go">array([[  260.,  -1.40893636e+07],</span>
+<span class="go">       [  259.,  -1.00558182e+07],</span>
+<span class="go">       [  258.,  -1.25173636e+07], ...</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3844,8 +3850,8 @@ cuvette path length.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">meanres_ellipticity</span>
 <span class="go">array([[   260.        ,   -266.95804196],</span>
-<span class="go">      [   259.        ,   -338.13286713],</span>
-<span class="go">      [   258.        ,   -387.25174825], ...</span>
+<span class="go">       [   259.        ,   -338.13286713],</span>
+<span class="go">       [   258.        ,   -387.25174825], ...</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3902,7 +3908,7 @@ files can then directly be uploaded to the <a class="reference external" href="h
 
 <dl class="method">
 <dt id="modlamp.wetlab.CD.helicity">
-<code class="descname">helicity</code><span class="sig-paren">(</span><em>temperature=24.0</em>, <em>k=3.492185008</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.helicity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">helicity</code><span class="sig-paren">(</span><em>temperature=24.0</em>, <em>k=3.492185008</em>, <em>induction=True</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.helicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the percentage of helicity out of the mean residue ellipticity data.
 The calculation is based on the fromula by Fairlie and co-workers:</p>
 <div class="math">
@@ -3916,15 +3922,30 @@ The calculation is based on the fromula by Fairlie and co-workers:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>temperature</strong> &#8211; {float} experiment temperature in °C</li>
-<li><strong>k</strong> &#8211; {float, 2.4 - 4.5} finite length correction factor</li>
+<li><strong>k</strong> &#8211; {float, 2.4 - 4.5} finite length correction factor. Can be adapted to the helicity of a known peptide.</li>
+<li><strong>induction</strong> &#8211; {bool} wether the helical induction upon changing from one solvent to another should be
+calculated.</li>
+<li><strong>filename</strong> &#8211; {str} if given, helicity data is saved to the file &#8220;filename&#8221;.csv</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">approximate helicity for every sequence data in <code class="xref py py-attr docutils literal"><span class="pre">self.meanres_ellipticity</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">approximate helicity for every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">helicity_values</span></code>.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">24.</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">3.492185008</span><span class="p">,</span> <span class="n">induction</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity_values</span>
+<span class="go">            Name    Solvent   Helicity  Induction</span>
+<span class="go">    0  Aurein2.2d2       T    100.0     3.823</span>
+<span class="go">    1  Aurein2.2d2       W    26.16     0.000</span>
+<span class="go">    2       Klak14       T    76.38     3.048</span>
+<span class="go">    3       Klak14       W    25.06     0.000</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

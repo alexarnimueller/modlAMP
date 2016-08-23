@@ -1,5 +1,6 @@
 import unittest
-from modlamp.sequences import Helices
+
+from ..sequences import Helices
 
 
 class TestHelices(unittest.TestCase):

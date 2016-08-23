@@ -46,9 +46,15 @@ class CD:
         :param pathlen: {float} cuvette path length in cm
         :Example:
         
-        >>> cd = CD('/path/to/your/folder', 180, 260)
+        >>> cd = CD('/path/to/your/folder', 185, 260)
         >>> cd.filenames
         ['160819_Ghel1_T_smooth.csv', '160819_Ghel1_W_smooth.csv', '160819_Ghel5_T_smooth.csv', ...]
+        >>> cd.names
+        ['Ghel 10', 'Ghel 10', 'Ghel 11', 'Ghel 11', ... ]
+        >>> cd.conc_umol
+        [33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  ... ]
+        >>> cd.meanres_mw
+        [114.29920769230768, 114.29920769230768, 111.68257692307689, 111.68257692307689, ... ]
          """
         
         # read filenames from directory
@@ -66,6 +72,7 @@ class CD:
         self.circular_dichroism = list()
         self.molar_ellipticity = list()
         self.meanres_ellipticity = list()
+        self.helicity_values = pd.DataFrame()
         self.directory = directory
         self.wmin = wmin
         self.wmax = wmax
@@ -122,9 +129,9 @@ class CD:
         
         >>> cd.calc_molar_ellipticity()
         >>> cd.molar_ellipticity
-        array([[  2.60000000e+02,  -1.40893636e+07],
-              [  2.59000000e+02,  -1.00558182e+07],
-              [  2.58000000e+02,  -1.25173636e+07], ...
+        array([[  260.,  -1.40893636e+07],
+               [  259.,  -1.00558182e+07],
+               [  258.,  -1.25173636e+07], ...
         """
 
         for i, data in enumerate(self.circular_dichroism):
@@ -150,8 +157,8 @@ class CD:
         >>> cd.calc_meanres_ellipticity()
         >>> cd.meanres_ellipticity
         array([[   260.        ,   -266.95804196],
-              [   259.        ,   -338.13286713],
-              [   258.        ,   -387.25174825], ...
+               [   259.        ,   -338.13286713],
+               [   258.        ,   -387.25174825], ...
         """
         
         for i, data in enumerate(self.circular_dichroism):
@@ -208,21 +215,21 @@ class CD:
             d = self.meanres_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.meanres_ellipticity[i + 1][:, 1]
-            y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
+            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(self.meanres_ellipticity) * 1.1
             y_max = np.max(self.meanres_ellipticity) * 1.1
         elif data == 'molar ellipticity':
             d = self.molar_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = r"$[\Theta] \ast 10^-3 (deg \ast cm^2 \ast dmol^-1)$"
+            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(self.molar_ellipticity) * 1.1
             y_max = np.max(self.molar_ellipticity) * 1.1
         else:
             d = self.circular_dichroism[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = r"$\Delta A \ast 32.986 \ast 10^-3$"
+            y_label = r"$\Delta A \ast 32.986 \ast 10^{-3}$"
             y_min = np.min(self.circular_dichroism) * 1.1
             y_max = np.max(self.circular_dichroism) * 1.1
     
@@ -311,7 +318,7 @@ class CD:
                 fname = splitext(f)[0] + '.csv'
                 dichro.to_csv(join(self.directory, 'Dichro', fname), sep=';', index=False)
 
-    def helicity(self, temperature=24., k=3.492185008):
+    def helicity(self, temperature=24., k=3.492185008, induction=True, filename=None):
         """Method to calculate the percentage of helicity out of the mean residue ellipticity data.
         The calculation is based on the fromula by Fairlie and co-workers:
         
@@ -324,16 +331,52 @@ class CD:
             (\Theta_{222} / \Theta_{222\infty}) * 100 \%
         
         :param temperature: {float} experiment temperature in °C
-        :param k: {float, 2.4 - 4.5} finite length correction factor
-        :return: approximate helicity for every sequence data in :py:attr:`self.meanres_ellipticity`.
+        :param k: {float, 2.4 - 4.5} finite length correction factor. Can be adapted to the helicity of a known peptide.
+        :param induction: {bool} wether the helical induction upon changing from one solvent to another should be
+            calculated.
+        :param filename: {str} if given, helicity data is saved to the file "filename".csv
+        :return: approximate helicity for every sequence in the attribute :py:attr:`helicity_values`.
+        :Example:
+        
+        >>> cd.calc_meanres_ellipticity()
+        >>> cd.helicity(temperature=24., k=3.492185008, induction=True)
+        >>> cd.helicity_values
+                    Name    Solvent   Helicity  Induction
+            0  Aurein2.2d2       T    100.0     3.823
+            1  Aurein2.2d2       W    26.16     0.000
+            2       Klak14       T    76.38     3.048
+            3       Klak14       W    25.06     0.000
         """
 
         values = self.meanres_ellipticity
         if values:
+            hel = []
             for i, v in enumerate(values):
                 indx = np.where(v[:, 0] == 222.)[0][0]  # get index of wavelength 222 nm
-                hel_100 = (-44000. + 250. * temperature) * (1. - (k / len(self.sequences[i])))
-                print self.names[i], ',', self.solvent[i], ',', (v[indx, 1] / hel_100) * 100.
+                hel_100 = (-44000. + 250. * temperature) * (1. - (k / len(self.sequences[i])))  # maximal helicity 222
+                hel.append(round((v[indx, 1] / hel_100) * 100., 2))
+
+            self.helicity_values = pd.DataFrame(np.array([self.names, self.solvent, hel]).T, columns=['Name', 'Solvent',
+                                                                                              'Helicity'])
+            if induction:
+                induct = []
+                try:
+                    for i in self.helicity_values.index:
+                        if self.helicity_values.iloc[i]['Name'] == self.helicity_values.iloc[i+1]['Name'] and \
+                                self.helicity_values.iloc[i]['Solvent'] != self.helicity_values.iloc[i+1]['Solvent']:
+                            induct.append(round(float(self.helicity_values.iloc[i]['Helicity']) / float(
+                                self.helicity_values.iloc[i+1]['Helicity']), 3))  # if following entry is same molecule
+                            # but not same solvent, calculate the helical induction and round to .3f
+                        else:  # else just append 0
+                            induct.append(0.)
+                            
+                except IndexError:  # at the end of the DataFrame, an index error will be raised because of i+1
+                    induct.append(0.)
+                    self.helicity_values['Induction'] = induct
+                    
+            if filename:
+                self.helicity_values.to_csv(filename, index=False)
+                
         else:
-            print("ERROR\nSpecified data array empty, call the calculate functions first:")
+            print("ERROR\nmeanres_ellipticity data array empty, call the calculate function first:")
             print("calc_meanres_ellipticity()")

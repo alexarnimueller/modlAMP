@@ -1,7 +1,7 @@
 import unittest
 from os.path import abspath, join
 
-from modlamp.wetlab import CD
+from ..wetlab import CD
 
 
 class TestCD(unittest.TestCase):
@@ -25,6 +25,11 @@ class TestCD(unittest.TestCase):
 	def test_meanres_ellipticity(self):
 		self.cd.calc_meanres_ellipticity()
 		self.assertAlmostEqual(self.cd.meanres_ellipticity[0][38, 1], -1990.3473193473196, 5)
-
+		
+	def test_helicity(self):
+		self.cd.calc_meanres_ellipticity()
+		self.cd.helicity()
+		self.assertEqual(float(self.cd.helicity_values.iloc[1]['Helicity']), 79.62)
+		
 if __name__ == '__main__':
 	unittest.main()
