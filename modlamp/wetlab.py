@@ -34,6 +34,22 @@ class CD:
     
     For explanations of different units used in CD spectroscopy,
     visit https://www.photophysics.com/resources/7-cd-units-conversions.
+    
+    .. note::
+        All files which should be read must have **4 header lines** as shown in the image below. CD data to be read
+        must start in line 5 (separated in 2 columns: *Wavelength* and *Signal*).
+        
+    .. image:: ../docs/static/fileheader.png
+        
+    First line: *Molecule Name*
+    
+    Second line: *Sequence*
+    
+    Third line: *concentration in µM*
+    
+    Fourth line: *solvent*
+    
+    Recognized solvents are **W** for water and **T** for TFE.
     """
     
     def __init__(self, directory, wmin, wmax, amide=True, pathlen=0.1):

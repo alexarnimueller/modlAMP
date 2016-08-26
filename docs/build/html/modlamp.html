@@ -3766,6 +3766,17 @@ characteristics.</p>
 The class can only handle data files of the <em>Applied Photophysics</em> type.</p>
 <p>For explanations of different units used in CD spectroscopy,
 visit <a class="reference external" href="https://www.photophysics.com/resources/7-cd-units-conversions">https://www.photophysics.com/resources/7-cd-units-conversions</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All files which should be read must have <strong>4 header lines</strong> as shown in the image below. CD data to be read
+must start in line 5 (separated in 2 columns: <em>Wavelength</em> and <em>Signal</em>).</p>
+</div>
+<img alt="_images/fileheader.png" src="_images/fileheader.png" />
+<p>First line: <em>Molecule Name</em></p>
+<p>Second line: <em>Sequence</em></p>
+<p>Third line: <em>concentration in µM</em></p>
+<p>Fourth line: <em>solvent</em></p>
+<p>Recognized solvents are <strong>W</strong> for water and <strong>T</strong> for TFE.</p>
 <dl class="method">
 <dt id="modlamp.wetlab.CD.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>wmin</em>, <em>wmax</em>, <em>amide=True</em>, <em>pathlen=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.__init__" title="Permalink to this definition">¶</a></dt>
