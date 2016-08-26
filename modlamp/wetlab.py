@@ -318,17 +318,20 @@ class CD:
                 fname = splitext(f)[0] + '.csv'
                 dichro.to_csv(join(self.directory, 'Dichro', fname), sep=';', index=False)
 
-    def helicity(self, temperature=24., k=3.492185008, induction=True, filename=None):
+    def helicity(self, temperature=24., k=3.5, induction=True, filename=None):
         """Method to calculate the percentage of helicity out of the mean residue ellipticity data.
         The calculation is based on the fromula by Fairlie and co-workers:
         
         .. math::
-            \Theta_{222\infty} = (-44000 * 250 * T) * (1 - k / N)
+            [\Theta]_{222\infty} = (-44000 * 250 * T) * (1 - k / N)
         
         The helicity is then calculated as the ratio of
         
         .. math::
-            (\Theta_{222} / \Theta_{222\infty}) * 100 \%
+            ([\Theta]_{222} / [\Theta]_{222\infty}) * 100 \%
+        
+        *See also:* `Shepherd, N. E., Hoang, H. N., Abbenante, G. & Fairlie, D. P. *J. Am. Chem. Soc. 127, 2974–2983 (
+        2005). <https://dx.doi.org/10.1021/ja0456003>`_
         
         :param temperature: {float} experiment temperature in °C
         :param k: {float, 2.4 - 4.5} finite length correction factor. Can be adapted to the helicity of a known peptide.
@@ -353,7 +356,7 @@ class CD:
             hel = []
             for i, v in enumerate(values):
                 indx = np.where(v[:, 0] == 222.)[0][0]  # get index of wavelength 222 nm
-                hel_100 = (-44000. + 250. * temperature) * (1. - (k / len(self.sequences[i])))  # maximal helicity 222
+                hel_100 = (-44000. + 250. * temperature) * (1. - (float(k) / len(self.sequences[i])))  # inf hel 222
                 hel.append(round((v[indx, 1] / hel_100) * 100., 2))
 
             self.helicity_values = pd.DataFrame(np.array([self.names, self.solvent, hel]).T, columns=['Name', 'Solvent',

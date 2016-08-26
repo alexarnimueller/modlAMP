@@ -3883,9 +3883,9 @@ cuvette path length.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;mean residue ellipticity&#39;</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" style="width: 257.1px; height: 193.2px;" /></a>
-<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" style="width: 256.2px; height: 193.8px;" /></a>
-<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" style="width: 258.3px; height: 194.1px;" /></a>
+<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" style="width: 482.1px; height: 360.3px;" /></a>
+<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" style="width: 480.6px; height: 360.0px;" /></a>
+<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" style="width: 481.5px; height: 360.6px;" /></a>
 </dd></dl>
 
 <dl class="method">
@@ -3908,15 +3908,17 @@ files can then directly be uploaded to the <a class="reference external" href="h
 
 <dl class="method">
 <dt id="modlamp.wetlab.CD.helicity">
-<code class="descname">helicity</code><span class="sig-paren">(</span><em>temperature=24.0</em>, <em>k=3.492185008</em>, <em>induction=True</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.helicity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">helicity</code><span class="sig-paren">(</span><em>temperature=24.0</em>, <em>k=3.5</em>, <em>induction=True</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.helicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the percentage of helicity out of the mean residue ellipticity data.
 The calculation is based on the fromula by Fairlie and co-workers:</p>
 <div class="math">
-<p><img src="_images/math/d7a80f463c89d0330ed85b2afd096d0c9f1713a3.png" alt="\Theta_{222\infty} = (-44000 * 250 * T) * (1 - k / N)"/></p>
+<p><img src="_images/math/f620af04d8f3e625d25a285bef843566ff86c39c.png" alt="[\Theta]_{222\infty} = (-44000 * 250 * T) * (1 - k / N)"/></p>
 </div><p>The helicity is then calculated as the ratio of</p>
 <div class="math">
-<p><img src="_images/math/af8f1e6357810c2a17231e1f7e5328972efbb4cb.png" alt="(\Theta_{222} / \Theta_{222\infty}) * 100 \%"/></p>
-</div><table class="docutils field-list" frame="void" rules="none">
+<p><img src="_images/math/d3b945ec4f2c76397be45015c68d52f083a551ed.png" alt="([\Theta]_{222} / [\Theta]_{222\infty}) * 100 \%"/></p>
+</div><p><em>See also:</em> <a class="reference external" href="https://dx.doi.org/10.1021/ja0456003">Shepherd, N. E., Hoang, H. N., Abbenante, G. &amp; Fairlie, D. P. *J. Am. Chem. Soc. 127, 2974–2983 (
+2005).</a></p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
