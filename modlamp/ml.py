@@ -370,41 +370,33 @@ def test_scores(classifier, X_test, y_test):
     """
 
     metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
-    means = []
-    SDs = []
+    scores = []
 
     MCC = matthews_corrcoef(y_test, classifier.predict(X_test))
-    means.append(mean(MCC))
-    SDs.append(sd(MCC))
+    scores.append(MCC)
 
     accuracy = accuracy_score(y_test, classifier.predict(X_test))
-    means.append(mean(accuracy))
-    SDs.append(sd(accuracy))
+    scores.append(accuracy)
 
     precision = precision_score(y_test, classifier.predict(X_test))
-    means.append(mean(precision))
-    SDs.append(sd(precission))
+    scores.append(precision)
 
     recall = recall_score(y_test, classifier.predict(X_test))
-    means.append(mean(recall))
-    SDs.append(sd(recall))
+    scores.append(recall)
 
     f1 = f1_score(y_test, classifier.predict(X_test))
-    means.append(mean(f1))
-    SDs.append(sd(f1))
+    scores.append(f1)
 
     roc_auc = roc_auc_score(y_test, classifier.predict(X_test))
-    means.append(mean(roc_auc))
-    SDs.append(sd(roc_auc))
+    scores.append(roc_auc)
 
 
     dict_scores = {'Metrics': metrics,
-                   'Mean CV score': means,
-                   'StDev': SDs}
+                   'Scores': scores}
 
 
     df_scores = pd.DataFrame(dict_scores)
-    df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
+    df_scores = df_scores[['Metrics', 'Scores']]
 
     return df_scores
 
