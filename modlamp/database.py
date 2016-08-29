@@ -39,14 +39,18 @@ def _read_db_config(host='gsdelta641.ethz.ch', database='peptides', user='modlab
     return db
 
 
-def _connect():
+def _connect(conf=None):
     """
-    Connect to a given MySQL database (in config.ini file).
+    Connect to a given MySQL database in conf.
     This function is called by the function :func:`query_sequences`.
 
+    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.
     :return: a mysql.connector connection object
     """
-    config = _read_db_config()
+    if conf:
+        config = _read_db_config(conf)
+    else:
+        config = _read_db_config()
 
     try:
         print('Connecting to MySQL database...')
