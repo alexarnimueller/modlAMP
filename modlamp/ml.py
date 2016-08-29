@@ -320,7 +320,7 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
 def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
     """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
 
-    :param classifier: {classifier instance} classifier used for predictions.
+    :param classifier: {classifier instance} trained classifier used for predictions.
     :param X: {array} descriptor values for training data.
     :param y: {array} class values for training data.
     :param cv: {int} number of folds for cross-validation.
@@ -354,3 +354,58 @@ def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
     df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
 
     return df_scores
+
+
+def test_scores(classifier, X_test, y_test):
+    """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
+    are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
+    (roc_auc). See sklearn.metrics for more information
+     (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
+
+    :param classifier: {classifier instance} trained classifier used for predictions.
+    :param X_test: {array} descriptor values for the test data.
+    :param y_test: {array} class values for the test data.
+    :param metrics: {list}
+    :return: pandas dataframe containing the cross validation scores for the specified metrics.
+    """
+
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+    means = []
+    SDs = []
+
+    MCC = matthews_corrcoef(y_test, classifier.predict(X_test))
+    means.append(mean(MCC))
+    SDs.append(sd(MCC))
+
+    accuracy = accuracy_score(y_test, classifier.predict(X_test))
+    means.append(mean(accuracy))
+    SDs.append(sd(accuracy))
+
+    precision = precision_score(y_test, classifier.predict(X_test))
+    means.append(mean(precision))
+    SDs.append(sd(precission))
+
+    recall = recall_score(y_test, classifier.predict(X_test))
+    means.append(mean(recall))
+    SDs.append(sd(recall))
+
+    f1 = f1_score(y_test, classifier.predict(X_test))
+    means.append(mean(f1))
+    SDs.append(sd(f1))
+
+    roc_auc = roc_auc_score(y_test, classifier.predict(X_test))
+    means.append(mean(roc_auc))
+    SDs.append(sd(roc_auc))
+
+
+    dict_scores = {'Metrics': metrics,
+                   'Mean CV score': means,
+                   'StDev': SDs}
+
+
+    df_scores = pd.DataFrame(dict_scores)
+    df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
+
+    return df_scores
+
+
