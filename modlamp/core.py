@@ -20,8 +20,7 @@ __docformat__ = "restructuredtext en"
 
 
 def load_scale(scalename):
-    """
-    Method to load scale values for a given amino acid scale
+    """Method to load scale values for a given amino acid scale
 
     :param scalename: amino acid scale name, for available scales see the
         :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
@@ -188,8 +187,7 @@ def load_scale(scalename):
 
 
 def read_fasta(inputfile):
-    """
-    Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`. This method is
+    """Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`. This method is
     used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
 
     :param inputfile: .fasta file with sequences and headers to read
@@ -205,8 +203,7 @@ def read_fasta(inputfile):
 
 
 def save_fasta(self, filename, names=False):
-    """
-    Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
+    """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
     :param filename: output filename (ending .fasta)
     :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
@@ -225,7 +222,7 @@ def save_fasta(self, filename, names=False):
 
 
 def mutate_AA(self, nr, prob):
-    """    Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
+    """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
     :param nr: number of mutations to perform per sequence
     :param prob: probability of mutating a sequence
@@ -251,9 +248,7 @@ def mutate_AA(self, nr, prob):
 
 
 def aminoacids(self):
-    """
-
-    Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
+    """Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
 
     :return: all needed instances of the classes in this package
 
@@ -290,7 +285,9 @@ def aminoacids(self):
     # AA classes:
     self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
     self.AA_basic = ['K', 'R']
+    self.AA_acidic = ['D', 'E']
     self.AA_anchor = ['W', 'Y', 'F']
+    self.AA_polar = ['S', 'T', 'Q', 'N']
     # AA labels:
     self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     # AA probability from the APD3 database:
@@ -314,8 +311,7 @@ def aminoacids(self):
 
 
 def template(self, lenmin, lenmax, seqnum):
-    """
-	Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
+    """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
 
 	:param lenmin: minimal length of the generated sequences
 	:param lenmax: maximal length of the generated sequences
@@ -328,8 +324,7 @@ def template(self, lenmin, lenmax, seqnum):
 
 
 def clean(self):
-    """
-    Method to clean the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
+    """Method to clean the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
 
     :return: freshly initialized, empty class attributes.
     """
@@ -340,8 +335,7 @@ def clean(self):
 
 
 def filter_duplicates(self):
-    """
-    Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`.
+    """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`.
 
     :return: filtered sequence list in the attribute :py:attr:`sequences`.
     """
@@ -350,12 +344,11 @@ def filter_duplicates(self):
 
 
 def check_natural_aa(self):
-    """
-    Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+    """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
     that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
-    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-    filtered accordingly.
+    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+        accordingly.
     """
 
     natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
@@ -383,12 +376,11 @@ def check_natural_aa(self):
 
 
 def filter_unnatural(self):
-    """
-    Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
+    """Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
     amino acids ['B', 'J', 'O', 'U', 'X', 'Z', 'b, 'j', 'o', 'u', 'x', 'z'].
 
-    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-    filtered accordingly.
+    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+        accordingly.
     """
     pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z', 'b', 'j', 'o', 'u', 'x', 'z']))
     seqs = []
@@ -403,7 +395,7 @@ def filter_unnatural(self):
                 desc.append(self.descriptor[i])
             if hasattr(self, 'names') and self.names:
                 names.append(self.names[i])
-            if hasattr(self, 'target') and self.target.size:
+            if hasattr(self, 'target') and len(self.target):
                 target.append(self.target[i])
 
     self.sequences = seqs
@@ -470,7 +462,7 @@ def filter_values(self, values, operator='=='):
         self.sequences = np.array(self.sequences)[indices].tolist()
         if self.names:
             self.names = np.array(self.names)[indices].tolist()
-        if self.target.size:
+        if len(self.target):
             self.target = self.target[indices]
 
 

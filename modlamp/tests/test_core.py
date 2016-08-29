@@ -1,6 +1,6 @@
 import unittest
-from modlamp.sequences import Random
-from modlamp.descriptors import PeptideDescriptor
+from ..sequences import Random
+from ..descriptors import PeptideDescriptor
 
 
 class TestCore(unittest.TestCase):

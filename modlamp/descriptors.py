@@ -115,12 +115,16 @@ class GlobalDescriptor(object):
         >>> P = GlobalDescriptor('KLAKLAKKLAKLAK')
         >>> P.sequences
         ['KLAKLAKKLAKLAK']
+        >>> seqs = PeptideDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
+        >>> seqs.sequences
+        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         D = PeptideDescriptor(seqs, 'eisenberg')
         self.sequences = D.sequences
         self.names = D.names
         self.descriptor = D.descriptor
         self.target = D.target
+        self.scaler = None
 
     def length(self, append=False):
         """
@@ -159,15 +163,15 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def _charge(self, seq, pH=7.0, amide=False):
-        """
-        Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
+        """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
         Cterm is added to the pos_pKs dictionary.
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
         For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
-        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param pH: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -197,8 +201,7 @@ class GlobalDescriptor(object):
         return PositiveCharge - NegativeCharge
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
-        """
-        Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
+        """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
         Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
@@ -206,8 +209,9 @@ class GlobalDescriptor(object):
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
         For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
 
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param ph: {float} ph at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -250,8 +254,9 @@ class GlobalDescriptor(object):
         The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
         module :mod:`Bio.SeqUtils.ProtParam`.
 
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+         **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+         **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
@@ -404,10 +409,10 @@ class GlobalDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def feature_scaling(self, type='standard', fit=True):
+    def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
 
-        :param type: {str} **'standard'** or **'minmax'**, type of scaling to be used
+        :param stype: {str} **'standard'** or **'minmax'**, type of scaling to be used
         :param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
             whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
         :return: scaled descriptor values in :py:attr:`self.descriptor`
@@ -415,13 +420,13 @@ class GlobalDescriptor(object):
 
         >>> D.descriptor
         array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> D.feature_scaling(type='minmax',fit=True)
+        >>> D.feature_scaling(stype='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         try:
-            if type == 'standard':
+            if stype == 'standard':
                 self.scaler = StandardScaler()
-            elif type == 'minmax':
+            elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
 
             if fit:
@@ -470,12 +475,11 @@ class GlobalDescriptor(object):
         filter_duplicates(self)
 
     def check_natural_aa(self):
-        """
-        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-        filtered accordingly.
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
 
         .. seealso:: :func:`modlamp.core.check_natural_aa()`
 
@@ -507,6 +511,14 @@ class GlobalDescriptor(object):
         .. versionadded:: v2.2.4
         """
         filter_sequences(self, sequences)
+    
+    def filter_unnatural(self):
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
+        :return: Filtered sequence list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_unnatural()`
+        """
+        filter_unnatural(self)
 
     def random_selection(self, num):
         """Method to select a random number of sequences (with names and descriptors if present) out of a given
@@ -633,6 +645,9 @@ class PeptideDescriptor(object):
         >>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
         >>> AMP.sequences
         ['KLLKLLKKLLKLLK']
+        >>> seqs = PeptideDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
+        >>> seqs.sequences
+        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         if type(seqs) == list:
             self.sequences = seqs
@@ -651,6 +666,7 @@ class PeptideDescriptor(object):
         self.scalename, self.scale = load_scale(scalename)
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
+        self.scaler = None
 
     def load_scale(self, scalename):
         """Method to load amino acid values from a given scale
@@ -889,10 +905,10 @@ class PeptideDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def feature_scaling(self, type='standard', fit=True):
+    def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
 
-        :param type: {'standard' or 'minmax'} type of scaling to be used
+        :param stype: {'standard' or 'minmax'} type of scaling to be used
         :param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or
             whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
         :return: scaled descriptor values in :py:attr:`descriptor`
@@ -904,9 +920,9 @@ class PeptideDescriptor(object):
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         try:
-            if type == 'standard':
+            if stype == 'standard':
                 self.scaler = StandardScaler()
-            elif type == 'minmax':
+            elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
 
             if fit == True:
@@ -976,12 +992,11 @@ class PeptideDescriptor(object):
         filter_duplicates(self)
 
     def check_natural_aa(self):
-        """
-        Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also
-        filtered accordingly.
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
 
         .. seealso:: :func:`modlamp.core.check_natural_aa()`
 
