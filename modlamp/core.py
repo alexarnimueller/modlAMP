@@ -324,7 +324,7 @@ def template(self, lenmin, lenmax, seqnum):
 
 
 def clean(self):
-    """Method to clean the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
+    """Method to clean / clear / empty the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
 
     :return: freshly initialized, empty class attributes.
     """
@@ -336,8 +336,16 @@ def clean(self):
 
 def filter_duplicates(self):
     """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`.
+    This function does not filter other attributes!
 
     :return: filtered sequence list in the attribute :py:attr:`sequences`.
+    :Example:
+    
+    >>> d.sequences
+    ['DIAAVHTELVSCLNACWPALAGVCSSAL', 'KHVVRNKTDFFYFSQRE', 'WPMMVES', 'GHHDAPH', 'DIAAVHTELVSCLNACWPALAGVCSSAL']
+    >>> d.filter_duplicates()
+    >>> d.sequences
+    ['DIAAVHTELVSCLNACWPALAGVCSSAL', 'KHVVRNKTDFFYFSQRE', 'WPMMVES', 'GHHDAPH']
     """
     seq_list = [x for x in set(self.sequences)]  # remove duplicates
     self.sequences = seq_list
@@ -348,7 +356,7 @@ def check_natural_aa(self):
     that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
     :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-        accordingly.
+        accordingly (if present).
     """
 
     natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
@@ -380,7 +388,7 @@ def filter_unnatural(self):
     amino acids ['B', 'J', 'O', 'U', 'X', 'Z', 'b, 'j', 'o', 'u', 'x', 'z'].
 
     :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-        accordingly.
+        accordingly (if present).
     """
     pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z', 'b', 'j', 'o', 'u', 'x', 'z']))
     seqs = []
@@ -458,11 +466,12 @@ def filter_values(self, values, operator='=='):
             indices = np.where(self.descriptor[:, d] >= values[d])[0]
 
         # filter descriptor matrix, sequence list and names list according to obtained indices
-        self.descriptor = self.descriptor[indices]
         self.sequences = np.array(self.sequences)[indices].tolist()
-        if self.names:
+        if hasattr(self, 'descriptor') and self.descriptor.size:
+            self.descriptor = self.descriptor[indices]
+        if hasattr(self, 'names') and self.names:
             self.names = np.array(self.names)[indices].tolist()
-        if len(self.target):
+        if hasattr(self, 'target') and self.target.size:
             self.target = self.target[indices]
 
 
@@ -492,10 +501,13 @@ def filter_sequences(self, sequences):
     for s in sequences:  # get indices of queried sequences
         indices.append(self.sequences.index(s))
 
-    self.names = np.delete(np.array(self.names), indices, 0).tolist()
     self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
-    self.descriptor = np.delete(self.descriptor, indices, 0)
-    self.target = np.delete(self.target, indices, 0)
+    if hasattr(self, 'descriptor') and self.descriptor.size:
+        self.descriptor = np.delete(self.descriptor, indices, 0)
+    if hasattr(self, 'names') and self.names:
+        self.names = np.delete(np.array(self.names), indices, 0).tolist()
+    if hasattr(self, 'target') and self.target.size:
+        self.target = np.delete(self.target, indices, 0)
 
 
 def random_selection(self, num):
@@ -525,25 +537,12 @@ def random_selection(self, num):
 
     sel = np.random.choice(len(self.sequences), size=num, replace=False)
     self.sequences = np.array(self.sequences)[sel].tolist()
-
-    try:
+    if hasattr(self, 'descriptor') and self.descriptor.size:
+        self.descriptor = self.descriptor[sel]
+    if hasattr(self, 'names') and self.names:
         self.names = np.array(self.names)[sel].tolist()
-    except IndexError:  # if no names in self.names
-        self.names = []
-    try:
-        if hasattr(self, 'descriptor'):  # check, so that also instances from modlamp.sequences can be handled
-            self.descriptor = self.descriptor[sel]
-        else:
-            pass
-    except IndexError:  # if no values in self.descriptor
-        self.descriptor = np.empty((1, 0), dtype='float64')
-    try:
-        if hasattr(self, 'target'):
-            self.target = self.target[sel]
-        else:
-            pass
-    except IndexError:
-        self.target = np.empty((1, 0), dtype='int')
+    if hasattr(self, 'target') and self.target.size:
+        self.target = self.target[sel]
 
 
 def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
@@ -555,7 +554,6 @@ def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
         E.g. 'euclidean', 'minkowsky'.
     :param randseed: {int} Set a random seed for numpy to pick the first sequence.
     :return: updated instance
-    :Example:
     """
 
     # Storing M into pool, where selections get deleted
@@ -589,16 +587,9 @@ def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
         minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
 
     self.sequences = np.array(self.sequences)[minmaxidx].tolist()
-
-    try:
-        self.names = np.array(self.names)[minmaxidx].tolist()
-    except IndexError:  # if no names in self.names
-        self.names = []
-    try:
+    if hasattr(self, 'descriptor') and self.descriptor.size:
         self.descriptor = self.descriptor[minmaxidx]
-    except IndexError:  # if no values in self.descriptor
-        self.descriptor = np.empty((1, 0), dtype='float64')
-    try:
+    if hasattr(self, 'names') and self.names:
+        self.names = np.array(self.names)[minmaxidx].tolist()
+    if hasattr(self, 'target') and self.target.size:
         self.target = self.descriptor[minmaxidx]
-    except IndexError:  # if no values in self.descriptor
-        self.target = np.empty((1, 0), dtype='int')
