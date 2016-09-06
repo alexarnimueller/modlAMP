@@ -362,18 +362,18 @@
 <div class="viewcode-block" id="template"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.template">[docs]</a><span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.</span>
 
-<span class="sd">	:param lenmin: minimal length of the generated sequences</span>
-<span class="sd">	:param lenmax: maximal length of the generated sequences</span>
-<span class="sd">	:param seqnum: number of sequences to generate</span>
-<span class="sd">	:return: all needed instances (involving numbers and lengths) of the classes in this package</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    :param lenmin: minimal length of the generated sequences</span>
+<span class="sd">    :param lenmax: maximal length of the generated sequences</span>
+<span class="sd">    :param seqnum: number of sequences to generate</span>
+<span class="sd">    :return: all needed instances (involving numbers and lengths) of the classes in this package</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lenmin</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lenmax</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="clean"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.clean">[docs]</a><span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to clean the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.</span>
+    <span class="sd">&quot;&quot;&quot;Method to clean / clear / empty the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.</span>
 
 <span class="sd">    :return: freshly initialized, empty class attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -385,8 +385,16 @@
 
 <div class="viewcode-block" id="filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.filter_duplicates">[docs]</a><span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`.</span>
+<span class="sd">    This function does not filter other attributes!</span>
 
 <span class="sd">    :return: filtered sequence list in the attribute :py:attr:`sequences`.</span>
+<span class="sd">    :Example:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; d.sequences</span>
+<span class="sd">    [&#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;, &#39;KHVVRNKTDFFYFSQRE&#39;, &#39;WPMMVES&#39;, &#39;GHHDAPH&#39;, &#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; d.filter_duplicates()</span>
+<span class="sd">    &gt;&gt;&gt; d.sequences</span>
+<span class="sd">    [&#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;, &#39;KHVVRNKTDFFYFSQRE&#39;, &#39;WPMMVES&#39;, &#39;GHHDAPH&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">seq_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)]</span>  <span class="c1"># remove duplicates</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seq_list</span></div>
@@ -397,7 +405,7 @@
 <span class="sd">    that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">        accordingly.</span>
+<span class="sd">        accordingly (if present).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">natural_aa</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">]</span>
@@ -429,7 +437,7 @@
 <span class="sd">    amino acids [&#39;B&#39;, &#39;J&#39;, &#39;O&#39;, &#39;U&#39;, &#39;X&#39;, &#39;Z&#39;, &#39;b, &#39;j&#39;, &#39;o&#39;, &#39;u&#39;, &#39;x&#39;, &#39;z&#39;].</span>
 
 <span class="sd">    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">        accordingly.</span>
+<span class="sd">        accordingly (if present).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">]))</span>
     <span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -507,11 +515,12 @@
             <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">values</span><span class="p">[</span><span class="n">d</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># filter descriptor matrix, sequence list and names list according to obtained indices</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;names&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span></div>
 
 
@@ -541,10 +550,13 @@
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>  <span class="c1"># get indices of queried sequences</span>
         <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">),</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;names&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">),</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="random_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.random_selection">[docs]</a><span class="k">def</span> <span class="nf">random_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
@@ -574,25 +586,12 @@
 
     <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-    <span class="k">try</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;names&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no names in self.names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">):</span>  <span class="c1"># check, so that also instances from modlamp.sequences can be handled</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no values in self.descriptor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="minmax_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.minmax_selection">[docs]</a><span class="k">def</span> <span class="nf">minmax_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">distmetric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">randseed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -604,7 +603,6 @@
 <span class="sd">        E.g. &#39;euclidean&#39;, &#39;minkowsky&#39;.</span>
 <span class="sd">    :param randseed: {int} Set a random seed for numpy to pick the first sequence.</span>
 <span class="sd">    :return: updated instance</span>
-<span class="sd">    :Example:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Storing M into pool, where selections get deleted</span>
@@ -638,19 +636,12 @@
         <span class="n">minmaxidx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">==</span> <span class="n">pool</span><span class="p">[</span><span class="n">maxidx</span><span class="p">:</span><span class="n">maxidx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))))</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">minmaxidx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">minmaxidx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no names in self.names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">try</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">minmaxidx</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no values in self.descriptor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">minmaxidx</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># if no values in self.descriptor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;names&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)[</span><span class="n">minmaxidx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">minmaxidx</span><span class="p">]</span></div>
 </pre></div>
 
           </div>

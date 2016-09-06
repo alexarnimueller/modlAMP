@@ -4,8 +4,8 @@
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
-This module incorporates different classes to generate peptide sequences with different characteristics. The following
-classes are available:
+This module incorporates different classes to generate peptide sequences with different characteristics from scratch.
+The following classes are available:
 
 ============================        ===============================================================================
 Class                               Characteristics
@@ -18,6 +18,8 @@ Class                               Characteristics
 :py:class:`MixedLibrary`            Generates a mixed library of sequences of all other classes.
 :py:class:`Hepahelices`             Generates presumed amphipathic helices with a heparin-binding-domain.
 ============================        ===============================================================================
+
+.. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary` class.
 
 """
 

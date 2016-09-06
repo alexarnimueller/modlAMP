@@ -331,7 +331,7 @@ on the relative volume occupied by aliphatic amino acids (A,I,L &amp; V).
 <dd><p>Method to calculate the boman index of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
 According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
 summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
-dividing by     sequence length.
+dividing by    sequence length.
 ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</em>. <strong>1989</strong>, <em>259</em>, 103–106.
 [2] A. Radzicka, R. Wolfenden, <em>Biochemistry</em> <strong>1988</strong>, <em>27</em>, 1664–1670.)</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -674,31 +674,31 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <em class="property">class </em><code class="descclassname">modlamp.descriptors.</code><code class="descname">PeptideDescriptor</code><span class="sig-paren">(</span><em>seqs</em>, <em>scalename='eisenberg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptide descriptors. The following <strong>amino acid descriptor scales</strong> are available for descriptor calculation:</p>
 <ul class="simple">
-<li><strong>AASI</strong>                  (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
-<li><strong>argos</strong>                 (Argos hydrophobicity amino acid scale, <em>[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
-<li><strong>bulkiness</strong>             (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
-<li><strong>charge_physio</strong> (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
-<li><strong>charge_acidic</strong> (Amino acid charge at acidic pH - Hystidine charge +1.0.)</li>
-<li><strong>cougar</strong>                (modlabs inhouse selection of global peptide descriptors)</li>
-<li><strong>eisenberg</strong>             (the Eisenberg hydrophobicity consensus amino acid scale, <em>[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.</em>)</li>
-<li><strong>Ez</strong>                    (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, <em>[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.</em>)</li>
-<li><strong>flexibility</strong>   (amino acid side chain flexibilitiy scale, <em>[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.</em>)</li>
-<li><strong>gravy</strong>                 (GRAVY hydrophobicity amino acid scale, <em>[7] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.</em>)</li>
-<li><strong>hopp-woods</strong>    (Hopp-Woods amino acid hydrophobicity scale,*[8] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)</li>
-<li><strong>ISAECI</strong>                (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, <em>[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.</em>)</li>
-<li><strong>janin</strong>                 (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)</li>
-<li><strong>kytedoolittle</strong> (Kyte &amp; Doolittle hydrophobicity amino acid scale, <em>[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.</em>)</li>
-<li><strong>Levitt_alpha</strong>  (Levitt amino acid alpha-helix propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>. <em>[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.</em>)</li>
-<li><strong>MSS</strong>                   (A graph-theoretical index that reflects topological shape and size of amino acid side chains, <em>[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.</em>)</li>
-<li><strong>MSW</strong>                   (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, <em>[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.</em>)</li>
-<li><strong>pepcats</strong>               (modlabs pharmacophoric feature based PEPCATS scale, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
-<li><strong>polarity</strong>              (Amino acid polarity scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
-<li><strong>PPCALI</strong>                (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
-<li><strong>refractivity</strong>  (Relative amino acid refractivity values, <em>[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.</em>)</li>
-<li><strong>t_scale</strong>               (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, <em>[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.</em>)</li>
-<li><strong>TM_tend</strong>               (Amino acid transmembrane propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>, <em>[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.</em>)</li>
-<li><strong>z3</strong>                    (The original three dimensional Z-scale, <em>[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.</em>)</li>
-<li><strong>z5</strong>                    (The extended five dimensional Z-scale, <em>[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.</em>)</li>
+<li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
+<li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
+<li><strong>bulkiness</strong>      (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
+<li><strong>charge_physio</strong>  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
+<li><strong>charge_acidic</strong>  (Amino acid charge at acidic pH - Hystidine charge +1.0.)</li>
+<li><strong>cougar</strong>         (modlabs inhouse selection of global peptide descriptors)</li>
+<li><strong>eisenberg</strong>      (the Eisenberg hydrophobicity consensus amino acid scale, <em>[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.</em>)</li>
+<li><strong>Ez</strong>             (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, <em>[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.</em>)</li>
+<li><strong>flexibility</strong>    (amino acid side chain flexibilitiy scale, <em>[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.</em>)</li>
+<li><strong>gravy</strong>          (GRAVY hydrophobicity amino acid scale, <em>[7] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.</em>)</li>
+<li><strong>hopp-woods</strong>     (Hopp-Woods amino acid hydrophobicity scale,*[8] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)</li>
+<li><strong>ISAECI</strong>         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, <em>[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.</em>)</li>
+<li><strong>janin</strong>          (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)</li>
+<li><strong>kytedoolittle</strong>  (Kyte &amp; Doolittle hydrophobicity amino acid scale, <em>[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.</em>)</li>
+<li><strong>Levitt_alpha</strong>   (Levitt amino acid alpha-helix propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>. <em>[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.</em>)</li>
+<li><strong>MSS</strong>            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, <em>[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.</em>)</li>
+<li><strong>MSW</strong>            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, <em>[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.</em>)</li>
+<li><strong>pepcats</strong>        (modlabs pharmacophoric feature based PEPCATS scale, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
+<li><strong>polarity</strong>       (Amino acid polarity scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
+<li><strong>PPCALI</strong>         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, <em>[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.</em>)</li>
+<li><strong>refractivity</strong>   (Relative amino acid refractivity values, <em>[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.</em>)</li>
+<li><strong>t_scale</strong>        (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, <em>[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.</em>)</li>
+<li><strong>TM_tend</strong>        (Amino acid transmembrane propensity scale, extracted from <a class="reference external" href="http://web.expasy.org/protscale">http://web.expasy.org/protscale</a>, <em>[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.</em>)</li>
+<li><strong>z3</strong>             (The original three dimensional Z-scale, <em>[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.</em>)</li>
+<li><strong>z5</strong>             (The extended five dimensional Z-scale, <em>[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.</em>)</li>
 </ul>
 <p>Further, amino acid scale independent methods can be calculated with help of the <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor" title="modlamp.descriptors.GlobalDescriptor"><code class="xref py py-class docutils literal"><span class="pre">GlobalDescriptor</span></code></a> class.</p>
 <dl class="method">
@@ -1291,8 +1291,8 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 </div>
 <div class="section" id="module-modlamp.sequences">
 <span id="modlamp-sequences"></span><h2>2.2. modlamp.sequences<a class="headerlink" href="#module-modlamp.sequences" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.sequences"></span><p>This module incorporates different classes to generate peptide sequences with different characteristics. The following
-classes are available:</p>
+<span class="target" id="module-modlamp.sequences"></span><p>This module incorporates different classes to generate peptide sequences with different characteristics from scratch.
+The following classes are available:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="26%" />
@@ -1327,6 +1327,10 @@ classes are available:</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">During the process of sequence generation, duplicates are only removed for the <a class="reference internal" href="#modlamp.sequences.MixedLibrary" title="modlamp.sequences.MixedLibrary"><code class="xref py py-class docutils literal"><span class="pre">MixedLibrary</span></code></a> class.</p>
+</div>
 <dl class="class">
 <dt id="modlamp.sequences.Random">
 <em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Random</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random" title="Permalink to this definition">¶</a></dt>
@@ -2307,7 +2311,7 @@ h = hydrophobic AA, + = basic AA, a = anchor AA (F,Y,W,(P)), sequence length is 
 <code class="descname">generate_asymmetric</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.generate_asymmetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.generate_asymmetric" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference internal" href="#modlamp.sequences.Centrosymmetric.generate_asymmetric" title="modlamp.sequences.Centrosymmetric.generate_asymmetric"><code class="xref py py-func docutils literal"><span class="pre">generate_asymmetric()</span></code></a> method generates overall asymmetric sequences out of two or three blocks of
 different centro-symmetric sequence blocks of 7 amino acids. The resulting sequence presumably has a large
-hydrophobic     moment.</p>
+hydrophobic    moment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3051,17 +3055,16 @@ features.</td>
 <dd><p>Function to load a dataset consisting of <strong>alpha-helical ACP sequences and negative peptides extracted from
 alpha-helical transmembrane and non-transmembrane regions of proteins</strong> for classification.</p>
 <p>The ACP class consists of a collection of ACPs from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
-<a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> databases, manually curated by Gisela Gabernet at
-modlab ETH Zuerich &lt;<a class="reference external" href="mailto:gisela&#46;gabernet&#37;&#52;&#48;pharma&#46;ethz&#46;ch">gisela<span>&#46;</span>gabernet<span>&#64;</span>pharma<span>&#46;</span>ethz<span>&#46;</span>ch</a>&gt;, checking the original literature and annotated active against
-at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and
-cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.</p>
+<a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> databases, manually curated by <a class="reference external" href="mailto:gisela&#46;gabernet&#37;&#52;&#48;pharma&#46;ethz&#46;ch">Gisela Gabernet</a> at modlab ETH Zürich, checking the original literature and annotated active
+against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,
+haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to
+facilitate synthesis.</p>
 <p>The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
-the <cite>PDBTM &lt;http://pdbtm.enzim.hu/&gt;</cite> ) and 47 non-transmembrane helices (extracted from the <cite>PDB
-&lt;http://www.rcsb.org/pdb/home/home.do&gt;</cite>) isolated directly from the proteins crystal structure.</p>
+the <a class="reference external" href="http://pdbtm.enzim.hu/">PDBTM</a> ) and 47 non-transmembrane helices (extracted from the <a class="reference external" href="http://www.rcsb.org/pdb/home/home.do">PDB</a>) isolated directly from the proteins crystal structure.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="81%" />
-<col width="19%" />
+<col width="85%" />
+<col width="15%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Classes</td>
@@ -3303,7 +3306,7 @@ are plottet in different colors.</p>
 
 <dl class="function">
 <dt id="modlamp.plot.plot_profile">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_profile</code><span class="sig-paren">(</span><em>sequence</em>, <em>window=5</em>, <em>scalename='eisenberg'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_profile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_profile</code><span class="sig-paren">(</span><em>sequence</em>, <em>window=5</em>, <em>scalename='eisenberg'</em>, <em>filename=None</em>, <em>color='red'</em>, <em>ylim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate sequence profile plots of a given amino acid scale or a moment thereof.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -3319,6 +3322,8 @@ are plottet in different colors.</p>
 <li><strong>window</strong> &#8211; {int, uneven} Window size for which the average value is plotted for the center amino acid.</li>
 <li><strong>scalename</strong> &#8211; {str} Amino acid scale to be used to describe the sequence.</li>
 <li><strong>filename</strong> &#8211; {str} Filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
+<li><strong>color</strong> &#8211; {str} Color of the plot line.</li>
+<li><strong>ylim</strong> &#8211; {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)</li>
 </ul>
 </td>
 </tr>
@@ -3610,8 +3615,7 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <span class="go">    0.        ,  0.        ])</span>
 </pre></div>
 </div>
-<blockquote>
-<div><p>Training an SVM model with this data:</p>
+<p>Training an SVM model with this data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -3644,12 +3648,11 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <span class="go"> &#39;scl__with_std&#39;: True,</span>
 <span class="go"> &#39;steps&#39;: [(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)),</span>
 <span class="go">  (&#39;clf&#39;, SVC(C=100.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,</span>
-<span class="go">         decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
-<span class="go">         max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
-<span class="go">         verbose=False))]}</span>
+<span class="go">     decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
+<span class="go">     max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
+<span class="go">     verbose=False))]}</span>
 </pre></div>
 </div>
-</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -3741,8 +3744,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 </div>
 <div class="section" id="module-modlamp.wetlab">
 <span id="modlamp-wetlab"></span><h2>2.7. modlamp.wetlab<a class="headerlink" href="#module-modlamp.wetlab" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.wetlab"></span><p>This module incorporates functions to load raw data files from wetlab experiments and calculate different
-characteristics.</p>
+<span class="target" id="module-modlamp.wetlab"></span><p>This module incorporates functions to load raw data files from wetlab experiments, calculate different
+characteristics and plot.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -4232,7 +4235,7 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <dl class="function">
 <dt id="modlamp.core.clean">
 <code class="descclassname">modlamp.core.</code><code class="descname">clean</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.clean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to clean the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
+<dd><p>Method to clean / clear / empty the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4246,15 +4249,25 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <dl class="function">
 <dt id="modlamp.core.filter_duplicates">
 <code class="descclassname">modlamp.core.</code><code class="descname">filter_duplicates</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
+This function does not filter other attributes!</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;, &#39;KHVVRNKTDFFYFSQRE&#39;, &#39;WPMMVES&#39;, &#39;GHHDAPH&#39;, &#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">filter_duplicates</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;DIAAVHTELVSCLNACWPALAGVCSSAL&#39;, &#39;KHVVRNKTDFFYFSQRE&#39;, &#39;WPMMVES&#39;, &#39;GHHDAPH&#39;]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -4267,7 +4280,7 @@ that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
+accordingly (if present).</td>
 </tr>
 </tbody>
 </table>
@@ -4283,7 +4296,7 @@ amino acids [&#8216;B&#8217;, &#8216;J&#8217;, &#8216;O&#8217;, &#8216;U&#8217;,
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
+accordingly (if present).</td>
 </tr>
 </tbody>
 </table>
@@ -4416,10 +4429,8 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">updated instance</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated instance</p>
 </td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
