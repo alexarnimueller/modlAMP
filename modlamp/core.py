@@ -313,11 +313,11 @@ def aminoacids(self):
 def template(self, lenmin, lenmax, seqnum):
     """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
 
-	:param lenmin: minimal length of the generated sequences
-	:param lenmax: maximal length of the generated sequences
-	:param seqnum: number of sequences to generate
-	:return: all needed instances (involving numbers and lengths) of the classes in this package
-	"""
+    :param lenmin: minimal length of the generated sequences
+    :param lenmax: maximal length of the generated sequences
+    :param seqnum: number of sequences to generate
+    :return: all needed instances (involving numbers and lengths) of the classes in this package
+    """
     self.lenmin = int(lenmin)
     self.lenmax = int(lenmax)
     self.seqnum = int(seqnum)

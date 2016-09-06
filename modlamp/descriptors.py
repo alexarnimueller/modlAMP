@@ -92,16 +92,16 @@ class GlobalDescriptor(object):
     Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
     the **methods** linked below:
 
-    - `Sequence Charge 		<modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
-    - `Molecular Weight		<modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
-    - `Sequence Length		<modlamp.html#modlamp.descriptors.GlobalDescriptor.length>`_
-    - `Isoelectric Point	<modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point>`_
-    - `Charge Density		<modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density>`_
-    - `Hydrophobic Ratio	<modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
-    - `Aromaticity			<modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity>`_
-    - `Boman Index			<modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
-    - `Aliphatic Index		<modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
-    - `Instability Index	<modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
+    - `Sequence Charge      <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
+    - `Molecular Weight     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
+    - `Sequence Length      <modlamp.html#modlamp.descriptors.GlobalDescriptor.length>`_
+    - `Isoelectric Point    <modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point>`_
+    - `Charge Density       <modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density>`_
+    - `Hydrophobic Ratio    <modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
+    - `Aromaticity          <modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity>`_
+    - `Boman Index          <modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
+    - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
+    - `Instability Index    <modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
 
     Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of `Biopython <http://biopython.org/>`_.
     """
@@ -368,7 +368,7 @@ class GlobalDescriptor(object):
         Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
         According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
         summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
-        dividing by	sequence length.
+        dividing by    sequence length.
         ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
         [2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
 
@@ -605,31 +605,31 @@ class PeptideDescriptor(object):
     """
     Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor calculation:
 
-    - **AASI**			(An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
-    - **argos**			(Argos hydrophobicity amino acid scale, *[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.*)
-    - **bulkiness**		(Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
-    - **charge_physio**	(Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
-    - **charge_acidic**	(Amino acid charge at acidic pH - Hystidine charge +1.0.)
-    - **cougar**		(modlabs inhouse selection of global peptide descriptors)
-    - **eisenberg**		(the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
-    - **Ez** 			(potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)
-    - **flexibility**	(amino acid side chain flexibilitiy scale, *[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.*)
-    - **gravy**			(GRAVY hydrophobicity amino acid scale, *[7] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **hopp-woods**	(Hopp-Woods amino acid hydrophobicity scale,*[8] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)
-    - **ISAECI**		(Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
-    - **janin** 		(Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
-    - **kytedoolittle**	(Kyte & Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **Levitt_alpha**	(Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
-    - **MSS**			(A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
-    - **MSW**			(Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
-    - **pepcats**		(modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **polarity**		(Amino acid polarity scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
-    - **PPCALI**		(modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **refractivity**	(Relative amino acid refractivity values, *[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
-    - **t_scale**		(A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
-    - **TM_tend**		(Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
-    - **z3**			(The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
-    - **z5**			(The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
+    - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
+    - **argos**          (Argos hydrophobicity amino acid scale, *[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.*)
+    - **bulkiness**      (Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
+    - **charge_physio**  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
+    - **charge_acidic**  (Amino acid charge at acidic pH - Hystidine charge +1.0.)
+    - **cougar**         (modlabs inhouse selection of global peptide descriptors)
+    - **eisenberg**      (the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
+    - **Ez**             (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)
+    - **flexibility**    (amino acid side chain flexibilitiy scale, *[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.*)
+    - **gravy**          (GRAVY hydrophobicity amino acid scale, *[7] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
+    - **hopp-woods**     (Hopp-Woods amino acid hydrophobicity scale,*[8] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)
+    - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
+    - **janin**          (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
+    - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
+    - **Levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
+    - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
+    - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
+    - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **polarity**       (Amino acid polarity scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
+    - **PPCALI**         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **refractivity**   (Relative amino acid refractivity values, *[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
+    - **t_scale**        (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
+    - **TM_tend**        (Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
+    - **z3**             (The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
+    - **z5**             (The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
     Further, amino acid scale independent methods can be calculated with help of the :class:`GlobalDescriptor` class.
 
