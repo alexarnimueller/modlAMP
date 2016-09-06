@@ -619,7 +619,7 @@ class PeptideDescriptor(object):
     - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
     - **janin**          (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
     - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **Levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
+    - **levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
     - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
     - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
     - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
