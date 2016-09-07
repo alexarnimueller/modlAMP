@@ -5,7 +5,7 @@ from ..wetlab import CD
 
 
 class TestCD(unittest.TestCase):
-	cd = CD(join(abspath('.'), 'files'), 180, 260, amide=True)
+	cd = CD(join(abspath('.'), 'modlamp/tests/files'), 180, 260, amide=True)
 
 	def test_init(self):
 		self.assertIsNotNone(self.cd.filenames)
@@ -29,7 +29,7 @@ class TestCD(unittest.TestCase):
 	def test_helicity(self):
 		self.cd.calc_meanres_ellipticity()
 		self.cd.helicity()
-		self.assertEqual(float(self.cd.helicity_values.iloc[1]['Helicity']), 79.62)
+		self.assertEqual(float(self.cd.helicity_values.iloc[1]['Helicity']), 79.68)
 		
 if __name__ == '__main__':
 	unittest.main()

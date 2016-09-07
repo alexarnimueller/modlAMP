@@ -193,7 +193,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
         plt.show()
 
 
-def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
+def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color='red', ylim=None):
     """ Function to generate sequence profile plots of a given amino acid scale or a moment thereof.
 
     .. note::
@@ -204,6 +204,8 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
     :param window: {int, uneven} Window size for which the average value is plotted for the center amino acid.
     :param scalename: {str} Amino acid scale to be used to describe the sequence.
     :param filename: {str} Filename  where to safe the plot. *default = None* --> show the plot
+    :param color: {str} Color of the plot line.
+    :param ylim: {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)
     :return: a profile plot of the input sequence interactively or with the specified *filename*
     :Example:
 
@@ -236,13 +238,17 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
         fig, ax = plt.subplots()
         x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
         line = ax.plot(x_range, seq_profile)
-        plt.setp(line, color='red', linewidth=2.0)
+        plt.setp(line, color=color, linewidth=2.0)
 
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
         ax.set_title('Sequence Profile For ' + sequence, fontsize=16, fontweight='bold')
         ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)
+        if ylim:
+            ax.set_ylim(ylim)
+        else:
+            ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
 
         # only left and bottom axes, no box
         ax.spines['right'].set_visible(False)

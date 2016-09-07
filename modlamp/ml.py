@@ -117,44 +117,44 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         0.        ,  0.        ])
 
 
-	Training an SVM model with this data:
+    Training an SVM model with this data:
 
-	>>> X_train = descr.descriptor
-	>>> y_train = data.target
-	>>> best_svm_model = train_best_model('svm', X_train, y_train)
-	Best score and parameters from a 10-fold cross validation:
-	mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
+    >>> X_train = descr.descriptor
+    >>> y_train = data.target
+    >>> best_svm_model = train_best_model('svm', X_train, y_train)
+    Best score and parameters from a 10-fold cross validation:
+    mean: 0.86932, std: 0.10581, params: {'clf__gamma': 0.001, 'clf__C': 100.0, 'clf__kernel': 'rbf'}
 
-	>>> best_svm_model.get_params()
-	{'clf': SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
-	   decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
-	   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
-	   verbose=False),
-	 'clf__C': 100.0,
-	 'clf__cache_size': 200,
-	 'clf__class_weight': None,
-	 'clf__coef0': 0.0,
-	 'clf__decision_function_shape': None,
-	 'clf__degree': 3,
-	 'clf__gamma': 0.001,
-	 'clf__kernel': 'rbf',
-	 'clf__max_iter': -1,
-	 'clf__probability': True,
-	 'clf__random_state': 1,
-	 'clf__shrinking': True,
-	 'clf__tol': 0.001,
-	 'clf__verbose': False,
-	 'scl': StandardScaler(copy=True, with_mean=True, with_std=True),
-	 'scl__copy': True,
-	 'scl__with_mean': True,
-	 'scl__with_std': True,
-	 'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
-	  ('clf', SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
-		 decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
-		 max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
-		 verbose=False))]}
+    >>> best_svm_model.get_params()
+    {'clf': SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
+       decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+       max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+       verbose=False),
+     'clf__C': 100.0,
+     'clf__cache_size': 200,
+     'clf__class_weight': None,
+     'clf__coef0': 0.0,
+     'clf__decision_function_shape': None,
+     'clf__degree': 3,
+     'clf__gamma': 0.001,
+     'clf__kernel': 'rbf',
+     'clf__max_iter': -1,
+     'clf__probability': True,
+     'clf__random_state': 1,
+     'clf__shrinking': True,
+     'clf__tol': 0.001,
+     'clf__verbose': False,
+     'scl': StandardScaler(copy=True, with_mean=True, with_std=True),
+     'scl__copy': True,
+     'scl__with_mean': True,
+     'scl__with_std': True,
+     'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
+      ('clf', SVC(C=100.0, cache_size=200, class_weight='balanced', coef0=0.0,
+         decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
+         max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
+         verbose=False))]}
 
-	"""
+    """
     if model == 'svm':
 
         pipe_svc = Pipeline([('scl', scaler),
@@ -267,7 +267,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
 
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
-    """	Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
+    """    Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.

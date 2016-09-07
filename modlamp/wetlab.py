@@ -4,8 +4,8 @@
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
-This module incorporates functions to load raw data files from wetlab experiments and calculate different
-characteristics.
+This module incorporates functions to load raw data files from wetlab experiments, calculate different
+characteristics and plot.
 
 =============================        ============================================================================
 Class                                Data

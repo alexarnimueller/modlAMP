@@ -88,14 +88,18 @@
     <span class="k">return</span> <span class="n">db</span>
 
 
-<span class="k">def</span> <span class="nf">_connect</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Connect to a given MySQL database (in config.ini file).</span>
+<span class="sd">    Connect to a given MySQL database in conf.</span>
 <span class="sd">    This function is called by the function :func:`query_sequences`.</span>
 
+<span class="sd">    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.</span>
 <span class="sd">    :return: a mysql.connector connection object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>

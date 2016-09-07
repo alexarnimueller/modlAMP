@@ -168,22 +168,23 @@ def load_ACPvsNeg():
     alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.
 
     The ACP class consists of a collection of ACPs from the `APD2 <http://aps.unmc.edu/AP/>`_ and
-    `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by Gisela Gabernet at
-    modlab ETH Zuerich <gisela.gabernet@pharma.ethz.ch>, checking the original literature and annotated active against
-    at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and
-    cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+    `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by `Gisela Gabernet
+    <gisela.gabernet@pharma.ethz.ch>`_ at modlab ETH Zürich, checking the original literature and annotated active
+    against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,
+    haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to
+    facilitate synthesis.
 
     The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
-    the `PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
-    <http://www.rcsb.org/pdb/home/home.do>`) isolated directly from the proteins crystal structure.
+    the `PDBTM <http://pdbtm.enzim.hu/>`_ ) and 47 non-transmembrane helices (extracted from the `PDB
+    <http://www.rcsb.org/pdb/home/home.do>`_) isolated directly from the proteins crystal structure.
 
-    =================    ====
-    Classes                2
+    =================    ===
+    Classes              2
     ACP peptides         95
     Negative peptides    94
-    Total peptides        189
-    Dimensionality        1
-    =================    ====
+    Total peptides       189
+    Dimensionality       1
+    =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
         the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the

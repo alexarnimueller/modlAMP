@@ -12,6 +12,8 @@ from getpass import getpass
 
 import mysql.connector
 import pandas as pd
+import requests
+from lxml import html
 from mysql.connector import Error
 
 __author__ = "modlab"
@@ -39,14 +41,18 @@ def _read_db_config(host='gsdelta641.ethz.ch', database='peptides', user='modlab
     return db
 
 
-def _connect():
+def _connect(conf=None):
     """
-    Connect to a given MySQL database (in config.ini file).
+    Connect to a given MySQL database in conf.
     This function is called by the function :func:`query_sequences`.
 
+    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.
     :return: a mysql.connector connection object
     """
-    config = _read_db_config()
+    if conf:
+        config = _read_db_config(conf)
+    else:
+        config = _read_db_config()
 
     try:
         print('Connecting to MySQL database...')
@@ -93,3 +99,25 @@ def query_database(table, columns=None):
 
     except Error as e:
         print(e)
+
+
+def query_apd(id):
+    """
+    A function to query sequences from the antimicrobial peptide database `APD <http://aps.unmc.edu/AP/>`_.
+    
+    :param id: {list of int} list of APD IDs to be queried from the database
+    :return: list of peptide sequences corresponding to entered ids.
+    :Example:
+    
+    >>> query_apd([15, 16, 18, 19, 20])
+    ['GLFDIVKKVVGALGSL', 'GLFDIVKKVVGAIGSL', 'GLFDIVKKVVGAFGSL', 'GLFDIAKKVIGVIGSL', 'GLFDIVKKIAGHIAGSI']
+    """
+
+    seqs = []
+
+    for i in id:
+        page = requests.get('http://aps.unmc.edu/AP/database/query_output.php?ID=%0.5d' % i)
+        tree = html.fromstring(page.content)
+        seqs.extend(tree.xpath('//font[@color="#ff3300"]/text()'))
+
+    return seqs
