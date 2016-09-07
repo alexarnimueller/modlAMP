@@ -4,8 +4,8 @@
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
-This module incorporates functions to connect to the modlab internal peptide database server and query sequences from
-the different database tables.
+This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server
+is only available in the CADD intranet at ETH Zurich.
 """
 
 from getpass import getpass
@@ -101,11 +101,13 @@ def query_database(table, columns=None):
         print(e)
 
 
-def query_apd(id):
+def query_apd(ids):
     """
     A function to query sequences from the antimicrobial peptide database `APD <http://aps.unmc.edu/AP/>`_.
+    If the whole database should be scraped, simply look up the latest entry ID and take a ``range(1, 'latestID')``
+    as function input.
     
-    :param id: {list of int} list of APD IDs to be queried from the database
+    :param ids: {list of int} list of APD IDs to be queried from the database
     :return: list of peptide sequences corresponding to entered ids.
     :Example:
     
@@ -115,9 +117,33 @@ def query_apd(id):
 
     seqs = []
 
-    for i in id:
+    for i in ids:
         page = requests.get('http://aps.unmc.edu/AP/database/query_output.php?ID=%0.5d' % i)
         tree = html.fromstring(page.content)
         seqs.extend(tree.xpath('//font[@color="#ff3300"]/text()'))
 
+    return seqs
+
+
+def query_camp(ids):
+    """
+    A function to query sequences from the antimicrobial peptide database `CAMP <http://camp.bicnirrh.res.in/>`_.
+    If the whole database should be scraped, simply look up the latest entry ID and take a ``range(1, 'latestID')``
+    as function input.
+
+    :param ids: {list of int} list of CAMP IDs to be queried from the database
+    :return: list of peptide sequences corresponding to entered ids.
+    :Example:
+
+    >>> query_camp([2705, 2706])
+    ['GLFDIVKKVVGALGSL', 'GLFDIVKKVVGTLAGL']
+    """
+    
+    seqs = []
+    
+    for i in ids:
+        page = requests.get('http://camp.bicnirrh.res.in/seqDisp.php?id=CAMPSQ%i' % i)
+        tree = html.fromstring(page.content)
+        seqs.extend(tree.xpath('//td[@class="fasta"]/text()'))
+    
     return seqs

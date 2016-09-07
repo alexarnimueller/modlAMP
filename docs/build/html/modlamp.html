@@ -2837,8 +2837,8 @@ accordingly.</td>
 </div>
 <div class="section" id="module-modlamp.database">
 <span id="modlamp-database"></span><h2>2.3. modlamp.database<a class="headerlink" href="#module-modlamp.database" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.database"></span><p>This module incorporates functions to connect to the modlab internal peptide database server and query sequences from
-the different database tables.</p>
+<span class="target" id="module-modlamp.database"></span><p>This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server
+is only available in the CADD intranet at ETH Zurich.</p>
 <dl class="function">
 <dt id="modlamp.database.query_database">
 <code class="descclassname">modlamp.database.</code><code class="descname">query_database</code><span class="sig-paren">(</span><em>table</em>, <em>columns=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_database" title="Permalink to this definition">¶</a></dt>
@@ -2877,6 +2877,54 @@ column names is extracted and returned.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">If &#8216;None&#8217; or &#8216;NULL&#8217; appears as a value, this means no data was measured for this peptide and not that activity
 is None (inactive).</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.database.query_apd">
+<code class="descclassname">modlamp.database.</code><code class="descname">query_apd</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_apd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_apd" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to query sequences from the antimicrobial peptide database <a class="reference external" href="http://aps.unmc.edu/AP/">APD</a>.
+If the whole database should be scraped, simply look up the latest entry ID and take a <code class="docutils literal"><span class="pre">range(1,</span> <span class="pre">'latestID')</span></code>
+as function input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ids</strong> &#8211; {list of int} list of APD IDs to be queried from the database</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of peptide sequences corresponding to entered ids.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query_apd</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<span class="go">[&#39;GLFDIVKKVVGALGSL&#39;, &#39;GLFDIVKKVVGAIGSL&#39;, &#39;GLFDIVKKVVGAFGSL&#39;, &#39;GLFDIAKKVIGVIGSL&#39;, &#39;GLFDIVKKIAGHIAGSI&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.database.query_camp">
+<code class="descclassname">modlamp.database.</code><code class="descname">query_camp</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/database.html#query_camp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.database.query_camp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to query sequences from the antimicrobial peptide database <a class="reference external" href="http://camp.bicnirrh.res.in/">CAMP</a>.
+If the whole database should be scraped, simply look up the latest entry ID and take a <code class="docutils literal"><span class="pre">range(1,</span> <span class="pre">'latestID')</span></code>
+as function input.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ids</strong> &#8211; {list of int} list of CAMP IDs to be queried from the database</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of peptide sequences corresponding to entered ids.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query_camp</span><span class="p">([</span><span class="mi">2705</span><span class="p">,</span> <span class="mi">2706</span><span class="p">])</span>
+<span class="go">[&#39;GLFDIVKKVVGALGSL&#39;, &#39;GLFDIVKKVVGTLAGL&#39;]</span>
+</pre></div>
 </div>
 </dd></dl>
 
