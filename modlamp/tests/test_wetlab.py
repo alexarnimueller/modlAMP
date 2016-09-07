@@ -5,7 +5,7 @@ from ..wetlab import CD
 
 
 class TestCD(unittest.TestCase):
-	cd = CD(join(abspath('.'), 'files'), 180, 260, amide=True)
+	cd = CD(join(abspath('.'), 'modlamp/tests/files'), 180, 260, amide=True)
 
 	def test_init(self):
 		self.assertIsNotNone(self.cd.filenames)
