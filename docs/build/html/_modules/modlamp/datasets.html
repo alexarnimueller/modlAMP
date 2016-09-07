@@ -326,6 +326,49 @@
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
                  <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="load_custom"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_custom">[docs]</a><span class="k">def</span> <span class="nf">load_custom</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a custom dataset saved in ``modlamp/data/`` as a ``.csv`` file.</span>
+<span class="sd">    </span>
+<span class="sd">    The following header needs to be included: *Nr. of sequences*, *Nr. of columns - 1*, *Class name for 0*,</span>
+<span class="sd">    *Class name for 1*</span>
+<span class="sd">    </span>
+<span class="sd">    Example ``.csv`` file structure::</span>
+<span class="sd">    </span>
+<span class="sd">        4, 1, TM, AMP</span>
+<span class="sd">        GTLEFDVTIGRAN, 0</span>
+<span class="sd">        GSNVHLASNLLA, 0</span>
+<span class="sd">        GLFDIVKKVVGALGSL, 0</span>
+<span class="sd">        GLFDIIKKIAESF, 0</span>
+<span class="sd">    </span>
+<span class="sd">    :param filename: {str} filename of the data file to be loaded; the file must be located in ``modlamp/data/``</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_AMPvsUniProt</span>
+<span class="sd">    &gt;&gt;&gt; data = load_custom(&#39;custom_data.csv&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 </pre></div>
 
           </div>
