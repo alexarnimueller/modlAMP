@@ -675,7 +675,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <dd><p>Base class for peptide descriptors. The following <strong>amino acid descriptor scales</strong> are available for descriptor calculation:</p>
 <ul class="simple">
 <li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
-<li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] P. Argos, J. K. M. Rao, P. A. Hargrave, Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
+<li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] Argos, P., Rao, J. K. M. &amp; Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
 <li><strong>bulkiness</strong>      (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
 <li><strong>charge_physio</strong>  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
 <li><strong>charge_acidic</strong>  (Amino acid charge at acidic pH - Hystidine charge +1.0.)</li>
@@ -3216,6 +3216,40 @@ features.</td>
 <span class="go">5888</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_custom">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_custom</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_custom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_custom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a custom dataset saved in <code class="docutils literal"><span class="pre">modlamp/data/</span></code> as a <code class="docutils literal"><span class="pre">.csv</span></code> file.</p>
+<p>The following header needs to be included: <em>Nr. of sequences</em>, <em>Nr. of columns - 1</em>, <em>Class name for 0</em>,
+<em>Class name for 1</em></p>
+<p>Example <code class="docutils literal"><span class="pre">.csv</span></code> file structure:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">TM</span><span class="p">,</span> <span class="n">AMP</span>
+<span class="n">GTLEFDVTIGRAN</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">GSNVHLASNLLA</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">GLFDIVKKVVGALGSL</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">GLFDIIKKIAESF</span><span class="p">,</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; {str} filename of the data file to be loaded; the file must be located in <code class="docutils literal"><span class="pre">modlamp/data/</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
+the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
+features.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsUniProt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_custom</span><span class="p">(</span><span class="s1">&#39;custom_data.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

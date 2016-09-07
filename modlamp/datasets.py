@@ -277,3 +277,46 @@ def load_AMPvsUniProt():
     return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
+
+
+def load_custom(filename):
+    """Function to load a custom dataset saved in ``modlamp/data/`` as a ``.csv`` file.
+    
+    The following header needs to be included: *Nr. of sequences*, *Nr. of columns - 1*, *Class name for 0*,
+    *Class name for 1*
+    
+    Example ``.csv`` file structure::
+    
+        4, 1, TM, AMP
+        GTLEFDVTIGRAN, 0
+        GSNVHLASNLLA, 0
+        GLFDIVKKVVGALGSL, 0
+        GLFDIIKKIAESF, 0
+    
+    :param filename: {str} filename of the data file to be loaded; the file must be located in ``modlamp/data/``
+    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+        features.
+    :Example:
+
+    >>> from modlamp.datasets import load_AMPvsUniProt
+    >>> data = load_custom('custom_data.csv')
+    """
+
+    module_path = dirname(__file__)
+    with open(join(module_path, 'data', filename)) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples = int(temp[0])
+        n_features = int(temp[1])
+        target_names = np.array(temp[2:])
+        sequences = np.empty((n_samples, n_features), dtype='|S100')
+        target = np.empty((n_samples,), dtype=np.int)
+
+        for i, ir in enumerate(data_file):
+            sequences[i] = np.asarray(ir[0], dtype=np.str)
+            target[i] = np.asarray(ir[-1], dtype=np.int)
+
+    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+                 target_names=target_names,
+                 feature_names=['Sequence'])
