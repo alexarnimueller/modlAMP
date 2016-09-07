@@ -1,5 +1,5 @@
 import unittest
-from ..database import query_apd
+from ..database import query_apd, query_camp
 from ..database import _read_db_config
 
 
@@ -13,7 +13,9 @@ class TestConnect(unittest.TestCase):
 
 class TestDB(unittest.TestCase):
 	
-    seq = query_apd([15])
+    seq1 = query_apd([15])
+    seq2 = query_camp([2705])
 	
     def test_query(self):
-        self.assertEqual(self.seq, ['GLFDIVKKVVGALGSL'])
+        self.assertEqual(self.seq1, ['GLFDIVKKVVGALGSL'])
+        self.assertEqual(self.seq2, ['GLFDIVKKVVGALGSL'])
