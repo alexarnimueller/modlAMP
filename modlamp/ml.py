@@ -178,8 +178,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
     elif model == 'rf':
 
-        pipe_rf = Pipeline([('scl', scaler),
-                            ('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
+        pipe_rf = Pipeline([('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
@@ -215,7 +214,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 def plot_validation_curve(classifier, x_train, y_train, param_name,
                           param_range=None,
                           cv=10, score=make_scorer(matthews_corrcoef),
-                          title="Validation Curve", xlab="parameter range", ylab="MCC"):
+                          title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
     """Plotting cross-validation curve for the specified classifier, training data and parameter.
 
     :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).
@@ -232,6 +231,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
+    :param filename: {str} if filename given the figure is stored in the specified path.
     :return: plot of the validation curve.
 
     """
@@ -246,6 +246,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     test_scores_mean = np.mean(test_scores, axis=1)
     test_scores_std = np.std(test_scores, axis=1)
 
+    plt.clf()
     plt.title(title)
     plt.xlabel(xlab)
     plt.ylabel(ylab)
@@ -258,7 +259,11 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     plt.fill_between(param_range, test_scores_mean - test_scores_std,
                      test_scores_mean + test_scores_std, alpha=0.2, color="g")
     plt.legend(loc="best")
-    plt.show()
+
+    if filename:
+        plt.savefig(filename)
+    else:
+        plt.show()
 
 
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
@@ -312,15 +317,16 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
     return dfpred
 
 
-def cv_scores(classifier, X, y, cv=10, metrics=None):
+def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
     """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
 
-    :param classifier: {classifier instance} classifier used for predictions.
+    :param classifier: {classifier instance} trained classifier used for predictions.
     :param X: {array} descriptor values for training data.
     :param y: {array} class values for training data.
     :param cv: {int} number of folds for cross-validation.
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
                     (http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
+    :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
 
 
@@ -335,11 +341,63 @@ def cv_scores(classifier, X, y, cv=10, metrics=None):
         means.append(scores.mean())
         sd.append(scores.std())
 
-    dict_scores = {'Metrics': metrics,
-                   'Mean CV score': means,
-                   'StDev': sd}
+    if names is None:
+        dict_scores = {'Metrics': metrics,
+                       'Mean CV score': means,
+                       'StDev': sd}
+    else:
+        dict_scores = {'Metrics': names,
+                       'Mean CV score': means,
+                       'StDev': sd}
 
     df_scores = pd.DataFrame(dict_scores)
     df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
 
     return df_scores
+
+
+def test_scores(classifier, X_test, y_test):
+    """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
+    are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
+    (roc_auc). See sklearn.metrics for more information
+     (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
+
+    :param classifier: {classifier instance} trained classifier used for predictions.
+    :param X_test: {array} descriptor values for the test data.
+    :param y_test: {array} class values for the test data.
+    :param metrics: {list}
+    :return: pandas dataframe containing the cross validation scores for the specified metrics.
+    """
+
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+    scores = []
+
+    MCC = matthews_corrcoef(y_test, classifier.predict(X_test))
+    scores.append(MCC)
+
+    accuracy = accuracy_score(y_test, classifier.predict(X_test))
+    scores.append(accuracy)
+
+    precision = precision_score(y_test, classifier.predict(X_test))
+    scores.append(precision)
+
+    recall = recall_score(y_test, classifier.predict(X_test))
+    scores.append(recall)
+
+    f1 = f1_score(y_test, classifier.predict(X_test))
+    scores.append(f1)
+
+    roc_auc = roc_auc_score(y_test, classifier.predict(X_test))
+    scores.append(roc_auc)
+
+
+    dict_scores = {'Metrics': metrics,
+                   'Scores': scores}
+
+
+    df_scores = pd.DataFrame(dict_scores)
+    df_scores = df_scores[['Metrics', 'Scores']]
+
+    return df_scores
+
+

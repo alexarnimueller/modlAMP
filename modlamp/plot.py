@@ -23,6 +23,7 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats.kde import gaussian_kde
+from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.descriptors import PeptideDescriptor
 
@@ -30,7 +31,7 @@ __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
 
-def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None):
+def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None, colors=None):
     """
     Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet
     as separate boxes.
@@ -40,6 +41,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     :param y_label: Axis label.
     :param x_tick_labels: list of labels to be assigned to the ticks on the x-axis. Must match the number of targets.
     :param filename: filename where to safe the plot. *default = None*
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A feature box plot.
     :Example:
 
@@ -48,7 +50,8 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     .. image:: ../docs/static/uH_Eisenberg.png
         :scale: 50 %
     """
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
     fig, ax = plt.subplots()
 
@@ -90,7 +93,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         plt.show()
 
 
-def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', filename=None):
+def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', filename=None, colors=None):
     """
     Function to generate a feature scatter plot of 2 given features. The different target classes given in **targets**
     are plottet in different colors.
@@ -101,6 +104,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     :param x_label: X-axis label.
     :param y_label: Y-axis label.
     :param filename: filename where to safe the plot. *default = None*
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A 2D feature scatter plot.
     :Example:
 
@@ -109,8 +113,8 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     .. image:: ../docs/static/2D_scatter.png
         :scale: 50 %
     """
-
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
     fig, ax = plt.subplots()
 
@@ -136,7 +140,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
         plt.show()
 
 
-def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None):
+def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None, colors=None):
     """
     Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in **targets**
     are plottet in different colors.
@@ -149,6 +153,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     :param y_label: {str} Y-axis label.
     :param z_label: {str} Z-axis label.
     :param filename: {str} filename where to safe the plot. *default = None* -> show the plot
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A 3D feature scatter plot.
     :Example:
 
@@ -158,7 +163,8 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
         :scale: 50 %
     """
 
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
