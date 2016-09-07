@@ -13,6 +13,7 @@ Function                             Data
 :py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides
 :py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences
 :py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*
+:py:func:`load_custom`               A custom data set provided in ``modlamp/data`` as a ``.csv`` file
 =============================        ============================================================================
 """
 

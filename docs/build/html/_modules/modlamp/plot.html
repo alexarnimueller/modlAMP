@@ -61,9 +61,11 @@
 <span class="sd">:py:func:`plot_feature`             Generate a box plot for visualizing the distribution of a given feature.</span>
 <span class="sd">:py:func:`plot_2_features`          Generate a 2D scatter plot of 2 given features.</span>
 <span class="sd">:py:func:`plot_3_features`          Generate a 3D scatter plot of 3 given features.</span>
-<span class="sd">:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients</span>
+<span class="sd">:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients.</span>
 <span class="sd">:py:func:`helical_wheel`            Generates a helical wheel projection plot of a given sequence.</span>
-<span class="sd">:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays</span>
+<span class="sd">:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays.</span>
+<span class="sd">:py:func:`plot_violin`              Generates a violin plot for given classes and corresponding distributions.</span>
+<span class="sd">:py:func:`plot_aa_distr`            Generates an amino acid frequency plot for all 20 natural amino acids.</span>
 <span class="sd">============================        ==============================================================================</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -72,6 +74,7 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.stats.kde</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 
 <span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
 
@@ -79,7 +82,7 @@
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 
-<div class="viewcode-block" id="plot_feature"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_feature">[docs]</a><span class="k">def</span> <span class="nf">plot_feature</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;feature values&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_feature"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_feature">[docs]</a><span class="k">def</span> <span class="nf">plot_feature</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;feature values&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet</span>
 <span class="sd">    as separate boxes.</span>
@@ -89,6 +92,7 @@
 <span class="sd">    :param y_label: Axis label.</span>
 <span class="sd">    :param x_tick_labels: list of labels to be assigned to the ticks on the x-axis. Must match the number of targets.</span>
 <span class="sd">    :param filename: filename where to safe the plot. *default = None*</span>
+<span class="sd">    :param colors: {list} colors to take for plotting (strings in HEX formats).</span>
 <span class="sd">    :return: A feature box plot.</span>
 <span class="sd">    :Example:</span>
 
@@ -97,7 +101,8 @@
 <span class="sd">    .. image:: ../docs/static/uH_Eisenberg.png</span>
 <span class="sd">        :scale: 50 %</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
 
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
@@ -139,7 +144,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="plot_2_features"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_2_features">[docs]</a><span class="k">def</span> <span class="nf">plot_2_features</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_2_features"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_2_features">[docs]</a><span class="k">def</span> <span class="nf">plot_2_features</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to generate a feature scatter plot of 2 given features. The different target classes given in **targets**</span>
 <span class="sd">    are plottet in different colors.</span>
@@ -150,6 +155,7 @@
 <span class="sd">    :param x_label: X-axis label.</span>
 <span class="sd">    :param y_label: Y-axis label.</span>
 <span class="sd">    :param filename: filename where to safe the plot. *default = None*</span>
+<span class="sd">    :param colors: {list} colors to take for plotting (strings in HEX formats).</span>
 <span class="sd">    :return: A 2D feature scatter plot.</span>
 <span class="sd">    :Example:</span>
 
@@ -158,8 +164,8 @@
 <span class="sd">    .. image:: ../docs/static/2D_scatter.png</span>
 <span class="sd">        :scale: 50 %</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
 
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
@@ -185,7 +191,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="plot_3_features"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_3_features">[docs]</a><span class="k">def</span> <span class="nf">plot_3_features</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">z_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_3_features"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_3_features">[docs]</a><span class="k">def</span> <span class="nf">plot_3_features</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">z_values</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in **targets**</span>
 <span class="sd">    are plottet in different colors.</span>
@@ -198,6 +204,7 @@
 <span class="sd">    :param y_label: {str} Y-axis label.</span>
 <span class="sd">    :param z_label: {str} Z-axis label.</span>
 <span class="sd">    :param filename: {str} filename where to safe the plot. *default = None* -&gt; show the plot</span>
+<span class="sd">    :param colors: {list} colors to take for plotting (strings in HEX formats).</span>
 <span class="sd">    :return: A 3D feature scatter plot.</span>
 <span class="sd">    :Example:</span>
 
@@ -207,7 +214,8 @@
 <span class="sd">        :scale: 50 %</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#69D2E7&#39;</span><span class="p">,</span> <span class="s1">&#39;#FA6900&#39;</span><span class="p">,</span> <span class="s1">&#39;#E0E4CC&#39;</span><span class="p">,</span> <span class="s1">&#39;#542437&#39;</span><span class="p">,</span> <span class="s1">&#39;#53777A&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;#C02942&#39;</span><span class="p">,</span> <span class="s1">&#39;#031634&#39;</span><span class="p">]</span>  <span class="c1"># available colors</span>
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>

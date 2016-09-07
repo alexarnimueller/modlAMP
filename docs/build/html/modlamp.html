@@ -2955,6 +2955,9 @@ as function input.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsUniProt" title="modlamp.datasets.load_AMPvsUniProt"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsUniProt()</span></code></a></td>
 <td>AMPs from the <em>APD3</em> versus other peptides from <em>UniProt</em></td>
 </tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_custom" title="modlamp.datasets.load_custom"><code class="xref py py-func docutils literal"><span class="pre">load_custom()</span></code></a></td>
+<td>A custom data set provided in <code class="docutils literal"><span class="pre">modlamp/data</span></code> as a <code class="docutils literal"><span class="pre">.csv</span></code> file</td>
+</tr>
 </tbody>
 </table>
 <dl class="class">
@@ -3279,19 +3282,25 @@ features.</td>
 <td>Generate a 3D scatter plot of 3 given features.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_profile" title="modlamp.plot.plot_profile"><code class="xref py py-func docutils literal"><span class="pre">plot_profile()</span></code></a></td>
-<td>Generates a profile plot of a sequence to visualize potential linear gradients</td>
+<td>Generates a profile plot of a sequence to visualize potential linear gradients.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.plot.helical_wheel" title="modlamp.plot.helical_wheel"><code class="xref py py-func docutils literal"><span class="pre">helical_wheel()</span></code></a></td>
 <td>Generates a helical wheel projection plot of a given sequence.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_pde" title="modlamp.plot.plot_pde"><code class="xref py py-func docutils literal"><span class="pre">plot_pde()</span></code></a></td>
-<td>Generates a probability density estimation plot of given data arrays</td>
+<td>Generates a probability density estimation plot of given data arrays.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.plot.plot_violin" title="modlamp.plot.plot_violin"><code class="xref py py-func docutils literal"><span class="pre">plot_violin()</span></code></a></td>
+<td>Generates a violin plot for given classes and corresponding distributions.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.plot.plot_aa_distr" title="modlamp.plot.plot_aa_distr"><code class="xref py py-func docutils literal"><span class="pre">plot_aa_distr()</span></code></a></td>
+<td>Generates an amino acid frequency plot for all 20 natural amino acids.</td>
 </tr>
 </tbody>
 </table>
 <dl class="function">
 <dt id="modlamp.plot.plot_feature">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_feature</code><span class="sig-paren">(</span><em>y_values</em>, <em>targets=None</em>, <em>y_label='feature values'</em>, <em>x_tick_labels=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_feature" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_feature</code><span class="sig-paren">(</span><em>y_values</em>, <em>targets=None</em>, <em>y_label='feature values'</em>, <em>x_tick_labels=None</em>, <em>filename=None</em>, <em>colors=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate a box plot of 1 given feature. The different target classes given in <strong>targets</strong> are plottet
 as separate boxes.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3304,6 +3313,7 @@ as separate boxes.</p>
 <li><strong>y_label</strong> &#8211; Axis label.</li>
 <li><strong>x_tick_labels</strong> &#8211; list of labels to be assigned to the ticks on the x-axis. Must match the number of targets.</li>
 <li><strong>filename</strong> &#8211; filename where to safe the plot. <em>default = None</em></li>
+<li><strong>colors</strong> &#8211; {list} colors to take for plotting (strings in HEX formats).</li>
 </ul>
 </td>
 </tr>
@@ -3322,7 +3332,7 @@ as separate boxes.</p>
 
 <dl class="function">
 <dt id="modlamp.plot.plot_2_features">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_2_features</code><span class="sig-paren">(</span><em>x_values</em>, <em>y_values</em>, <em>targets=None</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_2_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_2_features" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_2_features</code><span class="sig-paren">(</span><em>x_values</em>, <em>y_values</em>, <em>targets=None</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>filename=None</em>, <em>colors=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_2_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_2_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate a feature scatter plot of 2 given features. The different target classes given in <strong>targets</strong>
 are plottet in different colors.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3336,6 +3346,7 @@ are plottet in different colors.</p>
 <li><strong>x_label</strong> &#8211; X-axis label.</li>
 <li><strong>y_label</strong> &#8211; Y-axis label.</li>
 <li><strong>filename</strong> &#8211; filename where to safe the plot. <em>default = None</em></li>
+<li><strong>colors</strong> &#8211; {list} colors to take for plotting (strings in HEX formats).</li>
 </ul>
 </td>
 </tr>
@@ -3354,7 +3365,7 @@ are plottet in different colors.</p>
 
 <dl class="function">
 <dt id="modlamp.plot.plot_3_features">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_3_features</code><span class="sig-paren">(</span><em>x_values</em>, <em>y_values</em>, <em>z_values</em>, <em>targets=None</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>z_label=''</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_3_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_3_features" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_3_features</code><span class="sig-paren">(</span><em>x_values</em>, <em>y_values</em>, <em>z_values</em>, <em>targets=None</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>z_label=''</em>, <em>filename=None</em>, <em>colors=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_3_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_3_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in <strong>targets</strong>
 are plottet in different colors.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3370,6 +3381,7 @@ are plottet in different colors.</p>
 <li><strong>y_label</strong> &#8211; {str} Y-axis label.</li>
 <li><strong>z_label</strong> &#8211; {str} Z-axis label.</li>
 <li><strong>filename</strong> &#8211; {str} filename where to safe the plot. <em>default = None</em> -&gt; show the plot</li>
+<li><strong>colors</strong> &#8211; {list} colors to take for plotting (strings in HEX formats).</li>
 </ul>
 </td>
 </tr>
@@ -3739,7 +3751,7 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 
 <dl class="function">
 <dt id="modlamp.ml.plot_validation_curve">
-<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range=None</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range=None</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plotting cross-validation curve for the specified classifier, training data and parameter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3760,6 +3772,7 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 <li><strong>title</strong> &#8211; {str} graph title</li>
 <li><strong>xlab</strong> &#8211; {str} x axis label.</li>
 <li><strong>ylab</strong> &#8211; {str} y axis label.</li>
+<li><strong>filename</strong> &#8211; {str} if filename given the figure is stored in the specified path.</li>
 </ul>
 </td>
 </tr>
@@ -3800,19 +3813,45 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 
 <dl class="function">
 <dt id="modlamp.ml.cv_scores">
-<code class="descclassname">modlamp.ml.</code><code class="descname">cv_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#cv_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.cv_scores" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">cv_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#cv_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.cv_scores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the cross validation scores for the specified scoring metrics as a pandas data frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>classifier</strong> &#8211; {classifier instance} classifier used for predictions.</li>
+<li><strong>classifier</strong> &#8211; {classifier instance} trained classifier used for predictions.</li>
 <li><strong>X</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y</strong> &#8211; {array} class values for training data.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 <li><strong>metrics</strong> &#8211; {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
 (<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
+<li><strong>names</strong> &#8211; {list} names of the metrics to display on the dataframe.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe containing the cross validation scores for the specified metrics.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.ml.test_scores">
+<code class="descclassname">modlamp.ml.</code><code class="descname">test_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#test_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.test_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
+are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
+(roc_auc). See sklearn.metrics for more information
+(<a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics">http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics</a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>classifier</strong> &#8211; {classifier instance} trained classifier used for predictions.</li>
+<li><strong>X_test</strong> &#8211; {array} descriptor values for the test data.</li>
+<li><strong>y_test</strong> &#8211; {array} class values for the test data.</li>
 </ul>
 </td>
 </tr>

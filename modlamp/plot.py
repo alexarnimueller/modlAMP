@@ -12,9 +12,11 @@ Function                            Characteristics
 :py:func:`plot_feature`             Generate a box plot for visualizing the distribution of a given feature.
 :py:func:`plot_2_features`          Generate a 2D scatter plot of 2 given features.
 :py:func:`plot_3_features`          Generate a 3D scatter plot of 3 given features.
-:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients
+:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients.
 :py:func:`helical_wheel`            Generates a helical wheel projection plot of a given sequence.
-:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays
+:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays.
+:py:func:`plot_violin`              Generates a violin plot for given classes and corresponding distributions.
+:py:func:`plot_aa_distr`            Generates an amino acid frequency plot for all 20 natural amino acids.
 ============================        ==============================================================================
 
 """

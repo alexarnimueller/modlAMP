@@ -360,12 +360,12 @@ def test_scores(classifier, X_test, y_test):
     """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
     (roc_auc). See sklearn.metrics for more information
-     (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
+    (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
+    
 
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X_test: {array} descriptor values for the test data.
     :param y_test: {array} class values for the test data.
-    :param metrics: {list}
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
     """
 
