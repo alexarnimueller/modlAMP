@@ -87,40 +87,40 @@ def _one_crosscorr(seq, window, scale):
     return seqdesc
 
 
-def _charge(seq, pH=7.0, amide=False):
+def _charge(seq, ph=7.0, amide=False):
     """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR
     function. The method used is first described by Bjellqvist. In the case of amidation, the value for the
-    'Cterm' pKa is 15 (and Cterm is added to the pos_pKs dictionary.
+    'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
     The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
     Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
-    **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+    **pos_pks** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
-    **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+    **neg_pks** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
-    :param pH: {float} pH at which to calculate peptide charge.
+    :param ph: {float} pH at which to calculate peptide charge.
     :param amide: {boolean} whether the sequences have an amidated C-terminus.
     :return: {array} descriptor values in the attribute :py:attr:`descriptor
     """
     
     if amide:
-        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pKs = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+        neg_pks = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
     else:
-        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+        neg_pks = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
     
     aa_content = ProteinAnalysis(seq).count_amino_acids()
     aa_content['Nterm'] = 1.0
     aa_content['Cterm'] = 1.0
     pos_charge = 0.0
-    for aa, pK in pos_pKs.items():
-        c_r = 10 ** (pK - pH)
+    for aa, pK in pos_pks.items():
+        c_r = 10 ** (pK - ph)
         partial_charge = c_r / (c_r + 1.0)
         pos_charge += aa_content[aa] * partial_charge
     neg_charge = 0.0
-    for aa, pK in neg_pKs.items():
-        c_r = 10 ** (pH - pK)
+    for aa, pK in neg_pks.items():
+        c_r = 10 ** (ph - pK)
         partial_charge = c_r / (c_r + 1.0)
         neg_charge += aa_content[aa] * partial_charge
     return pos_charge - neg_charge
@@ -220,7 +220,8 @@ class GlobalDescriptor(object):
 
         :param ph: {float} ph at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
 
@@ -233,16 +234,16 @@ class GlobalDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def charge_density(self, pH=7.0, amide=False, append=False):
+    def charge_density(self, ph=7.0, amide=False, append=False):
         """Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
 
-        :param pH: {float} pH at which to calculate peptide charge.
+        :param ph: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`.
         """
-        self.calculate_charge(pH, amide)
+        self.calculate_charge(ph, amide)
         charges = self.descriptor
         self.calculate_MW(amide)
         masses = self.descriptor
@@ -256,7 +257,7 @@ class GlobalDescriptor(object):
     def isoelectric_point(self, amide=False, append=False):
         """
         Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
-        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
+        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
         The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
         module :mod:`Bio.SeqUtils.ProtParam`.
 
@@ -264,48 +265,50 @@ class GlobalDescriptor(object):
 
          **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param amide: {boolean} whether the sequences have an amidated C-terminus.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
 
         desc = []
         for seq in self.sequences:
 
-            # Bracket between pH1 and pH2
+            # Bracket between ph1 and ph2
             ph = 7.0
             charge = _charge(seq, ph, amide)
             if charge > 0.0:
-                pH1 = ph
+                ph1 = ph
                 charge1 = charge
                 while charge1 > 0.0:
-                    ph = pH1 + 1.0
+                    ph = ph1 + 1.0
                     charge = _charge(seq, ph, amide)
                     if charge > 0.0:
-                        pH1 = ph
+                        ph1 = ph
                         charge1 = charge
                     else:
-                        pH2 = ph
+                        ph2 = ph
                         break
             else:
-                pH2 = ph
+                ph2 = ph
                 charge2 = charge
                 while charge2 < 0.0:
-                    ph = pH2 - 1.0
+                    ph = ph2 - 1.0
                     charge = _charge(seq, ph, amide)
                     if charge < 0.0:
-                        pH2 = ph
+                        ph2 = ph
                         charge2 = charge
                     else:
-                        pH1 = ph
+                        ph1 = ph
                         break
             # Bisection
-            while pH2 - pH1 > 0.0001 and charge != 0.0:
-                ph = (pH1 + pH2) / 2.0
+            while ph2 - ph1 > 0.0001 and charge != 0.0:
+                ph = (ph1 + ph2) / 2.0
                 charge = _charge(seq, ph, amide)
                 if charge > 0.0:
-                    pH1 = ph
+                    ph1 = ph
                 else:
-                    pH2 = ph
+                    ph2 = ph
             desc.append(ph)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
@@ -319,7 +322,8 @@ class GlobalDescriptor(object):
         The instability index is a prediction of protein stability based on the amino acid composition.
         ([1] K. Guruprasad, B. V Reddy, M. W. Pandit, Protein Eng. 1990, 4, 155–161.)
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
         desc = []
@@ -336,7 +340,8 @@ class GlobalDescriptor(object):
         Method to calculate the aromaticity of every sequence in the attribute :py:attr:`sequences`.
         According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
         desc = []
@@ -355,7 +360,8 @@ class GlobalDescriptor(object):
         on the relative volume occupied by aliphatic amino acids (A,I,L & V).
         ([1] A. Ikai, J. Biochem. 1980, 88, 1895–1898.)
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
         desc = []
@@ -370,25 +376,25 @@ class GlobalDescriptor(object):
             self.descriptor = np.array(desc)
 
     def boman_index(self, append=False):
-        """
-        Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
+        """Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
         According to Boman, 2003, the boman index is a measure for protein-protein interactions and is calculated by
         summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
         dividing by    sequence length.
         ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
         [2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
-        D = {'L': -4.92, 'I': -4.92, 'V': -4.04, 'F': -2.98, 'M': -2.35, 'W': -2.33, 'A': -1.81, 'C': -1.28, 'G': -0.94,
+        d = {'L': -4.92, 'I': -4.92, 'V': -4.04, 'F': -2.98, 'M': -2.35, 'W': -2.33, 'A': -1.81, 'C': -1.28, 'G': -0.94,
              'Y': 0.14, 'T': 2.57,
              'S': 3.40, 'H': 4.66, 'Q': 5.54, 'K': 5.55, 'N': 6.64, 'E': 6.81, 'D': 8.72, 'R': 14.92, 'P': 0.}
         desc = []
         for seq in self.sequences:
             val = []
             for a in seq:
-                val.append(D[a])
+                val.append(d[a])
             desc.append(sum(val) / len(val))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
@@ -398,10 +404,11 @@ class GlobalDescriptor(object):
 
     def hydrophobic_ratio(self, append=False):
         """
-        Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the relative
-        frequency of the amino acids **A,C,F,I,L,M & V**.
+        Method to calculate the hydrophobic ratio of every sequence in the attribute :py:attr:`sequences`, which is the
+        relative frequency of the amino acids **A,C,F,I,L,M & V**.
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
         desc = []
@@ -429,7 +436,7 @@ class GlobalDescriptor(object):
         >>> D.feature_scaling(stype='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
-        try:
+        if stype in ['standard', 'minmax']:
             if stype == 'standard':
                 self.scaler = StandardScaler()
             elif stype == 'minmax':
@@ -439,7 +446,7 @@ class GlobalDescriptor(object):
                 self.descriptor = self.scaler.fit_transform(self.descriptor)
             else:
                 self.descriptor = self.scaler.transform(self.descriptor)
-        except:
+        else:
             print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
 
     def feature_shuffle(self):
@@ -608,8 +615,8 @@ class GlobalDescriptor(object):
 
 
 class PeptideDescriptor(object):
-    """
-    Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor calculation:
+    """Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor
+    calculation:
 
     - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
     - **argos**          (Argos hydrophobicity amino acid scale, *[2] Argos, P., Rao, J. K. M. & Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.*)
@@ -676,6 +683,8 @@ class PeptideDescriptor(object):
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
         self.scaler = None
+        self.all_moms = list()  # for passing hydrophobic moments to calculate_profile
+        self.all_globs = list()  # for passing global  to calculate_profile
 
     def load_scale(self, scalename):
         """Method to load amino acid values from a given scale
@@ -709,7 +718,8 @@ class PeptideDescriptor(object):
         """Method for auto-correlating the amino acid values for a given descriptor scale
 
         :param window: correlation window for descriptor calculation in a sliding window approach
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: calculated descriptor numpy.array in self.descriptor
         :Example:
 
@@ -733,7 +743,8 @@ class PeptideDescriptor(object):
         """Method for cross-correlating the amino acid values for a given descriptor scale
 
         :param window: correlation window for descriptor calculation in a sliding window approach
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: calculated descriptor numpy.array in self.descriptor
         :Example:
 
@@ -752,13 +763,19 @@ class PeptideDescriptor(object):
             self.descriptor = np.array(desc)
 
     def calculate_moment(self, window=1000, angle=100, modality='max', append=False):
-        """Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.
+        """Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and
+        window.
 
-        :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal hydrophiobic moment for the chosen window size found in the sequence will be returned.
+        :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+            window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences
+            shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal
+            hydrophiobic moment for the chosen window size found in the sequence will be returned.
         :param angle: {int} angle in which to calculate the moment. **100** for alpha helices, **180** for beta sheets.
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in self.all_moms (needed for calculate_profile method)
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
+        :return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in
+            :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -771,21 +788,20 @@ class PeptideDescriptor(object):
             sys.exit()
 
         desc = list()
-        self.all_moms = list()
         for s, seq in enumerate(self.sequences):
             wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
-            M = list()
+            mtrx = list()
             for l in range(len(seq)):
-                M.append(self.scale[str(seq[l])])
+                mtrx.append(self.scale[str(seq[l])])
 
-            Mwdw = list()
-            for i in range(len(M) - wdw + 1):
-                Mwdw.append(sum(M[i:i + wdw], []))
+            mwdw = list()
+            for i in range(len(mtrx) - wdw + 1):
+                mwdw.append(sum(mtrx[i:i + wdw], []))
 
-            Mwdw = np.asarray(Mwdw)
+            mwdw = np.asarray(mwdw)
             rads = angle * (np.pi / 180) * np.asarray(range(wdw))  # calculate actual moment (radial)
-            vcos = (Mwdw * np.cos(rads)).sum(axis=1)
-            vsin = (Mwdw * np.sin(rads)).sum(axis=1)
+            vcos = (mwdw * np.cos(rads)).sum(axis=1)
+            vsin = (mwdw * np.sin(rads)).sum(axis=1)
             moms = np.sqrt(vsin * vsin + vcos * vcos) / wdw
 
             if modality == 'max':  # take window with maximal value
@@ -806,10 +822,13 @@ class PeptideDescriptor(object):
     def calculate_global(self, window=1000, modality='max', append=False):
         """Method for calculating a global / window averaging descriptor value of a given AA scale
 
-        :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken.
+        :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+            window, the length of the sequence is taken.
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in self.all_globs (needed for calculate_profile method)
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
+        :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in
+        :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -818,18 +837,17 @@ class PeptideDescriptor(object):
         array([[ 0.44875]])
         """
         desc = list()
-        self.all_globs = list()
         for n, seq in enumerate(self.sequences):
             wdw = min(window, len(seq))
-            M = list()
+            mtrx = list()
             for l in range(len(seq)):  # translate AA sequence into values
-                M.append(self.scale[str(seq[l])])
-            Mwdw = list()
-            for i in range(len(M) - wdw + 1):
-                Mwdw.append(sum(M[i:i + wdw], []))  # list of all the values for the different windows
-            Mwdw = np.asarray(Mwdw)
-            glob = np.sum(Mwdw, axis=1) / wdw
-            try:
+                mtrx.append(self.scale[str(seq[l])])
+            mwdw = list()
+            for i in range(len(mtrx) - wdw + 1):
+                mwdw.append(sum(mtrx[i:i + wdw], []))  # list of all the values for the different windows
+            mwdw = np.asarray(mwdw)
+            glob = np.sum(mwdw, axis=1) / wdw
+            if modality in ['max', 'mean']:
                 if modality == 'max':
                     outglob = np.max(glob)  # returned moment will be the maximum of all windows
                 elif modality == 'mean':
@@ -837,7 +855,7 @@ class PeptideDescriptor(object):
                 desc.append(outglob)
                 self.all_globs.append(glob)
 
-            except:
+            else:
                 print 'Modality parameter is wrong, please choose between "max" and "mean"\n.'
 
         desc = np.asarray(desc).reshape(len(desc), 1)
@@ -847,11 +865,13 @@ class PeptideDescriptor(object):
             self.descriptor = np.array(desc)
 
     def calculate_profile(self, prof_type='uH', window=7, append=False):
-        """Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is "eisenberg"
+        """Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for
+        slope and intercept. The hydrophobicity scale used is "eisenberg"
 
-        :param type: prof_type of profile, available: 'H' for hydrophobicity or 'uH' for hydrophobic moment
+        :param prof_type: prof_type of profile, available: 'H' for hydrophobicity or 'uH' for hydrophobic moment
         :param window: {int} size of sliding window used (odd-numbered).
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor
         :Example:
 
@@ -928,7 +948,7 @@ class PeptideDescriptor(object):
         >>> D.feature_scaling(type='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
-        try:
+        if stype in ['standard', 'minmax']:
             if stype == 'standard':
                 self.scaler = StandardScaler()
             elif stype == 'minmax':
@@ -938,7 +958,7 @@ class PeptideDescriptor(object):
                 self.descriptor = self.scaler.fit_transform(self.descriptor)
             else:
                 self.descriptor = self.scaler.transform(self.descriptor)
-        except:
+        else:
             print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
 
     def feature_shuffle(self):
@@ -1026,8 +1046,8 @@ class PeptideDescriptor(object):
 
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
-        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
-        descriptor instance.
+        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an
+        updated descriptor instance.
 
         :param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
         :return: updated instance
@@ -1039,8 +1059,8 @@ class PeptideDescriptor(object):
         filter_sequences(self, sequences)
 
     def random_selection(self, num):
-        """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
+        """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a
+        given descriptor instance.
 
         :param num: {int} number of entries to be randomly selected
         :return: updated instance
