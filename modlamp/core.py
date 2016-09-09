@@ -188,16 +188,17 @@ def load_scale(scalename):
 
 
 def read_fasta(inputfile):
-    """Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`. This method is
-    used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
+    """Method for loading sequences from a FASTA formatted file into :py:attr:`sequences` & :py:attr:`names`.
+    This method is used by the base class :class:`modlamp.descriptors.PeptideDescriptor` if the input is a FASTA file.
 
     :param inputfile: .fasta file with sequences and headers to read
-    :return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in :py:attr:`names`.
+    :return: list of sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
+        :py:attr:`names`.
     """
     names = list()  # list for storing names
     sequences = list()  # list for storing sequences
     with open(inputfile) as handle:
-        for record in FastaIterator(handle):
+        for record in FastaIterator(handle):  # use biopythons SeqIO module
             names.append(record.description)
             sequences.append(str(record.seq))
     return sequences, names
@@ -312,7 +313,8 @@ def aminoacids(self):
 
 
 def template(self, lenmin, lenmax, seqnum):
-    """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all needed instances.
+    """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all
+    needed instances.
 
     :param lenmin: minimal length of the generated sequences
     :param lenmax: maximal length of the generated sequences
@@ -333,6 +335,9 @@ def clean(self):
     self.sequences = []
     self.target = np.array([], dtype='int')
     self.descriptor = np.array([])
+    self.scaler = None
+    self.all_moms = list()  # for passing hydrophobic moments to calculate_profile
+    self.all_globs = list()  # for passing global  to calculate_profile
 
 
 def filter_duplicates(self):

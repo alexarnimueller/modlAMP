@@ -153,10 +153,10 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
          decision_function_shape=None, degree=3, gamma=0.001, kernel='rbf',
          max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
          verbose=False))]}
-
     """
+    print "performing grid search..."
+    
     if model.lower() == 'svm':
-
         pipe_svc = Pipeline([('scl', scaler),
                              ('clf', SVC(class_weight='balanced', random_state=1, probability=True))])
 
@@ -172,35 +172,31 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
                           param_grid=param_grid,
                           scoring=score,
                           cv=cv,
-                          n_jobs=1)
+                          n_jobs=-1)
 
         gs.fit(x_train, y_train)
 
     elif model.lower() == 'rf':
-
         pipe_rf = Pipeline([('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
         if param_grid is None:
-            param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
-                           'clf__max_depth': [3, None],
-                           'clf__max_features': [1, 2, 3, 5, 10],
-                           'clf__min_samples_split': [1, 3, 5, 10],
-                           'clf__min_samples_leaf': [1, 3, 5, 10],
+            param_grid = [{'clf__n_estimators': [10, 100, 500],
+                           'clf__max_features': ['sqrt', 'log2', None],
                            'clf__bootstrap': [True, False],
-                           'clf__criterion': ["gini", "entropy"]}]
-# TODO: optimize parameter grid and kick out unnecessairy stuff
+                           'clf__criterion': ["gini"]}]
+
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
                           scoring=score,
                           cv=cv,
-                          n_jobs=1)
+                          n_jobs=-1)
 
         gs.fit(x_train, y_train)
 
     else:
         print "Model not supported, please choose between 'svm' and 'rf'."
 
-    print "Best score and parameters from a %d-fold cross validation:" % cv
+    print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
     for row in range(len(gs.grid_scores_)):
         if gs.grid_scores_[row][0] == gs.best_params_:
             print gs.grid_scores_[row]
@@ -237,9 +233,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 # TODO: add example
     if param_range is None:
         param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
-# TODO: this range does not work for some RF parameters like n_estimators, differentiate between RF and SVM
+# TODO: this range does not work for some RF parameters like n_estimators, differentiate between RF and SVM?
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
-                                                 cv=cv, scoring=score, n_jobs=1)
+                                                 cv=cv, scoring=score, n_jobs=-1)
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
     test_scores_mean = np.mean(test_scores, axis=1)
@@ -264,7 +260,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     else:
         plt.show()
 
-# TODO: make function name clearer to its functionality
+# TODO: suggestion: rename to "predict"
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
     """Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
@@ -283,7 +279,7 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
     if filename is None:
         filename = 'probability_predictions'
 
-    pred_probs = classifier.predict_proba(x_test)
+    pred_probs = classifier.predict_proba(x_test, n_jobs=-1)
 
     if not (y_test.size and names_test):
         dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
@@ -314,7 +310,7 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
 
     return dfpred
 
-
+# TODO: suggestion: rename to "score_cv"
 def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
     """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
 
@@ -352,7 +348,7 @@ def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
 
     return df_scores
 
-
+# TODO: suggestion: rename to "score_testset"
 def test_scores(classifier, X_test, y_test):
     """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
