@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. modlAMP example script &mdash; modlamp v2.4.0 documentation</title>
+    <title>3. Example scripts &mdash; modlamp v2.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -52,10 +52,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="modlamp-example-script">
-<h1>3. modlAMP example script<a class="headerlink" href="#modlamp-example-script" title="Permalink to this headline">¶</a></h1>
-<p>A modlamp example script for peptide classification with help of a Random Forest classifier.</p>
+  <div class="section" id="example-scripts">
+<h1>3. Example scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h1>
 <p>For documentation of the used modules see the the <a class="reference external" href="modlamp.html">Documentation</a> section.</p>
+<p>A modlamp example script for peptide classification with help of a Random Forest classifier.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
 <span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
@@ -111,6 +111,43 @@ descriptors and save the values back to a <code class="docutils literal"><span c
 <span class="n">x</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="c1"># save calculated descriptor to a .csv file</span>
 <span class="n">x</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/outputfile.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Many more descriptors are available for calculations. Here is another example of reading a sequence file and
+calculating two sets of descriptors followed by saving them to <code class="docutils literal"><span class="pre">.csv</span></code> files.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
+
+<span class="c1"># Load sequence file into descriptor object</span>
+<span class="n">pepdesc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/sequences.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># use Eisenberg consensus scale</span>
+<span class="n">globdesc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/sequences.fasta&#39;</span><span class="p">)</span>
+
+<span class="c1"># --------------- Peptide Descriptor (AA scales) Calculations ---------------</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">()</span>  <span class="c1"># calculate global Eisenberg hydrophobicity</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate Eisenberg hydrophobic moment</span>
+
+<span class="c1"># load other AA scales</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">load_scale</span><span class="p">(</span><span class="s1">&#39;gravy&#39;</span><span class="p">)</span>  <span class="c1"># load GRAVY scale</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate global GRAVY hydrophobicity</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate GRAVY hydrophobic moment</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">load_scale</span><span class="p">(</span><span class="s1">&#39;z3&#39;</span><span class="p">)</span>  <span class="c1"># load old Z scale</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate global Z scale (=window1 autocorrelation)</span>
+
+<span class="c1"># save descriptor data to .csv file</span>
+<span class="n">col_names1</span> <span class="o">=</span> <span class="s1">&#39;ID,Sequence,H_Eisenberg,uH_Eisenberg,H_GRAVY,uH_GRAVY,Z3_1,Z3_2,Z3_3&#39;</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/descriptors1.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">col_names1</span><span class="p">)</span>
+
+<span class="c1"># --------------- Global Descriptor Calculations ---------------</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>  <span class="c1"># sequence length</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">boman_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># Boman index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># global aromaticity</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">aliphatic_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># aliphatic index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">instability_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># instability index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="mf">7.4</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># net charge</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">calculate_MW</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># molecular weight</span>
+
+<span class="c1"># save descriptor data to .csv file</span>
+<span class="n">col_names2</span> <span class="o">=</span> <span class="s1">&#39;ID,Sequence,Length,BomanIndex,Aromaticity,AliphaticIndex,InstabilityIndex,Charge,MW&#39;</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/descriptors2.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">col_names2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

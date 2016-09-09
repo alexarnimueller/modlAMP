@@ -26,6 +26,7 @@ def load_scale(scalename):
         :class:`modlamp.descriptors.PeptideDescriptor()` documentation.
     :return: amino acid scale values in dictionary format.
     """
+    # predefined amino acid scales dictionary
     scales = {
         'AASI': {'A': [1.89], 'C': [1.73], 'D': [3.13], 'E': [3.14], 'F': [1.53], 'G': [2.67], 'H': [3], 'I': [1.97],
                  'K': [2.28], 'L': [1.74], 'M': [2.5], 'N': [2.33], 'P': [0.22], 'Q': [3.05], 'R': [1.91], 'S': [2.14],

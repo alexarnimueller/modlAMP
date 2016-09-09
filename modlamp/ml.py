@@ -155,7 +155,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
          verbose=False))]}
 
     """
-    if model == 'svm':
+    if model.lower() == 'svm':
 
         pipe_svc = Pipeline([('scl', scaler),
                              ('clf', SVC(class_weight='balanced', random_state=1, probability=True))])
@@ -176,7 +176,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
         gs.fit(x_train, y_train)
 
-    elif model == 'rf':
+    elif model.lower() == 'rf':
 
         pipe_rf = Pipeline([('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
@@ -188,7 +188,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
                            'clf__min_samples_leaf': [1, 3, 5, 10],
                            'clf__bootstrap': [True, False],
                            'clf__criterion': ["gini", "entropy"]}]
-
+# TODO: optimize parameter grid and kick out unnecessairy stuff
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
                           scoring=score,
@@ -233,12 +233,11 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param ylab: {str} y axis label.
     :param filename: {str} if filename given the figure is stored in the specified path.
     :return: plot of the validation curve.
-
     """
-
+# TODO: add example
     if param_range is None:
         param_range = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
-
+# TODO: this range does not work for some RF parameters like n_estimators, differentiate between RF and SVM
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
                                                  cv=cv, scoring=score, n_jobs=1)
     train_scores_mean = np.mean(train_scores, axis=1)
@@ -265,9 +264,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     else:
         plt.show()
 
-
+# TODO: make function name clearer to its functionality
 def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
-    """    Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
+    """Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.
@@ -279,9 +278,8 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
     :param save_csv: {bool} if true additionally saves csv file with predicitons.
     :return: pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
         are the predicted probability of the peptide belonging to class0 and class1, respectively.
-
     """
-
+# TODO: add examples
     if filename is None:
         filename = 'probability_predictions'
 
@@ -328,9 +326,8 @@ def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
                     (http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
     :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
-
-
     """
+# TODO: examples
     if metrics is None:
         metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
 
@@ -361,7 +358,6 @@ def test_scores(classifier, X_test, y_test):
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
     (roc_auc). See sklearn.metrics for more information
     (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
-    
 
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X_test: {array} descriptor values for the test data.
@@ -390,14 +386,10 @@ def test_scores(classifier, X_test, y_test):
     roc_auc = roc_auc_score(y_test, classifier.predict(X_test))
     scores.append(roc_auc)
 
-
     dict_scores = {'Metrics': metrics,
                    'Scores': scores}
-
 
     df_scores = pd.DataFrame(dict_scores)
     df_scores = df_scores[['Metrics', 'Scores']]
 
     return df_scores
-
-
