@@ -87,6 +87,45 @@ def _one_crosscorr(seq, window, scale):
     return seqdesc
 
 
+def _charge(seq, pH=7.0, amide=False):
+    """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR
+    function. The method used is first described by Bjellqvist. In the case of amidation, the value for the
+    'Cterm' pKa is 15 (and Cterm is added to the pos_pKs dictionary.
+    The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
+    Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
+
+    **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+
+    **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+
+    :param pH: {float} pH at which to calculate peptide charge.
+    :param amide: {boolean} whether the sequences have an amidated C-terminus.
+    :return: {array} descriptor values in the attribute :py:attr:`descriptor
+    """
+    
+    if amide:
+        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+        neg_pKs = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+    else:
+        pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
+        neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+    
+    aa_content = ProteinAnalysis(seq).count_amino_acids()
+    aa_content['Nterm'] = 1.0
+    aa_content['Cterm'] = 1.0
+    pos_charge = 0.0
+    for aa, pK in pos_pKs.items():
+        c_r = 10 ** (pK - pH)
+        partial_charge = c_r / (c_r + 1.0)
+        pos_charge += aa_content[aa] * partial_charge
+    neg_charge = 0.0
+    for aa, pK in neg_pKs.items():
+        c_r = 10 ** (pH - pK)
+        partial_charge = c_r / (c_r + 1.0)
+        neg_charge += aa_content[aa] * partial_charge
+    return pos_charge - neg_charge
+
+
 class GlobalDescriptor(object):
     """
     Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
@@ -103,12 +142,14 @@ class GlobalDescriptor(object):
     - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
     - `Instability Index    <modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
 
-    Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of `Biopython <http://biopython.org/>`_.
+    Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of
+    `Biopython <http://biopython.org/>`_.
     """
 
     def __init__(self, seqs):
         """
-        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
+        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
+            descriptor values for.
         :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
         :Example:
 
@@ -119,18 +160,19 @@ class GlobalDescriptor(object):
         >>> seqs.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
-        D = PeptideDescriptor(seqs, 'eisenberg')
-        self.sequences = D.sequences
-        self.names = D.names
-        self.descriptor = D.descriptor
-        self.target = D.target
+        d = PeptideDescriptor(seqs, 'eisenberg')
+        self.sequences = d.sequences
+        self.names = d.names
+        self.descriptor = d.descriptor
+        self.target = d.target
         self.scaler = None
 
     def length(self, append=False):
         """
         Method to calculate the length (total AA count) of every sequence in the attribute :py:attr:`sequences`.
 
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of sequence lengths in the attribute :py:attr:`descriptor`
         """
         desc = []
@@ -146,7 +188,8 @@ class GlobalDescriptor(object):
         """Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
 
         :param amide: {boolean} whether the sequences are C-terminally amidated (subtracts 0.95 from the MW).
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
 
         .. versionchanged:: v2.1.5 amide option added
@@ -162,52 +205,14 @@ class GlobalDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def _charge(self, seq, pH=7.0, amide=False):
-        """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
-        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
-        Cterm is added to the pos_pKs dictionary.
-        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
-        For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
-
-        **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-
-        **neg_pKs** = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
-
-        :param pH: {float} pH at which to calculate peptide charge.
-        :param amide: {boolean} whether the sequences have an amidated C-terminus.
-        :return: {array} descriptor values in the attribute :py:attr:`descriptor
-        """
-
-        if amide:
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
-        else:
-            pos_pKs = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-            neg_pKs = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
-
-        aa_content = ProteinAnalysis(seq).count_amino_acids()
-        aa_content['Nterm'] = 1.0
-        aa_content['Cterm'] = 1.0
-        PositiveCharge = 0.0
-        for aa, pK in pos_pKs.items():
-            CR = 10 ** (pK - pH)
-            partial_charge = CR / (CR + 1.0)
-            PositiveCharge += aa_content[aa] * partial_charge
-        NegativeCharge = 0.0
-        for aa, pK in neg_pKs.items():
-            CR = 10 ** (pH - pK)
-            partial_charge = CR / (CR + 1.0)
-            NegativeCharge += aa_content[aa] * partial_charge
-        return PositiveCharge - NegativeCharge
-
     def calculate_charge(self, ph=7.0, amide=False, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
         Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
-        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15 (and
-        Cterm is added to the pos_pKs dictionary.
-        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th edition).
-        For further references, see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.
+        The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
+        (and Cterm is added to the pos_pKs dictionary.
+        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
+        Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
         **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -221,7 +226,7 @@ class GlobalDescriptor(object):
 
         desc = []
         for seq in self.sequences:
-            desc.append(self._charge(seq, ph, amide))
+            desc.append(_charge(seq, ph, amide))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -233,7 +238,8 @@ class GlobalDescriptor(object):
 
         :param pH: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`.
         """
         self.calculate_charge(pH, amide)
@@ -267,13 +273,13 @@ class GlobalDescriptor(object):
 
             # Bracket between pH1 and pH2
             ph = 7.0
-            charge = self._charge(seq, ph, amide)
+            charge = _charge(seq, ph, amide)
             if charge > 0.0:
                 pH1 = ph
                 charge1 = charge
                 while charge1 > 0.0:
                     ph = pH1 + 1.0
-                    charge = self._charge(seq, ph, amide)
+                    charge = _charge(seq, ph, amide)
                     if charge > 0.0:
                         pH1 = ph
                         charge1 = charge
@@ -285,7 +291,7 @@ class GlobalDescriptor(object):
                 charge2 = charge
                 while charge2 < 0.0:
                     ph = pH2 - 1.0
-                    charge = self._charge(seq, ph, amide)
+                    charge = _charge(seq, ph, amide)
                     if charge < 0.0:
                         pH2 = ph
                         charge2 = charge
@@ -295,7 +301,7 @@ class GlobalDescriptor(object):
             # Bisection
             while pH2 - pH1 > 0.0001 and charge != 0.0:
                 ph = (pH1 + pH2) / 2.0
-                charge = self._charge(seq, ph, amide)
+                charge = _charge(seq, ph, amide)
                 if charge > 0.0:
                     pH1 = ph
                 else:
@@ -500,8 +506,8 @@ class GlobalDescriptor(object):
 
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
-        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
-        descriptor instance.
+        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an
+        updated descriptor instance.
 
         :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
         :return: updated instance
@@ -637,9 +643,12 @@ class PeptideDescriptor(object):
 
     def __init__(self, seqs, scalename='eisenberg'):
         """
-        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.
-        :param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor values
-        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with amino acid scale values of the scale name in :py:attr:`scalename`.
+        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
+            descriptor values for.
+        :param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor
+            values
+        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with
+            amino acid scale values of the scale name in :py:attr:`scalename`.
         :Example:
 
         >>> AMP = PeptideDescriptor('KLLKLLKKLLKLLK','pepcats')
@@ -663,7 +672,7 @@ class PeptideDescriptor(object):
         else:
             print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
-        self.scalename, self.scale = load_scale(scalename)
+        self.scalename, self.scale = load_scale(scalename.lower())
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
         self.scaler = None
@@ -676,7 +685,7 @@ class PeptideDescriptor(object):
 
         .. seealso:: :func:`modlamp.core.load_scale()`
         """
-        self.scalename, self.scale = load_scale(scalename)
+        self.scalename, self.scale = load_scale(scalename.lower())
 
     def read_fasta(self, filename):
         """Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
@@ -837,37 +846,37 @@ class PeptideDescriptor(object):
         else:
             self.descriptor = np.array(desc)
 
-    def calculate_profile(self, type='uH', window=7, append=False):
+    def calculate_profile(self, prof_type='uH', window=7, append=False):
         """Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is "eisenberg"
 
-        :param type: type of profile, available: 'H' for hydrophobicity or 'uH' for hydrophobic moment
+        :param type: prof_type of profile, available: 'H' for hydrophobicity or 'uH' for hydrophobic moment
         :param window: {int} size of sliding window used (odd-numbered).
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute :py:attr:`descriptor`.
         :return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor
         :Example:
 
         >>> AMP = PeptideDescriptor('KLLKLLKKVVGALG','kytedoolittle')
-        >>> AMP.calculate_profile(type='H')
+        >>> AMP.calculate_profile(prof_type='H')
         >>> AMP.descriptor
         array([[ 0.03731293,  0.19246599]])
         """
-        if type == 'uH':
+        if prof_type == 'uH':
             self.calculate_moment(window=window)
-            self.y_vals = self.all_moms
-        elif type == 'H':
+            y_vals = self.all_moms
+        elif prof_type == 'H':
             self.calculate_global(window=window)
-            self.y_vals = self.all_globs
+            y_vals = self.all_globs
         else:
-            print 'Type parameter is wrong, please choose between "uH" for hydrophobic moment and "H" for hydrophobicity\n.'
+            print 'prof_type parameter is unknown, choose "uH" for hydrophobic moment or "H" for hydrophobicity\n.'
             sys.exit()
 
         desc = list()
         for n, seq in enumerate(self.sequences):
-            self.x_vals = range(len(seq))[((window - 1) / 2):-((window - 1) / 2)]
+            x_vals = range(len(seq))[((window - 1) / 2):-((window - 1) / 2)]
             if len(seq) <= window:
                 slope, intercept, r_value, p_value, std_err = [0, 0, 0, 0, 0]
             else:
-                slope, intercept, r_value, p_value, std_err = stats.linregress(self.x_vals, self.y_vals[n])
+                slope, intercept, r_value, p_value, std_err = stats.linregress(x_vals, y_vals[n])
             desc.append([slope, intercept])
 
         if append:
@@ -884,7 +893,7 @@ class PeptideDescriptor(object):
         :return: the amino acid distributions for every sequence individually in the attribute :py:attr:`descriptor`
         :Example:
 
-        >>> AMP = PeptideDescriptor('ACDEFGHIKLMNPQRSTVWY','pepcats') # aa_count() does not depend on the descriptor scale
+        >>> AMP = PeptideDescriptor('ACDEFGHIKLMNPQRSTVWY') # aa_count() does not depend on the descriptor scale
         >>> AMP.count_aa()
         >>> AMP.descriptor
         array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])
@@ -925,7 +934,7 @@ class PeptideDescriptor(object):
             elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
 
-            if fit == True:
+            if fit:
                 self.descriptor = self.scaler.fit_transform(self.descriptor)
             else:
                 self.descriptor = self.scaler.transform(self.descriptor)
