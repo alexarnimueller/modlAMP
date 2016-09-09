@@ -828,7 +828,7 @@ class PeptideDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in
-        :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)
+            :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')

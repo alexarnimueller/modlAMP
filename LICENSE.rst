@@ -1,7 +1,7 @@
-BSD License
-===========
+License
+=======
 
-Copyright (c) 2016, Alex Müller - modlab - ETH Zurich
+Copyright (c) 2016, modlab ETH Zurich, Alex Müller
 
 All rights reserved.
 

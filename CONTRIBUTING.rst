@@ -15,7 +15,7 @@ documentation. If you then still think, your idea is missing, go for it!
 - Comply with the used docstring format (rst, check the existing code and comment in the same way) --> documentation is automatically generated
 - If you extend an existing module/class/function, use the same variable names.
 - For all of your new modules/classes/functions, make Unittest test cases, otherwise nobody knows, whether your feature actually works!
-- Include code examples of how to use your amazing new feature / add a section to the README.rst file
+- Include code examples of how to use your amazing new feature / add a section to the ``README`` file
 
 
 Reporting Bugs

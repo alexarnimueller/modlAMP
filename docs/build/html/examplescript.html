@@ -59,7 +59,9 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
 <span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="kn">import</span> <span class="n">train_best_model</span>
+<span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_ACPvsNeg</span>
+<span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
 <span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">MixedLibrary</span>
 
 <span class="c1"># define the size of the peptide library to screen</span>
@@ -67,20 +69,17 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Chosen library size is </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libsize</span><span class="p">)</span>
 
 <span class="c1"># load training sequences</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
 
-<span class="c1"># describe sequences with PEPCATS descriptor</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
-<span class="n">X</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="c1"># describe sequences with PepCATS descriptor</span>
+<span class="n">descr</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="n">desc</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="c1"># initialize Random Forest classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">oob_score</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># find best Random Forest classifier based on the PEPCATS data</span>
+<span class="n">best_RF</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;RF&#39;</span><span class="p">,</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  <span class="c1"># might take a while</span>
 
-<span class="c1"># fit the classifier on the PEPCATS data</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-
-<span class="c1"># evaluate classifier performance as RF out of bag score</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;RandomForest OOB classifcation score: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">oob_score_</span><span class="p">)</span>
+<span class="c1"># evaluate performance of best model in 10-fold cross validation</span>
+<span class="n">cv_scores</span><span class="p">(</span><span class="n">best_RF</span><span class="p">,</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># generate a virtual peptide library of `libsize` sequences to screen</span>
 <span class="n">Lib</span> <span class="o">=</span> <span class="n">MixedLibrary</span><span class="p">(</span><span class="n">libsize</span><span class="p">)</span>
@@ -92,7 +91,7 @@
 <span class="n">X_lib</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
 <span class="c1"># predict class probabilities for sequences in Library</span>
-<span class="n">proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_lib</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="n">proba</span> <span class="o">=</span> <span class="n">best_RF</span><span class="o">.</span><span class="n">df_predict</span><span class="p">(</span><span class="n">X_lib</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 
 <span class="c1"># create ordered dictionary with sequences and prediction values and order it according to AMP predictions</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">proba</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]})</span>

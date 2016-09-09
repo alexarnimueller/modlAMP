@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="modlamp v2.4.0 documentation" href="index.html" />
-    <link rel="next" title="3. modlAMP example script" href="examplescript.html" />
+    <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
   <body role="document">
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="examplescript.html" title="3. modlAMP example script"
+          <a href="examplescript.html" title="3. Example scripts"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
@@ -131,7 +131,8 @@ the <strong>methods</strong> linked below:</p>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">Aliphatic Index</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">Instability Index</a></li>
 </ul>
-<p>Most of the methods calculate values with help of the <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code> module of <a class="reference external" href="http://biopython.org/">Biopython</a>.</p>
+<p>Most of the methods calculate values with help of the <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code> module of
+<a class="reference external" href="http://biopython.org/">Biopython</a>.</p>
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>seqs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.__init__" title="Permalink to this definition">¶</a></dt>
@@ -139,7 +140,8 @@ the <strong>methods</strong> linked below:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
+descriptor values for.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values</td>
 </tr>
@@ -165,7 +167,8 @@ the <strong>methods</strong> linked below:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of sequence lengths in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -183,7 +186,8 @@ the <strong>methods</strong> linked below:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>amide</strong> &#8211; {boolean} whether the sequences are C-terminally amidated (subtracts 0.95 from the MW).</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -202,10 +206,10 @@ the <strong>methods</strong> linked below:</p>
 <code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
 Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</p>
-<p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15 (and
-Cterm is added to the pos_pKs dictionary.
-The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
-For further references, see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.</p>
+<p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15
+(and Cterm is added to the pos_pKs dictionary.
+The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).
+Further references: see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.`</p>
 <p><strong>pos_pKs</strong> = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}</p>
 <p><strong>neg_pKs</strong> = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -215,7 +219,8 @@ For further references, see the <a class="reference external" href="http://biopy
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>ph</strong> &#8211; {float} ph at which to calculate peptide charge.</li>
 <li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -228,16 +233,17 @@ For further references, see the <a class="reference external" href="http://biopy
 
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.charge_density">
-<code class="descname">charge_density</code><span class="sig-paren">(</span><em>pH=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.charge_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.charge_density" title="Permalink to this definition">¶</a></dt>
+<code class="descname">charge_density</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.charge_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.charge_density" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the charge density (charge / MW) of every sequences in the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pH</strong> &#8211; {float} pH at which to calculate peptide charge.</li>
+<li><strong>ph</strong> &#8211; {float} pH at which to calculate peptide charge.</li>
 <li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -252,7 +258,7 @@ For further references, see the <a class="reference external" href="http://biopy
 <dt id="modlamp.descriptors.GlobalDescriptor.isoelectric_point">
 <code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th edition).
+The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).
 The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
 module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
 <blockquote>
@@ -263,9 +269,15 @@ module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUt
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -281,7 +293,8 @@ The instability index is a prediction of protein stability based on the amino ac
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -298,7 +311,8 @@ According to Lobry, 1994, it is simply the relative frequency of Phe+Trp+Tyr.</p
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -317,7 +331,8 @@ on the relative volume occupied by aliphatic amino acids (A,I,L &amp; V).
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -338,7 +353,8 @@ dividing by    sequence length.
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -349,13 +365,14 @@ dividing by    sequence length.
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">
 <code class="descname">hydrophobic_ratio</code><span class="sig-paren">(</span><em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.hydrophobic_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to calculate the hydrophobic ratio of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, which is the relative
-frequency of the amino acids <strong>A,C,F,I,L,M &amp; V</strong>.</p>
+<dd><p>Method to calculate the hydrophobic ratio of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, which is the
+relative frequency of the amino acids <strong>A,C,F,I,L,M &amp; V</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
@@ -511,8 +528,8 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <dt id="modlamp.descriptors.GlobalDescriptor.filter_sequences">
 <code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.filter_sequences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out entries for given sequences in <em>sequences</em> out of a descriptor instance. All
-corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an updated
-descriptor instance.</p>
+corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an
+updated descriptor instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -672,7 +689,8 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <dl class="class">
 <dt id="modlamp.descriptors.PeptideDescriptor">
 <em class="property">class </em><code class="descclassname">modlamp.descriptors.</code><code class="descname">PeptideDescriptor</code><span class="sig-paren">(</span><em>seqs</em>, <em>scalename='eisenberg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class for peptide descriptors. The following <strong>amino acid descriptor scales</strong> are available for descriptor calculation:</p>
+<dd><p>Base class for peptide descriptors. The following <strong>amino acid descriptor scales</strong> are available for descriptor
+calculation:</p>
 <ul class="simple">
 <li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
 <li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] Argos, P., Rao, J. K. M. &amp; Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
@@ -709,12 +727,15 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the descriptor values for.</li>
-<li><strong>scalename</strong> &#8211; name of the amino acid scale (one of the given list above) used to calculate the descriptor values</li>
+<li><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
+descriptor values for.</li>
+<li><strong>scalename</strong> &#8211; name of the amino acid scale (one of the given list above) used to calculate the descriptor
+values</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and dictionary <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code> with amino acid scale values of the scale name in <code class="xref py py-attr docutils literal"><span class="pre">scalename</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and dictionary <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code> with
+amino acid scale values of the scale name in <code class="xref py py-attr docutils literal"><span class="pre">scalename</span></code>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -799,7 +820,8 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>window</strong> &#8211; correlation window for descriptor calculation in a sliding window approach</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -833,7 +855,8 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>window</strong> &#8211; correlation window for descriptor calculation in a sliding window approach</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -857,20 +880,26 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.calculate_moment">
 <code class="descname">calculate_moment</code><span class="sig-paren">(</span><em>window=1000</em>, <em>angle=100</em>, <em>modality='max'</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.calculate_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.calculate_moment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and window.</p>
+<dd><p>Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and
+window.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences shorter than 1000, the <strong>global</strong> hydrophobic moment will be calculated. Otherwise, the maximal hydrophiobic moment for the chosen window size found in the sequence will be returned.</li>
+<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences
+shorter than 1000, the <strong>global</strong> hydrophobic moment will be calculated. Otherwise, the maximal
+hydrophiobic moment for the chosen window size found in the sequence will be returned.</li>
 <li><strong>angle</strong> &#8211; {int} angle in which to calculate the moment. <strong>100</strong> for alpha helices, <strong>180</strong> for beta sheets.</li>
 <li><strong>modality</strong> &#8211; {&#8216;max&#8217; or &#8216;mean&#8217;} Calculate respectively maximum or mean hydrophobic moment.</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as a numpy.array in self.descriptor and all possible global values in self.all_moms (needed for calculate_profile method)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as a numpy.array in self.descriptor and all possible global values in
+<code class="xref py py-attr docutils literal"><span class="pre">all_moms</span></code> (needed for the <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="modlamp.descriptors.PeptideDescriptor.calculate_profile"><code class="xref py py-func docutils literal"><span class="pre">calculate_profile()</span></code></a> method)</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -894,13 +923,16 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken.</li>
+<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+window, the length of the sequence is taken.</li>
 <li><strong>modality</strong> &#8211; {&#8216;max&#8217; or &#8216;mean&#8217;} Calculate respectively maximum or mean hydrophobic moment.</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as numpy.array in self.descriptor and all possible global values in self.all_globs (needed for calculate_profile method)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Calculated descriptor as numpy.array in self.descriptor and all possible global values in
+<code class="xref py py-attr docutils literal"><span class="pre">all_globs</span></code> (needed for the <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="modlamp.descriptors.PeptideDescriptor.calculate_profile"><code class="xref py py-func docutils literal"><span class="pre">calculate_profile()</span></code></a> method)</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -917,16 +949,18 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.calculate_profile">
-<code class="descname">calculate_profile</code><span class="sig-paren">(</span><em>type='uH'</em>, <em>window=7</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.calculate_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercept. The hydrophobicity scale used is &#8220;eisenberg&#8221;</p>
+<code class="descname">calculate_profile</code><span class="sig-paren">(</span><em>prof_type='uH'</em>, <em>window=7</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.calculate_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.calculate_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for
+slope and intercept. The hydrophobicity scale used is &#8220;eisenberg&#8221;</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>type</strong> &#8211; type of profile, available: &#8216;H&#8217; for hydrophobicity or &#8216;uH&#8217; for hydrophobic moment</li>
+<li><strong>prof_type</strong> &#8211; prof_type of profile, available: &#8216;H&#8217; for hydrophobicity or &#8216;uH&#8217; for hydrophobic moment</li>
 <li><strong>window</strong> &#8211; {int} size of sliding window used (odd-numbered).</li>
-<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -938,7 +972,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 </tbody>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;KLLKLLKKVVGALG&#39;</span><span class="p">,</span><span class="s1">&#39;kytedoolittle&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="n">prof_type</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 0.03731293,  0.19246599]])</span>
 </pre></div>
@@ -967,7 +1001,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">,</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span> <span class="c1"># aa_count() does not depend on the descriptor scale</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">)</span> <span class="c1"># aa_count() does not depend on the descriptor scale</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">count_aa</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])</span>
@@ -1158,8 +1192,8 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <dt id="modlamp.descriptors.PeptideDescriptor.filter_sequences">
 <code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.filter_sequences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out entries for given sequences in <em>sequences</em> out of a descriptor instance. All
-corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an updated
-descriptor instance.</p>
+corresponding fields of these sequences (<em>descriptor</em>, <em>name</em>) are deleted as well. The method returns an
+updated descriptor instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1182,8 +1216,8 @@ descriptor instance.</p>
 <dl class="method">
 <dt id="modlamp.descriptors.PeptideDescriptor.random_selection">
 <code class="descname">random_selection</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#PeptideDescriptor.random_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.PeptideDescriptor.random_selection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
-descriptor instance.</p>
+<dd><p>Method to randomly select a specified number of sequences (with names and descriptors if present) out of a
+given descriptor instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4111,15 +4145,16 @@ calculated.</li>
 <dl class="function">
 <dt id="modlamp.core.read_fasta">
 <code class="descclassname">modlamp.core.</code><code class="descname">read_fasta</code><span class="sig-paren">(</span><em>inputfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#read_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.read_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for loading sequences from a FASTA formatted file into <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> &amp; <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>. This method is
-used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a> if the input is a FASTA file.</p>
+<dd><p>Method for loading sequences from a FASTA formatted file into <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> &amp; <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.
+This method is used by the base class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a> if the input is a FASTA file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inputfile</strong> &#8211; .fasta file with sequences and headers to read</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with corresponding sequence names in <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> with corresponding sequence names in
+<code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -4334,7 +4369,8 @@ used by the base class <a class="reference internal" href="#modlamp.descriptors.
 <dl class="function">
 <dt id="modlamp.core.template">
 <code class="descclassname">modlamp.core.</code><code class="descname">template</code><span class="sig-paren">(</span><em>self</em>, <em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method used by different classes in <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a> to generate length and number templates for all needed instances.</p>
+<dd><p>Method used by different classes in <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a> to generate length and number templates for all
+needed instances.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4589,7 +4625,7 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
                         title="previous chapter">1. README</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="examplescript.html"
-                        title="next chapter">3. modlAMP example script</a></p>
+                        title="next chapter">3. Example scripts</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -4624,7 +4660,7 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="examplescript.html" title="3. modlAMP example script"
+          <a href="examplescript.html" title="3. Example scripts"
              >next</a> |</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
