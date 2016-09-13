@@ -61,4 +61,4 @@ class TestGlobalDescriptor(unittest.TestCase):
 
     def test_molweight(self):
         self.G.calculate_MW()
-        self.assertAlmostEqual(self.G.descriptor[0], 1415.71869999)
+        self.assertEqual(self.G.descriptor[0], 1415.72)

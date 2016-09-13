@@ -16,7 +16,7 @@ class TestCD(unittest.TestCase):
 		self.assertEqual(self.cd.sequences[1], 'GLFDIVKKVLKLLK')
 		self.assertEqual(self.cd.conc_umol[0], 33.)
 		self.assertAlmostEqual(self.cd.conc_mgml[0], 0.04926938, 5)
-		self.assertAlmostEqual(self.cd.meanres_mw[0], 114.84704615, 4)
+		self.assertAlmostEqual(self.cd.meanres_mw[0], 114.84538, 4)
 
 	def test_molar_ellipticity(self):
 		self.cd.calc_molar_ellipticity()
