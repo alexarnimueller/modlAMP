@@ -249,6 +249,20 @@ def mutate_AA(self, nr, prob):
             self.sequences[s] = ''.join(seq)
 
 
+def aa_weights():
+    """Function holding molecular weight data on all natural amino acids.
+    
+    :return: dictionary with amino acid letters and corresponding weights
+    
+    .. versionadded:: v2.4.1
+    """
+    weights = {'A': 89.093, 'C': 121.158, 'D': 133.103, 'E': 147.129, 'F': 165.189, 'G': 75.067,
+                  'H': 155.155, 'I': 131.173, 'K': 146.188, 'L': 131.173, 'M': 149.211, 'N': 132.118,
+                  'P': 115.131, 'Q': 146.145, 'R': 174.20, 'S': 105.093, 'T': 119.119, 'V': 117.146,
+                  'W': 204.225, 'Y': 181.189}
+    return weights
+
+
 def aminoacids(self):
     """Method used by all classes in :mod:`modlamp.sequences` to generate templates for all needed instances.
 

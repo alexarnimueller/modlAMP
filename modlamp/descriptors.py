@@ -27,7 +27,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
-    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa
+    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa, aa_weights
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -153,11 +153,11 @@ class GlobalDescriptor(object):
         :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
         :Example:
 
-        >>> P = GlobalDescriptor('KLAKLAKKLAKLAK')
-        >>> P.sequences
+        >>> desc = GlobalDescriptor('KLAKLAKKLAKLAK')
+        >>> desc.sequences
         ['KLAKLAKKLAKLAK']
-        >>> seqs = PeptideDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
-        >>> seqs.sequences
+        >>> desc = GlobalDescriptor('/Path/to/file.fasta')  # load sequences from .fasta file
+        >>> desc.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         d = PeptideDescriptor(seqs, 'eisenberg')
@@ -174,10 +174,16 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of sequence lengths in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor(['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'])
+        >>> desc.length()
+        >>> desc.descriptor
+        array([[ 8], [12], [12]])
         """
         desc = []
         for seq in self.sequences:
-            desc.append(ProteinAnalysis(seq).length)
+            desc.append(len(seq.strip()))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -195,11 +201,16 @@ class GlobalDescriptor(object):
         .. versionchanged:: v2.1.5 amide option added
         """
         desc = []
+        weights = aa_weights()
         for seq in self.sequences:
-            desc.append(ProteinAnalysis(seq).molecular_weight())
+            mw = []
+            for aa in seq:  # sum over aa weights
+                mw.append(weights[aa])
+            desc.append(round(sum(mw) - 18.015 * (len(seq) - 1), 2))  # sum over AA MW and subtract H20 MW for every
+            # peptide bond
         desc = np.asarray(desc).reshape(len(desc), 1)
         if amide:  # if sequences are amidated, subtract 0.98 from calculated MW
-            desc = [d - 0.95 for d in desc]
+            desc = [d - 0.98 for d in desc]
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
