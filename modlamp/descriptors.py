@@ -27,7 +27,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
-    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa, aa_weights
+    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa, aa_weights, aa_energies
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -198,6 +198,8 @@ class GlobalDescriptor(object):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
 
+        .. seealso:: modlamp.core.aa_weights()
+
         .. versionchanged:: v2.1.5 amide option added
         """
         desc = []
@@ -357,7 +359,10 @@ class GlobalDescriptor(object):
         """
         desc = []
         for seq in self.sequences:
-            desc.append(ProteinAnalysis(seq).aromaticity())
+            f = seq.count('F')
+            w = seq.count('W')
+            y = seq.count('Y')
+            desc.append(float(f + w + y) / len(seq))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -376,8 +381,9 @@ class GlobalDescriptor(object):
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
         desc = []
+        aa_dict = aa_weights()
         for seq in self.sequences:
-            d = ProteinAnalysis(seq).count_amino_acids()
+            d = {aa: seq.count(aa) for aa in aa_dict.keys()}  # count aa
             d = {k: (float(d[k]) / len(seq)) * 100 for k in d.keys()}  # get mole percent of all AA
             desc.append(d['A'] + 2.9 * d['V'] + 3.9 * (d['I'] + d['L']))  # formula for calculating the AI (Ikai, 1980)
         desc = np.asarray(desc).reshape(len(desc), 1)
@@ -393,14 +399,14 @@ class GlobalDescriptor(object):
         dividing by    sequence length.
         ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
         [2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
+        
+        .. seealso:: modlamp.core.aa_energies()
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         """
-        d = {'L': -4.92, 'I': -4.92, 'V': -4.04, 'F': -2.98, 'M': -2.35, 'W': -2.33, 'A': -1.81, 'C': -1.28, 'G': -0.94,
-             'Y': 0.14, 'T': 2.57,
-             'S': 3.40, 'H': 4.66, 'Q': 5.54, 'K': 5.55, 'N': 6.64, 'E': 6.81, 'D': 8.72, 'R': 14.92, 'P': 0.}
+        d = aa_energies()
         desc = []
         for seq in self.sequences:
             val = []
