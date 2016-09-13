@@ -123,7 +123,7 @@ def _charge(seq, ph=7.0, amide=False):
         c_r = 10 ** (ph - pK)
         partial_charge = c_r / (c_r + 1.0)
         neg_charge += aa_content[aa] * partial_charge
-    return pos_charge - neg_charge
+    return round(pos_charge - neg_charge, 3)
 
 
 class GlobalDescriptor(object):
@@ -153,6 +153,7 @@ class GlobalDescriptor(object):
         :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
         :Example:
 
+        >>> from modlamp.descriptors import GlobalDescriptor
         >>> desc = GlobalDescriptor('KLAKLAKKLAKLAK')
         >>> desc.sequences
         ['KLAKLAKKLAKLAK']
@@ -197,8 +198,14 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('IAESFKGHIPL')
+        >>> desc.calculate_MW(amide=True)
+        >>> desc.descriptor
+        array([[ 1210.43]])
 
-        .. seealso:: modlamp.core.aa_weights()
+        .. seealso:: :py:func:`modlamp.core.aa_weights()`
 
         .. versionchanged:: v2.1.5 amide option added
         """
@@ -236,6 +243,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('KLAKFGKRSELVALSG')
+        >>> desc.calculate_charge(ph=7.4, amide=True)
+        >>> desc.descriptor
+        array([[ 3.989]])
         """
 
         desc = []
@@ -255,6 +268,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`.
+        :Example:
+        
+        >>> desc = GlobalDescriptor('GNSDLLIEQRTLLASDEF')
+        >>> desc.charge_density(ph=6, amide=True)
+        >>> desc.descriptor
+        array([[-0.00097119]])
         """
         self.calculate_charge(ph, amide)
         charges = self.descriptor
@@ -282,6 +301,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('KLFDIKFGHIPQRST')
+        >>> desc.isoelectric_point()
+        >>> desc.descriptor
+        array([[ 10.6796875]])
         """
 
         desc = []
@@ -338,6 +363,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('LLASMNDLLAKRST')
+        >>> desc.instability_index()
+        >>> desc.descriptor
+        array([[ 63.95714286]])
         """
         desc = []
         for seq in self.sequences:
@@ -356,6 +387,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('GLFYWRFFLQRRFLYWW')
+        >>> desc.aromaticity()
+        >>> desc.descriptor
+        array([[ 0.52941176]])
         """
         desc = []
         for seq in self.sequences:
@@ -379,6 +416,12 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('KWLKYLKKLAKLVK')
+        >>> desc.aliphatic_index()
+        >>> desc.descriptor
+        array([[ 139.28571429]])
         """
         desc = []
         aa_dict = aa_weights()
@@ -398,13 +441,19 @@ class GlobalDescriptor(object):
         summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
         dividing by    sequence length.
         ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
-        [2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
+        [2] A. Radzick, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
         
-        .. seealso:: modlamp.core.aa_energies()
+        .. seealso:: :py:func:`modlamp.core.aa_energies()`
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('GLFDIVKKVVGALGSL')
+        >>> desc.boman_index()
+        >>> desc.descriptor
+        array([[-1.011875]])
         """
         d = aa_energies()
         desc = []
@@ -427,10 +476,17 @@ class GlobalDescriptor(object):
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor('VALLYWRTVLLAIII')
+        >>> desc.hydrophobic_ratio()
+        >>> desc.descriptor
+        array([[ 0.73333333]])
         """
         desc = []
+        aa_dict = aa_weights()
         for seq in self.sequences:
-            pa = ProteinAnalysis(seq).count_amino_acids()
+            pa = {aa: seq.count(aa) for aa in aa_dict.keys()}  # count aa
             # formula for calculating the AI (Ikai, 1980):
             desc.append((pa['A'] + pa['C'] + pa['F'] + pa['I'] + pa['L'] + pa['M'] + pa['V']) / float(len(seq)))
         desc = np.asarray(desc).reshape(len(desc), 1)
@@ -448,9 +504,9 @@ class GlobalDescriptor(object):
         :return: scaled descriptor values in :py:attr:`self.descriptor`
         :Example:
 
-        >>> D.descriptor
+        >>> desc.descriptor
         array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> D.feature_scaling(stype='minmax',fit=True)
+        >>> desc.feature_scaling(stype='minmax',fit=True)
         array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
         """
         if stype in ['standard', 'minmax']:
@@ -472,9 +528,9 @@ class GlobalDescriptor(object):
         :return: descriptor matrix with shuffled feature columns in the attribute :py:attr:`descriptor`
         :Example:
 
-        >>> D.descriptor
+        >>> desc.descriptor
         array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])
-        >>> D.feature_shuffle()
+        >>> desc.feature_shuffle()
         array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
         """
         self.descriptor = shuffle(self.descriptor.transpose()).transpose()
@@ -487,6 +543,17 @@ class GlobalDescriptor(object):
         :param values: List/array of values to filter the attribute :py:attr:`descriptor` for
         :param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
         :return: filtered descriptor matrix and updated sequences in the corresponding attributes.
+        :Example:
+        
+        >>> min(desc.descriptor)
+        array([ 0.04523998])
+        >>> desc.descriptor.shape
+        (412, 1)
+        >>> desc.filter_values([0.1], operator='>')
+        >>> min(desc.descriptor)
+        array([ 0.10344828])
+        >>> desc.descriptor.shape
+        (168, 1)
 
         .. seealso:: :func:`modlamp.core.filter_values()`
         """
@@ -497,7 +564,13 @@ class GlobalDescriptor(object):
         Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
 
         :return: filtered sequences list in the attribute :py:attr:`sequences`
-
+        :Example:
+        
+        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'GLFDIVKKVVGGKKASSERT'])
+        >>> desc.filter_duplicates()
+        >>> desc.sequences
+        ['KLLKLLKKLLKLLK', 'GLFDIVKKVVGGKKASSERT']
+        
         .. seealso:: :func:`modlamp.core.filter_sequences()`
 
         .. versionadded:: v2.2.5
@@ -510,6 +583,12 @@ class GlobalDescriptor(object):
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
+        :Example:
+        
+        >>> desc = GlobalDescriptor(['ACDEFGHIKLMNPQRSTVWY', 'JOGHURT', 'ELVISISKING'])
+        >>> desc.check_natural_aa()
+        >>> desc.sequences
+        ['ACDEFGHIKLMNPQRSTVWY', 'ELVISISKING']
 
         .. seealso:: :func:`modlamp.core.check_natural_aa()`
 
@@ -523,7 +602,13 @@ class GlobalDescriptor(object):
 
         :param aminoacids: List/array of amino acids {upper str} to filter for
         :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
-
+        :Example:
+        
+        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'ACCDFACAD'])
+        >>> desc.filter_aa(['C'])
+        >>> desc.sequences
+        ['KLLKLLKKLLKLLK']
+        
         .. seealso:: :func:`modlamp.core.filter_aa()`
         """
         filter_aa(self, aminoacids)
@@ -535,6 +620,7 @@ class GlobalDescriptor(object):
 
         :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
         :return: updated instance
+        :Example:
 
         .. seealso:: :func:`modlamp.core.filter_sequences()`
 
