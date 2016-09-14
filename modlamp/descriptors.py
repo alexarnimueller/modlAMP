@@ -773,17 +773,25 @@ class PeptideDescriptor(object):
         >>> seqs.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
-        if type(seqs) == list:
+        if type(seqs) == list and seqs[0].isupper():
             self.sequences = seqs
             self.names = []
-        elif type(seqs) == np.ndarray:
+        elif type(seqs) == np.ndarray and seqs[0].isupper():
             self.sequences = seqs.tolist()
             self.names = []
         elif type(seqs) == str and seqs.isupper():
             self.sequences = [seqs]
             self.names = []
         elif os.path.isfile(seqs):
-            self.sequences, self.names = read_fasta(seqs)
+            if seqs.endswith('.fasta'):  # read .fasta file
+                self.sequences, self.names = read_fasta(seqs)
+            elif seqs.endswith('.csv'):  # read .csv file
+                with open(seqs) as f:
+                    for line in f:
+                        if line.isupper():
+                            self.sequences.append(line)
+            else:
+                print "Sorry, currently only .fasta or .csv files can be read!"
         else:
             print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
 
