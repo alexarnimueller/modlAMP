@@ -341,6 +341,9 @@ def aminoacids(self):
 def ngrams_apd():
     """Function returning the most frequent 2-, 3- and 4-grams from all sequences in the `APD3
     <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
+    For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
+    assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
+    spaces were removed.
     
     :return: numpy.array containing most frequent ngrams
     """

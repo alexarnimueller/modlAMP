@@ -1025,6 +1025,8 @@ class AMPngrams:
     spaces were removed.
     
     .. versionadded:: v2.4.1
+    
+    .. seealso:: :py:func:`modlamp.core.ngrams_apd()`
     """
     
     def __init__(self, seqnum, n_min=3, n_max=11):
