@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlamp v2.4.0 documentation</title>
+    <title>modlamp.sequences &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.4.0',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -66,6 +66,7 @@
 <span class="sd">:py:class:`Centrosymmetric`         Generates centrosymmetric sequences with a symmetry axis.</span>
 <span class="sd">:py:class:`MixedLibrary`            Generates a mixed library of sequences of all other classes.</span>
 <span class="sd">:py:class:`Hepahelices`             Generates presumed amphipathic helices with a heparin-binding-domain.</span>
+<span class="sd">:py:class:`AMPngrams`               Generates sequences from most frequent ngrams in the APD3.</span>
 <span class="sd">============================        ===============================================================================</span>
 
 <span class="sd">.. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary` class.</span>
@@ -78,7 +79,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
-    <span class="n">filter_duplicates</span>
+    <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">ngrams_apd</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -1065,6 +1066,121 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
+
+<div class="viewcode-block" id="AMPngrams"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams">[docs]</a><span class="k">class</span> <span class="nc">AMPngrams</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for sequence generation from the most prominent ngrams (2, 3, 4grams) found in all natural AMP</span>
+<span class="sd">    sequences extracted from the `APD3 &lt;http://aps.unmc.edu/AP/&gt;`_, version August 2016 with 2727 sequences.</span>
+<span class="sd">    For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent</span>
+<span class="sd">    assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing</span>
+<span class="sd">    spaces were removed.</span>
+<span class="sd">    </span>
+<span class="sd">    .. versionadded:: v2.4.1</span>
+<span class="sd">    </span>
+<span class="sd">    .. seealso:: :py:func:`modlamp.core.ngrams_apd()`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="AMPngrams.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param seqnum: {int} number of sequences to be generated</span>
+<span class="sd">        :param n_min: {int} minimum number of ngrams to take for sequence assembly</span>
+<span class="sd">        :param n_max: {int} maximum number of ngrams to take for sequence assembly</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; s = AMPngrams(10)</span>
+<span class="sd">        &gt;&gt;&gt; s.generate_sequences()</span>
+<span class="sd">        &gt;&gt;&gt; s.sequences</span>
+<span class="sd">        [&#39;LAKSLGAGKYGGGKA&#39;, &#39;KAALESCVGGGGC&#39;, &#39;GCSGKAAAAAVG&#39;, &#39;GAASCKPCGEAKGLKVCY&#39;, &#39;IGGGCKITGESCVAGLWCGESTCGCSG&#39;, ...]</span>
+<span class="sd">        &gt;&gt;&gt; s.ngrams</span>
+<span class="sd">        array([&#39;AGK&#39;, &#39;CKI&#39;, &#39;RR&#39;, &#39;YGGG&#39;, &#39;LSGL&#39;, &#39;RG&#39;, &#39;YGGY&#39;, &#39;PRP&#39;, &#39;LGGG&#39;, ...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngrams</span> <span class="o">=</span> <span class="n">ngrams_apd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="n">seqnum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_min</span> <span class="o">=</span> <span class="n">n_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="n">n_max</span></div>
+    
+<div class="viewcode-block" id="AMPngrams.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.generate_sequences">[docs]</a>    <span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to generate sequences out of APD3 ngrams stored in :py:attr:`ngrams`.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: list of sequences in :py:attr:`sequences`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">)</span>  <span class="c1"># number of ngrams to choose from list to build sequence</span>
+            <span class="c1"># build sequence from a random selection of ngrams</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngrams</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngrams</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)]))</span></div>
+
+<div class="viewcode-block" id="AMPngrams.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
+
+<span class="sd">        :param nr: number of mutations to perform per sequence</span>
+<span class="sd">        :param prob: probability of mutating a sequence</span>
+<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; h.sequences</span>
+<span class="sd">        [&#39;IRSIRRRLSKLARSLGRGARSLGRG&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; h.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; h.sequences</span>
+<span class="sd">        [&#39;IRSIRRRKSKLARQLGRGFRSLGRG&#39;]</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AMPngrams.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
+
+<span class="sd">        :param filename: output filename (ending .fasta)</span>
+<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
+<span class="sd">        :return: a FASTA formatted file containing the generated sequences</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AMPngrams.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
+<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
+
+<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
+<span class="sd">            accordingly.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AMPngrams.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
+
+<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AMPngrams.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
+
+<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AMPngrams.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">        **Dublicates** sequences are removed as well.</span>
+
+<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -1101,7 +1217,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

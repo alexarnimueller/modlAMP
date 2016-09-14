@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.core &mdash; modlamp v2.4.0 documentation</title>
+    <title>modlamp.core &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.4.0',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -387,6 +387,33 @@
                      <span class="mf">0.05555555555</span><span class="p">,</span> <span class="mf">0.05555555555</span><span class="p">]</span></div>
 
 
+<div class="viewcode-block" id="ngrams_apd"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.ngrams_apd">[docs]</a><span class="k">def</span> <span class="nf">ngrams_apd</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Function returning the most frequent 2-, 3- and 4-grams from all sequences in the `APD3</span>
+<span class="sd">    &lt;http://aps.unmc.edu/AP/&gt;`_, version August 2016 with 2727 sequences.</span>
+<span class="sd">    For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent</span>
+<span class="sd">    assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing</span>
+<span class="sd">    spaces were removed.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: numpy.array containing most frequent ngrams</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ngrams</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;AGK&#39;</span><span class="p">,</span> <span class="s1">&#39;CKI&#39;</span><span class="p">,</span> <span class="s1">&#39;RR&#39;</span><span class="p">,</span> <span class="s1">&#39;YGGG&#39;</span><span class="p">,</span> <span class="s1">&#39;LSGL&#39;</span><span class="p">,</span> <span class="s1">&#39;RG&#39;</span><span class="p">,</span> <span class="s1">&#39;YGGY&#39;</span><span class="p">,</span> <span class="s1">&#39;PRP&#39;</span><span class="p">,</span> <span class="s1">&#39;LGGG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GV&#39;</span><span class="p">,</span> <span class="s1">&#39;GT&#39;</span><span class="p">,</span> <span class="s1">&#39;GS&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;IAG&#39;</span><span class="p">,</span> <span class="s1">&#39;GG&#39;</span><span class="p">,</span> <span class="s1">&#39;GF&#39;</span><span class="p">,</span> <span class="s1">&#39;GC&#39;</span><span class="p">,</span> <span class="s1">&#39;GGYG&#39;</span><span class="p">,</span> <span class="s1">&#39;GA&#39;</span><span class="p">,</span> <span class="s1">&#39;GL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GK&#39;</span><span class="p">,</span> <span class="s1">&#39;GI&#39;</span><span class="p">,</span> <span class="s1">&#39;IPC&#39;</span><span class="p">,</span> <span class="s1">&#39;KAA&#39;</span><span class="p">,</span> <span class="s1">&#39;LAK&#39;</span><span class="p">,</span> <span class="s1">&#39;GLGG&#39;</span><span class="p">,</span> <span class="s1">&#39;GGLG&#39;</span><span class="p">,</span> <span class="s1">&#39;CKIT&#39;</span><span class="p">,</span> <span class="s1">&#39;GAGK&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;LLSG&#39;</span><span class="p">,</span> <span class="s1">&#39;LKK&#39;</span><span class="p">,</span> <span class="s1">&#39;FLP&#39;</span><span class="p">,</span> <span class="s1">&#39;LSG&#39;</span><span class="p">,</span> <span class="s1">&#39;SCK&#39;</span><span class="p">,</span> <span class="s1">&#39;LLS&#39;</span><span class="p">,</span> <span class="s1">&#39;GETC&#39;</span><span class="p">,</span> <span class="s1">&#39;VLG&#39;</span><span class="p">,</span> <span class="s1">&#39;GKLL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;LLG&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;KCKI&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;VGK&#39;</span><span class="p">,</span> <span class="s1">&#39;CSC&#39;</span><span class="p">,</span> <span class="s1">&#39;TKKC&#39;</span><span class="p">,</span> <span class="s1">&#39;GCS&#39;</span><span class="p">,</span> <span class="s1">&#39;GKA&#39;</span><span class="p">,</span> <span class="s1">&#39;IGK&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GESC&#39;</span><span class="p">,</span> <span class="s1">&#39;KVCY&#39;</span><span class="p">,</span> <span class="s1">&#39;KKL&#39;</span><span class="p">,</span> <span class="s1">&#39;KKI&#39;</span><span class="p">,</span> <span class="s1">&#39;KKC&#39;</span><span class="p">,</span> <span class="s1">&#39;LGGL&#39;</span><span class="p">,</span> <span class="s1">&#39;GLL&#39;</span><span class="p">,</span> <span class="s1">&#39;CGE&#39;</span><span class="p">,</span> <span class="s1">&#39;GGYC&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;GLLS&#39;</span><span class="p">,</span> <span class="s1">&#39;GLF&#39;</span><span class="p">,</span> <span class="s1">&#39;AKK&#39;</span><span class="p">,</span> <span class="s1">&#39;GKAA&#39;</span><span class="p">,</span> <span class="s1">&#39;ESCV&#39;</span><span class="p">,</span> <span class="s1">&#39;GLP&#39;</span><span class="p">,</span> <span class="s1">&#39;CGES&#39;</span><span class="p">,</span> <span class="s1">&#39;PCGE&#39;</span><span class="p">,</span> <span class="s1">&#39;FL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;CGET&#39;</span><span class="p">,</span> <span class="s1">&#39;GLW&#39;</span><span class="p">,</span> <span class="s1">&#39;KGAA&#39;</span><span class="p">,</span> <span class="s1">&#39;KAAL&#39;</span><span class="p">,</span> <span class="s1">&#39;GGY&#39;</span><span class="p">,</span> <span class="s1">&#39;GGG&#39;</span><span class="p">,</span> <span class="s1">&#39;IKG&#39;</span><span class="p">,</span> <span class="s1">&#39;LKG&#39;</span><span class="p">,</span> <span class="s1">&#39;GGL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;CK&#39;</span><span class="p">,</span> <span class="s1">&#39;GTC&#39;</span><span class="p">,</span> <span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="s1">&#39;SKKC&#39;</span><span class="p">,</span> <span class="s1">&#39;CS&#39;</span><span class="p">,</span> <span class="s1">&#39;CR&#39;</span><span class="p">,</span> <span class="s1">&#39;KC&#39;</span><span class="p">,</span> <span class="s1">&#39;AGKA&#39;</span><span class="p">,</span> <span class="s1">&#39;KA&#39;</span><span class="p">,</span> <span class="s1">&#39;KG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;LKCK&#39;</span><span class="p">,</span> <span class="s1">&#39;SCKL&#39;</span><span class="p">,</span> <span class="s1">&#39;KK&#39;</span><span class="p">,</span> <span class="s1">&#39;KI&#39;</span><span class="p">,</span> <span class="s1">&#39;KN&#39;</span><span class="p">,</span> <span class="s1">&#39;KL&#39;</span><span class="p">,</span> <span class="s1">&#39;SK&#39;</span><span class="p">,</span> <span class="s1">&#39;KV&#39;</span><span class="p">,</span> <span class="s1">&#39;SL&#39;</span><span class="p">,</span> <span class="s1">&#39;SC&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;SG&#39;</span><span class="p">,</span> <span class="s1">&#39;AAA&#39;</span><span class="p">,</span> <span class="s1">&#39;VAK&#39;</span><span class="p">,</span> <span class="s1">&#39;AAL&#39;</span><span class="p">,</span> <span class="s1">&#39;AAK&#39;</span><span class="p">,</span> <span class="s1">&#39;GGGG&#39;</span><span class="p">,</span> <span class="s1">&#39;KNVA&#39;</span><span class="p">,</span> <span class="s1">&#39;GGGL&#39;</span><span class="p">,</span> <span class="s1">&#39;GYG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;LG&#39;</span><span class="p">,</span> <span class="s1">&#39;LA&#39;</span><span class="p">,</span> <span class="s1">&#39;LL&#39;</span><span class="p">,</span> <span class="s1">&#39;LK&#39;</span><span class="p">,</span> <span class="s1">&#39;LS&#39;</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="s1">&#39;GCSC&#39;</span><span class="p">,</span> <span class="s1">&#39;TC&#39;</span><span class="p">,</span> <span class="s1">&#39;GAA&#39;</span><span class="p">,</span> <span class="s1">&#39;AA&#39;</span><span class="p">,</span> <span class="s1">&#39;VA&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;VC&#39;</span><span class="p">,</span> <span class="s1">&#39;AG&#39;</span><span class="p">,</span> <span class="s1">&#39;VG&#39;</span><span class="p">,</span> <span class="s1">&#39;AI&#39;</span><span class="p">,</span> <span class="s1">&#39;AK&#39;</span><span class="p">,</span> <span class="s1">&#39;VL&#39;</span><span class="p">,</span> <span class="s1">&#39;AL&#39;</span><span class="p">,</span> <span class="s1">&#39;TPGC&#39;</span><span class="p">,</span> <span class="s1">&#39;IK&#39;</span><span class="p">,</span> <span class="s1">&#39;IA&#39;</span><span class="p">,</span> <span class="s1">&#39;IG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;YGG&#39;</span><span class="p">,</span> <span class="s1">&#39;LGK&#39;</span><span class="p">,</span> <span class="s1">&#39;CSCK&#39;</span><span class="p">,</span> <span class="s1">&#39;GYGG&#39;</span><span class="p">,</span> <span class="s1">&#39;LGG&#39;</span><span class="p">,</span> <span class="s1">&#39;KGA&#39;</span><span class="p">],</span>
+          <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S4&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ngrams</span></div>
+
+
 <div class="viewcode-block" id="template"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.template">[docs]</a><span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all</span>
 <span class="sd">    needed instances.</span>
@@ -710,7 +737,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

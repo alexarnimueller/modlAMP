@@ -17,6 +17,7 @@ Class                               Characteristics
 :py:class:`Centrosymmetric`         Generates centrosymmetric sequences with a symmetry axis.
 :py:class:`MixedLibrary`            Generates a mixed library of sequences of all other classes.
 :py:class:`Hepahelices`             Generates presumed amphipathic helices with a heparin-binding-domain.
+:py:class:`AMPngrams`               Generates sequences from most frequent ngrams in the APD3.
 ============================        ===============================================================================
 
 .. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary` class.

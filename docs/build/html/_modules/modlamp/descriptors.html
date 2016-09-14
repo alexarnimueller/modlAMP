@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &mdash; modlamp v2.4.0 documentation</title>
+    <title>modlamp.descriptors &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.4.0',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -649,7 +649,7 @@
         <span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
 <span class="sd">        amino acids in the argument list **aminoacids**.</span>
 
-<span class="sd">        :param aminoacids: List/array of amino acids {upper str} to filter for</span>
+<span class="sd">        :param aminoacids: List/array of amino acids {str.upper} to filter for</span>
 <span class="sd">        :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.</span>
 <span class="sd">        :Example:</span>
 <span class="sd">        </span>
@@ -708,7 +708,7 @@
 <span class="sd">        minmax algorithm.</span>
 
 <span class="sd">        :param iterations: {int} number of sequences to retrieve.</span>
-<span class="sd">        :param distmetric: distance metric to calculate the distances between the sequences in descriptor space.</span>
+<span class="sd">        :param distmetric: {str} distance metric to calculate the distances between the sequences in descriptor space.</span>
 <span class="sd">            Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).</span>
 <span class="sd">            E.g. &#39;euclidean&#39;, &#39;minkowsky&#39;.</span>
 <span class="sd">        :param randseed: {int} Set a random seed for numpy to pick the first sequence.</span>
@@ -765,7 +765,7 @@
         <span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
 <span class="sd">        :param outputfile: {str} filename of the output FASTA file</span>
-<span class="sd">        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
+<span class="sd">        :param names: {boolean} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div></div>
@@ -809,8 +809,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the</span>
 <span class="sd">            descriptor values for.</span>
-<span class="sd">        :param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor</span>
-<span class="sd">            values</span>
+<span class="sd">        :param scalename: {str} name of the amino acid scale (one of the given list above) used to calculate the</span>
+<span class="sd">            descriptor values</span>
 <span class="sd">        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with</span>
 <span class="sd">            amino acid scale values of the scale name in :py:attr:`scalename`.</span>
 <span class="sd">        :Example:</span>
@@ -822,17 +822,26 @@
 <span class="sd">        &gt;&gt;&gt; seqs.sequences</span>
 <span class="sd">        [&#39;AFDGHLKI&#39;,&#39;KKLQRSDLLRTK&#39;,&#39;KKLASCNNIPPR&#39;...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">seqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">and</span> <span class="n">seqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">and</span> <span class="n">seqs</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">seqs</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">seqs</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">seqs</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.fasta&#39;</span><span class="p">):</span>  <span class="c1"># read .fasta file</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">seqs</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>  <span class="c1"># read .csv file with sequences every line</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s2">&quot;Sorry, currently only .fasta or .csv files can be read!&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">print</span> <span class="s2">&quot;&#39;inputfile&#39; does not exist, is not a valid list of sequences or is not a valid sequence string&quot;</span>
 
@@ -846,7 +855,7 @@
 <div class="viewcode-block" id="PeptideDescriptor.load_scale"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.load_scale">[docs]</a>    <span class="k">def</span> <span class="nf">load_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to load amino acid values from a given scale</span>
 
-<span class="sd">        :param scalename: name of the amino acid scale to be loaded.</span>
+<span class="sd">        :param scalename: {str} name of the amino acid scale to be loaded.</span>
 <span class="sd">        :return: loaded amino acid scale values in a dictionary in the attribute :py:attr:`scale`.</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.load_scale()`</span>
@@ -857,7 +866,7 @@
         <span class="sd">&quot;&quot;&quot;Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and</span>
 <span class="sd">        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.</span>
 
-<span class="sd">        :param filename: .fasta file with sequences and headers to read</span>
+<span class="sd">        :param filename: {str} .fasta file with sequences and headers to read</span>
 <span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in self.names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
@@ -865,7 +874,7 @@
 <div class="viewcode-block" id="PeptideDescriptor.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.</span>
 
-<span class="sd">        :param outputfile: filename of the output FASTA file</span>
+<span class="sd">        :param outputfile: {str} filename of the output FASTA file</span>
 <span class="sd">        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
 <span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -874,7 +883,7 @@
 <div class="viewcode-block" id="PeptideDescriptor.calculate_autocorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_autocorr">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_autocorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for auto-correlating the amino acid values for a given descriptor scale</span>
 
-<span class="sd">        :param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">        :param window: {int} correlation window for descriptor calculation in a sliding window approach</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: calculated descriptor numpy.array in self.descriptor</span>
@@ -890,7 +899,7 @@
 <span class="sd">        .. versionchanged:: v.2.3.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">_one_autocorr</span><span class="p">)(</span><span class="n">seq</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-
+        
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -899,7 +908,7 @@
 <div class="viewcode-block" id="PeptideDescriptor.calculate_crosscorr"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_crosscorr">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_crosscorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for cross-correlating the amino acid values for a given descriptor scale</span>
 
-<span class="sd">        :param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">        :param window: {int} correlation window for descriptor calculation in a sliding window approach</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: calculated descriptor numpy.array in self.descriptor</span>
@@ -913,7 +922,7 @@
 <span class="sd">        (1, 147)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">_one_crosscorr</span><span class="p">)(</span><span class="n">seq</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-
+        
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1324,7 +1333,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

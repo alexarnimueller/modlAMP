@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.4.0 documentation</title>
+    <title>2. Package Documentation &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.4.0',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.0 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -630,7 +630,7 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids {upper str} to filter for</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; List/array of amino acids {str.upper} to filter for</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered descriptor matrix and updated sequences and names in the corresponding attributes.</td>
 </tr>
@@ -729,7 +729,7 @@ minmax algorithm.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>iterations</strong> &#8211; {int} number of sequences to retrieve.</li>
-<li><strong>distmetric</strong> &#8211; distance metric to calculate the distances between the sequences in descriptor space.
+<li><strong>distmetric</strong> &#8211; {str} distance metric to calculate the distances between the sequences in descriptor space.
 Choose from scipy.spacial.distance (<a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/spatial.distance.html">http://docs.scipy.org/doc/scipy/reference/spatial.distance.html</a>).
 E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
 <li><strong>randseed</strong> &#8211; {int} Set a random seed for numpy to pick the first sequence.</li>
@@ -807,7 +807,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>outputfile</strong> &#8211; {str} filename of the output FASTA file</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
+<li><strong>names</strong> &#8211; {boolean} whether sequence names from self.names should be saved as sequence identifiers</li>
 </ul>
 </td>
 </tr>
@@ -863,8 +863,8 @@ calculation:</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>seqs</strong> &#8211; a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
 descriptor values for.</li>
-<li><strong>scalename</strong> &#8211; name of the amino acid scale (one of the given list above) used to calculate the descriptor
-values</li>
+<li><strong>scalename</strong> &#8211; {str} name of the amino acid scale (one of the given list above) used to calculate the
+descriptor values</li>
 </ul>
 </td>
 </tr>
@@ -894,7 +894,7 @@ amino acid scale values of the scale name in <code class="xref py py-attr docuti
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scalename</strong> &#8211; name of the amino acid scale to be loaded.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scalename</strong> &#8211; {str} name of the amino acid scale to be loaded.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">loaded amino acid scale values in a dictionary in the attribute <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code>.</td>
 </tr>
@@ -915,7 +915,7 @@ amino acid scale values of the scale name in <code class="xref py py-attr docuti
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; .fasta file with sequences and headers to read</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; {str} .fasta file with sequences and headers to read</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in self.sequences with corresponding sequence names in self.names</td>
 </tr>
@@ -932,7 +932,7 @@ amino acid scale values of the scale name in <code class="xref py py-attr docuti
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>outputfile</strong> &#8211; filename of the output FASTA file</li>
+<li><strong>outputfile</strong> &#8211; {str} filename of the output FASTA file</li>
 <li><strong>names</strong> &#8211; {bool} whether sequence names from self.names should be saved as sequence identifiers</li>
 </ul>
 </td>
@@ -953,7 +953,7 @@ amino acid scale values of the scale name in <code class="xref py py-attr docuti
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window</strong> &#8211; correlation window for descriptor calculation in a sliding window approach</li>
+<li><strong>window</strong> &#8211; {int} correlation window for descriptor calculation in a sliding window approach</li>
 <li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
 attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
@@ -988,7 +988,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window</strong> &#8211; correlation window for descriptor calculation in a sliding window approach</li>
+<li><strong>window</strong> &#8211; {int} correlation window for descriptor calculation in a sliding window approach</li>
 <li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
 attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
@@ -1492,6 +1492,9 @@ The following classes are available:</p>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.sequences.Hepahelices" title="modlamp.sequences.Hepahelices"><code class="xref py py-class docutils literal"><span class="pre">Hepahelices</span></code></a></td>
 <td>Generates presumed amphipathic helices with a heparin-binding-domain.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.sequences.AMPngrams" title="modlamp.sequences.AMPngrams"><code class="xref py py-class docutils literal"><span class="pre">AMPngrams</span></code></a></td>
+<td>Generates sequences from most frequent ngrams in the APD3.</td>
 </tr>
 </tbody>
 </table>
@@ -2982,6 +2985,207 @@ accordingly.</td>
 <dl class="method">
 <dt id="modlamp.sequences.Hepahelices.filter_aa">
 <code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Dublicates</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="modlamp.sequences.AMPngrams">
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">AMPngrams</code><span class="sig-paren">(</span><em>seqnum</em>, <em>n_min=3</em>, <em>n_max=11</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for sequence generation from the most prominent ngrams (2, 3, 4grams) found in all natural AMP
+sequences extracted from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD3</a>, version August 2016 with 2727 sequences.
+For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
+assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
+spaces were removed.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.4.1.</span></p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.ngrams_apd" title="modlamp.core.ngrams_apd"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.ngrams_apd()</span></code></a></p>
+</div>
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>seqnum</em>, <em>n_min=3</em>, <em>n_max=11</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seqnum</strong> &#8211; {int} number of sequences to be generated</li>
+<li><strong>n_min</strong> &#8211; {int} minimum number of ngrams to take for sequence assembly</li>
+<li><strong>n_max</strong> &#8211; {int} maximum number of ngrams to take for sequence assembly</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">AMPngrams</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;LAKSLGAGKYGGGKA&#39;, &#39;KAALESCVGGGGC&#39;, &#39;GCSGKAAAAAVG&#39;, &#39;GAASCKPCGEAKGLKVCY&#39;, &#39;IGGGCKITGESCVAGLWCGESTCGCSG&#39;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">ngrams</span>
+<span class="go">array([&#39;AGK&#39;, &#39;CKI&#39;, &#39;RR&#39;, &#39;YGGG&#39;, &#39;LSGL&#39;, &#39;RG&#39;, &#39;YGGY&#39;, &#39;PRP&#39;, &#39;LGGG&#39;, ...]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.generate_sequences">
+<code class="descname">generate_sequences</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.generate_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.generate_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate sequences out of APD3 ngrams stored in <code class="xref py py-attr docutils literal"><span class="pre">ngrams</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IRSIRRRLSKLARSLGRGARSLGRG&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IRSIRRRKSKLARQLGRGFRSLGRG&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for saving sequences in the instance <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a file in FASTA format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.filter_unnatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AMPngrams.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AMPngrams.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AMPngrams.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
 <strong>Dublicates</strong> sequences are removed as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4533,6 +4737,23 @@ H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</e
 </dd></dl>
 
 <dl class="function">
+<dt id="modlamp.core.ngrams_apd">
+<code class="descclassname">modlamp.core.</code><code class="descname">ngrams_apd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#ngrams_apd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.ngrams_apd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function returning the most frequent 2-, 3- and 4-grams from all sequences in the <a class="reference external" href="http://aps.unmc.edu/AP/">APD3</a>, version August 2016 with 2727 sequences.
+For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
+assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
+spaces were removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">numpy.array containing most frequent ngrams</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="modlamp.core.template">
 <code class="descclassname">modlamp.core.</code><code class="descname">template</code><span class="sig-paren">(</span><em>self</em>, <em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method used by different classes in <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a> to generate length and number templates for all
@@ -4831,7 +5052,7 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
