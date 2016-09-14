@@ -29,7 +29,7 @@ from itertools import cycle
 import numpy as np
 
 from core import mutate_AA, aminoacids, clean, save_fasta, keep_natural_aa, filter_unnatural, template, filter_aa, \
-    filter_duplicates
+    filter_duplicates, ngrams_apd
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -1016,3 +1016,116 @@ class Hepahelices:
         """
         filter_aa(self, aminoacids=aminoacids)
 
+
+class AMPngrams:
+    """Class for sequence generation from the most prominent ngrams (2, 3, 4grams) found in all natural AMP
+    sequences extracted from the `APD3 <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
+    For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
+    assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
+    spaces were removed.
+    
+    .. versionadded:: v2.4.1
+    """
+    
+    def __init__(self, seqnum, n_min=3, n_max=11):
+        """
+        :param seqnum: {int} number of sequences to be generated
+        :param n_min: {int} minimum number of ngrams to take for sequence assembly
+        :param n_max: {int} maximum number of ngrams to take for sequence assembly
+        :Example:
+        
+        >>> s = AMPngrams(10)
+        >>> s.generate_sequences()
+        >>> s.sequences
+        ['LAKSLGAGKYGGGKA', 'KAALESCVGGGGC', 'GCSGKAAAAAVG', 'GAASCKPCGEAKGLKVCY', 'IGGGCKITGESCVAGLWCGESTCGCSG', ...]
+        >>> s.ngrams
+        array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG', ...]
+        """
+        self.ngrams = ngrams_apd()
+        self.seqnum = seqnum
+        self.sequences = list()
+        self.n_min = n_min
+        self.n_max = n_max
+    
+    def generate_sequences(self):
+        """Method to generate sequences out of APD3 ngrams stored in :py:attr:`ngrams`.
+        
+        :return: list of sequences in :py:attr:`sequences`
+        """
+        for _ in range(self.seqnum):
+            size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
+            # build sequence from a random selection of ngrams
+            self.sequences.append(''.join(self.ngrams[np.random.randint(0, self.ngrams.shape[0], size=size)]))
+
+    def mutate_AA(self, nr, prob):
+        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
+
+        :param nr: number of mutations to perform per sequence
+        :param prob: probability of mutating a sequence
+        :return: In the attribute :py:attr:`sequences`: mutated sequences
+        :Example:
+
+        >>> h.sequences
+        ['IRSIRRRLSKLARSLGRGARSLGRG']
+        >>> h.mutate_AA(3,1)
+        >>> h.sequences
+        ['IRSIRRRKSKLARQLGRGFRSLGRG']
+
+        .. seealso:: :func:`modlamp.core.mutate_AA()`
+        """
+        mutate_AA(self, nr, prob)
+
+    def save_fasta(self, filename, names=False):
+        """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
+
+        :param filename: output filename (ending .fasta)
+        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
+        :return: a FASTA formatted file containing the generated sequences
+
+        .. seealso:: :func:`modlamp.core.save_fasta()`
+        """
+        save_fasta(self, filename, names=names)
+
+    def keep_natural_aa(self):
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
+
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
+
+        .. versionadded:: v2.2.5
+        """
+        keep_natural_aa(self)
+
+    def filter_unnatural(self):
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
+
+        :return: Filtered sequence list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_unnatural()`
+        """
+        filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
+
+    def filter_aa(self, aminoacids):
+        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+        **Dublicates** sequences are removed as well.
+
+        :param aminoacids: list of amino acids to be filtered
+        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+        .. seealso:: :func:`modlamp.core.filter_aa()`
+        """
+        filter_aa(self, aminoacids=aminoacids)

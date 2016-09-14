@@ -785,11 +785,12 @@ class PeptideDescriptor(object):
         elif os.path.isfile(seqs):
             if seqs.endswith('.fasta'):  # read .fasta file
                 self.sequences, self.names = read_fasta(seqs)
-            elif seqs.endswith('.csv'):  # read .csv file
+            elif seqs.endswith('.csv'):  # read .csv file with sequences every line
                 with open(seqs) as f:
+                    self.sequences = list()
                     for line in f:
                         if line.isupper():
-                            self.sequences.append(line)
+                            self.sequences.append(line.strip())
             else:
                 print "Sorry, currently only .fasta or .csv files can be read!"
         else:

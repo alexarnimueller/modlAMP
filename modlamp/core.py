@@ -338,6 +338,30 @@ def aminoacids(self):
                      0.05555555555, 0.05555555555]
 
 
+def ngrams_apd():
+    """Function returning the most frequent 2-, 3- and 4-grams from all sequences in the `APD3
+    <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
+    
+    :return: numpy.array containing most frequent ngrams
+    """
+    ngrams = np.array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG',
+           'GV', 'GT', 'GS', 'GR', 'IAG', 'GG', 'GF', 'GC', 'GGYG', 'GA', 'GL',
+           'GK', 'GI', 'IPC', 'KAA', 'LAK', 'GLGG', 'GGLG', 'CKIT', 'GAGK',
+           'LLSG', 'LKK', 'FLP', 'LSG', 'SCK', 'LLS', 'GETC', 'VLG', 'GKLL',
+           'LLG', 'C', 'KCKI', 'G', 'VGK', 'CSC', 'TKKC', 'GCS', 'GKA', 'IGK',
+           'GESC', 'KVCY', 'KKL', 'KKI', 'KKC', 'LGGL', 'GLL', 'CGE', 'GGYC',
+           'GLLS', 'GLF', 'AKK', 'GKAA', 'ESCV', 'GLP', 'CGES', 'PCGE', 'FL',
+           'CGET', 'GLW', 'KGAA', 'KAAL', 'GGY', 'GGG', 'IKG', 'LKG', 'GGL',
+           'CK', 'GTC', 'CG', 'SKKC', 'CS', 'CR', 'KC', 'AGKA', 'KA', 'KG',
+           'LKCK', 'SCKL', 'KK', 'KI', 'KN', 'KL', 'SK', 'KV', 'SL', 'SC',
+           'SG', 'AAA', 'VAK', 'AAL', 'AAK', 'GGGG', 'KNVA', 'GGGL', 'GYG',
+           'LG', 'LA', 'LL', 'LK', 'LS', 'LP', 'GCSC', 'TC', 'GAA', 'AA', 'VA',
+           'VC', 'AG', 'VG', 'AI', 'AK', 'VL', 'AL', 'TPGC', 'IK', 'IA', 'IG',
+           'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
+          dtype='|S4')
+    return ngrams
+
+
 def template(self, lenmin, lenmax, seqnum):
     """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all
     needed instances.
