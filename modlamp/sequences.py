@@ -28,7 +28,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, check_natural_aa, filter_unnatural, template, filter_aa, \
+from core import mutate_AA, aminoacids, clean, save_fasta, keep_natural_aa, filter_unnatural, template, filter_aa, \
     filter_duplicates
 
 __author__ = "modlab"
@@ -142,18 +142,18 @@ class Random:
         """
         mutate_AA(self, nr, prob)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
@@ -264,18 +264,18 @@ class Helices:
         """
         save_fasta(self, filename, names=names)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
@@ -395,18 +395,18 @@ class Kinked:
         """
         save_fasta(self, filename, names=names)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
@@ -521,18 +521,18 @@ class Oblique(object):
         """
         save_fasta(self, filename, names=names)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
@@ -684,18 +684,18 @@ class Centrosymmetric:
         """
         save_fasta(self, filename, names=names)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
@@ -972,18 +972,18 @@ class Hepahelices:
         """
         save_fasta(self, filename, names=names)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_unnatural(self):
         """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.

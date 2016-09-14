@@ -76,7 +76,7 @@
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
 
 <span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
-    <span class="n">random_selection</span><span class="p">,</span> <span class="n">minmax_selection</span><span class="p">,</span> <span class="n">filter_sequences</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">check_natural_aa</span>
+    <span class="n">random_selection</span><span class="p">,</span> <span class="n">minmax_selection</span><span class="p">,</span> <span class="n">filter_sequences</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">check_natural_aa</span><span class="p">,</span> <span class="n">aa_weights</span><span class="p">,</span> <span class="n">aa_energies</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;modlab&#39;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -172,7 +172,7 @@
         <span class="n">c_r</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">ph</span> <span class="o">-</span> <span class="n">pK</span><span class="p">)</span>
         <span class="n">partial_charge</span> <span class="o">=</span> <span class="n">c_r</span> <span class="o">/</span> <span class="p">(</span><span class="n">c_r</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="n">neg_charge</span> <span class="o">+=</span> <span class="n">aa_content</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">*</span> <span class="n">partial_charge</span>
-    <span class="k">return</span> <span class="n">pos_charge</span> <span class="o">-</span> <span class="n">neg_charge</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">pos_charge</span> <span class="o">-</span> <span class="n">neg_charge</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GlobalDescriptor"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor">[docs]</a><span class="k">class</span> <span class="nc">GlobalDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -202,11 +202,12 @@
 <span class="sd">        :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values</span>
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; P = GlobalDescriptor(&#39;KLAKLAKKLAKLAK&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; P.sequences</span>
+<span class="sd">        &gt;&gt;&gt; from modlamp.descriptors import GlobalDescriptor</span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;KLAKLAKKLAKLAK&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
 <span class="sd">        [&#39;KLAKLAKKLAKLAK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; seqs = PeptideDescriptor(&#39;/Path/to/file.fasta&#39;, &#39;eisenberg&#39;)  # load sequences from .fasta file</span>
-<span class="sd">        &gt;&gt;&gt; seqs.sequences</span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;/Path/to/file.fasta&#39;)  # load sequences from .fasta file</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
 <span class="sd">        [&#39;AFDGHLKI&#39;,&#39;KKLQRSDLLRTK&#39;,&#39;KKLASCNNIPPR&#39;...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">seqs</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -223,10 +224,16 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of sequence lengths in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;AFDGHLKI&#39;,&#39;KKLQRSDLLRTK&#39;,&#39;KKLASCNNIPPR&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.length()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 8], [12], [12]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
@@ -240,15 +247,28 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;IAESFKGHIPL&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.calculate_MW(amide=True)</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 1210.43]])</span>
+
+<span class="sd">        .. seealso:: :py:func:`modlamp.core.aa_weights()`</span>
 
 <span class="sd">        .. versionchanged:: v2.1.5 amide option added</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">aa_weights</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">molecular_weight</span><span class="p">())</span>
+            <span class="n">mw</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>  <span class="c1"># sum over aa weights</span>
+                <span class="n">mw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">aa</span><span class="p">])</span>
+            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">mw</span><span class="p">)</span> <span class="o">-</span> <span class="mf">18.015</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># sum over AA MW and subtract H20 MW for every</span>
+            <span class="c1"># peptide bond</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">amide</span><span class="p">:</span>  <span class="c1"># if sequences are amidated, subtract 0.98 from calculated MW</span>
-            <span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="o">-</span> <span class="mf">0.95</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">desc</span><span class="p">]</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="o">-</span> <span class="mf">0.98</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">desc</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -272,6 +292,12 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;KLAKFGKRSELVALSG&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.calculate_charge(ph=7.4, amide=True)</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 3.989]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
@@ -291,6 +317,12 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;GNSDLLIEQRTLLASDEF&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.charge_density(ph=6, amide=True)</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[-0.00097119]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
         <span class="n">charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span>
@@ -318,6 +350,12 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;KLFDIKFGHIPQRST&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.isoelectric_point()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 10.6796875]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
@@ -374,6 +412,12 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;LLASMNDLLAKRST&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.instability_index()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 63.95714286]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
@@ -392,10 +436,19 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;GLFYWRFFLQRRFLYWW&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.aromaticity()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 0.52941176]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">())</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
@@ -412,10 +465,17 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;KWLKYLKKLAKLVK&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.aliphatic_index()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 139.28571429]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">aa_dict</span> <span class="o">=</span> <span class="n">aa_weights</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">aa</span><span class="p">:</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">aa_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># count aa</span>
             <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># get mole percent of all AA</span>
             <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.9</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.9</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]))</span>  <span class="c1"># formula for calculating the AI (Ikai, 1980)</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -430,15 +490,21 @@
 <span class="sd">        summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by</span>
 <span class="sd">        dividing by    sequence length.</span>
 <span class="sd">        ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.</span>
-<span class="sd">        [2] A. Radzicka, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)</span>
+<span class="sd">        [2] A. Radzick, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)</span>
+<span class="sd">        </span>
+<span class="sd">        .. seealso:: :py:func:`modlamp.core.aa_energies()`</span>
 
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;GLFDIVKKVVGALGSL&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.boman_index()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[-1.011875]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.92</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.92</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.04</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.98</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.35</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.33</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.81</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.28</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.94</span><span class="p">,</span>
-             <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">0.14</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mf">2.57</span><span class="p">,</span>
-             <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mf">3.40</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">4.66</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="mf">5.54</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="mf">5.55</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mf">6.64</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">6.81</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">8.72</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">14.92</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">aa_energies</span><span class="p">()</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
@@ -459,10 +525,17 @@
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :return: array of descriptor values in the attribute :py:attr:`descriptor`</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor(&#39;VALLYWRTVLLAIII&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.hydrophobic_ratio()</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
+<span class="sd">        array([[ 0.73333333]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">aa_dict</span> <span class="o">=</span> <span class="n">aa_weights</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">pa</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
+            <span class="n">pa</span> <span class="o">=</span> <span class="p">{</span><span class="n">aa</span><span class="p">:</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">aa_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># count aa</span>
             <span class="c1"># formula for calculating the AI (Ikai, 1980):</span>
             <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pa</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;M&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pa</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)))</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -480,9 +553,9 @@
 <span class="sd">        :return: scaled descriptor values in :py:attr:`self.descriptor`</span>
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; D.descriptor</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
 <span class="sd">        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
-<span class="sd">        &gt;&gt;&gt; D.feature_scaling(stype=&#39;minmax&#39;,fit=True)</span>
+<span class="sd">        &gt;&gt;&gt; desc.feature_scaling(stype=&#39;minmax&#39;,fit=True)</span>
 <span class="sd">        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">stype</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="s1">&#39;minmax&#39;</span><span class="p">]:</span>
@@ -504,9 +577,9 @@
 <span class="sd">        :return: descriptor matrix with shuffled feature columns in the attribute :py:attr:`descriptor`</span>
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; D.descriptor</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor</span>
 <span class="sd">        array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])</span>
-<span class="sd">        &gt;&gt;&gt; D.feature_shuffle()</span>
+<span class="sd">        &gt;&gt;&gt; desc.feature_shuffle()</span>
 <span class="sd">        array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
@@ -519,6 +592,17 @@
 <span class="sd">        :param values: List/array of values to filter the attribute :py:attr:`descriptor` for</span>
 <span class="sd">        :param operator: filter criterion, available are all SQL like operators: ``==``, ``&lt;``, ``&gt;``, ``&lt;=``and ``&gt;=``.</span>
 <span class="sd">        :return: filtered descriptor matrix and updated sequences in the corresponding attributes.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; min(desc.descriptor)</span>
+<span class="sd">        array([ 0.04523998])</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor.shape</span>
+<span class="sd">        (412, 1)</span>
+<span class="sd">        &gt;&gt;&gt; desc.filter_values([0.1], operator=&#39;&gt;&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; min(desc.descriptor)</span>
+<span class="sd">        array([ 0.10344828])</span>
+<span class="sd">        &gt;&gt;&gt; desc.descriptor.shape</span>
+<span class="sd">        (168, 1)</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.filter_values()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -529,7 +613,13 @@
 <span class="sd">        Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
 
 <span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLKLLKKLLKLLK&#39;, &#39;GLFDIVKKVVGGKKASSERT&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.filter_duplicates()</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
+<span class="sd">        [&#39;KLLKLLKKLLKLLK&#39;, &#39;GLFDIVKKVVGGKKASSERT&#39;]</span>
+<span class="sd">        </span>
 <span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
@@ -542,6 +632,12 @@
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;ACDEFGHIKLMNPQRSTVWY&#39;, &#39;JOGHURT&#39;, &#39;ELVISISKING&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.check_natural_aa()</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
+<span class="sd">        [&#39;ACDEFGHIKLMNPQRSTVWY&#39;, &#39;ELVISISKING&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
 
@@ -555,7 +651,13 @@
 
 <span class="sd">        :param aminoacids: List/array of amino acids {upper str} to filter for</span>
 <span class="sd">        :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.</span>
-
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;KLLKLLKKLLKLLK&#39;, &#39;ACCDFACAD&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.filter_aa([&#39;C&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
+<span class="sd">        [&#39;KLLKLLKKLLKLLK&#39;]</span>
+<span class="sd">        </span>
 <span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">)</span></div>
@@ -567,6 +669,7 @@
 
 <span class="sd">        :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data</span>
 <span class="sd">        :return: updated instance</span>
+<span class="sd">        :Example:</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
 

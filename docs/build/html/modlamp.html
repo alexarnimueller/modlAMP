@@ -149,11 +149,12 @@ descriptor values for.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">.</span><span class="n">sequences</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">GlobalDescriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;KLAKLAKKLAKLAK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seqs</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># load sequences from .fasta file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seqs</span><span class="o">.</span><span class="n">sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file.fasta&#39;</span><span class="p">)</span>  <span class="c1"># load sequences from .fasta file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;AFDGHLKI&#39;,&#39;KKLQRSDLLRTK&#39;,&#39;KKLASCNNIPPR&#39;...]</span>
 </pre></div>
 </div>
@@ -172,8 +173,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of sequence lengths in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;AFDGHLKI&#39;</span><span class="p">,</span><span class="s1">&#39;KKLQRSDLLRTK&#39;</span><span class="p">,</span><span class="s1">&#39;KKLASCNNIPPR&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 8], [12], [12]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -191,11 +200,23 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;IAESFKGHIPL&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_MW</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 1210.43]])</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.aa_weights" title="modlamp.core.aa_weights"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.aa_weights()</span></code></a></p>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version v2.1.5: </span>amide option added</p>
 </div>
@@ -224,11 +245,19 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;KLAKFGKRSELVALSG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="mf">7.4</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 3.989]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -247,11 +276,19 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;GNSDLLIEQRTLLASDEF&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">charge_density</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[-0.00097119]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -276,11 +313,19 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;KLFDIKFGHIPQRST&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 10.6796875]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -298,8 +343,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;LLASMNDLLAKRST&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">instability_index</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 63.95714286]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -316,8 +369,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;GLFYWRFFLQRRFLYWW&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 0.52941176]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -336,8 +397,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;KWLKYLKKLAKLVK&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">aliphatic_index</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 139.28571429]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -348,7 +417,11 @@ According to Boman, 2003, the boman index is a measure for protein-protein inter
 summing over all amino acid free energy of transfer [kcal/mol] between water and cyclohexane,[2] followed by
 dividing by    sequence length.
 ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</em>. <strong>1989</strong>, <em>259</em>, 103–106.
-[2] A. Radzicka, R. Wolfenden, <em>Biochemistry</em> <strong>1988</strong>, <em>27</em>, 1664–1670.)</p>
+[2] A. Radzick, R. Wolfenden, <em>Biochemistry</em> <strong>1988</strong>, <em>27</em>, 1664–1670.)</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.aa_energies" title="modlamp.core.aa_energies"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.aa_energies()</span></code></a></p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -358,8 +431,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">boman_index</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[-1.011875]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -376,8 +457,16 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;VALLYWRTVLLAIII&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">hydrophobic_ratio</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 0.73333333]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -402,9 +491,9 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">descriptor</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">feature_scaling</span><span class="p">(</span><span class="n">stype</span><span class="o">=</span><span class="s1">&#39;minmax&#39;</span><span class="p">,</span><span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">feature_scaling</span><span class="p">(</span><span class="n">stype</span><span class="o">=</span><span class="s1">&#39;minmax&#39;</span><span class="p">,</span><span class="n">fit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="go">array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])</span>
 </pre></div>
 </div>
@@ -424,9 +513,9 @@ whether the already fitted scaler in <code class="xref py py-attr docutils liter
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">descriptor</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span><span class="o">.</span><span class="n">feature_shuffle</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">feature_shuffle</span><span class="p">()</span>
 <span class="go">array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])</span>
 </pre></div>
 </div>
@@ -448,11 +537,24 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">filtered descriptor matrix and updated sequences in the corresponding attributes.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="go">array([ 0.04523998])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(412, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">filter_values</span><span class="p">([</span><span class="mf">0.1</span><span class="p">],</span> <span class="n">operator</span><span class="o">=</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="go">array([ 0.10344828])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(168, 1)</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_values" title="modlamp.core.filter_values"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_values()</span></code></a></p>
@@ -469,8 +571,16 @@ filter for values equal, lower, higher ect. to the given values in the <strong>v
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGGKKASSERT&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">filter_duplicates</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;KLLKLLKKLLKLLK&#39;, &#39;GLFDIVKKVVGGKKASSERT&#39;]</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
@@ -492,8 +602,16 @@ that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
 accordingly.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">,</span> <span class="s1">&#39;JOGHURT&#39;</span><span class="p">,</span> <span class="s1">&#39;ELVISISKING&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">check_natural_aa</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;ACDEFGHIKLMNPQRSTVWY&#39;, &#39;ELVISISKING&#39;]</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.check_natural_aa" title="modlamp.core.check_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.check_natural_aa()</span></code></a></p>
@@ -516,8 +634,16 @@ amino acids in the argument list <strong>aminoacids</strong>.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered descriptor matrix and updated sequences and names in the corresponding attributes.</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;ACCDFACAD&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">filter_aa</span><span class="p">([</span><span class="s1">&#39;C&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;KLLKLLKKLLKLLK&#39;]</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
@@ -537,6 +663,8 @@ updated descriptor instance.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequences</strong> &#8211; {list} sequences to be filtered out of the whole instance, including corresponding data</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated instance</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -3391,7 +3519,7 @@ are plottet in different colors.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">targets</span><span class="o">=</span><span class="n">targets</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">targets</span><span class="o">=</span><span class="n">targs</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
@@ -4209,6 +4337,38 @@ This method is used by the base class <a class="reference internal" href="#modla
 <span class="go">[&#39;NAKAARAWIK&#39;]</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.aa_weights">
+<code class="descclassname">modlamp.core.</code><code class="descname">aa_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#aa_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.aa_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function holding molecular weight data on all natural amino acids.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary with amino acid letters and corresponding weights</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.4.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.aa_energies">
+<code class="descclassname">modlamp.core.</code><code class="descname">aa_energies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#aa_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.aa_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function holding free energies of transfer between cyclohexane and water for all natural amino acids.
+H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</em>. <strong>1989</strong>, <em>259</em>, 103–106.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary with amino acid letters and corresponding energies.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

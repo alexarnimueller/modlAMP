@@ -27,7 +27,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
 from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
-    random_selection, minmax_selection, filter_sequences, filter_duplicates, check_natural_aa, aa_weights, aa_energies
+    random_selection, minmax_selection, filter_sequences, filter_duplicates, keep_natural_aa, aa_weights, aa_energies
 
 __author__ = 'modlab'
 __docformat__ = "restructuredtext en"
@@ -577,7 +577,7 @@ class GlobalDescriptor(object):
         """
         filter_duplicates(self)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
@@ -586,15 +586,15 @@ class GlobalDescriptor(object):
         :Example:
         
         >>> desc = GlobalDescriptor(['ACDEFGHIKLMNPQRSTVWY', 'JOGHURT', 'ELVISISKING'])
-        >>> desc.check_natural_aa()
+        >>> desc.keep_natural_aa()
         >>> desc.sequences
         ['ACDEFGHIKLMNPQRSTVWY', 'ELVISISKING']
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
@@ -621,6 +621,11 @@ class GlobalDescriptor(object):
         :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
         :return: updated instance
         :Example:
+
+        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'KLLK', 'KLLLKLKLKLL'])
+        >>> desc.filter_sequences(['KLLK'])
+        >>> desc.sequences
+        ['KLLKLLKKLLKLLK', 'KLLLKLKLKLL']
 
         .. seealso:: :func:`modlamp.core.filter_sequences()`
 
@@ -1123,18 +1128,18 @@ class PeptideDescriptor(object):
         """
         filter_duplicates(self)
 
-    def check_natural_aa(self):
+    def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly.
 
-        .. seealso:: :func:`modlamp.core.check_natural_aa()`
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
 
         .. versionadded:: v2.2.5
         """
-        check_natural_aa(self)
+        keep_natural_aa(self)
 
     def filter_aa(self, aminoacids):
         """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given

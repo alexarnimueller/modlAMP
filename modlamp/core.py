@@ -383,7 +383,7 @@ def filter_duplicates(self):
     self.sequences = seq_list
 
 
-def check_natural_aa(self):
+def keep_natural_aa(self):
     """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
     that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
 
