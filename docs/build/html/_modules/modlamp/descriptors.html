@@ -76,7 +76,7 @@
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
 
 <span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
-    <span class="n">random_selection</span><span class="p">,</span> <span class="n">minmax_selection</span><span class="p">,</span> <span class="n">filter_sequences</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">check_natural_aa</span><span class="p">,</span> <span class="n">aa_weights</span><span class="p">,</span> <span class="n">aa_energies</span>
+    <span class="n">random_selection</span><span class="p">,</span> <span class="n">minmax_selection</span><span class="p">,</span> <span class="n">filter_sequences</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">aa_weights</span><span class="p">,</span> <span class="n">aa_energies</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;modlab&#39;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -626,7 +626,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GlobalDescriptor.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GlobalDescriptor.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
@@ -635,15 +635,15 @@
 <span class="sd">        :Example:</span>
 <span class="sd">        </span>
 <span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;ACDEFGHIKLMNPQRSTVWY&#39;, &#39;JOGHURT&#39;, &#39;ELVISISKING&#39;])</span>
-<span class="sd">        &gt;&gt;&gt; desc.check_natural_aa()</span>
+<span class="sd">        &gt;&gt;&gt; desc.keep_natural_aa()</span>
 <span class="sd">        &gt;&gt;&gt; desc.sequences</span>
 <span class="sd">        [&#39;ACDEFGHIKLMNPQRSTVWY&#39;, &#39;ELVISISKING&#39;]</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GlobalDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>
@@ -670,6 +670,11 @@
 <span class="sd">        :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data</span>
 <span class="sd">        :return: updated instance</span>
 <span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; desc = GlobalDescriptor([&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLK&#39;, &#39;KLLLKLKLKLL&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.filter_sequences([&#39;KLLK&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
+<span class="sd">        [&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLLKLKLKLL&#39;]</span>
 
 <span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
 
@@ -1172,18 +1177,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PeptideDescriptor.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PeptideDescriptor.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PeptideDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given</span>

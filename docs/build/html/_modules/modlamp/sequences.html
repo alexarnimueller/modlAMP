@@ -77,7 +77,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">check_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
     <span class="n">filter_duplicates</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
@@ -191,18 +191,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Random.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Random.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Random.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
@@ -313,18 +313,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Helices.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Helices.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Helices.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
@@ -444,18 +444,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Kinked.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Kinked.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Kinked.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
@@ -570,18 +570,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Oblique.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Oblique.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Oblique.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
@@ -733,18 +733,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Centrosymmetric.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Centrosymmetric.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Centrosymmetric.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
@@ -1021,18 +1021,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Hepahelices.check_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.check_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Hepahelices.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
 <span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly.</span>
 
-<span class="sd">        .. seealso:: :func:`modlamp.core.check_natural_aa()`</span>
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Hepahelices.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>

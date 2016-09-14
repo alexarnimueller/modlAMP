@@ -600,7 +600,7 @@ class GlobalDescriptor(object):
         """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
         amino acids in the argument list **aminoacids**.
 
-        :param aminoacids: List/array of amino acids {upper str} to filter for
+        :param aminoacids: List/array of amino acids {str.upper} to filter for
         :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
         :Example:
         
@@ -659,7 +659,7 @@ class GlobalDescriptor(object):
         minmax algorithm.
 
         :param iterations: {int} number of sequences to retrieve.
-        :param distmetric: distance metric to calculate the distances between the sequences in descriptor space.
+        :param distmetric: {str} distance metric to calculate the distances between the sequences in descriptor space.
             Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
             E.g. 'euclidean', 'minkowsky'.
         :param randseed: {int} Set a random seed for numpy to pick the first sequence.
@@ -716,7 +716,7 @@ class GlobalDescriptor(object):
         """Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
         :param outputfile: {str} filename of the output FASTA file
-        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
+        :param names: {boolean} whether sequence names from self.names should be saved as sequence identifiers
         :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
         """
         save_fasta(self, outputfile, names=names)
@@ -760,8 +760,8 @@ class PeptideDescriptor(object):
         """
         :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
             descriptor values for.
-        :param scalename: name of the amino acid scale (one of the given list above) used to calculate the descriptor
-            values
+        :param scalename: {str} name of the amino acid scale (one of the given list above) used to calculate the
+            descriptor values
         :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with
             amino acid scale values of the scale name in :py:attr:`scalename`.
         :Example:
@@ -797,7 +797,7 @@ class PeptideDescriptor(object):
     def load_scale(self, scalename):
         """Method to load amino acid values from a given scale
 
-        :param scalename: name of the amino acid scale to be loaded.
+        :param scalename: {str} name of the amino acid scale to be loaded.
         :return: loaded amino acid scale values in a dictionary in the attribute :py:attr:`scale`.
 
         .. seealso:: :func:`modlamp.core.load_scale()`
@@ -808,7 +808,7 @@ class PeptideDescriptor(object):
         """Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
         :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
 
-        :param filename: .fasta file with sequences and headers to read
+        :param filename: {str} .fasta file with sequences and headers to read
         :return: list of sequences in self.sequences with corresponding sequence names in self.names
         """
         self.sequences, self.names = read_fasta(filename)
@@ -816,7 +816,7 @@ class PeptideDescriptor(object):
     def save_fasta(self, outputfile, names=False):
         """Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
 
-        :param outputfile: filename of the output FASTA file
+        :param outputfile: {str} filename of the output FASTA file
         :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
         :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
         """
@@ -825,7 +825,7 @@ class PeptideDescriptor(object):
     def calculate_autocorr(self, window, append=False):
         """Method for auto-correlating the amino acid values for a given descriptor scale
 
-        :param window: correlation window for descriptor calculation in a sliding window approach
+        :param window: {int} correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: calculated descriptor numpy.array in self.descriptor
@@ -841,7 +841,7 @@ class PeptideDescriptor(object):
         .. versionchanged:: v.2.3.0
         """
         desc = Parallel(n_jobs=-1)(delayed(_one_autocorr)(seq, window, self.scale) for seq in self.sequences)
-
+        
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
@@ -850,7 +850,7 @@ class PeptideDescriptor(object):
     def calculate_crosscorr(self, window, append=False):
         """Method for cross-correlating the amino acid values for a given descriptor scale
 
-        :param window: correlation window for descriptor calculation in a sliding window approach
+        :param window: {int} correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: calculated descriptor numpy.array in self.descriptor
@@ -864,7 +864,7 @@ class PeptideDescriptor(object):
         (1, 147)
         """
         desc = Parallel(n_jobs=-1)(delayed(_one_crosscorr)(seq, window, self.scale) for seq in self.sequences)
-
+        
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
