@@ -13,6 +13,7 @@ Function                             Data
 :py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides
 :py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences
 :py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*
+:py:func:`load_custom`               A custom data set provided in ``modlamp/data`` as a ``.csv`` file
 =============================        ============================================================================
 """
 
@@ -168,22 +169,23 @@ def load_ACPvsNeg():
     alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.
 
     The ACP class consists of a collection of ACPs from the `APD2 <http://aps.unmc.edu/AP/>`_ and
-    `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by Gisela Gabernet at
-    modlab ETH Zuerich <gisela.gabernet@pharma.ethz.ch>, checking the original literature and annotated active against
-    at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and
-    cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+    `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by `Gisela Gabernet
+    <gisela.gabernet@pharma.ethz.ch>`_ at modlab ETH Zürich, checking the original literature and annotated active
+    against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,
+    haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to
+    facilitate synthesis.
 
     The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
-    the `PDBTM <http://pdbtm.enzim.hu/>` ) and 47 non-transmembrane helices (extracted from the `PDB
-    <http://www.rcsb.org/pdb/home/home.do>`) isolated directly from the proteins crystal structure.
+    the `PDBTM <http://pdbtm.enzim.hu/>`_ ) and 47 non-transmembrane helices (extracted from the `PDB
+    <http://www.rcsb.org/pdb/home/home.do>`_) isolated directly from the proteins crystal structure.
 
-    =================    ====
-    Classes                2
+    =================    ===
+    Classes              2
     ACP peptides         95
     Negative peptides    94
-    Total peptides        189
-    Dimensionality        1
-    =================    ====
+    Total peptides       189
+    Dimensionality       1
+    =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
         the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
@@ -261,6 +263,49 @@ def load_AMPvsUniProt():
 
     module_path = dirname(__file__)
     with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples = int(temp[0])
+        n_features = int(temp[1])
+        target_names = np.array(temp[2:])
+        sequences = np.empty((n_samples, n_features), dtype='|S100')
+        target = np.empty((n_samples,), dtype=np.int)
+
+        for i, ir in enumerate(data_file):
+            sequences[i] = np.asarray(ir[0], dtype=np.str)
+            target[i] = np.asarray(ir[-1], dtype=np.int)
+
+    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+                 target_names=target_names,
+                 feature_names=['Sequence'])
+
+
+def load_custom(filename):
+    """Function to load a custom dataset saved in ``modlamp/data/`` as a ``.csv`` file.
+    
+    The following header needs to be included: *Nr. of sequences*, *Nr. of columns - 1*, *Class name for 0*,
+    *Class name for 1*
+    
+    Example ``.csv`` file structure::
+    
+        4, 1, TM, AMP
+        GTLEFDVTIGRAN, 0
+        GSNVHLASNLLA, 0
+        GLFDIVKKVVGALGSL, 0
+        GLFDIIKKIAESF, 0
+    
+    :param filename: {str} filename of the data file to be loaded; the file must be located in ``modlamp/data/``
+    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+        features.
+    :Example:
+
+    >>> from modlamp.datasets import load_AMPvsUniProt
+    >>> data = load_custom('custom_data.csv')
+    """
+
+    module_path = dirname(__file__)
+    with open(join(module_path, 'data', filename)) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples = int(temp[0])

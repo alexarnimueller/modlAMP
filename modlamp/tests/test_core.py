@@ -1,6 +1,6 @@
 import unittest
-from modlamp.sequences import Random
-from modlamp.descriptors import PeptideDescriptor
+from ..sequences import Random
+from ..descriptors import PeptideDescriptor
 
 
 class TestCore(unittest.TestCase):
@@ -14,8 +14,8 @@ class TestCore(unittest.TestCase):
     d = PeptideDescriptor(l.sequences, 'eisenberg')
     d.calculate_moment()
 
-    def test_check_natural_aa(self):
-        self.s.check_natural_aa()
+    def test_keep_natural_aa(self):
+        self.s.keep_natural_aa()
         self.assertNotIn(['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggorst'], self.s.sequences)
 
     def test_filter_aa(self):

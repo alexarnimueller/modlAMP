@@ -12,6 +12,7 @@ Module                      Characteristics
 :mod:`modlamp.datasets`     Module incorporating functions to load different peptide datasets used for ML classification tasks.
 :mod:`modlamp.plot`         Module incorporating functions to visualize descriptor.
 :mod:`modlamp.ml`           Module incorporating machine learning functions for training SVM or RF models on peptides.
+:mod:`modlamp.wetlab`       Module incorporating classes for analysis of wetlab data like circular dichroism plots.
 :mod:`modlamp.core`         Module incorporating helper functions for other modules.
 =========================== ==========================================================================================================
 
@@ -50,6 +51,12 @@ modlamp.ml
 ----------
 
 .. automodule:: modlamp.ml
+    :members:
+
+modlamp.wetlab
+--------------
+
+.. automodule:: modlamp.wetlab
     :members:
 
 modlamp.core

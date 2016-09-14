@@ -1,44 +1,41 @@
-import os
-import sys
 import unittest
 
-sys.path.insert(0, os.path.abspath('.'))
+from ..descriptors import GlobalDescriptor
 
-from modlamp.descriptors import GlobalDescriptor
 
 __author__ = 'modlab'
 
 
 class TestGlobalDescriptor(unittest.TestCase):
 
-    G = GlobalDescriptor(['GLFDIVKKVVGALG','LLLLLL','KKKKKKKKKK','DDDDDDDDDDDD'])
+    G = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
 
     def test_charge(self):
         self.G.calculate_charge()
-        self.assertAlmostEqual(self.G.descriptor[0], 0.9959478)
+        self.assertAlmostEqual(self.G.descriptor[0], 0.996, 3)
         self.G.calculate_charge(amide=True)
-        self.assertAlmostEqual(self.G.descriptor[0], 1.9959337)
+        self.assertAlmostEqual(self.G.descriptor[0], 1.996, 3)
         self.G.calculate_charge(ph=9.84)
-        self.assertAlmostEqual(self.G.descriptor[0], -0.0002392)
+        self.assertAlmostEqual(self.G.descriptor[0], -0.000, 3)
 
     def test_isoelectric(self):
         self.G.isoelectric_point()
-        self.assertAlmostEqual(self.G.descriptor[0], 9.8397827)
+        self.assertAlmostEqual(self.G.descriptor[0], 9.840, 3)
         self.G.isoelectric_point(amide=True)
-        self.assertAlmostEqual(self.G.descriptor[0], 10.7089233)
+        self.assertAlmostEqual(self.G.descriptor[0], 10.7090, 4)
 
     def test_charge_density(self):
         self.G.charge_density()
-        self.assertAlmostEqual(self.G.descriptor[0], 0.00070349)
+        self.assertAlmostEqual(self.G.descriptor[0], 0.00070, 4)
         self.G.charge_density(amide=True)
     
     def test_aliphatic_index(self):
         self.G.aliphatic_index()
-        self.assertAlmostEqual(self.G.descriptor[0], 152.85714286)
+        self.assertAlmostEqual(self.G.descriptor[0], 152.857, 3)
 
     def test_boman_index(self):
         self.G.boman_index()
-        self.assertAlmostEqual(self.G.descriptor[0], -1.04785714)
+        self.assertAlmostEqual(self.G.descriptor[0], -1.0479, 4)
 
     def test_filter_aa(self):
         D = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
@@ -56,7 +53,7 @@ class TestGlobalDescriptor(unittest.TestCase):
 
     def test_instability_index(self):
         self.G.instability_index()
-        self.assertAlmostEqual(self.G.descriptor[0], -8.21428571)
+        self.assertAlmostEqual(self.G.descriptor[0], -8.214, 3)
 
     def test_length(self):
         self.G.length()
@@ -64,4 +61,4 @@ class TestGlobalDescriptor(unittest.TestCase):
 
     def test_molweight(self):
         self.G.calculate_MW()
-        self.assertAlmostEqual(self.G.descriptor[0], 1415.71869999)
+        self.assertEqual(self.G.descriptor[0], 1415.72)

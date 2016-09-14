@@ -1,5 +1,7 @@
 import unittest
-from modlamp.sequences import Random
+
+from ..sequences import Random
+
 
 class TestRandom(unittest.TestCase):
 

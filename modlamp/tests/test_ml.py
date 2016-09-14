@@ -1,11 +1,8 @@
 import unittest
-import os
-import sys
 
-sys.path.insert(0, os.path.abspath('..'))
-from modlamp.ml import train_best_model
-from modlamp.datasets import load_ACPvsNeg
-from modlamp import descriptors as dct
+from ..ml import train_best_model
+from ..datasets import load_ACPvsNeg
+from ..descriptors import PeptideDescriptor
 
 __author__ = 'modlab'
 
@@ -14,7 +11,7 @@ __author__ = 'modlab'
 #
 #     data = load_ACPvsNeg()
 #     sequences = data.sequences
-#     descr = dct.PeptideDescriptor(sequences, 'pepcats')
+#     descr = PeptideDescriptor(sequences, 'pepcats')
 #     descr.calculate_autocorr(7)
 #     X_train = descr.descriptor
 #     y_train = data.target

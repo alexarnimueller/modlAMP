@@ -1,6 +1,6 @@
 import unittest
 
-from modlamp.database import _read_db_config
+from ..database import _read_db_config
 
 class Testconnect(unittest.TestCase):
 

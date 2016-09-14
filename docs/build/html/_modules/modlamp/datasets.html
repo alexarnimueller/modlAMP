@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.datasets &mdash; modlamp v2.3.1 documentation</title>
+    <title>modlamp.datasets &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.3.1',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.3.1 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -62,6 +62,7 @@
 <span class="sd">:py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides</span>
 <span class="sd">:py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences</span>
 <span class="sd">:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*</span>
+<span class="sd">:py:func:`load_custom`               A custom data set provided in ``modlamp/data`` as a ``.csv`` file</span>
 <span class="sd">=============================        ============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -217,22 +218,23 @@
 <span class="sd">    alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.</span>
 
 <span class="sd">    The ACP class consists of a collection of ACPs from the `APD2 &lt;http://aps.unmc.edu/AP/&gt;`_ and</span>
-<span class="sd">    `CancerPPD &lt;http://crdd.osdd.net/raghava/cancerppd/index.php&gt;`_ databases, manually curated by Gisela Gabernet at</span>
-<span class="sd">    modlab ETH Zuerich &lt;gisela.gabernet@pharma.ethz.ch&gt;, checking the original literature and annotated active against</span>
-<span class="sd">    at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin, haematological, and</span>
-<span class="sd">    cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to facilitate synthesis.</span>
+<span class="sd">    `CancerPPD &lt;http://crdd.osdd.net/raghava/cancerppd/index.php&gt;`_ databases, manually curated by `Gisela Gabernet</span>
+<span class="sd">    &lt;gisela.gabernet@pharma.ethz.ch&gt;`_ at modlab ETH Zürich, checking the original literature and annotated active</span>
+<span class="sd">    against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,</span>
+<span class="sd">    haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to</span>
+<span class="sd">    facilitate synthesis.</span>
 
 <span class="sd">    The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from</span>
-<span class="sd">    the `PDBTM &lt;http://pdbtm.enzim.hu/&gt;` ) and 47 non-transmembrane helices (extracted from the `PDB</span>
-<span class="sd">    &lt;http://www.rcsb.org/pdb/home/home.do&gt;`) isolated directly from the proteins crystal structure.</span>
+<span class="sd">    the `PDBTM &lt;http://pdbtm.enzim.hu/&gt;`_ ) and 47 non-transmembrane helices (extracted from the `PDB</span>
+<span class="sd">    &lt;http://www.rcsb.org/pdb/home/home.do&gt;`_) isolated directly from the proteins crystal structure.</span>
 
-<span class="sd">    =================    ====</span>
-<span class="sd">    Classes                2</span>
+<span class="sd">    =================    ===</span>
+<span class="sd">    Classes              2</span>
 <span class="sd">    ACP peptides         95</span>
 <span class="sd">    Negative peptides    94</span>
-<span class="sd">    Total peptides        189</span>
-<span class="sd">    Dimensionality        1</span>
-<span class="sd">    =================    ====</span>
+<span class="sd">    Total peptides       189</span>
+<span class="sd">    Dimensionality       1</span>
+<span class="sd">    =================    ===</span>
 
 <span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
 <span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
@@ -325,6 +327,49 @@
     <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
                  <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
                  <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="load_custom"><a class="viewcode-back" href="../../modlamp.html#modlamp.datasets.load_custom">[docs]</a><span class="k">def</span> <span class="nf">load_custom</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to load a custom dataset saved in ``modlamp/data/`` as a ``.csv`` file.</span>
+<span class="sd">    </span>
+<span class="sd">    The following header needs to be included: *Nr. of sequences*, *Nr. of columns - 1*, *Class name for 0*,</span>
+<span class="sd">    *Class name for 1*</span>
+<span class="sd">    </span>
+<span class="sd">    Example ``.csv`` file structure::</span>
+<span class="sd">    </span>
+<span class="sd">        4, 1, TM, AMP</span>
+<span class="sd">        GTLEFDVTIGRAN, 0</span>
+<span class="sd">        GSNVHLASNLLA, 0</span>
+<span class="sd">        GLFDIVKKVVGALGSL, 0</span>
+<span class="sd">        GLFDIIKKIAESF, 0</span>
+<span class="sd">    </span>
+<span class="sd">    :param filename: {str} filename of the data file to be loaded; the file must be located in ``modlamp/data/``</span>
+<span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        features.</span>
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_AMPvsUniProt</span>
+<span class="sd">    &gt;&gt;&gt; data = load_custom(&#39;custom_data.csv&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_features</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;|S100&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ir</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="n">sequences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="n">sequences</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                 <span class="n">target_names</span><span class="o">=</span><span class="n">target_names</span><span class="p">,</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequence&#39;</span><span class="p">])</span></div>
 </pre></div>
 
           </div>
@@ -361,7 +406,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; modlamp v2.3.1 documentation</title>
+    <title>Index &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.3.1',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.3.1 documentation" href="index.html" /> 
+    <link rel="top" title="modlamp v2.4.1 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -61,6 +61,7 @@
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
@@ -83,6 +84,10 @@
 
         
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.__init__">(modlamp.descriptors.PeptideDescriptor method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.__init__">(modlamp.sequences.AMPngrams method)</a>
   </dt>
 
         
@@ -113,6 +118,10 @@
   <dt><a href="modlamp.html#modlamp.sequences.Random.__init__">(modlamp.sequences.Random method)</a>
   </dt>
 
+        
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.__init__">(modlamp.wetlab.CD method)</a>
+  </dt>
+
       </dl></dd>
   </dl></td>
 </tr></table>
@@ -121,15 +130,27 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">aliphatic_index() (modlamp.descriptors.GlobalDescriptor method)</a>
+  <dt><a href="modlamp.html#modlamp.core.aa_energies">aa_energies() (in module modlamp.core)</a>
   </dt>
 
       
-  <dt><a href="modlamp.html#modlamp.core.aminoacids">aminoacids() (in module modlamp.core)</a>
+  <dt><a href="modlamp.html#modlamp.core.aa_weights">aa_weights() (in module modlamp.core)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">aliphatic_index() (modlamp.descriptors.GlobalDescriptor method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.core.aminoacids">aminoacids() (in module modlamp.core)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams">AMPngrams (class in modlamp.sequences)</a>
+  </dt>
+
       
   <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">aromaticity() (modlamp.descriptors.GlobalDescriptor method)</a>
   </dt>
@@ -157,6 +178,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.calc_meanres_ellipticity">calc_meanres_ellipticity() (modlamp.wetlab.CD method)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.calc_molar_ellipticity">calc_molar_ellipticity() (modlamp.wetlab.CD method)</a>
+  </dt>
+
+      
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_autocorr">calculate_autocorr() (modlamp.descriptors.PeptideDescriptor method)</a>
   </dt>
 
@@ -180,12 +209,16 @@
   <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">calculate_MW() (modlamp.descriptors.GlobalDescriptor method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.calculate_profile">calculate_profile() (modlamp.descriptors.PeptideDescriptor method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.wetlab.CD">CD (class in modlamp.wetlab)</a>
+  </dt>
+
       
   <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric">Centrosymmetric (class in modlamp.sequences)</a>
   </dt>
@@ -194,44 +227,6 @@
   <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">charge_density() (modlamp.descriptors.GlobalDescriptor method)</a>
   </dt>
 
-      
-  <dt><a href="modlamp.html#modlamp.core.check_natural_aa">check_natural_aa() (in module modlamp.core)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.check_natural_aa">(modlamp.descriptors.GlobalDescriptor method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.check_natural_aa">(modlamp.descriptors.PeptideDescriptor method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric.check_natural_aa">(modlamp.sequences.Centrosymmetric method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Helices.check_natural_aa">(modlamp.sequences.Helices method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Hepahelices.check_natural_aa">(modlamp.sequences.Hepahelices method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Kinked.check_natural_aa">(modlamp.sequences.Kinked method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Oblique.check_natural_aa">(modlamp.sequences.Oblique method)</a>
-  </dt>
-
-        
-  <dt><a href="modlamp.html#modlamp.sequences.Random.check_natural_aa">(modlamp.sequences.Random method)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="modlamp.html#modlamp.core.clean">clean() (in module modlamp.core)</a>
   </dt>
@@ -252,6 +247,12 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#modlamp.ml.df_predictions">df_predictions() (in module modlamp.ml)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.dichroweb">dichroweb() (modlamp.wetlab.CD method)</a>
   </dt>
 
   </dl></td>
@@ -294,6 +295,10 @@
   </dt>
 
         
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.filter_aa">(modlamp.sequences.AMPngrams method)</a>
+  </dt>
+
+        
   <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric.filter_aa">(modlamp.sequences.Centrosymmetric method)</a>
   </dt>
 
@@ -333,6 +338,10 @@
 
         
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_duplicates">(modlamp.descriptors.PeptideDescriptor method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.filter_duplicates">(modlamp.sequences.AMPngrams method)</a>
   </dt>
 
         
@@ -386,7 +395,15 @@
 
       <dd><dl>
         
+  <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.filter_unnatural">(modlamp.descriptors.GlobalDescriptor method)</a>
+  </dt>
+
+        
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.filter_unnatural">(modlamp.descriptors.PeptideDescriptor method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.filter_unnatural">(modlamp.sequences.AMPngrams method)</a>
   </dt>
 
         
@@ -457,10 +474,14 @@
   </dt>
 
       
-  <dt><a href="modlamp.html#modlamp.sequences.Hepahelices.generate_sequences">generate_sequences() (modlamp.sequences.Hepahelices method)</a>
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.generate_sequences">generate_sequences() (modlamp.sequences.AMPngrams method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Hepahelices.generate_sequences">(modlamp.sequences.Hepahelices method)</a>
+  </dt>
+
         
   <dt><a href="modlamp.html#modlamp.sequences.Random.generate_sequences">(modlamp.sequences.Random method)</a>
   </dt>
@@ -486,6 +507,10 @@
 
       
   <dt><a href="modlamp.html#modlamp.sequences.Helices">Helices (class in modlamp.sequences)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.helicity">helicity() (modlamp.wetlab.CD method)</a>
   </dt>
 
   </dl></td>
@@ -521,6 +546,50 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="modlamp.html#modlamp.core.keep_natural_aa">keep_natural_aa() (in module modlamp.core)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.keep_natural_aa">(modlamp.descriptors.GlobalDescriptor method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor.keep_natural_aa">(modlamp.descriptors.PeptideDescriptor method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.keep_natural_aa">(modlamp.sequences.AMPngrams method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric.keep_natural_aa">(modlamp.sequences.Centrosymmetric method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Helices.keep_natural_aa">(modlamp.sequences.Helices method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Hepahelices.keep_natural_aa">(modlamp.sequences.Hepahelices method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Kinked.keep_natural_aa">(modlamp.sequences.Kinked method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Oblique.keep_natural_aa">(modlamp.sequences.Oblique method)</a>
+  </dt>
+
+        
+  <dt><a href="modlamp.html#modlamp.sequences.Random.keep_natural_aa">(modlamp.sequences.Random method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
   <dt><a href="modlamp.html#modlamp.sequences.Kinked">Kinked (class in modlamp.sequences)</a>
   </dt>
 
@@ -548,6 +617,10 @@
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.datasets.load_custom">load_custom() (in module modlamp.datasets)</a>
+  </dt>
+
       
   <dt><a href="modlamp.html#modlamp.descriptors.GlobalDescriptor.load_descriptordata">load_descriptordata() (modlamp.descriptors.GlobalDescriptor method)</a>
   </dt>
@@ -608,12 +681,12 @@
   <dt><a href="modlamp.html#module-modlamp.datasets">modlamp.datasets (module)</a>, <a href="modlamp.html#module-modlamp.datasets">[1]</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#module-modlamp.descriptors">modlamp.descriptors (module)</a>, <a href="modlamp.html#module-modlamp.descriptors">[1]</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#module-modlamp.ml">modlamp.ml (module)</a>, <a href="modlamp.html#module-modlamp.ml">[1]</a>
   </dt>
@@ -627,10 +700,18 @@
   </dt>
 
       
+  <dt><a href="modlamp.html#module-modlamp.wetlab">modlamp.wetlab (module)</a>, <a href="modlamp.html#module-modlamp.wetlab">[1]</a>
+  </dt>
+
+      
   <dt><a href="modlamp.html#modlamp.core.mutate_AA">mutate_AA() (in module modlamp.core)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.mutate_AA">(modlamp.sequences.AMPngrams method)</a>
+  </dt>
+
         
   <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric.mutate_AA">(modlamp.sequences.Centrosymmetric method)</a>
   </dt>
@@ -659,6 +740,16 @@
   </dl></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.core.ngrams_apd">ngrams_apd() (in module modlamp.core)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
@@ -674,6 +765,10 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#modlamp.descriptors.PeptideDescriptor">PeptideDescriptor (class in modlamp.descriptors)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.wetlab.CD.plot">plot() (modlamp.wetlab.CD method)</a>
   </dt>
 
       
@@ -719,6 +814,16 @@
 
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="modlamp.html#modlamp.database.query_apd">query_apd() (in module modlamp.database)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.database.query_camp">query_camp() (in module modlamp.database)</a>
+  </dt>
+
+  </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#modlamp.database.query_database">query_database() (in module modlamp.database)</a>
@@ -790,6 +895,10 @@
   </dt>
 
         
+  <dt><a href="modlamp.html#modlamp.sequences.AMPngrams.save_fasta">(modlamp.sequences.AMPngrams method)</a>
+  </dt>
+
+        
   <dt><a href="modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">(modlamp.sequences.Centrosymmetric method)</a>
   </dt>
 
@@ -832,6 +941,10 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="modlamp.html#modlamp.core.template">template() (in module modlamp.core)</a>
+  </dt>
+
+      
+  <dt><a href="modlamp.html#modlamp.ml.test_scores">test_scores() (in module modlamp.ml)</a>
   </dt>
 
   </dl></td>
@@ -882,7 +995,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

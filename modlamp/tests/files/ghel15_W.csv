@@ -1,0 +1,380 @@
+Ghel15
+KLLKLLKKLVGALG
+33
+W
+260,-0.0387017
+259,-0.28634
+258,-0.207946
+257,-0.145527
+256,-0.151571
+255,-0.125049
+254,-0.152391
+253,-0.175206
+252,-0.202822
+251,-0.211934
+250,-0.217478
+249,-0.227681
+248,-0.226735
+247,-0.224743
+246,-0.219425
+245,-0.217264
+244,-0.229258
+243,-0.256263
+242,-0.270378
+241,-0.316141
+240,-0.372253
+239,-0.44176
+238,-0.468177
+237,-0.515505
+236,-0.572255
+235,-0.61857
+234,-0.662977
+233,-0.703839
+232,-0.738694
+231,-0.809824
+230,-0.850842
+229,-0.880149
+228,-0.926354
+227,-0.946369
+226,-0.98167
+225,-0.972648
+224,-0.945193
+223,-0.910679
+222,-0.853859
+221,-0.77171
+220,-0.72446
+219,-0.742086
+218,-0.775771
+217,-0.833637
+216,-0.871177
+215,-0.876037
+214,-0.919998
+213,-1.0011
+212,-1.16577
+211,-1.36937
+210,-1.5854
+209,-1.90564
+208,-2.29016
+207,-2.74127
+206,-3.24589
+205,-3.80445
+204,-4.41465
+203,-4.95975
+202,-5.5461
+201,-6.11642
+200,-6.63575
+199,-7.02196
+198,-7.20368
+197,-7.23145
+196,-7.05798
+195,-6.74077
+194,-6.28741
+193,-5.69945
+192,-5.04059
+191,-4.3279
+190,-3.59407
+189,-2.94161
+188,-2.34898
+187,-1.838
+186,-1.50944
+185,-1.28166
+184,-1.78628
+183,-1.70927
+182,-1.53174
+181,-0.524814
+180,7.04106
+
+
+History: 
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Thu Jul 14 17:13:13 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Thu Jul 14 15:50:36 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Averaged Traces : 
+
+160714_Water.dsx::0
+
+160714_Water.dsx::1
+
+160714_Water.dsx::2
+
+New line :  160714_Water.dsx::Average::0
+
+Time Stamp : Fri Jul 15 14:10:14 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Traces Removed :
+
+160714_Water.dsx::0
+
+160714_Water.dsx::1
+
+160714_Water.dsx::2
+
+Time Stamp : Fri Jul 15 14:10:16 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:10:23 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:10:23 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:10:23 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+C:\Users\Chirascan User\Documents\My Data\Alex\Ghels\20160714\160714_Water.dsx
+
+Attributes :
+
+- Time Stamp :Fri Jul 15 14:10:23 2016
+
+
+- File ID : {683AD862-E293-48b6-87BB-23363094BBC8}
+
+- Is CFR Compliant : false
+
+- Data has been modified:
+
+- Parent File Name : C:\Users\Chirascan User\Documents\My Data\Alex\Ghels\20160714\160714_Water.dsx
+
+- Parent File ID   : {440C3575-F9B5-49a3-8BFC-4BA195A72898}
+
+
+
+Time Stamp : Fri Jul 15 14:13:32 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Averaged Traces : 
+
+0
+
+1
+
+2
+
+New line :  Average::1
+
+Time Stamp : Fri Jul 15 14:13:36 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Baseline set : 160714_Water.dsx::Average:0 
+
+Time Stamp : Fri Jul 15 14:13:38 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Baseline subtracted from :Average:1
+
+New line :  Subtracted::0
+
+Time Stamp : Fri Jul 15 14:13:40 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Baseline unset : 160714_Water.dsx::Average:0 
+
+ Time Stamp : Fri Jul 15 14:13:40 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Traces Removed :
+
+0
+
+1
+
+2
+
+160714_Water.dsx::Average:0
+
+Average:1
+
+Time Stamp : Fri Jul 15 14:13:42 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Original Trace : Subtracted:0
+
+Smoothed Trace : Smooth (s) : 0
+
+Window Size    : 4
+
+Time Stamp : Fri Jul 15 14:13:45 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Original Trace : Subtracted:0
+
+Residual Trace : Smooth (r) : 0
+
+Window Size    : 4
+
+Time Stamp : Fri Jul 15 14:13:45 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+Traces Removed :
+
+Subtracted:0
+
+Smooth (r):0
+
+Time Stamp : Fri Jul 15 14:13:47 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:13:49 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:13:49 2016
+
+
+----------------------------------------------------
+
+
+User : Chirascan User
+
+Version : Chirascan v.4.2.15 Build : Oct 11 2012 14:46:27
+
+DataStore created and initialized for data acquisition.
+
+Time Stamp : Fri Jul 15 14:13:49 2016
+
+
+----------------------------------------------------
+
+
+

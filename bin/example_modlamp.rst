@@ -1,17 +1,18 @@
-modlAMP example script
-======================
-
-A modlamp example script for peptide classification with help of a Random Forest classifier.
-
+Example scripts
+===============
 
 For documentation of the used modules see the the `Documentation <modlamp.html>`_ section.
+
+A modlamp example script for peptide classification with help of a Random Forest classifier.
 
 .. code-block:: python
 
     import pandas as pd
     from modlamp.datasets import load_helicalAMPset
     from modlamp.descriptors import PeptideDescriptor
-    from sklearn.ensemble import RandomForestClassifier
+    from modlamp.ml import train_best_model
+    from modlamp.datasets import load_ACPvsNeg
+    from modlamp.descriptors import PeptideDescriptor
     from modlamp.sequences import MixedLibrary
 
     # define the size of the peptide library to screen
@@ -19,20 +20,17 @@ For documentation of the used modules see the the `Documentation <modlamp.html>`
     print("Chosen library size is %i" % libsize)
 
     # load training sequences
-    data = load_helicalAMPset()
+    data = load_ACPvsNeg()
 
-    # describe sequences with PEPCATS descriptor
-    X = PeptideDescriptor(data.sequences, 'pepcats')
-    X.calculate_crosscorr(7)
+    # describe sequences with PepCATS descriptor
+    descr = PeptideDescriptor(data.sequences, 'pepcats')
+    desc.calculate_crosscorr(7)
 
-    # initialize Random Forest classifier
-    clf = RandomForestClassifier(n_estimators=500, oob_score=True, n_jobs=1)
+    # find best Random Forest classifier based on the PEPCATS data
+    best_RF = train_best_model('RF', descr.descriptor, data.target)  # might take a while
 
-    # fit the classifier on the PEPCATS data
-    clf.fit(X.descriptor, data.target)
-
-    # evaluate classifier performance as RF out of bag score
-    print("RandomForest OOB classifcation score: %.3f" % clf.oob_score_)
+    # evaluate performance of best model in 10-fold cross validation
+    cv_scores(best_RF, descr.descriptor, data.target, cv=10)
 
     # generate a virtual peptide library of `libsize` sequences to screen
     Lib = MixedLibrary(libsize)
@@ -44,7 +42,7 @@ For documentation of the used modules see the the `Documentation <modlamp.html>`
     X_lib.calculate_crosscorr(7)
 
     # predict class probabilities for sequences in Library
-    proba = clf.predict_proba(X_lib.descriptor)
+    proba = best_RF.df_predict(X_lib.descriptor)
 
     # create ordered dictionary with sequences and prediction values and order it according to AMP predictions
     d = pd.DataFrame({'sequence': Lib.sequences, 'prediction': proba[:, 1]})
@@ -65,3 +63,42 @@ descriptors and save the values back to a ``.csv`` file.
     x.calculate_crosscorr(window=7)
     # save calculated descriptor to a .csv file
     x.save_descriptor('Location/of/your/outputfile.csv', delimiter=',')
+
+Many more descriptors are available for calculations. Here is another example of reading a sequence file and
+calculating two sets of descriptors followed by saving them to ``.csv`` files.
+
+.. code-block:: python
+
+    from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
+
+    # Load sequence file into descriptor object
+    pepdesc = PeptideDescriptor('/path/to/sequences.fasta', 'eisenberg')  # use Eisenberg consensus scale
+    globdesc = GlobalDescriptor('/path/to/sequences.fasta')
+
+    # --------------- Peptide Descriptor (AA scales) Calculations ---------------
+    pepdesc.calculate_global()  # calculate global Eisenberg hydrophobicity
+    pepdesc.calculate_moment(append=True)  # calculate Eisenberg hydrophobic moment
+
+    # load other AA scales
+    pepdesc.load_scale('gravy')  # load GRAVY scale
+    pepdesc.calculate_global(append=True)  # calculate global GRAVY hydrophobicity
+    pepdesc.calculate_moment(append=True)  # calculate GRAVY hydrophobic moment
+    pepdesc.load_scale('z3')  # load old Z scale
+    pepdesc.calculate_autocorr(1, append=True)  # calculate global Z scale (=window1 autocorrelation)
+
+    # save descriptor data to .csv file
+    col_names1 = 'ID,Sequence,H_Eisenberg,uH_Eisenberg,H_GRAVY,uH_GRAVY,Z3_1,Z3_2,Z3_3'
+    pepdesc.save_descriptor('/path/to/descriptors1.csv', header=col_names1)
+
+    # --------------- Global Descriptor Calculations ---------------
+    globdesc.length()  # sequence length
+    globdesc.boman_index(append=True)  # Boman index
+    globdesc.aromaticity(append=True)  # global aromaticity
+    globdesc.aliphatic_index(append=True)  # aliphatic index
+    globdesc.instability_index(append=True)  # instability index
+    globdesc.calculate_charge(ph=7.4, amide=False, append=True)  # net charge
+    globdesc.calculate_MW(amide=False, append=True)  # molecular weight
+
+    # save descriptor data to .csv file
+    col_names2 = 'ID,Sequence,Length,BomanIndex,Aromaticity,AliphaticIndex,InstabilityIndex,Charge,MW'
+    globdesc.save_descriptor('/path/to/descriptors2.csv', header=col_names2)

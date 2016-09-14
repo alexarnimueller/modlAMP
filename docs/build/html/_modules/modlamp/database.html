@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.database &mdash; modlamp v2.3.1 documentation</title>
+    <title>modlamp.database &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.3.1',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.3.1 documentation" href="../../index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -53,14 +53,16 @@
 
 <span class="sd">.. moduleauthor:: modlab Alex Mueller ETH Zurich &lt;alex.mueller@pharma.ethz.ch&gt;</span>
 
-<span class="sd">This module incorporates functions to connect to the modlab internal peptide database server and query sequences from</span>
-<span class="sd">the different database tables.</span>
+<span class="sd">This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server</span>
+<span class="sd">is only available in the CADD intranet at ETH Zurich.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
 
 <span class="kn">import</span> <span class="nn">mysql.connector</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
 <span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="kn">import</span> <span class="n">Error</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
@@ -88,14 +90,18 @@
     <span class="k">return</span> <span class="n">db</span>
 
 
-<span class="k">def</span> <span class="nf">_connect</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Connect to a given MySQL database (in config.ini file).</span>
+<span class="sd">    Connect to a given MySQL database in conf.</span>
 <span class="sd">    This function is called by the function :func:`query_sequences`.</span>
 
+<span class="sd">    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.</span>
 <span class="sd">    :return: a mysql.connector connection object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>
@@ -142,6 +148,54 @@
 
     <span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="query_apd"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_apd">[docs]</a><span class="k">def</span> <span class="nf">query_apd</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to query sequences from the antimicrobial peptide database `APD &lt;http://aps.unmc.edu/AP/&gt;`_.</span>
+<span class="sd">    If the whole database should be scraped, simply look up the latest entry ID and take a ``range(1, &#39;latestID&#39;)``</span>
+<span class="sd">    as function input.</span>
+<span class="sd">    </span>
+<span class="sd">    :param ids: {list of int} list of APD IDs to be queried from the database</span>
+<span class="sd">    :return: list of peptide sequences corresponding to entered ids.</span>
+<span class="sd">    :Example:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; query_apd([15, 16, 18, 19, 20])</span>
+<span class="sd">    [&#39;GLFDIVKKVVGALGSL&#39;, &#39;GLFDIVKKVVGAIGSL&#39;, &#39;GLFDIVKKVVGAFGSL&#39;, &#39;GLFDIAKKVIGVIGSL&#39;, &#39;GLFDIVKKIAGHIAGSI&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://aps.unmc.edu/AP/database/query_output.php?ID=</span><span class="si">%0.5d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">seqs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//font[@color=&quot;#ff3300&quot;]/text()&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">seqs</span></div>
+
+
+<div class="viewcode-block" id="query_camp"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_camp">[docs]</a><span class="k">def</span> <span class="nf">query_camp</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to query sequences from the antimicrobial peptide database `CAMP &lt;http://camp.bicnirrh.res.in/&gt;`_.</span>
+<span class="sd">    If the whole database should be scraped, simply look up the latest entry ID and take a ``range(1, &#39;latestID&#39;)``</span>
+<span class="sd">    as function input.</span>
+
+<span class="sd">    :param ids: {list of int} list of CAMP IDs to be queried from the database</span>
+<span class="sd">    :return: list of peptide sequences corresponding to entered ids.</span>
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; query_camp([2705, 2706])</span>
+<span class="sd">    [&#39;GLFDIVKKVVGALGSL&#39;, &#39;GLFDIVKKVVGTLAGL&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://camp.bicnirrh.res.in/seqDisp.php?id=CAMPSQ</span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">seqs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//td[@class=&quot;fasta&quot;]/text()&#39;</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">seqs</span></div>
 </pre></div>
 
           </div>
@@ -178,7 +232,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.3.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

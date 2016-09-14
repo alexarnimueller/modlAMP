@@ -12,9 +12,11 @@ Function                            Characteristics
 :py:func:`plot_feature`             Generate a box plot for visualizing the distribution of a given feature.
 :py:func:`plot_2_features`          Generate a 2D scatter plot of 2 given features.
 :py:func:`plot_3_features`          Generate a 3D scatter plot of 3 given features.
-:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients
+:py:func:`plot_profile`             Generates a profile plot of a sequence to visualize potential linear gradients.
 :py:func:`helical_wheel`            Generates a helical wheel projection plot of a given sequence.
-:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays
+:py:func:`plot_pde`                 Generates a probability density estimation plot of given data arrays.
+:py:func:`plot_violin`              Generates a violin plot for given classes and corresponding distributions.
+:py:func:`plot_aa_distr`            Generates an amino acid frequency plot for all 20 natural amino acids.
 ============================        ==============================================================================
 
 """
@@ -23,6 +25,7 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats.kde import gaussian_kde
+from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.descriptors import PeptideDescriptor
 
@@ -30,7 +33,7 @@ __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
 
-def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None):
+def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels=None, filename=None, colors=None):
     """
     Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet
     as separate boxes.
@@ -40,6 +43,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     :param y_label: Axis label.
     :param x_tick_labels: list of labels to be assigned to the ticks on the x-axis. Must match the number of targets.
     :param filename: filename where to safe the plot. *default = None*
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A feature box plot.
     :Example:
 
@@ -48,7 +52,8 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     .. image:: ../docs/static/uH_Eisenberg.png
         :scale: 50 %
     """
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
 
     fig, ax = plt.subplots()
 
@@ -73,8 +78,8 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         data = y_values
 
     # coloring faces of boxes
-    medianprops = dict(linestyle='-', linewidth=1, color='black')
-    box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=medianprops, labels=labels)
+    median_props = dict(linestyle='-', linewidth=1, color='black')
+    box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, labels=labels)
     plt.setp(box['whiskers'], color='black')
 
     for patch, color in zip(box['boxes'], colors):
@@ -83,6 +88,11 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     ax.set_xlabel('Classes', fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_title('Feature Box-Plot', fontsize=16, fontweight='bold')
+    # only left and bottom axes, no box
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -90,7 +100,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         plt.show()
 
 
-def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', filename=None):
+def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', filename=None, colors=None):
     """
     Function to generate a feature scatter plot of 2 given features. The different target classes given in **targets**
     are plottet in different colors.
@@ -101,16 +111,17 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     :param x_label: X-axis label.
     :param y_label: Y-axis label.
     :param filename: filename where to safe the plot. *default = None*
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A 2D feature scatter plot.
     :Example:
 
-    >>> plot_2_features(a.descriptor,b.descriptor,x_label='uH',y_label='pI',targets=targets)
+    >>> plot_2_features(a.descriptor,b.descriptor,x_label='uH',y_label='pI',targets=targs)
 
     .. image:: ../docs/static/2D_scatter.png
         :scale: 50 %
     """
-
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
 
     fig, ax = plt.subplots()
 
@@ -121,7 +132,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
             yt = y_values[t]  # find all values in y for the given target
             ax.scatter(xt, yt, c=colors[n], alpha=1., s=25,
                        label='class ' + str(n))  # plot scatter for this target group
-            ax.legend(loc='lower right')
+            ax.legend(loc='best')
 
     else:
         ax.scatter(x_values, y_values, c=colors[0], alpha=1., s=25)
@@ -129,6 +140,11 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     ax.set_xlabel(x_label, fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_title('2D Feature Plot', fontsize=16, fontweight='bold')
+    # only left and bottom axes, no box
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -136,7 +152,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
         plt.show()
 
 
-def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None):
+def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None, colors=None):
     """
     Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in **targets**
     are plottet in different colors.
@@ -149,6 +165,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     :param y_label: {str} Y-axis label.
     :param z_label: {str} Z-axis label.
     :param filename: {str} filename where to safe the plot. *default = None* -> show the plot
+    :param colors: {list} colors to take for plotting (strings in HEX formats).
     :return: A 3D feature scatter plot.
     :Example:
 
@@ -158,7 +175,8 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
         :scale: 50 %
     """
 
-    colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']  # available colors
+    if not colors:
+        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -173,13 +191,18 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
                        label='class ' + str(n))  # plot 3Dscatter for this target
             ax.legend(loc='best')
 
-    else:  # plot 3Dscatter for this target group
+    else:  # plot 3D scatter for this target group
         ax.scatter(x_values, y_values, z_values, c=colors[0], alpha=1., s=25)
 
     ax.set_xlabel(x_label, fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_zlabel(z_label, fontweight='bold')
     ax.set_title('3D Feature Plot', fontsize=16, fontweight='bold')
+    # only left and bottom axes, no box
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -187,7 +210,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
         plt.show()
 
 
-def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
+def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color='red', ylim=None):
     """ Function to generate sequence profile plots of a given amino acid scale or a moment thereof.
 
     .. note::
@@ -198,6 +221,8 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
     :param window: {int, uneven} Window size for which the average value is plotted for the center amino acid.
     :param scalename: {str} Amino acid scale to be used to describe the sequence.
     :param filename: {str} Filename  where to safe the plot. *default = None* --> show the plot
+    :param color: {str} Color of the plot line.
+    :param ylim: {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)
     :return: a profile plot of the input sequence interactively or with the specified *filename*
     :Example:
 
@@ -230,13 +255,17 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None):
         fig, ax = plt.subplots()
         x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
         line = ax.plot(x_range, seq_profile)
-        plt.setp(line, color='red', linewidth=2.0)
+        plt.setp(line, color=color, linewidth=2.0)
 
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
         ax.set_title('Sequence Profile For ' + sequence, fontsize=16, fontweight='bold')
         ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)
+        if ylim:
+            ax.set_ylim(ylim)
+        else:
+            ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
 
         # only left and bottom axes, no box
         ax.spines['right'].set_visible(False)

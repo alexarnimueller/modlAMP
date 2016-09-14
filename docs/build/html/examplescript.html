@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. modlAMP example script &mdash; modlamp v2.3.1 documentation</title>
+    <title>3. Example scripts &mdash; modlamp v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.3.1',
+        VERSION:     'v2.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.3.1 documentation" href="index.html" />
+    <link rel="top" title="modlamp v2.4.1 documentation" href="index.html" />
     <link rel="next" title="4. Contribution Guide" href="contributing.html" />
     <link rel="prev" title="2. Package Documentation" href="modlamp.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,14 +52,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="modlamp-example-script">
-<h1>3. modlAMP example script<a class="headerlink" href="#modlamp-example-script" title="Permalink to this headline">¶</a></h1>
-<p>A modlamp example script for peptide classification with help of a Random Forest classifier.</p>
+  <div class="section" id="example-scripts">
+<h1>3. Example scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h1>
 <p>For documentation of the used modules see the the <a class="reference external" href="modlamp.html">Documentation</a> section.</p>
+<p>A modlamp example script for peptide classification with help of a Random Forest classifier.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
 <span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="kn">import</span> <span class="n">train_best_model</span>
+<span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_ACPvsNeg</span>
+<span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
 <span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="kn">import</span> <span class="n">MixedLibrary</span>
 
 <span class="c1"># define the size of the peptide library to screen</span>
@@ -67,20 +69,17 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Chosen library size is </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libsize</span><span class="p">)</span>
 
 <span class="c1"># load training sequences</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
 
-<span class="c1"># describe sequences with PEPCATS descriptor</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
-<span class="n">X</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="c1"># describe sequences with PepCATS descriptor</span>
+<span class="n">descr</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="n">desc</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="c1"># initialize Random Forest classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">oob_score</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># find best Random Forest classifier based on the PEPCATS data</span>
+<span class="n">best_RF</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;RF&#39;</span><span class="p">,</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  <span class="c1"># might take a while</span>
 
-<span class="c1"># fit the classifier on the PEPCATS data</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-
-<span class="c1"># evaluate classifier performance as RF out of bag score</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;RandomForest OOB classifcation score: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">oob_score_</span><span class="p">)</span>
+<span class="c1"># evaluate performance of best model in 10-fold cross validation</span>
+<span class="n">cv_scores</span><span class="p">(</span><span class="n">best_RF</span><span class="p">,</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># generate a virtual peptide library of `libsize` sequences to screen</span>
 <span class="n">Lib</span> <span class="o">=</span> <span class="n">MixedLibrary</span><span class="p">(</span><span class="n">libsize</span><span class="p">)</span>
@@ -92,7 +91,7 @@
 <span class="n">X_lib</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
 <span class="c1"># predict class probabilities for sequences in Library</span>
-<span class="n">proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_lib</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="n">proba</span> <span class="o">=</span> <span class="n">best_RF</span><span class="o">.</span><span class="n">df_predict</span><span class="p">(</span><span class="n">X_lib</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 
 <span class="c1"># create ordered dictionary with sequences and prediction values and order it according to AMP predictions</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">Lib</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">proba</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]})</span>
@@ -111,6 +110,43 @@ descriptors and save the values back to a <code class="docutils literal"><span c
 <span class="n">x</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="c1"># save calculated descriptor to a .csv file</span>
 <span class="n">x</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/outputfile.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Many more descriptors are available for calculations. Here is another example of reading a sequence file and
+calculating two sets of descriptors followed by saving them to <code class="docutils literal"><span class="pre">.csv</span></code> files.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
+
+<span class="c1"># Load sequence file into descriptor object</span>
+<span class="n">pepdesc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/sequences.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># use Eisenberg consensus scale</span>
+<span class="n">globdesc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/sequences.fasta&#39;</span><span class="p">)</span>
+
+<span class="c1"># --------------- Peptide Descriptor (AA scales) Calculations ---------------</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">()</span>  <span class="c1"># calculate global Eisenberg hydrophobicity</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate Eisenberg hydrophobic moment</span>
+
+<span class="c1"># load other AA scales</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">load_scale</span><span class="p">(</span><span class="s1">&#39;gravy&#39;</span><span class="p">)</span>  <span class="c1"># load GRAVY scale</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate global GRAVY hydrophobicity</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate GRAVY hydrophobic moment</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">load_scale</span><span class="p">(</span><span class="s1">&#39;z3&#39;</span><span class="p">)</span>  <span class="c1"># load old Z scale</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate global Z scale (=window1 autocorrelation)</span>
+
+<span class="c1"># save descriptor data to .csv file</span>
+<span class="n">col_names1</span> <span class="o">=</span> <span class="s1">&#39;ID,Sequence,H_Eisenberg,uH_Eisenberg,H_GRAVY,uH_GRAVY,Z3_1,Z3_2,Z3_3&#39;</span>
+<span class="n">pepdesc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/descriptors1.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">col_names1</span><span class="p">)</span>
+
+<span class="c1"># --------------- Global Descriptor Calculations ---------------</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>  <span class="c1"># sequence length</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">boman_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># Boman index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># global aromaticity</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">aliphatic_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># aliphatic index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">instability_index</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># instability index</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="mf">7.4</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># net charge</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">calculate_MW</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># molecular weight</span>
+
+<span class="c1"># save descriptor data to .csv file</span>
+<span class="n">col_names2</span> <span class="o">=</span> <span class="s1">&#39;ID,Sequence,Length,BomanIndex,Aromaticity,AliphaticIndex,InstabilityIndex,Charge,MW&#39;</span>
+<span class="n">globdesc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/descriptors2.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">col_names2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -169,7 +205,7 @@ descriptors and save the values back to a <code class="docutils literal"><span c
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.3.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
