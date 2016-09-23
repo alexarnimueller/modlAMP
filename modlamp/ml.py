@@ -260,8 +260,8 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     else:
         plt.show()
 
-# TODO: suggestion: rename to "predict"
-def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
+
+def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
     """Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
@@ -310,8 +310,8 @@ def df_predictions(classifier, x_test, seqs_test, names_test=None, y_test=np.arr
 
     return dfpred
 
-# TODO: suggestion: rename to "score_cv"
-def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
+
+def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
 
     :param classifier: {classifier instance} trained classifier used for predictions.
@@ -348,8 +348,8 @@ def cv_scores(classifier, X, y, cv=10, metrics=None, names=None):
 
     return df_scores
 
-# TODO: suggestion: rename to "score_testset"
-def test_scores(classifier, X_test, y_test):
+
+def score_testset(classifier, X_test, y_test):
     """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
     (roc_auc). See sklearn.metrics for more information
