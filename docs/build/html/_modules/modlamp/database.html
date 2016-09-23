@@ -121,7 +121,7 @@
 <span class="sd">    column names is extracted and returned.</span>
 
 <span class="sd">    :param table: the mysql database table to be queried</span>
-<span class="sd">    :param columns: a list of the column names {str} to be extracted from the table *default*: &#39;*&#39; (all columns)</span>
+<span class="sd">    :param columns: a list of the column names {str} to be extracted from the table *default*: ``*`` (all columns)</span>
 <span class="sd">    :return: queried data as a numpy array</span>
 <span class="sd">    :Example:</span>
 
@@ -130,15 +130,15 @@
 <span class="sd">    Connecting to MySQL database...</span>
 <span class="sd">    connection established!</span>
 <span class="sd">    &gt;&gt;&gt; data[:5]</span>
-<span class="sd">    array([    [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
-<span class="sd">        [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
-<span class="sd">        [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
-<span class="sd">        [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
-<span class="sd">        [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
+<span class="sd">    array([ [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
+<span class="sd">            [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
+<span class="sd">            [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
+<span class="sd">            [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
+<span class="sd">            [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
 
 <span class="sd">    .. note::</span>
-<span class="sd">        If &#39;None&#39; or &#39;NULL&#39; appears as a value, this means no data was measured for this peptide and not that activity</span>
-<span class="sd">        is None (inactive).</span>
+<span class="sd">        If ``None`` or ``NULL`` appears as a value, this means no data was measured for this peptide and not that</span>
+<span class="sd">        activity is none (inactive).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>

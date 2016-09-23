@@ -157,35 +157,18 @@ div#sidebarbutton {
 /* -- hyperlink styles ------------------------------------------------------ */
 
 a {
-    color: {{ theme_linkcolor }};
+    color: #0B486B;
     text-decoration: none;
 }
 
 a:visited {
-    color: {{ theme_visitedlinkcolor }};
+    color: #0B486B;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
 }
-
-{% if theme_externalrefs|tobool %}
-a.external {
-   text-decoration: none;
-   border-bottom: 1px dashed {{ theme_linkcolor }};
-}
-
-a.external:hover {
-   text-decoration: none;
-   border-bottom: none;
-}
-
-a.external:visited {
-    text-decoration: none;
-    border-bottom: 1px dashed {{ theme_visitedlinkcolor }};
-}
-{% endif %}
 
 /* -- body styles ----------------------------------------------------------- */
 
@@ -212,7 +195,7 @@ div.body h5 { font-size: 110%; }
 div.body h6 { font-size: 100%; }
 
 a.headerlink {
-    color: {{ theme_headlinkcolor }};
+    color: #0B486B;
     font-size: 0.8em;
     padding: 0 4px 0 4px;
     text-decoration: none;
@@ -246,12 +229,12 @@ div.admonition ul, div.admonition ol {
 
 div.note {
     background-color: #eee;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
 }
 
 div.seealso {
     background-color: #ffffe6;
-    border: 1px solid #eeeedd;
+    border: 2px solid #fafac8;
 }
 
 div.topic {
@@ -260,7 +243,7 @@ div.topic {
 
 div.warning {
     background-color: #ffe4e4;
-    border: 1px solid #f66;
+    border: 2px solid #f66;
 }
 
 p.admonition-title {
@@ -276,9 +259,7 @@ pre {
     background-color: {{ theme_codebgcolor }};
     color: {{ theme_codetextcolor }};
     line-height: 120%;
-    border: 1.5px solid #ccff66;
-    border-left: none;
-    border-right: none;
+    border: 2px solid #ccff66;
 }
 
 code {
@@ -289,6 +270,10 @@ code {
 
 th {
     background-color: #f2f2f2;
+}
+
+td {
+    line-height: 20px;
 }
 
 .warning code {
@@ -320,9 +305,22 @@ dl.class {
     border-bottom: 2px solid #000000;
 }
 
-.property,
-.descclassname,
-.descname,
-.sig-paren {
+dt {
+    padding-top: 25px;
+}
+
+em.property {
     font-size: 140%;
+}
+
+code.property, code.descclassname {
+    font-size: 120%;
+}
+
+code.descname {
+    font-size: 150%;
+}
+
+span.pre {
+    font-size: 120%;
 }

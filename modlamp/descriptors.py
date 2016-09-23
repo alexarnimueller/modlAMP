@@ -89,11 +89,9 @@ def _one_crosscorr(seq, window, scale):
 
 
 def _charge(seq, ph=7.0, amide=False):
-    """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR
-    function. The method used is first described by Bjellqvist. In the case of amidation, the value for the
-    'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
+    """Calculates charge of a single sequence. The method used is first described by Bjellqvist. In the case of
+    amidation, the value for the  'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
     The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-    Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
     **pos_pks** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -225,12 +223,10 @@ class GlobalDescriptor(object):
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
-        Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
         (and Cterm is added to the pos_pKs dictionary.
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-        Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
         **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -288,8 +284,6 @@ class GlobalDescriptor(object):
         """
         Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
         The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-        The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
-        module :mod:`Bio.SeqUtils.ProtParam`.
 
          **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -1039,13 +1033,15 @@ class PeptideDescriptor(object):
         array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])
         >>> AMP.descriptor.shape
         (1, 20)
+        
+        .. seealso:: :py:func:`modlamp.core.count_aa()`
         """
         desc = list()
         scl = 1
         for seq in self.sequences:
             if scale == 'relative':
                 scl = len(seq)
-            d = {a: (float(seq.count(a)) / scl) for a in self.scale.keys()}
+            d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
             od = collections.OrderedDict(sorted(d.items()))
             desc.append(od.values())
 

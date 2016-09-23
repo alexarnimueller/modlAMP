@@ -314,6 +314,17 @@
     <span class="k">return</span> <span class="n">weights</span></div>
 
 
+<div class="viewcode-block" id="count_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.count_aa">[docs]</a><span class="k">def</span> <span class="nf">count_aa</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to count the amino acids occuring in a given sequence.</span>
+<span class="sd">    </span>
+<span class="sd">    :param seq: {str} amino acid sequence</span>
+<span class="sd">    :return: {dict} dictionary with amino acids as keys and their counts in the sequence as values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aa</span> <span class="o">=</span> <span class="n">aa_weights</span><span class="p">()</span>
+    <span class="n">aa</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">aa</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">aa</span></div>
+
+
 <div class="viewcode-block" id="aa_energies"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.aa_energies">[docs]</a><span class="k">def</span> <span class="nf">aa_energies</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Function holding free energies of transfer between cyclohexane and water for all natural amino acids.</span>
 <span class="sd">    H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.</span>

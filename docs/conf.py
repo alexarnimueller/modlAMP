@@ -142,8 +142,6 @@ html_theme_options = {
     "footerbgcolor": "#0B486B",
     "relbarbgcolor": "#0B486B",
     "sidebarlinkcolor": "#e8f5fd",
-    "linkcolor": "#0B486B",
-    "visitedlinkcolor": "#0B486B",
     "headlinkcolor": "#0B486B",
 }
 
