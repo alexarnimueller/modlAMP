@@ -4159,8 +4159,8 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.df_predictions">
-<code class="descclassname">modlamp.ml.</code><code class="descname">df_predictions</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#df_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.df_predictions" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.predict">
+<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
 it returns the scoring value for the test data.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4187,8 +4187,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.cv_scores">
-<code class="descclassname">modlamp.ml.</code><code class="descname">cv_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#cv_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.cv_scores" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.score_cv">
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the cross validation scores for the specified scoring metrics as a pandas data frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4213,8 +4213,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.test_scores">
-<code class="descclassname">modlamp.ml.</code><code class="descname">test_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#test_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.test_scores" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.score_testset">
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
 are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
 (roc_auc). See sklearn.metrics for more information

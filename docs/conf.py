@@ -145,7 +145,6 @@ html_theme_options = {
     "linkcolor": "#0B486B",
     "visitedlinkcolor": "#0B486B",
     "headlinkcolor": "#0B486B",
-    "headbgcolor": "#e8f5fd",
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
