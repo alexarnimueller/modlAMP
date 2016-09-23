@@ -22,7 +22,6 @@ import sys
 import json
 
 import numpy as np
-from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -143,9 +142,6 @@ class GlobalDescriptor(object):
     - `Boman Index          <modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
     - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
     - `Instability Index    <modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
-
-    Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of
-    `Biopython <http://biopython.org/>`_.
     """
 
     def __init__(self, seqs):
