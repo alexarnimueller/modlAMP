@@ -64,9 +64,9 @@ class CD:
         
         >>> cd = CD('/path/to/your/folder', 185, 260)
         >>> cd.filenames
-        ['160819_Ghel1_T_smooth.csv', '160819_Ghel1_W_smooth.csv', '160819_Ghel5_T_smooth.csv', ...]
+        ['160819_Pep1_T_smooth.csv', '160819_Pep1_W_smooth.csv', '160819_Pep5_T_smooth.csv', ...]
         >>> cd.names
-        ['Ghel 10', 'Ghel 10', 'Ghel 11', 'Ghel 11', ... ]
+        ['Pep 10', 'Pep 10', 'Pep 11', 'Pep 11', ... ]
         >>> cd.conc_umol
         [33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  ... ]
         >>> cd.meanres_mw

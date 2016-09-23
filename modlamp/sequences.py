@@ -20,8 +20,8 @@ Class                               Characteristics
 :py:class:`AMPngrams`               Generates sequences from most frequent ngrams in the APD3.
 ============================        ===============================================================================
 
-.. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary` class.
-
+.. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary`
+    class. To remove duplicates, call the class methods :py:func:`self.filter_duplicates()`.
 """
 
 from numpy import random
