@@ -6,10 +6,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1. README &mdash; modlamp v2.4.1 documentation</title>
+    <title>1. README &mdash; modlAMP v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -23,7 +24,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.1 documentation" href="index.html" />
+    <link rel="shortcut icon" href="_static/modlamp.ico"/>
+    <link rel="top" title="modlAMP v2.4.1 documentation" href="index.html" />
     <link rel="next" title="2. Package Documentation" href="modlamp.html" />
     <link rel="prev" title="Welcome to modlAMP’s documentation!" href="index.html" /> 
   </head>
@@ -43,7 +45,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to modlAMP’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -140,7 +142,7 @@ amino acid scales. For further information consider the docs for <a class="refer
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file <code class="docutils literal"><span class="pre">APD3.fasta</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">APD</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/Path/to/file/APD3.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
@@ -170,7 +172,7 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -185,20 +187,32 @@ are stored in the FASTA formatted file <code class="docutils literal"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span> <span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
 <p>Further plotting methods like <strong>helical wheel plots</strong> are available. See the documentation for the
 <a class="reference external" href="modlamp.html#module-modlamp.plot">plot</a> module.</p>
 </div>
 <div class="section" id="database-connection">
 <h3>1.2.5. Database Connection<a class="headerlink" href="#database-connection" title="Permalink to this headline">¶</a></h3>
-<p>modlamp hosts a module for connecting to the modlab internal peptide database on the gsdelta641 server.
+<p>Peptides from the two most prominent AMP databases <a class="reference external" href="http://aps.unmc.edu/AP/">APD</a> and <a class="reference external" href="http://camp.bicnirrh.res.in/">CAMP</a> can be directly scraped with the <a class="reference internal" href="modlamp.html#module-modlamp.database" title="modlamp.database"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.database</span></code></a> module.</p>
+<p>For downloading a set of sequences from the <strong>APD</strong> database, first get the IDs of the sequences you want to query
+from the APD website. Then proceed as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query_apd</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>  <span class="c1"># download sequences with IDs 15</span>
+<span class="go">[&#39;GLFDIVKKVVGALGSL&#39;,&#39;GLFDIVKKVVGAIGSL&#39;,&#39;GLFDIVKKVVGTLAGL&#39;,&#39;GLFDIVKKVVGAFGSL&#39;,&#39;GLFDIAKKVIGVIGSL&#39;,&#39;GLFDIVKKIAGHIAGSI&#39;]</span>
+</pre></div>
+</div>
+<p>The same holds true for the <strong>CAMP</strong> database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query_camp</span><span class="p">([</span><span class="mi">2705</span><span class="p">,</span> <span class="mi">2706</span><span class="p">])</span>
+<span class="go">[&#39;GLFDIVKKVVGALGSL&#39;,&#39;GLFDIVKKVVGTLAGL&#39;]</span>
+</pre></div>
+</div>
+<p>modlamp also hosts a module for connecting to the modlab internal peptide database on our local server.
 Peptide sequences included in any table in the peptides database can be downloaded directly in python.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This module only works in the modlab intranet at ETH Zurich</p>
 </div>
-<p>For querying sequences from a given table, the sequences must be stored in a column called &#8220;sequences&#8221; in the mysql table.
-The query then works as follows:</p>
+<p>For querying sequences from a given table, the sequences must be stored in a column called &#8220;sequences&#8221; in the mysql
+table. The query then works as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.database</span> <span class="kn">import</span> <span class="n">query_database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_database</span><span class="p">(</span><span class="s1">&#39;modlab_experiments&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
 <span class="go">Password: &gt;? ***********</span>
@@ -226,9 +240,10 @@ datasets for classification tasks, that can be read by the <a class="reference i
 <span class="go">[&#39;target_names&#39;, &#39;target&#39;, &#39;feature_names&#39;, &#39;sequences&#39;]</span>
 </pre></div>
 </div>
-<p>The variable <code class="docutils literal"><span class="pre">data</span></code> holds <strong>four different keys, which can also be called as its attributes</strong>. The available attributes
-for <code class="xref py py-func docutils literal"><span class="pre">load_helicalAMPset()</span></code> are <code class="xref py py-attr docutils literal"><span class="pre">target_names</span></code> (target names), <code class="xref py py-attr docutils literal"><span class="pre">target</span></code> (the target class vector),
-<code class="xref py py-attr docutils literal"><span class="pre">feature_names</span></code> (the name of the data features, here: &#8216;Sequence&#8217;) and <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> (the loaded sequences).</p>
+<p>The variable <code class="docutils literal"><span class="pre">data</span></code> holds <strong>four different keys, which can also be called as its attributes</strong>. The available
+attributes for <code class="xref py py-func docutils literal"><span class="pre">load_helicalAMPset()</span></code> are <code class="xref py py-attr docutils literal"><span class="pre">target_names</span></code> (target names), <code class="xref py py-attr docutils literal"><span class="pre">target</span></code> (the
+target class vector), <code class="xref py py-attr docutils literal"><span class="pre">feature_names</span></code> (the name of the data features, here: &#8216;Sequence&#8217;) and
+<code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> (the loaded sequences).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -242,6 +257,33 @@ for <code class="xref py py-func docutils literal"><span class="pre">load_helica
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 <span class="go">[&#39;FDQAQTEIQATMEEN&#39;, &#39;DVDAALHYLARLVEAG&#39;, &#39;RCPLVIDYLIDLATRS&#39;, &#39;NPATLMMFFK&#39;, &#39;NLEDSIQILRTD&#39;]</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="analysing-wetlab-circular-dichroism-data">
+<h3>1.2.7. Analysing Wetlab Circular Dichroism Data<a class="headerlink" href="#analysing-wetlab-circular-dichroism-data" title="Permalink to this headline">¶</a></h3>
+<p>The modlule <a class="reference internal" href="modlamp.html#module-modlamp.wetlab" title="modlamp.wetlab"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.wetlab</span></code></a> includes the class <a class="reference internal" href="modlamp.html#modlamp.wetlab.CD" title="modlamp.wetlab.CD"><code class="xref py py-class docutils literal"><span class="pre">modlamp.wetlab.CD</span></code></a> to analyse raw circular dichroism
+data from wetlab experiments. The following example shows how to load a raw datafile and calculate secondary
+structure contents:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>  <span class="c1"># load all files in a specified folder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">names</span>  <span class="c1"># peptide names read from the file headers</span>
+<span class="go">[&#39;Pep 10&#39;, &#39;Pep 10&#39;, &#39;Pep 11&#39;, &#39;Pep 11&#39;, ... ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>  <span class="c1"># calculate the mean residue ellipticity values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">meanres_ellipticity</span>
+<span class="go">array([[   260.        ,   -266.95804196],</span>
+<span class="go">       [   259.        ,   -338.13286713],</span>
+<span class="go">       [   258.        ,   -387.25174825], ...])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">24.</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">3.492185008</span><span class="p">,</span> <span class="n">induction</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># calculate helical content</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity_values</span>
+<span class="go">               Name     Solvent  Helicity  Induction</span>
+<span class="go">            0  Aurein       T    100.0     3.823</span>
+<span class="go">            1  Aurein       W    26.16     0.000</span>
+<span class="go">            2  Klak         T    76.38     3.048</span>
+<span class="go">            3  Klak         W    25.06     0.000 ...</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="modlamp.html#modlamp.wetlab.CD.helicity" title="modlamp.wetlab.CD.helicity"><code class="xref py py-func docutils literal"><span class="pre">modlamp.wetlab.CD.helicity()</span></code></a></p>
 </div>
 </div>
 </div>
@@ -267,6 +309,7 @@ for <code class="xref py py-func docutils literal"><span class="pre">load_helica
 <li><a class="reference internal" href="#plotting-features">1.2.4. Plotting Features</a></li>
 <li><a class="reference internal" href="#database-connection">1.2.5. Database Connection</a></li>
 <li><a class="reference internal" href="#loading-prepared-datasets">1.2.6. Loading Prepared Datasets</a></li>
+<li><a class="reference internal" href="#analysing-wetlab-circular-dichroism-data">1.2.7. Analysing Wetlab Circular Dichroism Data</a></li>
 </ul>
 </li>
 </ul>
@@ -318,11 +361,12 @@ for <code class="xref py py-func docutils literal"><span class="pre">load_helica
         <li class="right" >
           <a href="index.html" title="Welcome to modlAMP’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Sep 23, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

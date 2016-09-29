@@ -70,7 +70,7 @@ def query_database(table, columns=None):
     column names is extracted and returned.
 
     :param table: the mysql database table to be queried
-    :param columns: a list of the column names {str} to be extracted from the table *default*: '*' (all columns)
+    :param columns: a list of the column names {str} to be extracted from the table *default*: ``*`` (all columns)
     :return: queried data as a numpy array
     :Example:
 
@@ -79,15 +79,15 @@ def query_database(table, columns=None):
     Connecting to MySQL database...
     connection established!
     >>> data[:5]
-    array([    ['ILGTILGILKGL', None, 1.0],
-        ['ILGTILGFLKGL', None, 1.0],
-        ['ILGNILGFLKGL', None, 1.0],
-        ['ILGQILGILKGL', None, 1.0],
-        ['ILGHILGYLKGL', None, 1.0]], dtype=object)
+    array([ ['ILGTILGILKGL', None, 1.0],
+            ['ILGTILGFLKGL', None, 1.0],
+            ['ILGNILGFLKGL', None, 1.0],
+            ['ILGQILGILKGL', None, 1.0],
+            ['ILGHILGYLKGL', None, 1.0]], dtype=object)
 
     .. note::
-        If 'None' or 'NULL' appears as a value, this means no data was measured for this peptide and not that activity
-        is None (inactive).
+        If ``None`` or ``NULL`` appears as a value, this means no data was measured for this peptide and not that
+        activity is none (inactive).
     """
     if not columns:
         columns = ['*']

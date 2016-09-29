@@ -263,6 +263,17 @@ def aa_weights():
     return weights
 
 
+def count_aa(seq):
+    """Function to count the amino acids occuring in a given sequence.
+    
+    :param seq: {str} amino acid sequence
+    :return: {dict} dictionary with amino acids as keys and their counts in the sequence as values.
+    """
+    aa = aa_weights()
+    aa = {k: seq.count(k) for k, v in aa.items()}
+    return aa
+
+
 def aa_energies():
     """Function holding free energies of transfer between cyclohexane and water for all natural amino acids.
     H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.

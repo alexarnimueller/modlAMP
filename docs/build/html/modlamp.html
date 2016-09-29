@@ -6,10 +6,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlamp v2.4.1 documentation</title>
+    <title>2. Package Documentation &mdash; modlAMP v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -23,7 +24,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.1 documentation" href="index.html" />
+    <link rel="shortcut icon" href="_static/modlamp.ico"/>
+    <link rel="top" title="modlAMP v2.4.1 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -43,7 +45,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -131,8 +133,6 @@ the <strong>methods</strong> linked below:</p>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">Aliphatic Index</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">Instability Index</a></li>
 </ul>
-<p>Most of the methods calculate values with help of the <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code> module of
-<a class="reference external" href="http://biopython.org/">Biopython</a>.</p>
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>seqs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.__init__" title="Permalink to this definition">¶</a></dt>
@@ -225,12 +225,10 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.calculate_charge">
 <code class="descname">calculate_charge</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_charge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</p>
+<dd><p>Method to overall charge of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
 <p>The method used is first described by Bjellqvist. In the case of amidation, the value for the &#8216;Cterm&#8217; pKa is 15
 (and Cterm is added to the pos_pKs dictionary.
-The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).
-Further references: see the <a class="reference external" href="http://biopython.org/">Biopython</a> module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.IsoelectricPoint</span></code>.`</p>
+The pKa scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).</p>
 <p><strong>pos_pKs</strong> = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}</p>
 <p><strong>neg_pKs</strong> = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -295,9 +293,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <dt id="modlamp.descriptors.GlobalDescriptor.isoelectric_point">
 <code class="descname">isoelectric_point</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.isoelectric_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.isoelectric_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to calculate the isoelectric point of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
-The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).
-The method used is based on the IsoelectricPoint module in <a class="reference external" href="http://biopython.org/">Biopython</a>
-module <code class="xref py py-mod docutils literal"><span class="pre">Bio.SeqUtils.ProtParam</span></code>.</p>
+The pK scale is extracted from: <a class="reference external" href="http://www.hbcpnetbase.com/">http://www.hbcpnetbase.com/</a> (CRC Handbook of Chemistry and Physics, 96th ed).</p>
 <blockquote>
 <div><p><strong>pos_pKs</strong> = {&#8216;Nterm&#8217;: 9.38, &#8216;K&#8217;: 10.67, &#8216;R&#8217;: 12.10, &#8216;H&#8217;: 6.04}</p>
 <p><strong>neg_pKs</strong> = {&#8216;Cterm&#8217;: 2.15, &#8216;D&#8217;: 3.71, &#8216;E&#8217;: 4.15, &#8216;C&#8217;: 8.14, &#8216;Y&#8217;: 10.10}</p>
@@ -1143,6 +1139,10 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <span class="go">(1, 20)</span>
 </pre></div>
 </div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.count_aa" title="modlamp.core.count_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.count_aa()</span></code></a></p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1500,7 +1500,8 @@ The following classes are available:</p>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">During the process of sequence generation, duplicates are only removed for the <a class="reference internal" href="#modlamp.sequences.MixedLibrary" title="modlamp.sequences.MixedLibrary"><code class="xref py py-class docutils literal"><span class="pre">MixedLibrary</span></code></a> class.</p>
+<p class="last">During the process of sequence generation, duplicates are only removed for the <a class="reference internal" href="#modlamp.sequences.MixedLibrary" title="modlamp.sequences.MixedLibrary"><code class="xref py py-class docutils literal"><span class="pre">MixedLibrary</span></code></a>
+class. To remove duplicates, call the class methods <code class="xref py py-func docutils literal"><span class="pre">self.filter_duplicates()</span></code>.</p>
 </div>
 <dl class="class">
 <dt id="modlamp.sequences.Random">
@@ -3222,7 +3223,7 @@ column names is extracted and returned.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>table</strong> &#8211; the mysql database table to be queried</li>
-<li><strong>columns</strong> &#8211; a list of the column names {str} to be extracted from the table <em>default</em>: &#8216;*&#8217; (all columns)</li>
+<li><strong>columns</strong> &#8211; a list of the column names {str} to be extracted from the table <em>default</em>: <code class="docutils literal"><span class="pre">*</span></code> (all columns)</li>
 </ul>
 </td>
 </tr>
@@ -3238,17 +3239,17 @@ column names is extracted and returned.</p>
 <span class="go">Connecting to MySQL database...</span>
 <span class="go">connection established!</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">array([    [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
-<span class="go">    [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
-<span class="go">    [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
-<span class="go">    [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
-<span class="go">    [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
+<span class="go">array([ [&#39;ILGTILGILKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGTILGFLKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGNILGFLKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGQILGILKGL&#39;, None, 1.0],</span>
+<span class="go">        [&#39;ILGHILGYLKGL&#39;, None, 1.0]], dtype=object)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If &#8216;None&#8217; or &#8216;NULL&#8217; appears as a value, this means no data was measured for this peptide and not that activity
-is None (inactive).</p>
+<p class="last">If <code class="docutils literal"><span class="pre">None</span></code> or <code class="docutils literal"><span class="pre">NULL</span></code> appears as a value, this means no data was measured for this peptide and not that
+activity is none (inactive).</p>
 </div>
 </dd></dl>
 
@@ -3699,7 +3700,7 @@ as separate boxes.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># d: PeptideDescriptor instance</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg1.png"><img alt="_images/uH_Eisenberg1.png" src="_images/uH_Eisenberg1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3732,7 +3733,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">targets</span><span class="o">=</span><span class="n">targs</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter1.png"><img alt="_images/2D_scatter1.png" src="_images/2D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3767,7 +3768,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter1.png"><img alt="_images/3D_scatter1.png" src="_images/3D_scatter1.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -4156,8 +4157,8 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.df_predictions">
-<code class="descclassname">modlamp.ml.</code><code class="descname">df_predictions</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#df_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.df_predictions" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.predict">
+<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
 it returns the scoring value for the test data.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4184,8 +4185,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.cv_scores">
-<code class="descclassname">modlamp.ml.</code><code class="descname">cv_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#cv_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.cv_scores" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.score_cv">
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the cross validation scores for the specified scoring metrics as a pandas data frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4210,8 +4211,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.ml.test_scores">
-<code class="descclassname">modlamp.ml.</code><code class="descname">test_scores</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#test_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.test_scores" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.ml.score_testset">
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
 are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
 (roc_auc). See sklearn.metrics for more information
@@ -4296,9 +4297,9 @@ must start in line 5 (separated in 2 columns: <em>Wavelength</em> and <em>Signal
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">filenames</span>
-<span class="go">[&#39;160819_Ghel1_T_smooth.csv&#39;, &#39;160819_Ghel1_W_smooth.csv&#39;, &#39;160819_Ghel5_T_smooth.csv&#39;, ...]</span>
+<span class="go">[&#39;160819_Pep1_T_smooth.csv&#39;, &#39;160819_Pep1_W_smooth.csv&#39;, &#39;160819_Pep5_T_smooth.csv&#39;, ...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">names</span>
-<span class="go">[&#39;Ghel 10&#39;, &#39;Ghel 10&#39;, &#39;Ghel 11&#39;, &#39;Ghel 11&#39;, ... ]</span>
+<span class="go">[&#39;Pep 10&#39;, &#39;Pep 10&#39;, &#39;Pep 11&#39;, &#39;Pep 11&#39;, ... ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">conc_umol</span>
 <span class="go">[33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  33.0,  ... ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">meanres_mw</span>
@@ -4564,6 +4565,22 @@ This method is used by the base class <a class="reference internal" href="#modla
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.4.1.</span></p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.core.count_aa">
+<code class="descclassname">modlamp.core.</code><code class="descname">count_aa</code><span class="sig-paren">(</span><em>seq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#count_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.count_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to count the amino acids occuring in a given sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seq</strong> &#8211; {str} amino acid sequence</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">{dict} dictionary with amino acids as keys and their counts in the sequence as values.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -5052,11 +5069,12 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlamp v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Sep 23, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

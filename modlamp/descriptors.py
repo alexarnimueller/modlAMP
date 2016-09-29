@@ -17,16 +17,17 @@ Class                                Characteristics
 
 import collections
 import os
+from os.path import dirname, join
 import sys
+import json
 
 import numpy as np
-from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
 
-from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, \
+from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, count_aa, \
     random_selection, minmax_selection, filter_sequences, filter_duplicates, keep_natural_aa, aa_weights, aa_energies
 
 __author__ = 'modlab'
@@ -88,11 +89,9 @@ def _one_crosscorr(seq, window, scale):
 
 
 def _charge(seq, ph=7.0, amide=False):
-    """Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR
-    function. The method used is first described by Bjellqvist. In the case of amidation, the value for the
-    'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
+    """Calculates charge of a single sequence. The method used is first described by Bjellqvist. In the case of
+    amidation, the value for the  'Cterm' pKa is 15 (and Cterm is added to the pos_pks dictionary.
     The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-    Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
     **pos_pks** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -110,7 +109,7 @@ def _charge(seq, ph=7.0, amide=False):
         pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
         neg_pks = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
     
-    aa_content = ProteinAnalysis(seq).count_amino_acids()
+    aa_content = count_aa(seq)
     aa_content['Nterm'] = 1.0
     aa_content['Cterm'] = 1.0
     pos_charge = 0.0
@@ -141,9 +140,6 @@ class GlobalDescriptor(object):
     - `Boman Index          <modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
     - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
     - `Instability Index    <modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
-
-    Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of
-    `Biopython <http://biopython.org/>`_.
     """
 
     def __init__(self, seqs):
@@ -227,12 +223,10 @@ class GlobalDescriptor(object):
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
-        Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
         (and Cterm is added to the pos_pKs dictionary.
         The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-        Further references: see the `Biopython <http://biopython.org/>`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`
 
         **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -290,8 +284,6 @@ class GlobalDescriptor(object):
         """
         Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
         The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
-        The method used is based on the IsoelectricPoint module in `Biopython <http://biopython.org/>`_
-        module :mod:`Bio.SeqUtils.ProtParam`.
 
          **pos_pKs** = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
 
@@ -371,8 +363,13 @@ class GlobalDescriptor(object):
         array([[ 63.95714286]])
         """
         desc = []
+        module_path = dirname(__file__)
+        dimv = json.load(open(join(module_path, 'data', 'dimv.json')))
         for seq in self.sequences:
-            desc.append(ProteinAnalysis(seq).instability_index())
+            stabindex = float()
+            for i in range(len(seq) - 1):
+                stabindex += dimv[seq[i]][seq[i+1]]
+            desc.append((10.0 / len(seq)) * stabindex)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -1036,13 +1033,15 @@ class PeptideDescriptor(object):
         array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])
         >>> AMP.descriptor.shape
         (1, 20)
+        
+        .. seealso:: :py:func:`modlamp.core.count_aa()`
         """
         desc = list()
         scl = 1
         for seq in self.sequences:
             if scale == 'relative':
                 scl = len(seq)
-            d = {a: (float(seq.count(a)) / scl) for a in self.scale.keys()}
+            d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
             od = collections.OrderedDict(sorted(d.items()))
             desc.append(od.values())
 

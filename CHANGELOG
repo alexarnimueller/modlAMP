@@ -21,3 +21,4 @@ v2.3.0  13.07.2016 -- new parallel calculation of auto- and cross-correlated des
 v2.3.1  25.07.2016 -- new sequences class Hepahelices for generating amphipathic sequences with a heparin-binding-domain
 v2.4.0  22.08.2016 -- new module wetlab with class CD for analysis and plotting of circular dichroism data
 v2.4.1  14.09.2016 -- new sequence class AMPngrams for generating sequences out of frequent APD3 ngrams
+v2.5.0  23.09.2016 -- clarified documentation and replaced Biopython functions by own code

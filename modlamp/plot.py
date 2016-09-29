@@ -28,6 +28,7 @@ from scipy.stats.kde import gaussian_kde
 from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.descriptors import PeptideDescriptor
+from modlamp.core import count_aa
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -564,7 +565,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
     .. versionadded:: v2.2.5
     """
-    aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+    aa = count_aa('')
     d = PeptideDescriptor(sequences, 'eisenberg')
     d.count_aa(scale='relative')
     perc = np.mean(d.descriptor, axis=0)
@@ -576,7 +577,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(perc) + 0.05])
-    plt.xticks(range(20), aa, fontweight='bold')
+    plt.xticks(range(20), aa.keys(), fontweight='bold')
     plt.ylabel('Amino Acid Frequency', fontweight='bold')
     plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
 

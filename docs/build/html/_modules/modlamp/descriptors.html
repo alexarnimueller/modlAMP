@@ -6,10 +6,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &mdash; modlamp v2.4.1 documentation</title>
+    <title>modlamp.descriptors &mdash; modlAMP v2.4.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -23,7 +24,8 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="modlamp v2.4.1 documentation" href="../../index.html" />
+    <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
+    <link rel="top" title="modlAMP v2.4.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -36,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -66,16 +68,17 @@
 
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">from</span> <span class="nn">sklearn.externals.joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
 
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">load_scale</span><span class="p">,</span> <span class="n">read_fasta</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">filter_values</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> <span class="n">count_aa</span><span class="p">,</span> \
     <span class="n">random_selection</span><span class="p">,</span> <span class="n">minmax_selection</span><span class="p">,</span> <span class="n">filter_sequences</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">aa_weights</span><span class="p">,</span> <span class="n">aa_energies</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;modlab&#39;</span>
@@ -137,11 +140,9 @@
 
 
 <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculates charge of a single sequence. Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR</span>
-<span class="sd">    function. The method used is first described by Bjellqvist. In the case of amidation, the value for the</span>
-<span class="sd">    &#39;Cterm&#39; pKa is 15 (and Cterm is added to the pos_pks dictionary.</span>
+    <span class="sd">&quot;&quot;&quot;Calculates charge of a single sequence. The method used is first described by Bjellqvist. In the case of</span>
+<span class="sd">    amidation, the value for the  &#39;Cterm&#39; pKa is 15 (and Cterm is added to the pos_pks dictionary.</span>
 <span class="sd">    The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).</span>
-<span class="sd">    Further references: see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
 <span class="sd">    **pos_pks** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
 
@@ -159,7 +160,7 @@
         <span class="n">pos_pks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Nterm&#39;</span><span class="p">:</span> <span class="mf">9.38</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="mf">10.67</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">12.10</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">6.04</span><span class="p">}</span>
         <span class="n">neg_pks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Cterm&#39;</span><span class="p">:</span> <span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">3.71</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">4.15</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">8.14</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">10.10</span><span class="p">}</span>
     
-    <span class="n">aa_content</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">count_amino_acids</span><span class="p">()</span>
+    <span class="n">aa_content</span> <span class="o">=</span> <span class="n">count_aa</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
     <span class="n">aa_content</span><span class="p">[</span><span class="s1">&#39;Nterm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">aa_content</span><span class="p">[</span><span class="s1">&#39;Cterm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">pos_charge</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -190,9 +191,6 @@
 <span class="sd">    - `Boman Index          &lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index&gt;`_</span>
 <span class="sd">    - `Aliphatic Index      &lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index&gt;`_</span>
 <span class="sd">    - `Instability Index    &lt;modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index&gt;`_</span>
-
-<span class="sd">    Most of the methods calculate values with help of the :mod:`Bio.SeqUtils.ProtParam` module of</span>
-<span class="sd">    `Biopython &lt;http://biopython.org/&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GlobalDescriptor.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqs</span><span class="p">):</span>
@@ -276,12 +274,10 @@
 
 <div class="viewcode-block" id="GlobalDescriptor.calculate_charge"><a class="viewcode-back" href="../../modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to overall charge of every sequence in the attribute :py:attr:`sequences`.</span>
-<span class="sd">        Adapted from Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint_chargeR function.</span>
 
 <span class="sd">        The method used is first described by Bjellqvist. In the case of amidation, the value for the &#39;Cterm&#39; pKa is 15</span>
 <span class="sd">        (and Cterm is added to the pos_pKs dictionary.</span>
 <span class="sd">        The pKa scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).</span>
-<span class="sd">        Further references: see the `Biopython &lt;http://biopython.org/&gt;`_ module :mod:`Bio.SeqUtils.IsoelectricPoint`.`</span>
 
 <span class="sd">        **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
 
@@ -339,8 +335,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).</span>
-<span class="sd">        The method used is based on the IsoelectricPoint module in `Biopython &lt;http://biopython.org/&gt;`_</span>
-<span class="sd">        module :mod:`Bio.SeqUtils.ProtParam`.</span>
 
 <span class="sd">         **pos_pKs** = {&#39;Nterm&#39;: 9.38, &#39;K&#39;: 10.67, &#39;R&#39;: 12.10, &#39;H&#39;: 6.04}</span>
 
@@ -420,8 +414,13 @@
 <span class="sd">        array([[ 63.95714286]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+        <span class="n">dimv</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;dimv.json&#39;</span><span class="p">)))</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
-            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProteinAnalysis</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">instability_index</span><span class="p">())</span>
+            <span class="n">stabindex</span> <span class="o">=</span> <span class="nb">float</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">stabindex</span> <span class="o">+=</span> <span class="n">dimv</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mf">10.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span> <span class="o">*</span> <span class="n">stabindex</span><span class="p">)</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">desc</span><span class="p">)))</span>
@@ -1085,13 +1084,15 @@
 <span class="sd">        array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])</span>
 <span class="sd">        &gt;&gt;&gt; AMP.descriptor.shape</span>
 <span class="sd">        (1, 20)</span>
+<span class="sd">        </span>
+<span class="sd">        .. seealso:: :py:func:`modlamp.core.count_aa()`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">scl</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;relative&#39;</span><span class="p">:</span>
                 <span class="n">scl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">/</span> <span class="n">scl</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">/</span> <span class="n">scl</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">count_aa</span><span class="p">(</span><span class="n">seq</span><span class="p">)}</span>
             <span class="n">od</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
             <span class="n">desc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
@@ -1333,12 +1334,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlamp v2.4.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.4.1 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Sep 23, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

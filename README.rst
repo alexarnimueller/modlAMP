@@ -146,14 +146,28 @@ Further plotting methods like **helical wheel plots** are available. See the doc
 Database Connection
 -------------------
 
-modlamp hosts a module for connecting to the modlab internal peptide database on the gsdelta641 server.
+Peptides from the two most prominent AMP databases `APD <http://aps.unmc.edu/AP/>`_ and `CAMP <http://camp.bicnirrh
+.res.in/>`_ can be directly scraped with the :mod:`modlamp.database` module.
+
+For downloading a set of sequences from the **APD** database, first get the IDs of the sequences you want to query
+from the APD website. Then proceed as follows:
+
+>>> query_apd([15, 16, 17, 18, 19, 20])  # download sequences with IDs 15
+['GLFDIVKKVVGALGSL','GLFDIVKKVVGAIGSL','GLFDIVKKVVGTLAGL','GLFDIVKKVVGAFGSL','GLFDIAKKVIGVIGSL','GLFDIVKKIAGHIAGSI']
+
+The same holds true for the **CAMP** database:
+
+>>> query_camp([2705, 2706])
+['GLFDIVKKVVGALGSL','GLFDIVKKVVGTLAGL']
+
+modlamp also hosts a module for connecting to the modlab internal peptide database on our local server.
 Peptide sequences included in any table in the peptides database can be downloaded directly in python.
 
 .. warning::
     This module only works in the modlab intranet at ETH Zurich
 
-For querying sequences from a given table, the sequences must be stored in a column called "sequences" in the mysql table.
-The query then works as follows:
+For querying sequences from a given table, the sequences must be stored in a column called "sequences" in the mysql
+table. The query then works as follows:
 
 >>> from modlamp.database import query_database
 >>> query_database('modlab_experiments', ['sequence'])
@@ -176,9 +190,10 @@ datasets for classification tasks, that can be read by the :mod:`modlamp.dataset
 >>> data.keys()
 ['target_names', 'target', 'feature_names', 'sequences']
 
-The variable ``data`` holds **four different keys, which can also be called as its attributes**. The available attributes
-for :func:`load_helicalAMPset()` are :py:attr:`target_names` (target names), :py:attr:`target` (the target class vector),
-:py:attr:`feature_names` (the name of the data features, here: 'Sequence') and :py:attr:`sequences` (the loaded sequences).
+The variable ``data`` holds **four different keys, which can also be called as its attributes**. The available
+attributes for :py:func:`load_helicalAMPset()` are :py:attr:`target_names` (target names), :py:attr:`target` (the
+target class vector), :py:attr:`feature_names` (the name of the data features, here: 'Sequence') and
+:py:attr:`sequences` (the loaded sequences).
 
 :Example:
 
@@ -186,3 +201,29 @@ for :func:`load_helicalAMPset()` are :py:attr:`target_names` (target names), :py
 array(['HEL', 'AMP'], dtype='|S3')
 >>> data.sequences[:5]
 ['FDQAQTEIQATMEEN', 'DVDAALHYLARLVEAG', 'RCPLVIDYLIDLATRS', 'NPATLMMFFK', 'NLEDSIQILRTD']
+
+
+Analysing Wetlab Circular Dichroism Data
+----------------------------------------
+
+The modlule :mod:`modlamp.wetlab` includes the class :py:class:`modlamp.wetlab.CD` to analyse raw circular dichroism
+data from wetlab experiments. The following example shows how to load a raw datafile and calculate secondary
+structure contents:
+
+>>> cd = CD('/path/to/your/folder', 185, 260)  # load all files in a specified folder
+>>> cd.names  # peptide names read from the file headers
+['Pep 10', 'Pep 10', 'Pep 11', 'Pep 11', ... ]
+>>> cd.calc_meanres_ellipticity()  # calculate the mean residue ellipticity values
+>>> cd.meanres_ellipticity
+array([[   260.        ,   -266.95804196],
+       [   259.        ,   -338.13286713],
+       [   258.        ,   -387.25174825], ...])
+>>> cd.helicity(temperature=24., k=3.492185008, induction=True)  # calculate helical content
+>>> cd.helicity_values
+               Name     Solvent  Helicity  Induction
+            0  Aurein       T    100.0     3.823
+            1  Aurein       W    26.16     0.000
+            2  Klak         T    76.38     3.048
+            3  Klak         W    25.06     0.000 ...
+
+.. seealso:: :py:func:`modlamp.wetlab.CD.helicity()`
