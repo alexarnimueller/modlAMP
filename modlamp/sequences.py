@@ -117,9 +117,9 @@ class Random:
     def save_fasta(self, filename, names=False):
         """Method to save generated sequences in a .fasta formatted file.
 
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
+        :param filename: output filename in which the sequences from :py:attr:`sequences` are saved in fasta format.
+        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.
+        :return: a fasta file containing the generated sequences.
 
         .. seealso:: :func:`modlamp.core.save_fasta()`
         """
@@ -178,7 +178,7 @@ class Random:
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
+        **Duplicates** sequences are removed as well.
 
         :param aminoacids: list of amino acids to be filtered
         :return: filtered list of sequences in the attribute :py:attr:`sequences`.
@@ -300,7 +300,7 @@ class Helices:
 
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
+        **Duplicates** sequences are removed as well.
 
         :param aminoacids: list of amino acids to be filtered
         :return: filtered list of sequences in the attribute :py:attr:`sequences`.
@@ -721,6 +721,167 @@ class Centrosymmetric:
     def filter_aa(self, aminoacids):
         """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
         **Dublicates** sequences are removed as well.
+
+        :param aminoacids: list of amino acids to be filtered
+        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
+
+        .. seealso:: :func:`modlamp.core.filter_aa()`
+        """
+        filter_aa(self, aminoacids=aminoacids)
+
+class Helices_ACP:
+    """Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.
+
+    This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
+    distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
+    62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences.
+    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
+    AA  position0 	position1 	position2 	position3 	position4 	position5 	position6 	position7 	position8 	position9
+    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
+    A 	0.048387 	0.000000 	0.000000 	0.048387 	0.016129 	0.129032 	0.032258 	0.096774 	0.193548 	0.500000
+    C 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+    D 	0.000000 	0.016129 	0.000000 	0.274194 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.000000
+    E 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.064516 	0.000000 	0.016129
+    F 	0.161290 	0.048387 	0.306452 	0.000000 	0.048387 	0.000000 	0.000000 	0.016129 	0.000000 	0.016129
+    G 	0.645161 	0.000000 	0.177419 	0.145161 	0.000000 	0.016129 	0.258065 	0.112903 	0.064516 	0.080645
+    H 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.032258 	0.000000
+    I 	0.048387 	0.112903 	0.016129 	0.080645 	0.338710 	0.274194 	0.000000 	0.048387 	0.145161 	0.064516
+    K 	0.000000 	0.032258 	0.016129 	0.129032 	0.129032 	0.000000 	0.387097 	0.338710 	0.048387 	0.032258
+    L 	0.048387 	0.709677 	0.129032 	0.048387 	0.096774 	0.322581 	0.209677 	0.064516 	0.112903 	0.064516
+    M 	0.000000 	0.016129 	0.016129 	0.048387 	0.016129 	0.032258 	0.000000 	0.000000 	0.000000 	0.000000
+    N 	0.000000 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000
+    P 	0.000000 	0.000000 	0.145161 	0.016129 	0.032258 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000
+    Q 	0.000000 	0.000000 	0.016129 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.016129 	0.000000
+    R 	0.000000 	0.016129 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129 	0.016129
+    S 	0.016129 	0.000000 	0.016129 	0.129032 	0.032258 	0.032258 	0.048387 	0.177419 	0.000000 	0.032258
+    T 	0.016129 	0.016129 	0.000000 	0.016129 	0.048387 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129
+    V 	0.016129 	0.016129 	0.016129 	0.016129 	0.209677 	0.161290 	0.016129 	0.048387 	0.338710 	0.161290
+    W 	0.000000 	0.000000 	0.129032 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000
+    Y 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
+
+    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
+    AA  position10 	position11 	position12 	position13 	position14 	position15 	position16 	position17
+    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
+    A 	0.048387 	0.112903 	0.100000 	0.185185 	0.078431 	0.120000 	0.170732 	0.166667
+    C 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.024390 	0.194444
+    D 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+    E 	0.048387 	0.016129 	0.000000 	0.018519 	0.000000 	0.000000 	0.000000 	0.000000
+    F 	0.000000 	0.096774 	0.066667 	0.018519 	0.000000 	0.020000 	0.146341 	0.000000
+    G 	0.225806 	0.032258 	0.066667 	0.203704 	0.137255 	0.100000 	0.000000 	0.055556
+    H 	0.000000 	0.209677 	0.000000 	0.000000 	0.000000 	0.160000 	0.000000 	0.000000
+    I 	0.032258 	0.064516 	0.183333 	0.000000 	0.000000 	0.100000 	0.268293 	0.000000
+    K 	0.419355 	0.080645 	0.000000 	0.037037 	0.294118 	0.040000 	0.024390 	0.027778
+    L 	0.032258 	0.032258 	0.283333 	0.240741 	0.039216 	0.280000 	0.073171 	0.222222
+    M 	0.000000 	0.000000 	0.033333 	0.000000 	0.019608 	0.020000 	0.000000 	0.000000
+    N 	0.032258 	0.000000 	0.000000 	0.000000 	0.019608 	0.020000 	0.000000 	0.000000
+    P 	0.016129 	0.000000 	0.000000 	0.129630 	0.176471 	0.000000 	0.000000 	0.000000
+    Q 	0.000000 	0.016129 	0.000000 	0.018519 	0.000000 	0.000000 	0.000000 	0.000000
+    R 	0.016129 	0.016129 	0.000000 	0.018519 	0.019608 	0.000000 	0.048780 	0.000000
+    S 	0.096774 	0.048387 	0.016667 	0.000000 	0.156863 	0.100000 	0.000000 	0.055556
+    T 	0.016129 	0.112903 	0.000000 	0.018519 	0.039216 	0.020000 	0.000000 	0.055556
+    V 	0.000000 	0.145161 	0.250000 	0.111111 	0.019608 	0.020000 	0.219512 	0.222222
+    W 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.024390 	0.000000
+    Y 	0.000000 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
+
+    """
+
+    def __init__(self, lenmin, lenmax, seqnum):
+        """
+        :param lenmin: minimal sequence length.
+        :param lenmax: maximal sequence length.
+        :param seqnum: number of seqeunces to generate.
+        :return: initialized class attributes for sequence number and length.
+        """
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
+
+    def generate_sequences(self):
+        """Method to generate the sequences with the mentioned amino acid probabilities.
+        :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides according
+        to the position in the helix wheel.
+        :Example:
+
+        >>> helACP = Helix_ACP(7,18,4)
+        >>> helACP.generate_sequences()
+        >>> helACP.sequences
+        """
+        clean(self)
+        self.prob = self.prob_ACPhel
+        for s in range(self.seqnum):
+            self.seq = []
+            for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
+                l = l - 18*(l/18) #for helices >18aa, the probabilities start from the beginning again
+                self.seq.append(np.random.choice(self.AAs,
+                                                 p=self.prob[:, l]))
+            self.sequences.append(''.join(self.seq))
+
+    def save_fasta(self, filename, names=False):
+        """Method to save generated sequences in a .fasta file.
+
+        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.
+        :param names: {bool} whether sequence names from :py:attr:`names`should be saved as sequence identifiers.
+        :return: a fasta file containing the generated sequences.
+
+        .. seealso:: :func:`modlamp.core.save_fasta()`
+        """
+        save_fasta(self, filename, names=names)
+
+    def mutate_AA(self, nr, prob):
+        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
+
+        :param nr: number of mutations to perform per sequence
+        :param prob: probability of mutating a sequence
+        :return: In the attribute :py:attr:`sequences`: mutated sequences
+        :Example:
+
+        >>> H.sequences
+        ['IAKAGRAIIK']
+        >>> H.mutate_AA(3,1)
+        >>> H.sequences
+        ['NAKAGRAWIK']
+
+        .. seealso:: :func:`modlamp.core.mutate_AA()`
+        """
+        mutate_AA(self, nr, prob)
+
+    def keep_natural_aa(self):
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly.
+
+        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
+
+        .. versionadded:: v2.2.5
+        """
+        keep_natural_aa(self)
+
+    def filter_unnatural(self):
+        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
+
+        :return: Filtered sequence list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_unnatural()`
+        """
+        filter_unnatural(self)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences`
+
+        .. seealso:: :func:`modlamp.core.filter_sequences()`
+
+        .. versionadded:: v2.2.5
+        """
+        filter_duplicates(self)
+
+    def filter_aa(self, aminoacids):
+        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
+        **Duplicate** sequences are removed as well.
 
         :param aminoacids: list of amino acids to be filtered
         :return: filtered list of sequences in the attribute :py:attr:`sequences`.
