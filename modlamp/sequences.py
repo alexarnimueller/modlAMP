@@ -730,6 +730,115 @@ class Centrosymmetric:
         filter_aa(self, aminoacids=aminoacids)
 
 
+class Amphipathic_arc():
+    """Base class for generating amphipathic peptide sequences based on an alpha-helix pattern with different arc sizes.
+
+    The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:
+
+    ===  ====    ======
+    AA   Hydr    Polar
+    ===  ====    ======
+    A    0.05    0.0766
+    C    0.05    0.071
+    D    0.05    0.026
+    E    0.05    0.0264
+    F    0.05    0.0405
+    G    0.05    0.1172
+    H    0.05    0.021
+    I    0.05    0.061
+    K    0.05    0.0958
+    L    0.05    0.0838
+    M    0.05    0.0123
+    N    0.05    0.0386
+    P    0.05    0.0463
+    Q    0.05    0.0251
+    R    0.05    0.0545
+    S    0.05    0.0613
+    T    0.05    0.0455
+    V    0.05    0.0572
+    W    0.05    0.0155
+    Y    0.05    0.0244
+    ===  ====    ======
+
+    """
+
+    def __init__(self, lenmin, lenmax, seqnum):
+        """
+        :param lenmin: minimum sequence length
+        :param lenmax: maximum sequence length
+        :param seqnum: number of sequences to generate
+        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax`and :py:attr:`seqnum`
+        """
+        aminoacids(self)
+        template(self, lenmin, lenmax, seqnum)
+
+    def generate_arc(self, arcsize='160'):
+        """Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.
+        :param arcsize: {str} to choose among '80', '120', '160', '200', '240'.
+        :return: A list of sequences in the attribute :py:attr:`sequences`.
+        :Example:
+
+        >>> amphi_hel = Amphipathic_arc(10,25,4)
+        >>> o.generate_arc()
+        >>> o.sequences
+        ['']
+        """
+        clean(self)
+        self.prob = self.prob_amphihel
+
+        if arcsize == '80':
+            idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
+        elif arcsize == '120':
+            idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0]
+        elif arcsize == '160':
+            idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
+        elif arcsize == '200':
+            idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
+        elif arcsize == '240':
+            idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
+        else:
+            print "Arc size unknown, choose among: '80', '120', '160', '200', '240'."
+
+        for s in range(self.seqnum):
+            seq = []
+            icycle = cycle(idx).next
+            i = icycle()
+            for n in range(random.choice(range(self.lenmin, self.lenmax + 1))):
+                seq.append(random.choice(self.AAs, p=self.prob[i]))
+                i = icycle()
+            self.sequences.append(''.join(seq))
+
+    def generate_mixed_arcs(self):
+        """ Method to generate sequences of mixed arc sizes.
+        :return: A list of sequences in :py:attr:`sequences`
+        :Example:
+
+        >>> amphi_hel = Amphipathic_arc(7,30,10)
+        >>> amphi_hel.generate_mixed_arcs()
+        >>> amphi_hel.sequences
+
+
+        """
+        clean(self)
+        self.prob = self.prob_amphihel
+        idx = [[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+            [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+            [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
+            [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
+            [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]]
+        idxcycle = cycle(idx).next
+        idx = idxcycle()
+        for s in range(self.seqnum):
+            seq = []
+            icycle = cycle(idx).next
+            i = icycle()
+            for n in range(random.choice(range(self.lenmin, self.lenmax + 1))):
+                seq.append(random.choice(self.AAs, p=self.prob[i]))
+                i = icycle()
+            idx = idxcycle()
+            self.sequences.append(''.join(seq))
+
+
 class MixedLibrary:
     """Base class for holding a virtual peptide library.
 
