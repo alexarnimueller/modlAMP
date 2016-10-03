@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlAMP v2.4.1 documentation</title>
+    <title>2. Package Documentation &mdash; modlAMP v2.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.4.1',
+        VERSION:     'v2.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
-    <link rel="top" title="modlAMP v2.4.1 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v2.5.0 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -823,6 +823,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 calculation:</p>
 <ul class="simple">
 <li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
+<li><strong>ABHPRK</strong>          (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)</li>
 <li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] Argos, P., Rao, J. K. M. &amp; Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
 <li><strong>bulkiness</strong>      (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
 <li><strong>charge_physio</strong>  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
@@ -1495,6 +1496,12 @@ The following classes are available:</p>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.sequences.AMPngrams" title="modlamp.sequences.AMPngrams"><code class="xref py py-class docutils literal"><span class="pre">AMPngrams</span></code></a></td>
 <td>Generates sequences from most frequent ngrams in the APD3.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.sequences.HelicesACP" title="modlamp.sequences.HelicesACP"><code class="xref py py-class docutils literal"><span class="pre">HelicesACP</span></code></a></td>
+<td>Generates sequences with the amino acid probabiliy of helical ACPs.</td>
+</tr>
+<tr class="row-odd"><td>:py:class <cite>HydrophobicArc</cite></td>
+<td>Generates presumed amphipathic helices with controlled hydrophobic arc size.</td>
 </tr>
 </tbody>
 </table>
@@ -2647,6 +2654,810 @@ accordingly.</td>
 </dd></dl>
 
 <dl class="class">
+<dt id="modlamp.sequences.AmphipathicArc">
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">AmphipathicArc</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for generating amphipathic peptide sequences based on an alpha-helix pattern with different arc sizes.</p>
+<p>The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="24%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">Hydr</th>
+<th class="head">Polar</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.2</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.2</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.25</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.2</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.25</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.2</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.2</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td><ol class="first last arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+<td>0.04545455</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lenmin</strong> &#8211; minimum sequence length</li>
+<li><strong>lenmax</strong> &#8211; maximum sequence length</li>
+<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined attributes <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmax`and</span> <span class="pre">:py:attr:`seqnum</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.generate_arc">
+<code class="descname">generate_arc</code><span class="sig-paren">(</span><em>arcsize='160'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.generate_arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.generate_arc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.
+:param arcsize: {str} to choose among &#8216;80&#8217;, &#8216;120&#8217;, &#8216;160&#8217;, &#8216;200&#8217;, &#8216;240&#8217;.
+:return: A list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
+:Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">Amphipathic_arc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">generate_arc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.generate_mixed_arcs">
+<code class="descname">generate_mixed_arcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.generate_mixed_arcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.generate_mixed_arcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate sequences of mixed arc sizes.
+:return: A list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>
+:Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">Amphipathic_arc</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">generate_mixed_arcs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save generated sequences in a .fasta file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from :py:attr:<a href="#id1"><span class="problematic" id="id2">`</span></a>names`should be saved as sequence identifiers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_unnatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Duplicate</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="modlamp.sequences.HelicesACP">
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">HelicesACP</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.</p>
+<p>This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
+distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
+62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences.
+==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
+AA  position0       position1       position2       position3       position4       position5       position6       position7       position8       position9
+==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
+A   0.048387        0.000000        0.000000        0.048387        0.016129        0.129032        0.032258        0.096774        0.193548        0.500000
+C   0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+D   0.000000        0.016129        0.000000        0.274194        0.016129        0.000000        0.000000        0.016129        0.000000        0.000000
+E   0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.064516        0.000000        0.016129
+F   0.161290        0.048387        0.306452        0.000000        0.048387        0.000000        0.000000        0.016129        0.000000        0.016129
+G   0.645161        0.000000        0.177419        0.145161        0.000000        0.016129        0.258065        0.112903        0.064516        0.080645
+H   0.000000        0.000000        0.000000        0.016129        0.000000        0.000000        0.016129        0.000000        0.032258        0.000000
+I   0.048387        0.112903        0.016129        0.080645        0.338710        0.274194        0.000000        0.048387        0.145161        0.064516
+K   0.000000        0.032258        0.016129        0.129032        0.129032        0.000000        0.387097        0.338710        0.048387        0.032258
+L   0.048387        0.709677        0.129032        0.048387        0.096774        0.322581        0.209677        0.064516        0.112903        0.064516
+M   0.000000        0.016129        0.016129        0.048387        0.016129        0.032258        0.000000        0.000000        0.000000        0.000000
+N   0.000000        0.016129        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.016129        0.000000
+P   0.000000        0.000000        0.145161        0.016129        0.032258        0.016129        0.000000        0.000000        0.000000        0.000000
+Q   0.000000        0.000000        0.016129        0.016129        0.000000        0.000000        0.016129        0.000000        0.016129        0.000000
+R   0.000000        0.016129        0.016129        0.000000        0.016129        0.000000        0.016129        0.000000        0.016129        0.016129
+S   0.016129        0.000000        0.016129        0.129032        0.032258        0.032258        0.048387        0.177419        0.000000        0.032258
+T   0.016129        0.016129        0.000000        0.016129        0.048387        0.016129        0.000000        0.016129        0.000000        0.016129
+V   0.016129        0.016129        0.016129        0.016129        0.209677        0.161290        0.016129        0.048387        0.338710        0.161290
+W   0.000000        0.000000        0.129032        0.016129        0.000000        0.000000        0.000000        0.000000        0.016129        0.000000
+Y   0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000        0.000000
+==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="2%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">position10</th>
+<th class="head">position11</th>
+<th class="head">position12</th>
+<th class="head">position13</th>
+<th class="head">position14</th>
+<th class="head">position15</th>
+<th class="head">position16</th>
+<th class="head">position17</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.048387</td>
+<td>0.112903</td>
+<td>0.100000</td>
+<td>0.185185</td>
+<td>0.078431</td>
+<td>0.120000</td>
+<td>0.170732</td>
+<td>0.166667</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.024390</td>
+<td>0.194444</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.048387</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.018519</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.000000</td>
+<td>0.096774</td>
+<td>0.066667</td>
+<td>0.018519</td>
+<td>0.000000</td>
+<td>0.020000</td>
+<td>0.146341</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.225806</td>
+<td>0.032258</td>
+<td>0.066667</td>
+<td>0.203704</td>
+<td>0.137255</td>
+<td>0.100000</td>
+<td>0.000000</td>
+<td>0.055556</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.000000</td>
+<td>0.209677</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.160000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.032258</td>
+<td>0.064516</td>
+<td>0.183333</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.100000</td>
+<td>0.268293</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.419355</td>
+<td>0.080645</td>
+<td>0.000000</td>
+<td>0.037037</td>
+<td>0.294118</td>
+<td>0.040000</td>
+<td>0.024390</td>
+<td>0.027778</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.032258</td>
+<td>0.032258</td>
+<td>0.283333</td>
+<td>0.240741</td>
+<td>0.039216</td>
+<td>0.280000</td>
+<td>0.073171</td>
+<td>0.222222</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.033333</td>
+<td>0.000000</td>
+<td>0.019608</td>
+<td>0.020000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.032258</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.019608</td>
+<td>0.020000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.129630</td>
+<td>0.176471</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.000000</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.018519</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.016129</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.018519</td>
+<td>0.019608</td>
+<td>0.000000</td>
+<td>0.048780</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.096774</td>
+<td>0.048387</td>
+<td>0.016667</td>
+<td>0.000000</td>
+<td>0.156863</td>
+<td>0.100000</td>
+<td>0.000000</td>
+<td>0.055556</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.016129</td>
+<td>0.112903</td>
+<td>0.000000</td>
+<td>0.018519</td>
+<td>0.039216</td>
+<td>0.020000</td>
+<td>0.000000</td>
+<td>0.055556</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.000000</td>
+<td>0.145161</td>
+<td>0.250000</td>
+<td>0.111111</td>
+<td>0.019608</td>
+<td>0.020000</td>
+<td>0.219512</td>
+<td>0.222222</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.024390</td>
+<td>0.000000</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.000000</td>
+<td>0.016129</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lenmin</strong> &#8211; minimal sequence length.</li>
+<li><strong>lenmax</strong> &#8211; maximal sequence length.</li>
+<li><strong>seqnum</strong> &#8211; number of seqeunces to generate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">initialized class attributes for sequence number and length.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.generate_sequences">
+<code class="descname">generate_sequences</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.generate_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.generate_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate the sequences with the mentioned amino acid probabilities.
+:return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides</p>
+<blockquote>
+<div>according to the position in the helix wheel.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span> <span class="o">=</span> <span class="n">Helix_ACP</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save generated sequences in a .fasta file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from :py:attr:<a href="#id3"><span class="problematic" id="id4">`</span></a>names`should be saved as sequence identifiers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_unnatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Duplicate</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="modlamp.sequences.MixedLibrary">
 <em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">MixedLibrary</code><span class="sig-paren">(</span><em>number</em>, <em>centrosymmetric=1</em>, <em>centroasymmetric=1</em>, <em>helix=1</em>, <em>kinked=1</em>, <em>oblique=1</em>, <em>rand=1</em>, <em>randAMP=1</em>, <em>randAMPnoCM=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for holding a virtual peptide library.</p>
@@ -3700,7 +4511,7 @@ as separate boxes.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># d: PeptideDescriptor instance</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3733,7 +4544,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">targets</span><span class="o">=</span><span class="n">targs</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3768,7 +4579,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3804,7 +4615,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_profile</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
 </div>
@@ -3840,10 +4651,10 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">helical_wheel</span><span class="p">(</span><span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/wheel1.png"><img alt="_images/wheel1.png" src="_images/wheel1.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel2.png"><img alt="_images/wheel2.png" src="_images/wheel2.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel3.png"><img alt="_images/wheel3.png" src="_images/wheel3.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel4.png"><img alt="_images/wheel4.png" src="_images/wheel4.png" style="width: 375.0px; height: 375.0px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel1.png"><img alt="_images/wheel1.png" src="_images/wheel1.png" /></a>
+<a class="reference internal image-reference" href="_images/wheel2.png"><img alt="_images/wheel2.png" src="_images/wheel2.png" /></a>
+<a class="reference internal image-reference" href="_images/wheel3.png"><img alt="_images/wheel3.png" src="_images/wheel3.png" /></a>
+<a class="reference internal image-reference" href="_images/wheel4.png"><img alt="_images/wheel4.png" src="_images/wheel4.png" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
 </div>
@@ -3873,7 +4684,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_pde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.1.</span></p>
 </div>
@@ -3904,7 +4715,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_violin</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">bp</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/violins.png"><img alt="_images/violins.png" src="_images/violins.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/violins.png"><img alt="_images/violins.png" src="_images/violins.png" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.2.</span></p>
 </div>
@@ -3932,7 +4743,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_aa_distr</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;WWRRWWRAARWWRRWWRR&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHKLCMNPQRSTVWY&#39;</span><span class="p">,</span> <span class="s1">&#39;GGGGGIIKLWGGGGGGGGGGGGG&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/AA_dist.png"><img alt="_images/AA_dist.png" src="_images/AA_dist.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/AA_dist.png"><img alt="_images/AA_dist.png" src="_images/AA_dist.png" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.5.</span></p>
 </div>
@@ -4391,9 +5202,9 @@ cuvette path length.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;mean residue ellipticity&#39;</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" style="width: 482.1px; height: 360.3px;" /></a>
-<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" style="width: 480.6px; height: 360.0px;" /></a>
-<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" style="width: 481.5px; height: 360.6px;" /></a>
+<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" /></a>
+<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" /></a>
+<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" /></a>
 </dd></dl>
 
 <dl class="method">
@@ -5069,12 +5880,12 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Sep 23, 2016.
+      Last updated on Oct 03, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
