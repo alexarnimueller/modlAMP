@@ -203,7 +203,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
-    ax.yaxis.set_ticks_position('left')
+    ax.yaxis.set_ticks_position('bottom')
 
     if filename:
         plt.savefig(filename, dpi=150)

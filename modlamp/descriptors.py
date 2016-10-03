@@ -724,6 +724,7 @@ class PeptideDescriptor(object):
     calculation:
 
     - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
+    - **ABHPRK**          (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)
     - **argos**          (Argos hydrophobicity amino acid scale, *[2] Argos, P., Rao, J. K. M. & Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.*)
     - **bulkiness**      (Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
     - **charge_physio**  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
