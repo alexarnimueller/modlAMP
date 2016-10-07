@@ -843,7 +843,7 @@ class AmphipathicArc:
             idx = idxcycle()
             self.sequences.append(''.join(seq))
 
-    def make_gradient(self):
+    def make_H_gradient(self):
         """Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of
         the sequence amino acids to  hydrophobic.
         :return: A list of sequences in :py:attr:`sequences`
@@ -858,7 +858,7 @@ class AmphipathicArc:
         self.prob = self.prob_amphihel
         for s in range(len(self.sequences)):
             seq = list(self.sequences[s])
-            for aa in range(1, len(seq)/3):
+            for aa in range(1, len(seq)/3+1):
                 seq[-aa] = random.choice(self.AAs, p=self.prob[1])
             self.sequences[s] = ''.join(seq)
 
