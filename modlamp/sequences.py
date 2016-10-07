@@ -843,6 +843,25 @@ class AmphipathicArc:
             idx = idxcycle()
             self.sequences.append(''.join(seq))
 
+    def make_gradient(self):
+        """Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of
+        the sequence amino acids to  hydrophobic.
+        :return: A list of sequences in :py:attr:`sequences`
+        :Example:
+
+        >>> amphi_grad = Amphipathic_arc(7,30,10)
+        >>> amphi_grad.generate_mixed_arcs()
+        >>> amphi_grad.make_gradient()
+        >>> amphi_grad.sequences
+
+        """
+        self.prob = self.prob_amphihel
+        for s in range(len(self.sequences)):
+            seq = list(self.sequences[s])
+            for aa in range(1, len(seq)/3):
+                seq[-aa] = random.choice(self.AAs, p=self.prob[1])
+            self.sequences[s] = ''.join(seq)
+
     def save_fasta(self, filename, names=False):
         """Method to save generated sequences in a .fasta file.
 
