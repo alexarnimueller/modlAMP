@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.wetlab
+.. currentmodule:: modlamp.wetlab
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
@@ -265,11 +265,11 @@ class CD:
         >>> cd.plot(data='mean residue ellipticity', combine=True)
         
         .. image:: ../docs/static/cd1.png
-            :scale: 30 %
+            :height: 300px
         .. image:: ../docs/static/cd2.png
-            :scale: 30 %
+            :height: 300px
         .. image:: ../docs/static/cd3.png
-            :scale: 30 %
+            :height: 300px
         """
         try:
             # prepare combination of solvent plots

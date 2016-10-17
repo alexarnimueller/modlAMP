@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.datasets
+.. currentmodule:: modlamp.datasets
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
@@ -299,7 +299,7 @@ def load_custom(filename):
         features.
     :Example:
 
-    >>> from modlamp.datasets import load_AMPvsUniProt
+    >>> from modlamp.datasets import load_custom
     >>> data = load_custom('custom_data.csv')
     """
 

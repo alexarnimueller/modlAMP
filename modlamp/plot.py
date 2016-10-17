@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.plot
+.. currentmodule:: modlamp.plot
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
@@ -51,7 +51,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     >>> plot_feature(d.descriptor,y_label='uH Eisenberg')  # d: PeptideDescriptor instance
 
     .. image:: ../docs/static/uH_Eisenberg.png
-        :scale: 50 %
+        :height: 300px
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
@@ -119,7 +119,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     >>> plot_2_features(a.descriptor,b.descriptor,x_label='uH',y_label='pI',targets=targs)
 
     .. image:: ../docs/static/2D_scatter.png
-        :scale: 50 %
+        :height: 300px
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
@@ -173,7 +173,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     >>> plot_3_features(a.descriptor,b.descriptor,c.descriptor,x_label='uH',y_label='pI',z_label='length')
 
     .. image:: ../docs/static/3D_scatter.png
-        :scale: 50 %
+        :height: 300px
     """
 
     if not colors:
@@ -230,7 +230,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color
     >>> plot_profile('GLFDIVKKVVGALGSL', scalename='eisenberg')
 
     .. image:: ../docs/static/profileplot.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.1.5
     """
@@ -298,13 +298,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     >>> helical_wheel('ACDEFGHIKLMNPQRSTVWY')
 
     .. image:: ../docs/static/wheel1.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel2.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel3.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel4.png
-        :scale: 25 %
+        :height: 300px
 
     .. versionadded:: v2.1.5
     """
@@ -425,7 +425,7 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
     >>> plot_pde(data)
 
     .. image:: ../docs/static/pde.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.1
     """
@@ -498,7 +498,7 @@ def plot_violin(x, colors=None, bp=False, filename=None):
     >>> plot_violin(data, colors=['green', 'green', 'green', 'red', 'red'], bp=True)
 
     .. image:: ../docs/static/violins.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.2
     """
@@ -561,7 +561,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     >>> plot_aa_distr(['KLLKLLKKLLKLLK', 'WWRRWWRAARWWRRWWRR', 'ACDEFGHKLCMNPQRSTVWY', 'GGGGGIIKLWGGGGGGGGGGGGG'])
 
     .. image:: ../docs/static/AA_dist.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.5
     """

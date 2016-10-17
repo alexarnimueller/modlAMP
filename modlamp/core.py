@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.core
+.. currentmodule:: modlamp.core
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
