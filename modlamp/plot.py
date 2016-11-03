@@ -476,7 +476,7 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1):
             kde = gaussian_kde(
                 row)  # this creates the kernel, given an array it will estimate the probability over that values
             space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
-            line = ax.plot(space, kde(space), label=str(i))  # plot line
+            line = ax.plot(space, kde(space), label='Run ' + str(i))  # plot line
             plt.setp(line, color=colors[i], linewidth=2.0, alpha=.8)  # set line width and color
             ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.6)  # fill area under line
 
