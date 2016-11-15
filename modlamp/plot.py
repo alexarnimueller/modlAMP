@@ -412,15 +412,17 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         plt.show()
 
 
-def plot_pde(data, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1):
+def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1, colors=None):
     """A function to plot probability density estimations of given data vectors / matrices (row wise)
 
     :param data: {list / array} data of which underlying probability density function should be estimated and plotted.
+    :param title: {str} plot title
     :param axlabels: {list of str} list containing the axis labels for the plot
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
     :param legendloc: {int} location of the figures legend. 1 = top right, 2 = top left ...
     :param x_min: {number} x-axis minimum
     :param x_max: {number} x-axis maximum
+    :param colors: {list} list of colors (readable by matplotlib, e.g. hex) to be used to plot different data classes
     :Example:
 
     >>> data = np.random.random([3,100])
@@ -431,11 +433,14 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1):
 
     .. versionadded:: v2.2.1
     """
-
     # colors
-    colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+    if not colors:
+        colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+    elif len(colors) != len(data):  # if not enough colors for all data subtypes
+        colors *= len(data)
+    
     if not axlabels:
-        axlabels = ['Data', 'Density']
+        axlabels = ['Data', 'Estimated Density']
 
     # transform input to numpy array and reshape if it only contains one data row
     data = np.array(data)
@@ -483,6 +488,7 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1):
     # show or save plot
     ax.legend(loc=legendloc)
     ax.set_xlim((x_min, x_max))
+    ax.set_title(title)
     if filename:
         plt.savefig(filename, dpi=150)
     else:
