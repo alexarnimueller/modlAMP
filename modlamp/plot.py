@@ -412,7 +412,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         plt.show()
 
 
-def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1, colors=None):
+def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1, colors=None, alpha=0.2):
     """A function to plot probability density estimations of given data vectors / matrices (row wise)
 
     :param data: {list / array} data of which underlying probability density function should be estimated and plotted.
@@ -423,6 +423,7 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
     :param x_min: {number} x-axis minimum
     :param x_max: {number} x-axis maximum
     :param colors: {list} list of colors (readable by matplotlib, e.g. hex) to be used to plot different data classes
+    :param alpha: {float} color alpha for filling pde curve
     :Example:
 
     >>> data = np.random.random([3,100])
@@ -433,14 +434,10 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
 
     .. versionadded:: v2.2.1
     """
-    # colors
-    if not colors:
-        colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
-    elif len(colors) != len(data):  # if not enough colors for all data subtypes
-        colors *= len(data)
-    
     if not axlabels:
         axlabels = ['Data', 'Estimated Density']
+    if not title:
+        title = ""
 
     # transform input to numpy array and reshape if it only contains one data row
     data = np.array(data)
@@ -448,6 +445,12 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
     if len(data.shape) == 1:
         data = data.reshape((1, -1))
     shp = data.shape
+
+    # colors
+    if not colors:
+        colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+    elif len(colors) != len(data) and shp != 1:  # if not enough colors for all data subtypes
+        colors *= len(data)
 
     # prepare figure
     fig, ax = plt.subplots()
@@ -457,7 +460,7 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
         axlabels = ['', '']
     ax.set_xlabel(axlabels[0], fontsize=18)
     ax.set_ylabel(axlabels[1], fontsize=18)
-    fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
+    fig.suptitle(title, fontsize=16, fontweight='bold')
 
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
@@ -472,8 +475,8 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
             data)  # this creates the kernel, given an array it will estimate the probability over that values
         space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
         line = ax.plot(space, kde(space), label='Data')  # plot line
-        plt.setp(line, color=colors[0], linewidth=2.0, alpha=.8)  # set line width and color
-        ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.6)  # fill area under line
+        plt.setp(line, color=colors[0], linewidth=2.0, alpha=.9)  # set line width and color
+        ax.fill_between(space, 0, kde(space), color=colors[0], alpha=alpha)  # fill area under line
 
     # if multiple rows
     else:
@@ -482,13 +485,12 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
                 row)  # this creates the kernel, given an array it will estimate the probability over that values
             space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
             line = ax.plot(space, kde(space), label='Run ' + str(i))  # plot line
-            plt.setp(line, color=colors[i], linewidth=2.0, alpha=.8)  # set line width and color
-            ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.6)  # fill area under line
+            plt.setp(line, color=colors[i], linewidth=2.0, alpha=.9)  # set line width and color
+            ax.fill_between(space, 0, kde(space), color=colors[i], alpha=alpha)  # fill area under line
 
     # show or save plot
     ax.legend(loc=legendloc)
     ax.set_xlim((x_min, x_max))
-    ax.set_title(title)
     if filename:
         plt.savefig(filename, dpi=150)
     else:
