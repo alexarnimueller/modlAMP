@@ -23,3 +23,4 @@ v2.4.0  22.08.2016 -- new module wetlab with class CD for analysis and plotting 
 v2.4.1  14.09.2016 -- new sequence class AMPngrams for generating sequences out of frequent APD3 ngrams
 v2.5.0  23.09.2016 -- clarified documentation and replaced Biopython functions by own code
 v2.5.1  17.10.2016 -- bug fixes in documentation
+v2.6.0  17.11.2016 -- New module "analysis" with summary_plot method to show an overview of different peptide libraries
