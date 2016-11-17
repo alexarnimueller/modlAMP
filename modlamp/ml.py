@@ -23,10 +23,10 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.grid_search import GridSearchCV
-from sklearn.learning_curve import validation_curve
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import validation_curve
 from sklearn.metrics import *
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import *
