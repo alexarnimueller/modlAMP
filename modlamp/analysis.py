@@ -164,7 +164,7 @@ class GlobalAnalysis(object):
         
         # plot settings
         fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(25, 15))
-        ((ax1, ax2, ax5), (ax3, ax4, ax6)) = axes
+        ((ax2, ax5, ax1), (ax3, ax4, ax6)) = axes
         plt.suptitle('Summary', fontweight='bold', fontsize=16.)
         labels = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
         colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
@@ -177,13 +177,20 @@ class GlobalAnalysis(object):
             a.xaxis.set_ticks_position('bottom')
             a.yaxis.set_ticks_position('left')
         
-        # 1 length histogram
-        ax1.hist(self.len.T, len(range(int(np.max(self.len) - np.min(self.len)))),
-                 normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
-        ax1.set_xlabel('Sequence Length', fontweight='bold', fontsize=14.)
-        ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax1.set_xlim(np.min(self.len) - 1.5, np.max(self.len) + .5)
-        ax1.legend()
+        # 1 length box plot / histogram
+        # ax1.hist(self.len.T, len(range(int(np.max(self.len) - np.min(self.len)))),
+        #          normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
+        box = ax1.boxplot(self.len.T, notch=1, vert=1, patch_artist=True)
+        plt.setp(box['whiskers'], color='black')
+        plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
+        for p, patch in enumerate(box['boxes']):
+            patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
+        ax1.set_ylabel('Sequence Length', fontweight='bold', fontsize=14.)
+        ax1.set_xticks([x + 1 for x in range(len(labels))])
+        ax1.set_xticklabels(labels, fontweight='bold')
+        # ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+        # ax1.set_xlim(np.min(self.len) - 1.5, np.max(self.len) + .5)
+        # ax1.legend()
         
         # 2 aa bar plot
         d_aa = count_aa('')
