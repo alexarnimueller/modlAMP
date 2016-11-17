@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 
 
-class Global(object):
+class GlobalAnalysis(object):
     """
     Base class for amino acid sequence library analysis
     """
