@@ -15,6 +15,8 @@ from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 class GlobalAnalysis(object):
     """
     Base class for amino acid sequence library analysis
+    
+    .. versionadded:: 2.6.0
     """
     def __init__(self, library):
         if type(library) == np.ndarray:
@@ -78,24 +80,52 @@ class GlobalAnalysis(object):
                 plt.show()
 
     def calc_H(self):
+        """Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.
+        
+        :return: {numpy.ndarray} Eisenberg hydrophobicities in the attribute :py:attr:`H`.
+        
+        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_global()
+        """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
             d.calculate_global()
             self.H[l] = d.descriptor[:, 0]
             
     def calc_uH(self, window=1000, angle=100, modality='max'):
+        """Method for calculating hydrophobic moments (Eisenberg scale) for all sequences in the library.
+        
+        :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+            window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences
+            shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal
+            hydrophiobic moment for the chosen window size found in the sequence will be returned.
+        :param angle: {int} angle in which to calculate the moment. **100** for alpha helices, **180** for beta sheets.
+        :param modality: {'max' or 'mean'} calculate respectively maximum or mean hydrophobic moment.
+        :return: {numpy.ndarray} calculated hydrophobic moments in the attribute :py:attr:`uH`.
+        
+        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_moment()
+        """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
             d.calculate_moment(window=window, angle=angle, modality=modality)
             self.uH[l] = d.descriptor[:, 0]
 
     def calc_charge(self, ph=7.0, amide=True):
+        """Method to calculate the total molecular charge at a given pH for all sequences in the library.
+        
+        :param ph: {float} ph at which to calculate the peptide charge.
+        :param amide: {boolean} whether the sequences have an amidated C-terminus (-> charge += 1).
+        :return: {numpy.ndarray} calculated charges in the attribute :py:attr:`charge`.
+        """
         for l in range(self.library.shape[0]):
             d = GlobalDescriptor(self.library[l].tolist())
             d.calculate_charge(ph=ph, amide=amide)
             self.charge[l] = d.descriptor[:, 0]
             
     def calc_len(self):
+        """Method to get the sequence length of all sequences in the library.
+        
+        :return: {numpy.ndarray} sequence lengths in the attribute :py:attr:`len`.
+        """
         for l in range(self.library.shape[0]):
             d = GlobalDescriptor(self.library[l].tolist())
             d.length()
