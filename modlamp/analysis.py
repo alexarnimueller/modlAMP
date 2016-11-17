@@ -8,6 +8,7 @@ This module can be used for diverse analysis of given peptide libraries.
 """
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 from modlamp.core import count_aa
@@ -24,6 +25,9 @@ class GlobalAnalysis(object):
     def __init__(self, library):
         """
         :param library: {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.
+        :Example:
+        
+        >>> g = GlobalAnalysis(numpy.array(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...]))
         """
         
         if type(library) == np.ndarray:
@@ -49,7 +53,7 @@ class GlobalAnalysis(object):
             alphabetically.
         :Example:
         
-        >>> g = Global(sequences)
+        >>> g = GlobalAnalysis(sequences)  # sequences being a numpy array of amino acid sequences
         >>> g.calc_aa_freq()
         >>> g.aafreq
             array([[ 0.08250071,  0.        ,  0.02083928,  0.0159863 ,  0.1464459 ,
@@ -137,10 +141,11 @@ class GlobalAnalysis(object):
             d.length()
             self.len[l] = d.descriptor[:, 0]
     
-    def plot_summary(self):
+    def plot_summary(self, filename=None):
         """Method to generate a visual summary of different characteristics of the given library. The class methods
         are used with their standard options.
     
+        :param filename: {str} path to save the generated plot to.
         :return: visual summary (plot) of the library characteristics.
         :Example:
         
@@ -148,24 +153,24 @@ class GlobalAnalysis(object):
         >>> g.plot_summary()
         
         .. image:: ../docs/static/summary.png
-            :height: 500px
+            :height: 600px
         """
         # calculate all global properties
         self.calc_len()
         self.calc_aa_freq(plot=False)
-        self.calc_charge()
+        self.calc_charge(ph=7.4, amide=True)
         self.calc_H()
         self.calc_uH()
         
         # plot settings
-        fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(18, 12))
-        ((ax1, ax2), (ax3, ax4)) = axes
+        fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(25, 15))
+        ((ax1, ax2, ax5), (ax3, ax4, ax6)) = axes
         plt.suptitle('Summary', fontweight='bold', fontsize=16.)
         labels = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
         colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
         num = len(labels)
 
-        for a in [ax1, ax2, ax3, ax4]:
+        for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
             # only left and bottom axes, no box
             a.spines['right'].set_visible(False)
             a.spines['top'].set_visible(False)
@@ -184,8 +189,8 @@ class GlobalAnalysis(object):
         d_aa = count_aa('')
         hands = [mpatches.Patch(label=labels[i], linewidth=1, edgecolor='black', facecolor=colors[i], alpha=0.7)
                  for i in range(len(labels))]
-        w = 0.9
-        offsets = np.arange(start=-(w / 2), step=(w / num), stop=(w / 2))
+        w = 0.9  # bar width
+        offsets = np.arange(start=-(w / 2), step=(w / num), stop=(w / 2))  # bar offsets if many libraries
         for i, l in enumerate(self.aafreq):
             for a in range(20):
                 ax2.bar(a - offsets[i] - (0.5 * w / num), l[a], w / num, color=colors[i], alpha=0.7)
@@ -200,6 +205,7 @@ class GlobalAnalysis(object):
         # 3 hydophobicity violin plot
         for i, l in enumerate(self.H):
             vplot = ax3.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+            # crappy adaptions of violin dictionary elements
             vplot['cbars'].set_edgecolor('black')
             vplot['cmins'].set_edgecolor('black')
             vplot['cmeans'].set_edgecolor('black')
@@ -218,6 +224,7 @@ class GlobalAnalysis(object):
         # 4 hydrophobic moment violin plot
         for i, l in enumerate(self.uH):
             vplot = ax4.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+            # crappy adaptions of violin dictionary elements
             vplot['cbars'].set_edgecolor('black')
             vplot['cmins'].set_edgecolor('black')
             vplot['cmeans'].set_edgecolor('black')
@@ -233,4 +240,36 @@ class GlobalAnalysis(object):
         ax4.set_xticklabels(labels, fontweight='bold')
         ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
         
-        plt.show()
+        # 5 charge histogram
+        ax5.hist(self.charge.T, len(range(int(np.max(self.charge) - np.min(self.charge)))),
+                 normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
+        ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
+        ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+        ax5.set_xlim(np.min(self.charge) - 1., np.max(self.charge) + 1.)
+        ax5.text(0.75, 0.95, r'amide: $true$', verticalalignment='center', horizontalalignment='right',
+                 transform=ax5.transAxes, fontsize=15)
+        ax5.text(0.75, 0.88, r'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
+                 transform=ax5.transAxes, fontsize=15)
+        ax5.legend()
+        
+        # 6 3D plot
+        ax6.spines['left'].set_visible(False)
+        ax6.spines['bottom'].set_visible(False)
+        ax6.set_xticks([])
+        ax6.set_yticks([])
+        ax6 = fig.add_subplot(2, 3, 6, projection='3d')
+        for l in range(num):
+            xt = self.H[l]  # find all values in x for the given target
+            yt = self.charge[l]  # find all values in y for the given target
+            zt = self.uH[l]  # find all values in y for the given target
+            ax6.scatter(xt, yt, zt, c=colors[l], alpha=1., s=25, label='Lib ' + str(l + 1))
+        
+        ax6.set_xlabel('H', fontweight='bold', fontsize=14.)
+        ax6.set_ylabel('Charge', fontweight='bold', fontsize=14.)
+        ax6.set_zlabel('uH', fontweight='bold', fontsize=14.)
+        ax6.legend(loc='best')
+        
+        if filename:
+            plt.savefig(filename, dpi=200)
+        else:
+            plt.show()

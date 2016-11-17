@@ -5499,8 +5499,13 @@ calculated.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>library</strong> &#8211; {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;GLFDIVKKVVGALG&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -5521,7 +5526,7 @@ alphabetically.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Global</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>  <span class="c1"># sequences being a numpy array of amino acid sequences</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">calc_aa_freq</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">aafreq</span>
 <span class="go">    array([[ 0.08250071,  0.        ,  0.02083928,  0.0159863 ,  0.1464459 ,</span>
@@ -5617,16 +5622,18 @@ hydrophiobic moment for the chosen window size found in the sequence will be ret
 
 <dl class="method">
 <dt id="modlamp.analysis.GlobalAnalysis.plot_summary">
-<code class="descname">plot_summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plot_summary</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to generate a visual summary of different characteristics of the given library. The class methods
 are used with their standard options.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">visual summary (plot) of the library characteristics.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; {str} path to save the generated plot to.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">visual summary (plot) of the library characteristics.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -5634,7 +5641,7 @@ are used with their standard options.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">plot_summary</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/summary.png"><img alt="_images/summary.png" src="_images/summary.png" style="height: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/summary.png"><img alt="_images/summary.png" src="_images/summary.png" style="height: 600px;" /></a>
 </dd></dl>
 
 </dd></dl>
