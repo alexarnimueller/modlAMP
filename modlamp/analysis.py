@@ -7,6 +7,7 @@
 This module can be used for diverse analysis of given peptide libraries.
 """
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import numpy as np
 
 from modlamp.core import count_aa
@@ -21,20 +22,23 @@ class GlobalAnalysis(object):
     """
     
     def __init__(self, library):
+        """
+        :param library: {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.
+        """
+        
         if type(library) == np.ndarray:
             self.library = library
+            # reshape library to 2D array if without sub-libraries
+            if len(self.library.shape) == 1:
+                self.library = self.library.reshape((1, -1))
+    
+            self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
+            self.H = np.zeros(self.library.shape, dtype='float64')
+            self.uH = np.zeros(self.library.shape, dtype='float64')
+            self.charge = np.zeros(self.library.shape, dtype='float64')
+            self.len = np.zeros(self.library.shape, dtype='float64')
         else:
-            self.library = np.array(library)
-        
-        # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1:
-            self.library = self.library.reshape((1, -1))
-        
-        self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
-        self.H = np.zeros(self.library.shape, dtype='float64')
-        self.uH = np.zeros(self.library.shape, dtype='float64')
-        self.charge = np.zeros(self.library.shape, dtype='float64')
-        self.len = np.zeros(self.library.shape, dtype='float64')
+            raise TypeError('Input library must be of type numpy.ndarray!')
     
     def calc_aa_freq(self, plot=True):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
@@ -138,6 +142,13 @@ class GlobalAnalysis(object):
         are used with their standard options.
     
         :return: visual summary (plot) of the library characteristics.
+        :Example:
+        
+        >>> g = GlobalAnalysis(np.array([seqs1, seqs2, seqs3])  # seqs being lists of sequences
+        >>> g.plot_summary()
+        
+        .. image:: ../docs/static/summary.png
+            :height: 500px
         """
         # calculate all global properties
         self.calc_len()
@@ -146,44 +157,80 @@ class GlobalAnalysis(object):
         self.calc_H()
         self.calc_uH()
         
-        # plot
+        # plot settings
         fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(18, 12))
         ((ax1, ax2), (ax3, ax4)) = axes
-        plt.suptitle('Global Summary', fontweight='bold', fontsize=16.)
-        
-        # length histogram
-        ax1.hist(self.len.T, len(range(int(np.max(self.len) - np.min(self.len)))),
-                 normed=1, facecolor='blue', alpha=0.5, align='right', rwidth=0.9)
-        ax1.set_xlabel('Sequence Length', fontweight='bold', fontsize=14.)
-        ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax1.set_xlim(np.min(self.len) - .5, np.max(self.len) + 1.5)
-        
-        # aa histogram
-        d_aa = count_aa('')
-        for a in range(20):
-            ax2.bar(a - 0.45, self.aafreq[0, a], 0.9, color='#83AF9B')
-        ax2.set_xlim([-0.75, 19.75])
-        ax2.set_ylim([0, max(self.aafreq[0, :]) + 0.05])
-        ax2.set_xticks(range(20))
-        ax2.set_xticklabels(d_aa.keys(), fontweight='bold')
-        ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax2.set_xlabel('Amino Acids', fontweight='bold', fontsize=14.)
-        
-        # hydophobicity violin plot
-        ax3.violinplot(self.H, widths=0.33, showmeans=True, showmedians=False)
-        ax3.set_xticks([])  # xticks off
-        ax3.set_ylabel('Global Hydrophobicity', fontweight='bold', fontsize=14.)
-        
-        # hydrophobic moment violin plot
-        ax4.violinplot(self.uH, widths=0.33, showmeans=True, showmedians=False)
-        ax4.set_xticks([])  # xticks off
-        ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
-        
-        # only left and bottom axes, no box
+        plt.suptitle('Summary', fontweight='bold', fontsize=16.)
+        labels = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
+        colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
+        num = len(labels)
+
         for a in [ax1, ax2, ax3, ax4]:
+            # only left and bottom axes, no box
             a.spines['right'].set_visible(False)
             a.spines['top'].set_visible(False)
             a.xaxis.set_ticks_position('bottom')
             a.yaxis.set_ticks_position('left')
+        
+        # 1 length histogram
+        ax1.hist(self.len.T, len(range(int(np.max(self.len) - np.min(self.len)))),
+                 normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
+        ax1.set_xlabel('Sequence Length', fontweight='bold', fontsize=14.)
+        ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+        ax1.set_xlim(np.min(self.len) - 1.5, np.max(self.len) + .5)
+        ax1.legend()
+        
+        # 2 aa bar plot
+        d_aa = count_aa('')
+        hands = [mpatches.Patch(label=labels[i], linewidth=1, edgecolor='black', facecolor=colors[i], alpha=0.7)
+                 for i in range(len(labels))]
+        w = 0.9
+        offsets = np.arange(start=-(w / 2), step=(w / num), stop=(w / 2))
+        for i, l in enumerate(self.aafreq):
+            for a in range(20):
+                ax2.bar(a - offsets[i] - (0.5 * w / num), l[a], w / num, color=colors[i], alpha=0.7)
+        ax2.set_xlim([-0.75, 19.75])
+        ax2.set_ylim([0, max(self.aafreq[0, :]) + 0.05])
+        ax2.set_xticks(range(20))
+        ax2.set_xticklabels(d_aa.keys(), fontweight='bold')
+        ax2.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+        ax2.set_xlabel('Amino Acids', fontweight='bold', fontsize=14.)
+        ax2.legend(handles=hands, labels=labels)
+        
+        # 3 hydophobicity violin plot
+        for i, l in enumerate(self.H):
+            vplot = ax3.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+            vplot['cbars'].set_edgecolor('black')
+            vplot['cmins'].set_edgecolor('black')
+            vplot['cmeans'].set_edgecolor('black')
+            vplot['cmaxes'].set_edgecolor('black')
+            vplot['cmeans'].set_linestyle('--')
+            for pc in vplot['bodies']:
+                pc.set_facecolor(colors[i])
+                pc.set_edgecolor('black')
+                pc.set_linewidth(1.5)
+                pc.set_alpha(0.7)
+                pc.set_label(labels[i])
+        ax3.set_xticks([x + 1 for x in range(len(labels))])
+        ax3.set_xticklabels(labels, fontweight='bold')
+        ax3.set_ylabel('Global Hydrophobicity', fontweight='bold', fontsize=14.)
+        
+        # 4 hydrophobic moment violin plot
+        for i, l in enumerate(self.uH):
+            vplot = ax4.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+            vplot['cbars'].set_edgecolor('black')
+            vplot['cmins'].set_edgecolor('black')
+            vplot['cmeans'].set_edgecolor('black')
+            vplot['cmaxes'].set_edgecolor('black')
+            vplot['cmeans'].set_linestyle('--')
+            for pc in vplot['bodies']:
+                pc.set_facecolor(colors[i])
+                pc.set_edgecolor('black')
+                pc.set_linewidth(1.5)
+                pc.set_alpha(0.7)
+                pc.set_label(labels[i])
+        ax4.set_xticks([x + 1 for x in range(len(labels))])
+        ax4.set_xticklabels(labels, fontweight='bold')
+        ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
         
         plt.show()

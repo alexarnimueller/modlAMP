@@ -5484,17 +5484,28 @@ calculated.</li>
 <span id="modlamp-analysis"></span><h2>2.8. modlamp.analysis<a class="headerlink" href="#module-modlamp.analysis" title="Permalink to this headline">¶</a></h2>
 <p>This module can be used for diverse analysis of given peptide libraries.</p>
 <dl class="class">
-<dt id="modlamp.analysis.Global">
-<em class="property">class </em><code class="descclassname">modlamp.analysis.</code><code class="descname">Global</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#Global"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.Global" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.analysis.GlobalAnalysis">
+<em class="property">class </em><code class="descclassname">modlamp.analysis.</code><code class="descname">GlobalAnalysis</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for amino acid sequence library analysis</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.6.0.</span></p>
+</div>
 <dl class="method">
-<dt id="modlamp.analysis.Global.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#Global.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.Global.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="modlamp.analysis.GlobalAnalysis.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>library</strong> &#8211; {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
-<dt id="modlamp.analysis.Global.calc_aa_freq">
-<code class="descname">calc_aa_freq</code><span class="sig-paren">(</span><em>plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#Global.calc_aa_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.Global.calc_aa_freq" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.analysis.GlobalAnalysis.calc_aa_freq">
+<code class="descname">calc_aa_freq</code><span class="sig-paren">(</span><em>plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_aa_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_aa_freq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
 the frequencies of these are calculated independently.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -5520,6 +5531,110 @@ alphabetically.</td>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/aa_anal.png"><img alt="_images/aa_anal.png" src="_images/aa_anal.png" style="height: 300px;" /></a>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_H">
+<code class="descname">calc_H</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} Eisenberg hydrophobicities in the attribute <code class="xref py py-attr docutils literal"><span class="pre">H</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_global()</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_uH">
+<code class="descname">calc_uH</code><span class="sig-paren">(</span><em>window=1000</em>, <em>angle=100</em>, <em>modality='max'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_uH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_uH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating hydrophobic moments (Eisenberg scale) for all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences
+shorter than 1000, the <strong>global</strong> hydrophobic moment will be calculated. Otherwise, the maximal
+hydrophiobic moment for the chosen window size found in the sequence will be returned.</li>
+<li><strong>angle</strong> &#8211; {int} angle in which to calculate the moment. <strong>100</strong> for alpha helices, <strong>180</strong> for beta sheets.</li>
+<li><strong>modality</strong> &#8211; {&#8216;max&#8217; or &#8216;mean&#8217;} calculate respectively maximum or mean hydrophobic moment.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">{numpy.ndarray} calculated hydrophobic moments in the attribute <code class="xref py py-attr docutils literal"><span class="pre">uH</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_moment()</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_charge">
+<code class="descname">calc_charge</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to calculate the total molecular charge at a given pH for all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ph</strong> &#8211; {float} ph at which to calculate the peptide charge.</li>
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus (-&gt; charge += 1).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">{numpy.ndarray} calculated charges in the attribute <code class="xref py py-attr docutils literal"><span class="pre">charge</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_len">
+<code class="descname">calc_len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the sequence length of all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} sequence lengths in the attribute <code class="xref py py-attr docutils literal"><span class="pre">len</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.plot_summary">
+<code class="descname">plot_summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate a visual summary of different characteristics of the given library. The class methods
+are used with their standard options.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">visual summary (plot) of the library characteristics.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists of sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">plot_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/summary.png"><img alt="_images/summary.png" src="_images/summary.png" style="height: 500px;" /></a>
 </dd></dl>
 
 </dd></dl>
