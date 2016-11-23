@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.ml
+.. currentmodule:: modlamp.ml
 
 .. moduleauthor:: modlab Gisela Gabernet ETH Zurich <gisela.gabernet@pharma.ethz.ch>
 
@@ -23,10 +23,10 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.grid_search import GridSearchCV
-from sklearn.learning_curve import validation_curve
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import validation_curve
 from sklearn.metrics import *
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import *
@@ -177,7 +177,8 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         gs.fit(x_train, y_train)
 
     elif model.lower() == 'rf':
-        pipe_rf = Pipeline([('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
+        pipe_rf = Pipeline([('scl', scaler),
+                            ('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
 
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 100, 500],

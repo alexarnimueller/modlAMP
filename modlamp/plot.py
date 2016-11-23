@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: modlamp.plot
+.. currentmodule:: modlamp.plot
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
@@ -51,7 +51,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     >>> plot_feature(d.descriptor,y_label='uH Eisenberg')  # d: PeptideDescriptor instance
 
     .. image:: ../docs/static/uH_Eisenberg.png
-        :scale: 50 %
+        :height: 300px
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
@@ -119,7 +119,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     >>> plot_2_features(a.descriptor,b.descriptor,x_label='uH',y_label='pI',targets=targs)
 
     .. image:: ../docs/static/2D_scatter.png
-        :scale: 50 %
+        :height: 300px
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
@@ -173,7 +173,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     >>> plot_3_features(a.descriptor,b.descriptor,c.descriptor,x_label='uH',y_label='pI',z_label='length')
 
     .. image:: ../docs/static/3D_scatter.png
-        :scale: 50 %
+        :height: 300px
     """
 
     if not colors:
@@ -203,7 +203,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
-    ax.yaxis.set_ticks_position('left')
+    ax.yaxis.set_ticks_position('bottom')
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -230,7 +230,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color
     >>> plot_profile('GLFDIVKKVVGALGSL', scalename='eisenberg')
 
     .. image:: ../docs/static/profileplot.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.1.5
     """
@@ -298,13 +298,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     >>> helical_wheel('ACDEFGHIKLMNPQRSTVWY')
 
     .. image:: ../docs/static/wheel1.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel2.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel3.png
-        :scale: 25 %
+        :height: 300px
     .. image:: ../docs/static/wheel4.png
-        :scale: 25 %
+        :height: 300px
 
     .. versionadded:: v2.1.5
     """
@@ -412,28 +412,32 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         plt.show()
 
 
-def plot_pde(data, axlabels=None, filename=None, legendloc=2):
+def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1, colors=None, alpha=0.2):
     """A function to plot probability density estimations of given data vectors / matrices (row wise)
 
     :param data: {list / array} data of which underlying probability density function should be estimated and plotted.
+    :param title: {str} plot title
     :param axlabels: {list of str} list containing the axis labels for the plot
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
     :param legendloc: {int} location of the figures legend. 1 = top right, 2 = top left ...
+    :param x_min: {number} x-axis minimum
+    :param x_max: {number} x-axis maximum
+    :param colors: {list} list of colors (readable by matplotlib, e.g. hex) to be used to plot different data classes
+    :param alpha: {float} color alpha for filling pde curve
     :Example:
 
     >>> data = np.random.random([3,100])
     >>> plot_pde(data)
 
     .. image:: ../docs/static/pde.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.1
     """
-
-    # colors
-    colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
     if not axlabels:
-        axlabels = ['Data', 'Density']
+        axlabels = ['Data', 'Estimated Density']
+    if not title:
+        title = ""
 
     # transform input to numpy array and reshape if it only contains one data row
     data = np.array(data)
@@ -442,13 +446,21 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
         data = data.reshape((1, -1))
     shp = data.shape
 
+    # colors
+    if not colors:
+        colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
+    elif len(colors) != len(data) and shp != 1:  # if not enough colors for all data subtypes
+        colors *= len(data)
+
     # prepare figure
     fig, ax = plt.subplots()
 
     # set axis labels and limits
+    if axlabels is None:
+        axlabels = ['', '']
     ax.set_xlabel(axlabels[0], fontsize=18)
     ax.set_ylabel(axlabels[1], fontsize=18)
-    fig.suptitle('Estimated Probability Distribution', fontsize=16, fontweight='bold')
+    fig.suptitle(title, fontsize=16, fontweight='bold')
 
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
@@ -461,30 +473,31 @@ def plot_pde(data, axlabels=None, filename=None, legendloc=2):
     if shp[0] == 1:
         kde = gaussian_kde(
             data)  # this creates the kernel, given an array it will estimate the probability over that values
-        space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
+        space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
         line = ax.plot(space, kde(space), label='Data')  # plot line
-        plt.setp(line, color=colors[0], linewidth=2.0, alpha=.8)  # set line width and color
-        ax.fill_between(space, 0, kde(space), color=colors[0], alpha=.6)  # fill area under line
+        plt.setp(line, color=colors[0], linewidth=2.0, alpha=.9)  # set line width and color
+        ax.fill_between(space, 0, kde(space), color=colors[0], alpha=alpha)  # fill area under line
 
     # if multiple rows
     else:
         for i, row in enumerate(data):
             kde = gaussian_kde(
                 row)  # this creates the kernel, given an array it will estimate the probability over that values
-            space = np.linspace(0, 1, 1000)  # these are the values over which the kernel will be evaluated
-            line = ax.plot(space, kde(space), label=str(i))  # plot line
-            plt.setp(line, color=colors[i], linewidth=2.0, alpha=.8)  # set line width and color
-            ax.fill_between(space, 0, kde(space), color=colors[i], alpha=.6)  # fill area under line
+            space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
+            line = ax.plot(space, kde(space), label='Run ' + str(i))  # plot line
+            plt.setp(line, color=colors[i], linewidth=2.0, alpha=.9)  # set line width and color
+            ax.fill_between(space, 0, kde(space), color=colors[i], alpha=alpha)  # fill area under line
 
     # show or save plot
     ax.legend(loc=legendloc)
+    ax.set_xlim((x_min, x_max))
     if filename:
         plt.savefig(filename, dpi=150)
     else:
         plt.show()
 
 
-def plot_violin(x, colors=None, bp=False, filename=None):
+def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=None, y_min=0, y_max=1):
     """    create violin plots out of given data array
     (adapted from `Flavio Coelho <https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html>`_.)
 
@@ -492,20 +505,23 @@ def plot_violin(x, colors=None, bp=False, filename=None):
     :param colors: {str or list} face color of the violin plots, can also be list of colors with same dimension as **x**
     :param bp: {bool} print a box blot inside violin
     :param filename: {str} location / filename where to save the plot to. *default = None* --> show the plot
+    :param title: {str} Title of the plot.
+    :param axlabels: {list of str} list containing the axis labels for the plot
+    :param y_min: {number} y-axis minimum.
+    :param y_max: {number} y-axis maximum.
     :Example:
 
     >>> data = np.random.normal(size=[5, 100])
     >>> plot_violin(data, colors=['green', 'green', 'green', 'red', 'red'], bp=True)
 
     .. image:: ../docs/static/violins.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.2
     """
 
     # transform input to list of arrays (better handled by plotting functions)
     x = np.array(x)
-    x = [l for l in x]
 
     # check color input and transform to list of right length
     if not colors:
@@ -519,30 +535,56 @@ def plot_violin(x, colors=None, bp=False, filename=None):
     w = min(0.15 * max(dist, 1.0), 0.5)
 
     fig, ax = plt.subplots()
-
-    # one violin for every data element
-    for p, d in enumerate(x):
-        k = gaussian_kde(d)  # kernel density estimation
+    if len(np.array(x).shape) == 1:  # if only one dimensional data
+        k = gaussian_kde(x)  # kernel density estimation
         mi = k.dataset.min()  # lower bound of violin
         ma = k.dataset.max()  # upper bound of violin
-        x = np.arange(mi, ma, (ma - mi) / 100.)  # range over which the PDE is performed
-        v = k.evaluate(x)  # violin profile (density curve)
-        v = v / v.max() * w  # scaling the violin to the available space
-        ax.fill_betweenx(x, p, v + p, facecolor=colors[p], alpha=0.6)
-        ax.fill_betweenx(x, p, -v + p, facecolor=colors[p], alpha=0.6)
+        rng = np.arange(mi, ma, (ma - mi) / 100.)  # range over which the PDE is performed
+        v = k.evaluate(rng)  # violin profile (density curve)
+        v = v / v.max() * 0.3  # scaling the violin to the available space
+        ax.fill_betweenx(rng, 1, v + 1, facecolor=colors[0], alpha=0.6)
+        ax.fill_betweenx(rng, 1, -v + 1, facecolor=colors[0], alpha=0.6)
 
-    if bp:  # print box plots if option is given
-        medprops = dict(linestyle='-', linewidth=1, color='black')
-        box = ax.boxplot(x, notch=1, positions=range(len(x)), vert=1, patch_artist=True, medianprops=medprops)
-        plt.setp(box['whiskers'], color='black')
-        for p, patch in enumerate(box['boxes']):
-            patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
+        if bp:  # print box plot if option is given
+            medprops = dict(linestyle='-', linewidth=1, color='black')
+            box = ax.boxplot(x, notch=1, positions=[1.], vert=1, patch_artist=True, medianprops=medprops)
+            plt.setp(box['whiskers'], color='black')
+            box['boxes'][0].set(facecolor=colors[0], edgecolor='black', alpha=0.7)
+        
+    else:  # one violin for every data element if multidimensional
+        for p, d in enumerate(x):
+            loc = p + 1
+            k = gaussian_kde(d)  # kernel density estimation
+            mi = k.dataset.min()  # lower bound of violin
+            ma = k.dataset.max()  # upper bound of violin
+            rng = np.arange(mi, ma, (ma - mi) / 100.)  # range over which the PDE is performed
+            v = k.evaluate(rng)  # violin profile (density curve)
+            v = v / v.max() * w  # scaling the violin to the available space
+            ax.fill_betweenx(rng, loc, v + loc, facecolor=colors[p], alpha=0.6)
+            ax.fill_betweenx(rng, loc, -v + loc, facecolor=colors[p], alpha=0.6)
+        
+        if bp:  # print box plots if option is given
+            box = ax.boxplot(x.T, notch=1, vert=1, patch_artist=True)
+            plt.setp(box['whiskers'], color='black')
+            plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
+            for p, patch in enumerate(box['boxes']):
+                patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
 
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.xaxis.set_ticks_position('bottom')
+    plt.tick_params(axis='x', which='both', top='off')
     ax.yaxis.set_ticks_position('left')
+    ax.set_ylim((y_min, y_max))
+    if axlabels is None:
+        axlabels = ['', '']
+    ax.set_xlabel(axlabels[0], fontsize=18)
+    ax.set_ylabel(axlabels[1], fontsize=18)
+    
+    if title:
+        ax.set_title(title, fontsize=16, fontweight='bold')
+    else:
+        ax.set_title('Violin Plots', fontsize=16, fontweight='bold')
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -561,7 +603,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     >>> plot_aa_distr(['KLLKLLKKLLKLLK', 'WWRRWWRAARWWRRWWRR', 'ACDEFGHKLCMNPQRSTVWY', 'GGGGGIIKLWGGGGGGGGGGGGG'])
 
     .. image:: ../docs/static/AA_dist.png
-        :scale: 50 %
+        :height: 300px
 
     .. versionadded:: v2.2.5
     """

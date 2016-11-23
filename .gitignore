@@ -1,6 +1,7 @@
 *.pyc
 *.xml
-.idea
+.idea/
+.idea/workspace.xml
 *.iml
 .DS_Store
 .ipynb_checkpoints

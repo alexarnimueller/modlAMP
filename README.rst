@@ -99,7 +99,7 @@ We can now plot these values as a boxplot, for example the hydrophobic moment:
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
 .. image:: static/uH_Eisenberg.png
-    :scale: 50 %
+    :height: 300px
 
 We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
 are stored in the FASTA formatted file ``APD3.fasta``:
@@ -112,7 +112,7 @@ Now lets compare the values by plotting:
 >>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
 .. image:: static/uH_APD3.png
-    :scale: 50 %
+    :height: 300px
 
 It is also possible to plot 2 or 3 different features in a scatter plot:
 
@@ -127,7 +127,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> plot_2_features(A.descriptor, B.descriptor, x_label='uH', y_label='pI', targets=target)
 
 .. image:: static/2D_scatter.png
-    :scale: 50 %
+    :height: 300px
 
 :Example: **3D Scatter Plot**
 
@@ -137,7 +137,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> plot_3_features(A.descriptor, B.descriptor, C.descriptor, x_label='uH', y_label='pI', z_label='length')
 
 .. image:: static/3D_scatter.png
-    :scale: 50 %
+    :height: 300px
 
 Further plotting methods like **helical wheel plots** are available. See the documentation for the
 `plot <modlamp.html#module-modlamp.plot>`_ module.
@@ -174,7 +174,7 @@ table. The query then works as follows:
 Password: >? ***********
 Connecting to MySQL database...
 connection established!
-['ILGTILGILKGL','ILGTILGFLKGL','ILGNILGFLKGL','ILGQILGILKGL','ILGHILGYLKGL','PAGHILGWWKGL','GLFDIVKKVVGALG',...]
+['ILDSSWQRTFLLS','IKLLHIF','ACFDDGLFRIIKFLLASDRFFT', ...]
 
 
 Loading Prepared Datasets
@@ -227,3 +227,15 @@ array([[   260.        ,   -266.95804196],
             3  Klak         W    25.06     0.000 ...
 
 .. seealso:: :py:func:`modlamp.wetlab.CD.helicity()`
+
+The read and calculated values can finally be plotted as follows:
+
+>>> cd.plot(data='mean residue ellipticity', combine=True)
+
+.. image:: static/cd1.png
+    :height: 300px
+.. image:: static/cd2.png
+    :height: 300px
+.. image:: static/cd3.png
+    :height: 300px
+

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlAMP v2.4.1 documentation</title>
+    <title>modlamp.sequences &mdash; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.4.1',
+        VERSION:     'v2.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
-    <link rel="top" title="modlAMP v2.4.1 documentation" href="../../index.html" />
+    <link rel="top" title="modlAMP v2.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.4.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -51,7 +51,7 @@
   <h1>Source code for modlamp.sequences</h1><div class="highlight"><pre>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. module:: modlamp.sequences</span>
+<span class="sd">.. currentmodule:: modlamp.sequences</span>
 
 <span class="sd">.. moduleauthor:: modlab Alex Mueller ETH Zurich &lt;alex.mueller@pharma.ethz.ch&gt;</span>
 
@@ -69,6 +69,8 @@
 <span class="sd">:py:class:`MixedLibrary`            Generates a mixed library of sequences of all other classes.</span>
 <span class="sd">:py:class:`Hepahelices`             Generates presumed amphipathic helices with a heparin-binding-domain.</span>
 <span class="sd">:py:class:`AMPngrams`               Generates sequences from most frequent ngrams in the APD3.</span>
+<span class="sd">:py:class:`HelicesACP`              Generates sequences with the amino acid probabiliy of helical ACPs.</span>
+<span class="sd">:py:class:`AmphipathicArc`          Generates presumed amphipathic helices with controlled hydrophobic arc size.</span>
 <span class="sd">============================        ===============================================================================</span>
 
 <span class="sd">.. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary`</span>
@@ -781,6 +783,377 @@
         <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
 
 
+<div class="viewcode-block" id="AmphipathicArc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc">[docs]</a><span class="k">class</span> <span class="nc">AmphipathicArc</span><span class="p">:</span>
+    <span class="c1"># TODO: add test cases</span>
+    <span class="sd">&quot;&quot;&quot;Base class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with</span>
+<span class="sd">    different arc sizes.</span>
+
+<span class="sd">    The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:</span>
+
+<span class="sd">    ===   ====   =====</span>
+<span class="sd">    AA    Hydr   Polar</span>
+<span class="sd">    ===   ====   =====</span>
+<span class="sd">    A     0.00   0.05</span>
+<span class="sd">    C     0.00   0.00</span>
+<span class="sd">    D     0.00   0.05</span>
+<span class="sd">    E     0.00   0.05</span>
+<span class="sd">    F     0.20   0.00</span>
+<span class="sd">    G     0.00   0.05</span>
+<span class="sd">    H     0.00   0.05</span>
+<span class="sd">    I     0.20   0.00</span>
+<span class="sd">    K     0.00   0.25</span>
+<span class="sd">    L     0.20   0.00</span>
+<span class="sd">    M     0.00   0.00</span>
+<span class="sd">    N     0.00   0.05</span>
+<span class="sd">    P     0.00   0.05</span>
+<span class="sd">    Q     0.00   0.05</span>
+<span class="sd">    R     0.00   0.25</span>
+<span class="sd">    S     0.00   0.05</span>
+<span class="sd">    T     0.00   0.05</span>
+<span class="sd">    V     0.20   0.00</span>
+<span class="sd">    W     0.20   0.00</span>
+<span class="sd">    Y     0.00   0.05</span>
+<span class="sd">    ===   ====   =====</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AmphipathicArc.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param lenmin: minimum sequence length</span>
+<span class="sd">        :param lenmax: maximum sequence length</span>
+<span class="sd">        :param seqnum: number of sequences to generate</span>
+<span class="sd">        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax`and :py:attr:`seqnum`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.generate_arc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.generate_arc">[docs]</a>    <span class="k">def</span> <span class="nf">generate_arc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arcsize</span><span class="o">=</span><span class="s1">&#39;160&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.</span>
+<span class="sd">        :param arcsize: {str} to choose among &#39;80&#39;, &#39;120&#39;, &#39;160&#39;, &#39;200&#39;, &#39;240&#39;.</span>
+<span class="sd">        :return: A list of sequences in the attribute :py:attr:`sequences`.</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; amphi_hel = Amphipathic_arc(10,25,4)</span>
+<span class="sd">        &gt;&gt;&gt; amphi_hel.generate_arc(&#39;80&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; amphi_hel.sequences</span>
+
+<span class="sd">        [&#39;YLYANLRQE&#39;, &#39;GVKPRIK&#39;, &#39;RWKKKVKDSVKDFEKRFKDIEKRIQRKLA&#39;, &#39;KIKEQLRNSVSGWHRN&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_amphihel</span>
+
+        <span class="k">if</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;80&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;120&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;160&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;200&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;240&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s2">&quot;Arc size unknown, choose among: &#39;80&#39;, &#39;120&#39;, &#39;160&#39;, &#39;200&#39;, &#39;240&#39;.&quot;</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">icycle</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">icycle</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
+                <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">icycle</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.generate_mixed_arcs"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.generate_mixed_arcs">[docs]</a>    <span class="k">def</span> <span class="nf">generate_mixed_arcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Method to generate sequences of mixed arc sizes.</span>
+<span class="sd">        :return: A list of sequences in :py:attr:`sequences`</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; amphi_hel = Amphipathic_arc(7,30,10)</span>
+<span class="sd">        &gt;&gt;&gt; amphi_hel.generate_mixed_arcs()</span>
+<span class="sd">        &gt;&gt;&gt; amphi_hel.sequences</span>
+
+<span class="sd">        [&#39;KIRRAFRNNLK&#39;, &#39;PFWKRWARWFKRWHRKLKTVFAKVTALL&#39;, &#39;AVFRTIKAVF&#39;, &#39;AIVHFFLTFLAELWQFLK&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_amphihel</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="n">idxcycle</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">next</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">idxcycle</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">icycle</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">icycle</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
+                <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">icycle</span><span class="p">()</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idxcycle</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.make_H_gradient"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.make_H_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">make_H_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of</span>
+<span class="sd">        the sequence amino acids to  hydrophobic.</span>
+<span class="sd">        :return: A list of sequences in :py:attr:`sequences`</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; amphi_grad = Amphipathic_arc(7,30,10)</span>
+<span class="sd">        &gt;&gt;&gt; amphi_grad.generate_mixed_arcs()</span>
+<span class="sd">        &gt;&gt;&gt; amphi_grad.make_gradient()</span>
+<span class="sd">        &gt;&gt;&gt; amphi_grad.sequences</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_amphihel</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">aa</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta file.</span>
+
+<span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
+<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.</span>
+<span class="sd">        :return: a fasta file containing the generated sequences.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
+
+<span class="sd">        :param nr: number of mutations to perform per sequence</span>
+<span class="sd">        :param prob: probability of mutating a sequence</span>
+<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; H.sequences</span>
+<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; H.sequences</span>
+<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
+<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
+
+<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
+<span class="sd">            accordingly.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
+
+<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
+
+<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AmphipathicArc.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">        **Duplicate** sequences are removed as well.</span>
+
+<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="HelicesACP"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP">[docs]</a><span class="k">class</span> <span class="nc">HelicesACP</span><span class="p">:</span>
+    <span class="c1"># TODO: add test cases</span>
+    <span class="sd">&quot;&quot;&quot;Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.</span>
+
+<span class="sd">    This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability</span>
+<span class="sd">    distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among</span>
+<span class="sd">    62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences</span>
+<span class="sd">    (Gabernet et al., MedChemComm 2016).</span>
+
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    AA  pos0    pos1 	pos2 	pos3 	pos4 	pos5 	pos6 	pos7 	pos8 	pos9</span>
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    A 	0.048 	0.000 	0.000 	0.048 	0.016 	0.129 	0.032 	0.097 	0.193 	0.500</span>
+<span class="sd">    C 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000</span>
+<span class="sd">    D 	0.000 	0.016 	0.000 	0.274 	0.017 	0.000 	0.000 	0.016 	0.000 	0.000</span>
+<span class="sd">    E 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.064 	0.000 	0.016</span>
+<span class="sd">    F 	0.161 	0.048 	0.306 	0.000 	0.048 	0.000 	0.000 	0.016 	0.000	0.016</span>
+<span class="sd">    G 	0.645 	0.000 	0.177 	0.145 	0.000 	0.016 	0.258 	0.113 	0.064 	0.081</span>
+<span class="sd">    H 	0.000 	0.000 	0.000 	0.016 	0.000 	0.000 	0.016 	0.000 	0.032 	0.000</span>
+<span class="sd">    I 	0.048 	0.113 	0.016 	0.081 	0.338 	0.274 	0.000 	0.048 	0.145	0.064</span>
+<span class="sd">    K 	0.000 	0.032 	0.016 	0.129 	0.129 	0.000 	0.387 	0.338 	0.048 	0.032</span>
+<span class="sd">    L 	0.048 	0.710 	0.129 	0.048 	0.096 	0.322 	0.210 	0.064	0.113 	0.064</span>
+<span class="sd">    M 	0.000 	0.016 	0.016 	0.048 	0.016 	0.032 	0.000 	0.000 	0.000 	0.000</span>
+<span class="sd">    N 	0.000 	0.016 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000</span>
+<span class="sd">    P 	0.000 	0.000 	0.145 	0.016 	0.032 	0.016 	0.000 	0.000	0.000 	0.000</span>
+<span class="sd">    Q 	0.000 	0.000 	0.016 	0.016 	0.000 	0.000 	0.016 	0.000 	0.016 	0.000</span>
+<span class="sd">    R 	0.000 	0.016 	0.016 	0.000 	0.016 	0.000 	0.016 	0.000 	0.016 	0.016</span>
+<span class="sd">    S 	0.016 	0.000 	0.016 	0.129 	0.032 	0.032 	0.048 	0.177 	0.000 	0.032</span>
+<span class="sd">    T 	0.016 	0.016 	0.000 	0.016 	0.048 	0.016 	0.000 	0.016 	0.000 	0.016</span>
+<span class="sd">    V 	0.016 	0.016 	0.016 	0.016 	0.209 	0.161 	0.016 	0.048 	0.338 	0.161</span>
+<span class="sd">    W 	0.000 	0.000 	0.129 	0.016 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000</span>
+<span class="sd">    Y 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000</span>
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
+
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    AA  pos10   pos11   pos12   pos13   pos14   pos15 	pos16 	pos17</span>
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    A 	0.048   0.113   0.100   0.185   0.078   0.120   0.170   0.167</span>
+<span class="sd">    C 	0.016   0.000   0.000   0.000   0.000   0.000   0.024   0.194</span>
+<span class="sd">    D 	0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000</span>
+<span class="sd">    E 	0.048   0.016   0.000   0.019   0.000   0.000   0.000   0.000</span>
+<span class="sd">    F 	0.000   0.097   0.067   0.019   0.000   0.020   0.146   0.000</span>
+<span class="sd">    G 	0.225   0.032   0.067   0.204   0.137   0.100   0.000   0.055</span>
+<span class="sd">    H 	0.000   0.210   0.000   0.000   0.000   0.160   0.000   0.000</span>
+<span class="sd">    I 	0.032   0.065   0.183   0.000   0.000   0.100   0.268   0.000</span>
+<span class="sd">    K 	0.419   0.081   0.000   0.037   0.294   0.040   0.024   0.028</span>
+<span class="sd">    L 	0.032   0.032   0.283   0.240   0.039   0.280   0.073   0.222</span>
+<span class="sd">    M 	0.000   0.000   0.033   0.000   0.020   0.020   0.000   0.000</span>
+<span class="sd">    N 	0.032   0.000   0.000   0.000   0.020   0.020   0.000   0.000</span>
+<span class="sd">    P 	0.016   0.000   0.000   0.130   0.176   0.000   0.000   0.000</span>
+<span class="sd">    Q 	0.000   0.016   0.000   0.019   0.000   0.000   0.000   0.000</span>
+<span class="sd">    R 	0.016   0.016   0.000   0.019   0.019   0.000   0.049   0.000</span>
+<span class="sd">    S 	0.096   0.048   0.017   0.000   0.157   0.100   0.000   0.056</span>
+<span class="sd">    T 	0.016   0.113   0.000   0.019   0.039   0.020   0.000   0.056</span>
+<span class="sd">    V 	0.000   0.145   0.250   0.111   0.020   0.020   0.220   0.222</span>
+<span class="sd">    W 	0.000   0.000   0.000   0.000   0.000   0.000   0.024   0.000</span>
+<span class="sd">    Y 	0.000   0.016   0.000   0.000   0.000   0.000   0.000   0.000</span>
+<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HelicesACP.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param lenmin: minimal sequence length.</span>
+<span class="sd">        :param lenmax: maximal sequence length.</span>
+<span class="sd">        :param seqnum: number of seqeunces to generate.</span>
+<span class="sd">        :return: initialized class attributes for sequence number and length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.generate_helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.generate_helices">[docs]</a>    <span class="k">def</span> <span class="nf">generate_helices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to generate the sequences with the mentioned amino acid probabilities.</span>
+<span class="sd">        :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides</span>
+<span class="sd">        according to the position in the helix wheel.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; helACP = Helix_ACP(7,18,4)</span>
+<span class="sd">        &gt;&gt;&gt; helACP.generate_helices()</span>
+<span class="sd">        &gt;&gt;&gt; helACP.sequences</span>
+
+<span class="sd">        [&#39;FLFDVAKKVAGTALT&#39;, &#39;GLGIILGAGG&#39;, &#39;GLRIKLGVWAKKA&#39;, &#39;GFWGFIKTI&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_ACPhel</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">18</span><span class="o">*</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="mi">18</span><span class="p">)</span>  <span class="c1"># for helices &gt;18aa, the probabilities start from the beginning again</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span>
+                                                 <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[:,</span> <span class="n">l</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="HelicesACP.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a fasta file.</span>
+
+<span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
+<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.</span>
+<span class="sd">        :return: a fasta file containing the generated sequences.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
+
+<span class="sd">        :param nr: number of mutations to perform per sequence</span>
+<span class="sd">        :param prob: probability of mutating a sequence</span>
+<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; H.sequences</span>
+<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
+<span class="sd">        &gt;&gt;&gt; H.sequences</span>
+<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
+<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
+
+<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
+<span class="sd">            accordingly.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
+
+<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
+
+<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
+
+<span class="sd">        .. versionadded:: v2.2.5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HelicesACP.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
+<span class="sd">        **Duplicate** sequences are removed as well.</span>
+
+<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
+
+<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+
+
 <div class="viewcode-block" id="MixedLibrary"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary">[docs]</a><span class="k">class</span> <span class="nc">MixedLibrary</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Base class for holding a virtual peptide library.</span>
 
@@ -1219,13 +1592,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.4.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Sep 23, 2016.
+      Last updated on Nov 17, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

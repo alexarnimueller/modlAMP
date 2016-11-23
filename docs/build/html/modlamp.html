@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &mdash; modlAMP v2.4.1 documentation</title>
+    <title>2. Package Documentation &mdash; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.4.1',
+        VERSION:     'v2.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
-    <link rel="top" title="modlAMP v2.4.1 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v2.6.0 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -96,7 +96,7 @@
 </table>
 <div class="section" id="module-modlamp.descriptors">
 <span id="modlamp-descriptors"></span><h2>2.1. modlamp.descriptors<a class="headerlink" href="#module-modlamp.descriptors" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.descriptors"></span><p>This module incorporates different classes to calculate peptide descriptor values. The following classes are available:</p>
+<p>This module incorporates different classes to calculate peptide descriptor values. The following classes are available:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -823,6 +823,7 @@ class <a class="reference internal" href="#modlamp.descriptors.GlobalDescriptor"
 calculation:</p>
 <ul class="simple">
 <li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
+<li><strong>ABHPRK</strong>          (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)</li>
 <li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] Argos, P., Rao, J. K. M. &amp; Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
 <li><strong>bulkiness</strong>      (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
 <li><strong>charge_physio</strong>  (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
@@ -1459,7 +1460,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 </div>
 <div class="section" id="module-modlamp.sequences">
 <span id="modlamp-sequences"></span><h2>2.2. modlamp.sequences<a class="headerlink" href="#module-modlamp.sequences" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.sequences"></span><p>This module incorporates different classes to generate peptide sequences with different characteristics from scratch.
+<p>This module incorporates different classes to generate peptide sequences with different characteristics from scratch.
 The following classes are available:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1495,6 +1496,12 @@ The following classes are available:</p>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.sequences.AMPngrams" title="modlamp.sequences.AMPngrams"><code class="xref py py-class docutils literal"><span class="pre">AMPngrams</span></code></a></td>
 <td>Generates sequences from most frequent ngrams in the APD3.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.sequences.HelicesACP" title="modlamp.sequences.HelicesACP"><code class="xref py py-class docutils literal"><span class="pre">HelicesACP</span></code></a></td>
+<td>Generates sequences with the amino acid probabiliy of helical ACPs.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.sequences.AmphipathicArc" title="modlamp.sequences.AmphipathicArc"><code class="xref py py-class docutils literal"><span class="pre">AmphipathicArc</span></code></a></td>
+<td>Generates presumed amphipathic helices with controlled hydrophobic arc size.</td>
 </tr>
 </tbody>
 </table>
@@ -2647,6 +2654,1009 @@ accordingly.</td>
 </dd></dl>
 
 <dl class="class">
+<dt id="modlamp.sequences.AmphipathicArc">
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">AmphipathicArc</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with
+different arc sizes.</p>
+<p>The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="33%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">Hydr</th>
+<th class="head">Polar</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.00</td>
+<td>0.25</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.00</td>
+<td>0.25</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.00</td>
+<td>0.05</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lenmin</strong> &#8211; minimum sequence length</li>
+<li><strong>lenmax</strong> &#8211; maximum sequence length</li>
+<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined attributes <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmax`and</span> <span class="pre">:py:attr:`seqnum</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.generate_arc">
+<code class="descname">generate_arc</code><span class="sig-paren">(</span><em>arcsize='160'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.generate_arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.generate_arc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.
+:param arcsize: {str} to choose among &#8216;80&#8217;, &#8216;120&#8217;, &#8216;160&#8217;, &#8216;200&#8217;, &#8216;240&#8217;.
+:return: A list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.
+:Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">Amphipathic_arc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">generate_arc</span><span class="p">(</span><span class="s1">&#39;80&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+<p>[&#8216;YLYANLRQE&#8217;, &#8216;GVKPRIK&#8217;, &#8216;RWKKKVKDSVKDFEKRFKDIEKRIQRKLA&#8217;, &#8216;KIKEQLRNSVSGWHRN&#8217;]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.generate_mixed_arcs">
+<code class="descname">generate_mixed_arcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.generate_mixed_arcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.generate_mixed_arcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate sequences of mixed arc sizes.
+:return: A list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>
+:Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">Amphipathic_arc</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">generate_mixed_arcs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+<p>[&#8216;KIRRAFRNNLK&#8217;, &#8216;PFWKRWARWFKRWHRKLKTVFAKVTALL&#8217;, &#8216;AVFRTIKAVF&#8217;, &#8216;AIVHFFLTFLAELWQFLK&#8217;]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.make_H_gradient">
+<code class="descname">make_H_gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.make_H_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.make_H_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of
+the sequence amino acids to  hydrophobic.
+:return: A list of sequences in <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>
+:Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_grad</span> <span class="o">=</span> <span class="n">Amphipathic_arc</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_grad</span><span class="o">.</span><span class="n">generate_mixed_arcs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_grad</span><span class="o">.</span><span class="n">make_gradient</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_grad</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save generated sequences in a .fasta file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_unnatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.AmphipathicArc.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Duplicate</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="modlamp.sequences.HelicesACP">
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">HelicesACP</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.</p>
+<p>This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
+distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
+62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences
+(Gabernet et al., MedChemComm 2016).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">pos0</th>
+<th class="head">pos1</th>
+<th class="head">pos2</th>
+<th class="head">pos3</th>
+<th class="head">pos4</th>
+<th class="head">pos5</th>
+<th class="head">pos6</th>
+<th class="head">pos7</th>
+<th class="head">pos8</th>
+<th class="head">pos9</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.048</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.048</td>
+<td>0.016</td>
+<td>0.129</td>
+<td>0.032</td>
+<td>0.097</td>
+<td>0.193</td>
+<td>0.500</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.274</td>
+<td>0.017</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.064</td>
+<td>0.000</td>
+<td>0.016</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.161</td>
+<td>0.048</td>
+<td>0.306</td>
+<td>0.000</td>
+<td>0.048</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.645</td>
+<td>0.000</td>
+<td>0.177</td>
+<td>0.145</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.258</td>
+<td>0.113</td>
+<td>0.064</td>
+<td>0.081</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.032</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.048</td>
+<td>0.113</td>
+<td>0.016</td>
+<td>0.081</td>
+<td>0.338</td>
+<td>0.274</td>
+<td>0.000</td>
+<td>0.048</td>
+<td>0.145</td>
+<td>0.064</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.000</td>
+<td>0.032</td>
+<td>0.016</td>
+<td>0.129</td>
+<td>0.129</td>
+<td>0.000</td>
+<td>0.387</td>
+<td>0.338</td>
+<td>0.048</td>
+<td>0.032</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.048</td>
+<td>0.710</td>
+<td>0.129</td>
+<td>0.048</td>
+<td>0.096</td>
+<td>0.322</td>
+<td>0.210</td>
+<td>0.064</td>
+<td>0.113</td>
+<td>0.064</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.048</td>
+<td>0.016</td>
+<td>0.032</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.145</td>
+<td>0.016</td>
+<td>0.032</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.016</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.129</td>
+<td>0.032</td>
+<td>0.032</td>
+<td>0.048</td>
+<td>0.177</td>
+<td>0.000</td>
+<td>0.032</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.048</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.016</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.209</td>
+<td>0.161</td>
+<td>0.016</td>
+<td>0.048</td>
+<td>0.338</td>
+<td>0.161</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.129</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">pos10</th>
+<th class="head">pos11</th>
+<th class="head">pos12</th>
+<th class="head">pos13</th>
+<th class="head">pos14</th>
+<th class="head">pos15</th>
+<th class="head">pos16</th>
+<th class="head">pos17</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.048</td>
+<td>0.113</td>
+<td>0.100</td>
+<td>0.185</td>
+<td>0.078</td>
+<td>0.120</td>
+<td>0.170</td>
+<td>0.167</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.024</td>
+<td>0.194</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.048</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.019</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.000</td>
+<td>0.097</td>
+<td>0.067</td>
+<td>0.019</td>
+<td>0.000</td>
+<td>0.020</td>
+<td>0.146</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.225</td>
+<td>0.032</td>
+<td>0.067</td>
+<td>0.204</td>
+<td>0.137</td>
+<td>0.100</td>
+<td>0.000</td>
+<td>0.055</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.000</td>
+<td>0.210</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.160</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.032</td>
+<td>0.065</td>
+<td>0.183</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.100</td>
+<td>0.268</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.419</td>
+<td>0.081</td>
+<td>0.000</td>
+<td>0.037</td>
+<td>0.294</td>
+<td>0.040</td>
+<td>0.024</td>
+<td>0.028</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.032</td>
+<td>0.032</td>
+<td>0.283</td>
+<td>0.240</td>
+<td>0.039</td>
+<td>0.280</td>
+<td>0.073</td>
+<td>0.222</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.033</td>
+<td>0.000</td>
+<td>0.020</td>
+<td>0.020</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.032</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.020</td>
+<td>0.020</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.130</td>
+<td>0.176</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.019</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.019</td>
+<td>0.019</td>
+<td>0.000</td>
+<td>0.049</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.096</td>
+<td>0.048</td>
+<td>0.017</td>
+<td>0.000</td>
+<td>0.157</td>
+<td>0.100</td>
+<td>0.000</td>
+<td>0.056</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.016</td>
+<td>0.113</td>
+<td>0.000</td>
+<td>0.019</td>
+<td>0.039</td>
+<td>0.020</td>
+<td>0.000</td>
+<td>0.056</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.000</td>
+<td>0.145</td>
+<td>0.250</td>
+<td>0.111</td>
+<td>0.020</td>
+<td>0.020</td>
+<td>0.220</td>
+<td>0.222</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.024</td>
+<td>0.000</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.000</td>
+<td>0.016</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lenmin</strong> &#8211; minimal sequence length.</li>
+<li><strong>lenmax</strong> &#8211; maximal sequence length.</li>
+<li><strong>seqnum</strong> &#8211; number of seqeunces to generate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">initialized class attributes for sequence number and length.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.generate_helices">
+<code class="descname">generate_helices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.generate_helices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.generate_helices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate the sequences with the mentioned amino acid probabilities.
+:return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides
+according to the position in the helix wheel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span> <span class="o">=</span> <span class="n">Helix_ACP</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">generate_helices</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">sequences</span>
+</pre></div>
+</div>
+<p>[&#8216;FLFDVAKKVAGTALT&#8217;, &#8216;GLGIILGAGG&#8217;, &#8216;GLRIKLGVWAKKA&#8217;, &#8216;GFWGFIKTI&#8217;]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save generated sequences in a fasta file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_unnatural">
+<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_unnatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.sequences.HelicesACP.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
+<strong>Duplicate</strong> sequences are removed as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="modlamp.sequences.MixedLibrary">
 <em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">MixedLibrary</code><span class="sig-paren">(</span><em>number</em>, <em>centrosymmetric=1</em>, <em>centroasymmetric=1</em>, <em>helix=1</em>, <em>kinked=1</em>, <em>oblique=1</em>, <em>rand=1</em>, <em>randAMP=1</em>, <em>randAMPnoCM=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#MixedLibrary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.MixedLibrary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for holding a virtual peptide library.</p>
@@ -3210,7 +4220,7 @@ accordingly.</td>
 </div>
 <div class="section" id="module-modlamp.database">
 <span id="modlamp-database"></span><h2>2.3. modlamp.database<a class="headerlink" href="#module-modlamp.database" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.database"></span><p>This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server
+<p>This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server
 is only available in the CADD intranet at ETH Zurich.</p>
 <dl class="function">
 <dt id="modlamp.database.query_database">
@@ -3304,7 +4314,7 @@ as function input.</p>
 </div>
 <div class="section" id="module-modlamp.datasets">
 <span id="modlamp-datasets"></span><h2>2.4. modlamp.datasets<a class="headerlink" href="#module-modlamp.datasets" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.datasets"></span><p>This module incorporates functions to load different peptide datasets used for classification.</p>
+<p>This module incorporates functions to load different peptide datasets used for classification.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -3624,7 +4634,7 @@ features.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_AMPvsUniProt</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_custom</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_custom</span><span class="p">(</span><span class="s1">&#39;custom_data.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3633,7 +4643,7 @@ features.</td>
 </div>
 <div class="section" id="module-modlamp.plot">
 <span id="modlamp-plot"></span><h2>2.5. modlamp.plot<a class="headerlink" href="#module-modlamp.plot" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.plot"></span><p>This module incorporates functions to plot different feature plots. The following functions are available:</p>
+<p>This module incorporates functions to plot different feature plots. The following functions are available:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="26%" />
@@ -3700,7 +4710,7 @@ as separate boxes.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># d: PeptideDescriptor instance</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="height: 300px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3733,7 +4743,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_2_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">targets</span><span class="o">=</span><span class="n">targs</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/2D_scatter.png"><img alt="_images/2D_scatter.png" src="_images/2D_scatter.png" style="height: 300px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3768,7 +4778,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_3_features</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;pI&#39;</span><span class="p">,</span><span class="n">z_label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="width: 400.0px; height: 300.0px;" /></a>
+<a class="reference internal image-reference" href="_images/3D_scatter.png"><img alt="_images/3D_scatter.png" src="_images/3D_scatter.png" style="height: 300px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3804,7 +4814,7 @@ are plottet in different colors.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_profile</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/profileplot.png"><img alt="_images/profileplot.png" src="_images/profileplot.png" style="height: 300px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
 </div>
@@ -3840,10 +4850,10 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">helical_wheel</span><span class="p">(</span><span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/wheel1.png"><img alt="_images/wheel1.png" src="_images/wheel1.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel2.png"><img alt="_images/wheel2.png" src="_images/wheel2.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel3.png"><img alt="_images/wheel3.png" src="_images/wheel3.png" style="width: 375.0px; height: 375.0px;" /></a>
-<a class="reference internal image-reference" href="_images/wheel4.png"><img alt="_images/wheel4.png" src="_images/wheel4.png" style="width: 375.0px; height: 375.0px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel1.png"><img alt="_images/wheel1.png" src="_images/wheel1.png" style="height: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel2.png"><img alt="_images/wheel2.png" src="_images/wheel2.png" style="height: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel3.png"><img alt="_images/wheel3.png" src="_images/wheel3.png" style="height: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/wheel4.png"><img alt="_images/wheel4.png" src="_images/wheel4.png" style="height: 300px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.1.5.</span></p>
 </div>
@@ -3851,7 +4861,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 
 <dl class="function">
 <dt id="modlamp.plot.plot_pde">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_pde</code><span class="sig-paren">(</span><em>data</em>, <em>axlabels=None</em>, <em>filename=None</em>, <em>legendloc=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_pde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_pde" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_pde</code><span class="sig-paren">(</span><em>data</em>, <em>title=None</em>, <em>axlabels=None</em>, <em>filename=None</em>, <em>legendloc=2</em>, <em>x_min=0</em>, <em>x_max=1</em>, <em>colors=None</em>, <em>alpha=0.2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_pde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_pde" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to plot probability density estimations of given data vectors / matrices (row wise)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3859,9 +4869,14 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>data</strong> &#8211; {list / array} data of which underlying probability density function should be estimated and plotted.</li>
+<li><strong>title</strong> &#8211; {str} plot title</li>
 <li><strong>axlabels</strong> &#8211; {list of str} list containing the axis labels for the plot</li>
 <li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
 <li><strong>legendloc</strong> &#8211; {int} location of the figures legend. 1 = top right, 2 = top left ...</li>
+<li><strong>x_min</strong> &#8211; {number} x-axis minimum</li>
+<li><strong>x_max</strong> &#8211; {number} x-axis maximum</li>
+<li><strong>colors</strong> &#8211; {list} list of colors (readable by matplotlib, e.g. hex) to be used to plot different data classes</li>
+<li><strong>alpha</strong> &#8211; {float} color alpha for filling pde curve</li>
 </ul>
 </td>
 </tr>
@@ -3873,7 +4888,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_pde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/pde.png"><img alt="_images/pde.png" src="_images/pde.png" style="height: 300px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.1.</span></p>
 </div>
@@ -3881,7 +4896,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 
 <dl class="function">
 <dt id="modlamp.plot.plot_violin">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_violin</code><span class="sig-paren">(</span><em>x</em>, <em>colors=None</em>, <em>bp=False</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_violin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_violin" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_violin</code><span class="sig-paren">(</span><em>x</em>, <em>colors=None</em>, <em>bp=False</em>, <em>filename=None</em>, <em>title=None</em>, <em>axlabels=None</em>, <em>y_min=0</em>, <em>y_max=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_violin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_violin" title="Permalink to this definition">¶</a></dt>
 <dd><p>create violin plots out of given data array
 (adapted from <a class="reference external" href="https://pyinsci.blogspot.ch/2009/09/violin-plot-with-matplotlib.html">Flavio Coelho</a>.)</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3893,6 +4908,10 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <li><strong>colors</strong> &#8211; {str or list} face color of the violin plots, can also be list of colors with same dimension as <strong>x</strong></li>
 <li><strong>bp</strong> &#8211; {bool} print a box blot inside violin</li>
 <li><strong>filename</strong> &#8211; {str} location / filename where to save the plot to. <em>default = None</em> &#8211;&gt; show the plot</li>
+<li><strong>title</strong> &#8211; {str} Title of the plot.</li>
+<li><strong>axlabels</strong> &#8211; {list of str} list containing the axis labels for the plot</li>
+<li><strong>y_min</strong> &#8211; {number} y-axis minimum.</li>
+<li><strong>y_max</strong> &#8211; {number} y-axis maximum.</li>
 </ul>
 </td>
 </tr>
@@ -3904,7 +4923,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_violin</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">bp</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/violins.png"><img alt="_images/violins.png" src="_images/violins.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/violins.png"><img alt="_images/violins.png" src="_images/violins.png" style="height: 300px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.2.</span></p>
 </div>
@@ -3932,7 +4951,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_aa_distr</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;WWRRWWRAARWWRRWWRR&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHKLCMNPQRSTVWY&#39;</span><span class="p">,</span> <span class="s1">&#39;GGGGGIIKLWGGGGGGGGGGGGG&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/AA_dist.png"><img alt="_images/AA_dist.png" src="_images/AA_dist.png" style="width: 600.0px; height: 450.0px;" /></a>
+<a class="reference internal image-reference" href="_images/AA_dist.png"><img alt="_images/AA_dist.png" src="_images/AA_dist.png" style="height: 300px;" /></a>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.5.</span></p>
 </div>
@@ -3941,7 +4960,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 </div>
 <div class="section" id="module-modlamp.ml">
 <span id="modlamp-ml"></span><h2>2.6. modlamp.ml<a class="headerlink" href="#module-modlamp.ml" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.ml"></span><p>This module contains different functions to facilitate machine learning mainly using the scikit-learn package.
+<p>This module contains different functions to facilitate machine learning mainly using the scikit-learn package.
 Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
 check the scikit-learn documentation.</p>
 <table border="1" class="docutils">
@@ -4238,7 +5257,7 @@ are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area u
 </div>
 <div class="section" id="module-modlamp.wetlab">
 <span id="modlamp-wetlab"></span><h2>2.7. modlamp.wetlab<a class="headerlink" href="#module-modlamp.wetlab" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.wetlab"></span><p>This module incorporates functions to load raw data files from wetlab experiments, calculate different
+<p>This module incorporates functions to load raw data files from wetlab experiments, calculate different
 characteristics and plot.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4391,9 +5410,9 @@ cuvette path length.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;mean residue ellipticity&#39;</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" style="width: 482.1px; height: 360.3px;" /></a>
-<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" style="width: 480.6px; height: 360.0px;" /></a>
-<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" style="width: 481.5px; height: 360.6px;" /></a>
+<a class="reference internal image-reference" href="_images/cd1.png"><img alt="_images/cd1.png" src="_images/cd1.png" style="height: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/cd2.png"><img alt="_images/cd2.png" src="_images/cd2.png" style="height: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/cd3.png"><img alt="_images/cd3.png" src="_images/cd3.png" style="height: 300px;" /></a>
 </dd></dl>
 
 <dl class="method">
@@ -4461,9 +5480,176 @@ calculated.</li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-modlamp.analysis">
+<span id="modlamp-analysis"></span><h2>2.8. modlamp.analysis<a class="headerlink" href="#module-modlamp.analysis" title="Permalink to this headline">¶</a></h2>
+<p>This module can be used for diverse analysis of given peptide libraries.</p>
+<dl class="class">
+<dt id="modlamp.analysis.GlobalAnalysis">
+<em class="property">class </em><code class="descclassname">modlamp.analysis.</code><code class="descname">GlobalAnalysis</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for amino acid sequence library analysis</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.6.0.</span></p>
+</div>
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>library</strong> &#8211; {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;GLFDIVKKVVGALG&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_aa_freq">
+<code class="descname">calc_aa_freq</code><span class="sig-paren">(</span><em>plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_aa_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_aa_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
+the frequencies of these are calculated independently.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> &#8211; {bool} whether the amino acid frequencies should be plotted in a histogram.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} amino acid frequencies in the attribute <code class="xref py py-attr docutils literal"><span class="pre">aafreq</span></code>. The values are oredered
+alphabetically.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>  <span class="c1"># sequences being a numpy array of amino acid sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">calc_aa_freq</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">aafreq</span>
+<span class="go">    array([[ 0.08250071,  0.        ,  0.02083928,  0.0159863 ,  0.1464459 ,</span>
+<span class="go">             0.04795889,  0.06622895,  0.0262632 ,  0.12988867,  0.        ,</span>
+<span class="go">             0.09192121,  0.03111619,  0.01712818,  0.04852983,  0.05937768,</span>
+<span class="go">             0.07079646,  0.04396232,  0.0225521 ,  0.05994862,  0.01855552]])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/aa_anal.png"><img alt="_images/aa_anal.png" src="_images/aa_anal.png" style="height: 300px;" /></a>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_H">
+<code class="descname">calc_H</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} Eisenberg hydrophobicities in the attribute <code class="xref py py-attr docutils literal"><span class="pre">H</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_global()</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_uH">
+<code class="descname">calc_uH</code><span class="sig-paren">(</span><em>window=1000</em>, <em>angle=100</em>, <em>modality='max'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_uH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_uH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for calculating hydrophobic moments (Eisenberg scale) for all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>window</strong> &#8211; {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
+window, the length of the sequence is taken. So if the default window of 1000 is chosen, for all sequences
+shorter than 1000, the <strong>global</strong> hydrophobic moment will be calculated. Otherwise, the maximal
+hydrophiobic moment for the chosen window size found in the sequence will be returned.</li>
+<li><strong>angle</strong> &#8211; {int} angle in which to calculate the moment. <strong>100</strong> for alpha helices, <strong>180</strong> for beta sheets.</li>
+<li><strong>modality</strong> &#8211; {&#8216;max&#8217; or &#8216;mean&#8217;} calculate respectively maximum or mean hydrophobic moment.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">{numpy.ndarray} calculated hydrophobic moments in the attribute <code class="xref py py-attr docutils literal"><span class="pre">uH</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_moment()</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_charge">
+<code class="descname">calc_charge</code><span class="sig-paren">(</span><em>ph=7.0</em>, <em>amide=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to calculate the total molecular charge at a given pH for all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ph</strong> &#8211; {float} ph at which to calculate the peptide charge.</li>
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus (-&gt; charge += 1).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">{numpy.ndarray} calculated charges in the attribute <code class="xref py py-attr docutils literal"><span class="pre">charge</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.calc_len">
+<code class="descname">calc_len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the sequence length of all sequences in the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} sequence lengths in the attribute <code class="xref py py-attr docutils literal"><span class="pre">len</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.analysis.GlobalAnalysis.plot_summary">
+<code class="descname">plot_summary</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate a visual summary of different characteristics of the given library. The class methods
+are used with their standard options.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; {str} path to save the generated plot to.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">visual summary (plot) of the library characteristics.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists of sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">plot_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/summary.png"><img alt="_images/summary.png" src="_images/summary.png" style="height: 600px;" /></a>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-modlamp.core">
-<span id="modlamp-core"></span><h2>2.8. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-modlamp.core"></span><p>Core helper functions for other modules.</p>
+<span id="modlamp-core"></span><h2>2.9. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
+<p>Core helper functions for other modules.</p>
 <dl class="function">
 <dt id="modlamp.core.load_scale">
 <code class="descclassname">modlamp.core.</code><code class="descname">load_scale</code><span class="sig-paren">(</span><em>scalename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#load_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.load_scale" title="Permalink to this definition">¶</a></dt>
@@ -5019,7 +6205,8 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
 <li><a class="reference internal" href="#module-modlamp.plot">2.5. modlamp.plot</a></li>
 <li><a class="reference internal" href="#module-modlamp.ml">2.6. modlamp.ml</a></li>
 <li><a class="reference internal" href="#module-modlamp.wetlab">2.7. modlamp.wetlab</a></li>
-<li><a class="reference internal" href="#module-modlamp.core">2.8. modlamp.core</a></li>
+<li><a class="reference internal" href="#module-modlamp.analysis">2.8. modlamp.analysis</a></li>
+<li><a class="reference internal" href="#module-modlamp.core">2.9. modlamp.core</a></li>
 </ul>
 </li>
 </ul>
@@ -5069,12 +6256,12 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.4.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Sep 23, 2016.
+      Last updated on Nov 17, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>

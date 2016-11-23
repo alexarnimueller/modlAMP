@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 
 from ..descriptors import GlobalDescriptor
 
@@ -62,3 +63,18 @@ class TestGlobalDescriptor(unittest.TestCase):
     def test_molweight(self):
         self.G.calculate_MW()
         self.assertEqual(self.G.descriptor[0], 1415.72)
+
+    def test_featurescaling(self):
+        self.G.calculate_charge()
+        self.G.calculate_MW(append=True)
+        self.G.feature_scaling()
+        self.assertAlmostEqual(-5.55111512e-17, np.mean(self.G.descriptor, axis=0).tolist()[0])
+        self.assertAlmostEqual(1., np.std(self.G.descriptor, axis=0).tolist()[0])
+
+    def test_hydroratio(self):
+        self.G.hydrophobic_ratio()
+        self.assertAlmostEqual(0.57142857, self.G.descriptor.tolist()[0][0])
+        
+    def test_aromaticity(self):
+        self.G.aromaticity()
+        self.assertAlmostEqual(0.07142857142857142, self.G.descriptor.tolist()[0][0])
