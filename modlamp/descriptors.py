@@ -130,16 +130,17 @@ class GlobalDescriptor(object):
     Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
     the **methods** linked below:
 
-    - `Sequence Charge      <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
-    - `Molecular Weight     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
     - `Sequence Length      <modlamp.html#modlamp.descriptors.GlobalDescriptor.length>`_
-    - `Isoelectric Point    <modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point>`_
+    - `Molecular Weight     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
+    - `Sequence Charge      <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
     - `Charge Density       <modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density>`_
-    - `Hydrophobic Ratio    <modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
-    - `Aromaticity          <modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity>`_
-    - `Boman Index          <modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
-    - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
+    - `Isoelectric Point    <modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point>`_
     - `Instability Index    <modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index>`_
+    - `Aromaticity          <modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity>`_
+    - `Aliphatic Index      <modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index>`_
+    - `Boman Index          <modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index>`_
+    - `Hydrophobic Ratio    <modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
+    - `all of the above     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_all>`_
     """
 
     def __init__(self, seqs):
@@ -163,6 +164,7 @@ class GlobalDescriptor(object):
         self.descriptor = d.descriptor
         self.target = d.target
         self.scaler = None
+        self.featurenames = list()
 
     def length(self, append=False):
         """
@@ -184,8 +186,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('Length')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['Length']
 
     def calculate_MW(self, amide=False, append=False):
         """Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
@@ -218,8 +222,10 @@ class GlobalDescriptor(object):
             desc = [d - 0.98 for d in desc]
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('MW')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['MW']
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
@@ -251,8 +257,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('Charge')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['Charge']
 
     def charge_density(self, ph=7.0, amide=False, append=False):
         """Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
@@ -277,8 +285,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('ChargeDensity')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['ChargeDensity']
 
     def isoelectric_point(self, amide=False, append=False):
         """
@@ -343,8 +353,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('pI')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['pI']
 
     def instability_index(self, append=False):
         """
@@ -373,8 +385,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('InstabilityInd')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['InstabilityInd']
 
     def aromaticity(self, append=False):
         """
@@ -400,8 +414,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('Aromaticity')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['Aromaticity']
 
     def aliphatic_index(self, append=False):
         """
@@ -429,8 +445,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('AliphaticInd')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['AliphaticInd']
 
     def boman_index(self, append=False):
         """Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
@@ -462,8 +480,10 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('BomanInd')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['BomanInd']
 
     def hydrophobic_ratio(self, append=False):
         """
@@ -489,8 +509,37 @@ class GlobalDescriptor(object):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('HydrophRatio')
         else:
             self.descriptor = np.array(desc)
+            self.featurenames = ['HydrophRatio']
+
+    def calculate_all(self, ph=7.4, amide=True):
+        """Method combining all global descriptors and appending them into the feature matrix in the attribute
+        :py:attr:`descriptor`.
+        
+        :param ph: {float} pH at which to calculate peptide charge
+        :param amide: {boolean} whether the sequences have an amidated C-terminus.
+        :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> d = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
+        >>> d.calculate_all(amide=true)
+        >>> d.featurenames
+        ['MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
+        >>> d.descriptor
+        array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
+        """
+        self.length()  # sequence length
+        self.calculate_MW(amide=amide, append=True)  # molecular weight
+        self.calculate_charge(ph=ph, amide=amide, append=True)  # net charge
+        self.charge_density(ph=ph, amide=amide, append=True)  # charge density
+        self.isoelectric_point(amide=amide, append=True)  # pI
+        self.instability_index(append=True)  # instability index
+        self.aromaticity(append=True)  # global aromaticity
+        self.aliphatic_index(append=True)  # aliphatic index
+        self.boman_index(append=True)  # Boman index
+        self.hydrophobic_ratio(append=True)  # Hydrophobic ratio
 
     def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.

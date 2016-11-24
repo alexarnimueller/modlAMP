@@ -124,16 +124,17 @@
 <dd><p>Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
 the <strong>methods</strong> linked below:</p>
 <ul class="simple">
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">Sequence Charge</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">Molecular Weight</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.length">Sequence Length</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">Isoelectric Point</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">Molecular Weight</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">Sequence Charge</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">Charge Density</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">Hydrophobic Ratio</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">Aromaticity</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index">Boman Index</a></li>
-<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">Aliphatic Index</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.isoelectric_point">Isoelectric Point</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.instability_index">Instability Index</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aromaticity">Aromaticity</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.aliphatic_index">Aliphatic Index</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.boman_index">Boman Index</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio">Hydrophobic Ratio</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_all">all of the above</a></li>
 </ul>
 <dl class="method">
 <dt id="modlamp.descriptors.GlobalDescriptor.__init__">
@@ -463,6 +464,38 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">hydrophobic_ratio</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 0.73333333]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.calculate_all">
+<code class="descname">calculate_all</code><span class="sig-paren">(</span><em>ph=7.4</em>, <em>amide=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.calculate_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.calculate_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method combining all global descriptors and appending them into the feature matrix in the attribute
+<code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ph</strong> &#8211; {float} pH at which to calculate peptide charge</li>
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences have an amidated C-terminus.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of descriptor values in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;AFGHFKLKKLFIFGHERT&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">featurenames</span>
+<span class="go">[&#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydrophRatio&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])</span>
 </pre></div>
 </div>
 </dd></dl>
