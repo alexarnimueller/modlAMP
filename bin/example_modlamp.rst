@@ -3,7 +3,8 @@ Example scripts
 
 For documentation of the used modules see the the `Documentation <modlamp.html>`_ section.
 
-A modlamp example script for peptide classification with help of a Random Forest classifier.
+A modlamp example script for peptide classification with a Random Forest classifier.
+------------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -11,7 +12,6 @@ A modlamp example script for peptide classification with help of a Random Forest
     from modlamp.datasets import load_helicalAMPset
     from modlamp.descriptors import PeptideDescriptor
     from modlamp.ml import train_best_model
-    from modlamp.datasets import load_ACPvsNeg
     from modlamp.descriptors import PeptideDescriptor
     from modlamp.sequences import MixedLibrary
 
@@ -20,7 +20,7 @@ A modlamp example script for peptide classification with help of a Random Forest
     print("Chosen library size is %i" % libsize)
 
     # load training sequences
-    data = load_ACPvsNeg()
+    data = load_helicalAMPset()
 
     # describe sequences with PepCATS descriptor
     descr = PeptideDescriptor(data.sequences, 'pepcats')
@@ -33,23 +33,27 @@ A modlamp example script for peptide classification with help of a Random Forest
     cv_scores(best_RF, descr.descriptor, data.target, cv=10)
 
     # generate a virtual peptide library of `libsize` sequences to screen
-    Lib = MixedLibrary(libsize)
-    Lib.generate_library()
-    print("Actual lirutal library size (without duplicates): %i" % len(Lib.sequences))
+    lib = MixedLibrary(libsize)
+    lib.generate_library()
+    print("Actual lirutal library size (without duplicates): %i" % len(lib.sequences))
 
     # describe library with PEPCATS descriptor
-    X_lib = PeptideDescriptor(Lib.sequences, 'pepcats')
-    X_lib.calculate_crosscorr(7)
+    lib_desc = PeptideDescriptor(lib.sequences, 'pepcats')
+    lib_desc.calculate_crosscorr(7)
 
     # predict class probabilities for sequences in Library
-    proba = best_RF.df_predict(X_lib.descriptor)
+    proba = best_RF.df_predict(lib_desc.descriptor)
 
     # create ordered dictionary with sequences and prediction values and order it according to AMP predictions
-    d = pd.DataFrame({'sequence': Lib.sequences, 'prediction': proba[:, 1]})
+    d = pd.DataFrame({'sequence': lib.sequences, 'prediction': proba[:, 1]})
     d50 = d.sort_values('prediction', ascending=False)[:50]  # 50 top AMP predictions
 
     # print the 50 top ranked predictions with their predicted probabilities
     print d50
+
+
+Loading sequences from a ``FASTA`` file
+---------------------------------------
 
 A further example of how to load a list of own amino acid sequences from a ``.FASTA`` formatted file, calculate
 descriptors and save the values back to a ``.csv`` file.
@@ -63,6 +67,10 @@ descriptors and save the values back to a ``.csv`` file.
     x.calculate_crosscorr(window=7)
     # save calculated descriptor to a .csv file
     x.save_descriptor('Location/of/your/outputfile.csv', delimiter=',')
+
+
+Combining different descriptors & saving to ``csv``
+---------------------------------------------------
 
 Many more descriptors are available for calculations. Here is another example of reading a sequence file and
 calculating two sets of descriptors followed by saving them to ``.csv`` files.
