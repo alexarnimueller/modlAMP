@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Example scripts &mdash; modlAMP v2.6.0 documentation</title>
+    <title>3. Example scripts &#8212; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,6 +25,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="top" title="modlAMP v2.6.0 documentation" href="index.html" />
     <link rel="next" title="4. Contribution Guide" href="contributing.html" />
     <link rel="prev" title="2. Package Documentation" href="modlamp.html" /> 
@@ -45,7 +47,7 @@
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -58,7 +60,7 @@
 <h1>3. Example scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h1>
 <p>For documentation of the used modules see the the <a class="reference external" href="modlamp.html">Documentation</a> section.</p>
 <p>A modlamp example script for peptide classification with help of a Random Forest classifier.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="kn">import</span> <span class="n">load_helicalAMPset</span>
 <span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
 <span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="kn">import</span> <span class="n">train_best_model</span>
@@ -105,7 +107,7 @@
 </div>
 <p>A further example of how to load a list of own amino acid sequences from a <code class="docutils literal"><span class="pre">.FASTA</span></code> formatted file, calculate
 descriptors and save the values back to a <code class="docutils literal"><span class="pre">.csv</span></code> file.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span>
 
 <span class="c1"># load sequences from FASTA file and calculate the pepcats cross-correlated descriptor</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;Location/of/your/file.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
@@ -116,7 +118,7 @@ descriptors and save the values back to a <code class="docutils literal"><span c
 </div>
 <p>Many more descriptors are available for calculations. Here is another example of reading a sequence file and
 calculating two sets of descriptors followed by saving them to <code class="docutils literal"><span class="pre">.csv</span></code> files.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="kn">import</span> <span class="n">PeptideDescriptor</span><span class="p">,</span> <span class="n">GlobalDescriptor</span>
 
 <span class="c1"># Load sequence file into descriptor object</span>
 <span class="n">pepdesc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/sequences.fasta&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># use Eisenberg consensus scale</span>
@@ -178,14 +180,11 @@ calculating two sets of descriptors followed by saving them to <code class="docu
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -207,13 +206,13 @@ calculating two sets of descriptors followed by saving them to <code class="docu
         <li class="right" >
           <a href="modlamp.html" title="2. Package Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 17, 2016.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+        &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Nov 24, 2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

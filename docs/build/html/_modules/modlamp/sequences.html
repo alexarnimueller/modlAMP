@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &mdash; modlAMP v2.6.0 documentation</title>
+    <title>modlamp.sequences &#8212; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,6 +25,8 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="modlAMP v2.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -38,8 +40,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -49,7 +51,7 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.sequences</h1><div class="highlight"><pre>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. currentmodule:: modlamp.sequences</span>
 
@@ -77,12 +79,12 @@
 <span class="sd">    class. To remove duplicates, call the class methods :py:func:`self.filter_duplicates()`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">random</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">random</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">cycle</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">core</span> <span class="kn">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">core</span> <span class="k">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
     <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">ngrams_apd</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
@@ -167,7 +169,7 @@
                                                  <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed random selection of amino acid, probabilities = prob</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -307,7 +309,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Helices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Helices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -438,7 +440,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Kinked.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Kinked.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -564,7 +566,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Oblique.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Oblique.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -727,7 +729,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Centrosymmetric.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Centrosymmetric.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -853,7 +855,7 @@
         <span class="k">elif</span> <span class="n">arcsize</span> <span class="o">==</span> <span class="s1">&#39;240&#39;</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s2">&quot;Arc size unknown, choose among: &#39;80&#39;, &#39;120&#39;, &#39;160&#39;, &#39;200&#39;, &#39;240&#39;.&quot;</span>
+            <span class="nb">print</span> <span class="s2">&quot;Arc size unknown, choose among: &#39;80&#39;, &#39;120&#39;, &#39;160&#39;, &#39;200&#39;, &#39;240&#39;.&quot;</span>
 
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
             <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
@@ -913,7 +915,7 @@
                 <span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">aa</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AmphipathicArc.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="AmphipathicArc.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta file.</span>
 
 <span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
@@ -1080,7 +1082,7 @@
                                                  <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[:,</span> <span class="n">l</span><span class="p">]))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="HelicesACP.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="HelicesACP.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a fasta file.</span>
 
 <span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
@@ -1271,7 +1273,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">libsize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>  <span class="c1"># update the number of sequences for every class</span></div>
 
-<div class="viewcode-block" id="MixedLibrary.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedLibrary.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
 
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
@@ -1327,7 +1329,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">lenmin</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="ow">or</span> <span class="n">lenmax</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s2">&quot;Wrong sequence length.</span><span class="se">\n</span><span class="s2">Minimum: 8</span><span class="se">\n</span><span class="s2">Maximum: 50&quot;</span>
+            <span class="nb">print</span> <span class="s2">&quot;Wrong sequence length.</span><span class="se">\n</span><span class="s2">Minimum: 8</span><span class="se">\n</span><span class="s2">Maximum: 50&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
 
@@ -1386,7 +1388,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Hepahelices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Hepahelices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
 
 <span class="sd">        :param filename: output filename (ending .fasta)</span>
@@ -1502,7 +1504,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AMPngrams.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="AMPngrams.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
 
 <span class="sd">        :param filename: output filename (ending .fasta)</span>
@@ -1569,14 +1571,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1592,14 +1591,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 17, 2016.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+        &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Nov 24, 2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

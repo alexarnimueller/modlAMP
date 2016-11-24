@@ -4,10 +4,12 @@
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
-This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server
-is only available in the CADD intranet at ETH Zurich.
+This module incorporates functions to connect to several peptide databases. It also allows to connect to a custom
+SQL database for which the configuration is given in a specified config file.
 """
 
+from os.path import dirname, join, exists
+import json
 from getpass import getpass
 
 import mysql.connector
@@ -20,39 +22,35 @@ __author__ = "modlab"
 __docformat__ = "restructuredtext en"
 
 
-def _read_db_config(host='gsdelta641.ethz.ch', database='peptides', user='modlab', password=None):
+def _read_db_config(configfile):
     """
     Read database configuration and return a dictionary object.
     This function generally does not need to be used as it is called by the function :func:`query_sequences` directly.
 
-    :param host: The host name of your server hosting the database.
-    :param database: Name of the database.
-    :param user: Username
-    :return: a dictionary of database parameters
+    :param configfile: {str} path to the configuration file containing the database information with hostname,
+        database name, username and password.
+    :return: a dictionary of read database parameters
     """
-    if not password:
-        password = getpass()
-
-    db = {'host': host,
-          'database': database,
-          'user': user,
-          'password': password}
-
-    return db
-
-
-def _connect(conf=None):
-    """
-    Connect to a given MySQL database in conf.
-    This function is called by the function :func:`query_sequences`.
-
-    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.
-    :return: a mysql.connector connection object
-    """
-    if conf:
-        config = _read_db_config(conf)
+    if exists(configfile):
+        db = json.load(open(configfile, 'r'))
+        
+        if not db['password']:
+            db['password'] = getpass()
+    
+        return db
     else:
-        config = _read_db_config()
+        raise IOError('Path to config file is wrong or file does not exist!\n%s' % configfile)
+
+
+def _connect(configfile):
+    """
+    Connect to a given MySQL database in conf. This function is called by the function :func:`query_sequences`.
+
+    :param configfile: path to the MySQL config file containing the hostname, database name, username and password.
+        This file is passed to :py:func:`_read_db_config()`.
+    :return: a ``mysql.connector`` connection object
+    """
+    config = _read_db_config(configfile)
 
     try:
         print('Connecting to MySQL database...')
@@ -64,14 +62,16 @@ def _connect(conf=None):
         print(err)
 
 
-def query_database(table, columns=None):
+def query_database(table, columns=None, configfile='./modlamp/data/db_config.json'):
     """
     This function extracts experimental results from the modlab peptide database. All data from the given table and
     column names is extracted and returned.
 
     :param table: the mysql database table to be queried
     :param columns: a list of the column names {str} to be extracted from the table *default*: ``*`` (all columns)
-    :return: queried data as a numpy array
+    :param configfile: location of the database configuration file containing the hostname etc. for the database to
+        be queried.
+    :return: {numpy.array} queried data
     :Example:
 
     >>> data = query_database(table='modlab_experiments', columns=['sequence', 'MCF7_activity', 'Saureus_activity'])
@@ -92,7 +92,7 @@ def query_database(table, columns=None):
     if not columns:
         columns = ['*']
     try:
-        conn = _connect()
+        conn = _connect(configfile)
         df = pd.read_sql("SELECT " + ', '.join(columns) + " FROM " + table, con=conn)
 
         return df

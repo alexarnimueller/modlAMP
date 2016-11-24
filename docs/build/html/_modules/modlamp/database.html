@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.database &mdash; modlAMP v2.6.0 documentation</title>
+    <title>modlamp.database &#8212; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,6 +25,8 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="modlAMP v2.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -38,8 +40,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -49,80 +51,80 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.database</h1><div class="highlight"><pre>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. currentmodule:: modlamp.database</span>
 
 <span class="sd">.. moduleauthor:: modlab Alex Mueller ETH Zurich &lt;alex.mueller@pharma.ethz.ch&gt;</span>
 
-<span class="sd">This module incorporates functions to connect to several peptide databases. The modlab internal peptide database server</span>
-<span class="sd">is only available in the CADD intranet at ETH Zurich.</span>
+<span class="sd">This module incorporates functions to connect to several peptide databases. It also allows to connect to a custom</span>
+<span class="sd">SQL database for which the configuration is given in a specified config file.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">exists</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="k">import</span> <span class="n">getpass</span>
 
 <span class="kn">import</span> <span class="nn">mysql.connector</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
-<span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="kn">import</span> <span class="n">Error</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">html</span>
+<span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="k">import</span> <span class="n">Error</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_read_db_config</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;gsdelta641.ethz.ch&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;peptides&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;modlab&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_read_db_config</span><span class="p">(</span><span class="n">configfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read database configuration and return a dictionary object.</span>
 <span class="sd">    This function generally does not need to be used as it is called by the function :func:`query_sequences` directly.</span>
 
-<span class="sd">    :param host: The host name of your server hosting the database.</span>
-<span class="sd">    :param database: Name of the database.</span>
-<span class="sd">    :param user: Username</span>
-<span class="sd">    :return: a dictionary of database parameters</span>
+<span class="sd">    :param configfile: {str} path to the configuration file containing the database information with hostname,</span>
+<span class="sd">        database name, username and password.</span>
+<span class="sd">    :return: a dictionary of read database parameters</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">()</span>
-
-    <span class="n">db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
-          <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="n">database</span><span class="p">,</span>
-          <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
-          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">}</span>
-
-    <span class="k">return</span> <span class="n">db</span>
-
-
-<span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Connect to a given MySQL database in conf.</span>
-<span class="sd">    This function is called by the function :func:`query_sequences`.</span>
-
-<span class="sd">    :param conf: MySQL configuration with host, DB, user and PW. If None, defaults from :py:func:`_read_db_config()`.</span>
-<span class="sd">    :return: a mysql.connector connection object</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">conf</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">configfile</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">configfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]:</span>
+            <span class="n">db</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">()</span>
+    
+        <span class="k">return</span> <span class="n">db</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Path to config file is wrong or file does not exist!</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">configfile</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="n">configfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connect to a given MySQL database in conf. This function is called by the function :func:`query_sequences`.</span>
+
+<span class="sd">    :param configfile: path to the MySQL config file containing the hostname, database name, username and password.</span>
+<span class="sd">        This file is passed to :py:func:`_read_db_config()`.</span>
+<span class="sd">    :return: a ``mysql.connector`` connection object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_read_db_config</span><span class="p">(</span><span class="n">configfile</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Connecting to MySQL database...&#39;</span><span class="p">)</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;connection established!&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;connection established!&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">conn</span>
 
     <span class="k">except</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="query_database"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_database">[docs]</a><span class="k">def</span> <span class="nf">query_database</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="query_database"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_database">[docs]</a><span class="k">def</span> <span class="nf">query_database</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configfile</span><span class="o">=</span><span class="s1">&#39;./modlamp/data/db_config.json&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function extracts experimental results from the modlab peptide database. All data from the given table and</span>
 <span class="sd">    column names is extracted and returned.</span>
 
 <span class="sd">    :param table: the mysql database table to be queried</span>
 <span class="sd">    :param columns: a list of the column names {str} to be extracted from the table *default*: ``*`` (all columns)</span>
-<span class="sd">    :return: queried data as a numpy array</span>
+<span class="sd">    :param configfile: location of the database configuration file containing the hostname etc. for the database to</span>
+<span class="sd">        be queried.</span>
+<span class="sd">    :return: {numpy.array} queried data</span>
 <span class="sd">    :Example:</span>
 
 <span class="sd">    &gt;&gt;&gt; data = query_database(table=&#39;modlab_experiments&#39;, columns=[&#39;sequence&#39;, &#39;MCF7_activity&#39;, &#39;Saureus_activity&#39;])</span>
@@ -143,13 +145,13 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="n">_connect</span><span class="p">()</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">_connect</span><span class="p">(</span><span class="n">configfile</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT &quot;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; FROM &quot;</span> <span class="o">+</span> <span class="n">table</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">df</span>
 
     <span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="query_apd"><a class="viewcode-back" href="../../modlamp.html#modlamp.database.query_apd">[docs]</a><span class="k">def</span> <span class="nf">query_apd</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
@@ -211,14 +213,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -234,14 +233,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 17, 2016.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+        &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Nov 24, 2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

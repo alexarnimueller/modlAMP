@@ -1,21 +1,16 @@
 README
 ======
 
-**modlamp**
+**modlAMP**
 
-This is a python package that is designed for working with peptides, proteins or any amino acid sequence of natural amino acids. 
-It incorporates several modules, like descriptor calculation (module **descriptors**) or sequence generation (module **sequences**).
-For basic instructions how to use the package, see Usage_ or this `example script <examplescript.html>`_.
-
-.. warning::
-    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
-    installing modlAMP. It will take care of all necessairy requirements and versions.
-        
+This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
+amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
+generation (module ``sequences``). For basic instructions how to use the package, see Usage_ or this `example script
+<examplescript.html>`_.
 
 .. note::
-    If you are reading this on Gitlab, several links like the *example script* will not work. Please clone the
-    repository to your local machine and consider the documentation in ``modlAMP/docs/build/html/index.html``.
-    Use ``git clone git@gitlab.ethz.ch:CADD/modlAMP.git`` to clone modlAMP to your current working directory.
+    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
+    installing **modlAMP**. It will take care of all necessary package requirements and versions.
 
 
 Installation
@@ -24,7 +19,7 @@ Installation
 For the installation to work, ``pip`` needs to be installed. If you're not sure whether you already have pip, type
 ``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
 
-When pip is installed, run the following command when located in the modlAMP package directory::
+When pip is installed, run the following command when located in the **modlAMP** package directory::
 
     make
     sudo make install
@@ -33,7 +28,8 @@ When pip is installed, run the following command when located in the modlAMP pac
 Usage
 *****
 
-For a detailed description of all modules see the documentation in ``modlAMP/docs/build/html/index.html``.
+This section gives a quick overview of different capabilities of modlAMP. For a detailed description of all modules see
+the `module documentation <modlamp.html>`_.
 
 Importing modules
 -----------------
@@ -51,16 +47,16 @@ Generating Sequences
 The following example shows how to generate a library of 1000 sequences out of all available sequence generation methods:
 
 >>> from modlamp.sequences import MixedLibrary
->>> Lib = MixedLibrary(1000)
->>> Lib.generate_library()
->>> Lib.sequences[:10]
+>>> lib = MixedLibrary(1000)
+>>> lib.generate_library()
+>>> lib.sequences[:10]
 ['VIVRVLKIAA','VGAKALRGIGPVVK','QTGKAKIKLVKLRAGPYANGKLF','RLIKGALKLVRIVGPGLRVIVRGAR','DGQTNRFCGI','ILRVGKLAAKV',...]
 
 These commands generated a mixed peptide library comprising of 1000 sequences.
 
 .. note::
-    If duplicates are present in :py:attr:`self.sequences`, these are removed during generation. Therefore it is possible
-    that less than the specified sequences are obtained.
+    If duplicates are present in the attribute :py:attr:`sequences`, these are removed during generation. Therefore it
+    is possible that less than the specified sequences are obtained.
 
 The module :mod:`sequences` incorporates different sequence generation classes. For documentation thereof, consider the
 docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
@@ -71,29 +67,37 @@ Calculating Descriptor Values
 
 Now, different descriptor values can be calculated for the generated sequences: (see `Generating Sequences`_)
 
+How to calculate the Eisenberg hydrophobic moment for given sequences:
+
 >>> from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
->>> P = PeptideDescriptor(Lib.sequences,'eisenberg')
->>> P.calculate_moment()
->>> P.descriptor[:10]
+>>> desc = PeptideDescriptor(lib.sequences,'eisenberg')
+>>> desc.calculate_moment()
+>>> desc.descriptor[:10]
 array([[ 0.60138255],[ 0.61232763],[ 0.01474009],[ 0.72333858],[ 0.20390763],[ 0.68818279],...]
->>> G = GlobalDescriptor(Lib.sequences)
->>> G.isoelectric_point()
->>> G.descriptor[:10]
+
+Global descriptor features like charge, hydrophobicity or isoelectric point can be calculated as well:
+
+>>> glob = GlobalDescriptor(lib.sequences)
+>>> glob.isoelectric_point()
+>>> glob.descriptor[:10]
 array([ 10.09735107,   8.75006104,  12.30743408,  11.26385498, ...]
+
+Auto- and cross-correlation type functions with different window sizes can be applied on all available amino acid
+scales. Here an example for the pepCATS scale:
+
 >>> pepCATS = PeptideDescriptor('sequence/file/to/be/loaded.fasta', 'pepcats')
 >>> pepCATS.calculate_crosscorr(7)
 >>> pepCATS.descriptor
 array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333,
 
-We calculated the global hydrophobic moments from the Eisenberg hydrophobicity scale and the isoelectric points.
-Many more descriptors can be calculated, from global descriptors to concoluted / correlated descriptors from different
-amino acid scales. For further information consider the docs for `descriptors <modlamp.html#module-modlamp.descriptors>`_.
+Many more **amino acid scales** are available for descriptor calculation. The complete list can be found in the
+documentation for the `descriptors <modlamp.html#module-modlamp.descriptors>`_.
 
 
 Plotting Features
 -----------------
 
-We can now plot these values as a boxplot, for example the hydrophobic moment:
+We can now plot the calculated values as a boxplot, for example the hydrophobic moment:
 
 >>> from modlamp.plot import plot_feature
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
@@ -101,8 +105,8 @@ We can now plot these values as a boxplot, for example the hydrophobic moment:
 .. image:: static/uH_Eisenberg.png
     :height: 300px
 
-We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the APD3, which
-are stored in the FASTA formatted file ``APD3.fasta``:
+We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the
+APD3, which are stored in the FASTA formatted file ``APD3.fasta``:
 
 >>> APD = PeptideDescriptor('/Path/to/file/APD3.fasta', 'eisenberg')
 >>> APD.calculate_moment()
@@ -152,25 +156,26 @@ Peptides from the two most prominent AMP databases `APD <http://aps.unmc.edu/AP/
 For downloading a set of sequences from the **APD** database, first get the IDs of the sequences you want to query
 from the APD website. Then proceed as follows:
 
->>> query_apd([15, 16, 17, 18, 19, 20])  # download sequences with IDs 15
+>>> query_apd([15, 16, 17, 18, 19, 20])  # download sequences with APD IDs 15 to 20
 ['GLFDIVKKVVGALGSL','GLFDIVKKVVGAIGSL','GLFDIVKKVVGTLAGL','GLFDIVKKVVGAFGSL','GLFDIAKKVIGVIGSL','GLFDIVKKIAGHIAGSI']
 
 The same holds true for the **CAMP** database:
 
->>> query_camp([2705, 2706])
+>>> query_camp([2705, 2706])  # download sequences with CAMP IDs 2705 & 2706
 ['GLFDIVKKVVGALGSL','GLFDIVKKVVGTLAGL']
 
-modlamp also hosts a module for connecting to the modlab internal peptide database on our local server.
-Peptide sequences included in any table in the peptides database can be downloaded directly in python.
+**modlAMP** also hosts a module for connecting to your own database on a private server.
+Peptide sequences included in any table in the database can be downloaded with **modlAMP**.
 
-.. warning::
-    This module only works in the modlab intranet at ETH Zurich
+.. note::
+    The :py:func:`modlamp.database.query_database` function allows connection and queries to a personal database. For
+    successful connection, the database configuration needs to be specified in the ``db_config.json`` file, which is
+    located in ``modlamp/data/`` by default.
 
-For querying sequences from a given table, the sequences must be stored in a column called "sequences" in the mysql
-table. The query then works as follows:
+Sequences (stored in a column named ``sequence``) from the personal database can then be queried as follows:
 
 >>> from modlamp.database import query_database
->>> query_database('modlab_experiments', ['sequence'])
+>>> query_database('my_experiments', ['sequence'], configfile='./modlamp/data/db_config.json')
 Password: >? ***********
 Connecting to MySQL database...
 connection established!
@@ -181,7 +186,8 @@ Loading Prepared Datasets
 -------------------------
 
 For AMP QSAR models, different options exist of choosing negative / inactive peptide examples. We assembled several
-datasets for classification tasks, that can be read by the :mod:`modlamp.datasets` module.
+datasets for classification tasks, that can be read by the :mod:`modlamp.datasets` module. The available datasets can
+be found in the documentation of the :mod:`modlamp.datasets` module.
 
 :Example: **Helical AMPs vs. random all helical peptides**
 
@@ -197,10 +203,12 @@ target class vector), :py:attr:`feature_names` (the name of the data features, h
 
 :Example:
 
->>> data.target_names
+>>> data.target_names  # class names
 array(['HEL', 'AMP'], dtype='|S3')
->>> data.sequences[:5]
+>>> data.sequences[:5]  # sequences
 ['FDQAQTEIQATMEEN', 'DVDAALHYLARLVEAG', 'RCPLVIDYLIDLATRS', 'NPATLMMFFK', 'NLEDSIQILRTD']
+>>> data.target  # corresponding target classes
+array([0, 0, 0, 0, 0 .... 1, 1, 1, 1])
 
 
 Analysing Wetlab Circular Dichroism Data
@@ -239,3 +247,21 @@ The read and calculated values can finally be plotted as follows:
 .. image:: static/cd3.png
     :height: 300px
 
+
+Analysis of Different Sequence Libraries
+----------------------------------------
+
+The modlule :mod:`modlamp.analysis` includes the class :py:class:`modlamp.analysis.GlobalAnalysis` to compare
+different sequence libraries. Learn how to use it with the following example:
+
+>>> lib  # sequence library with 3 sub-libraries
+array([['ARVFVRAVRIYIRVLKAFAKL', 'IRVYVRIVRGFGRVVRAYARV', 'IRIFIRIARGFGRAIRVFVRI', ..., 'RGPCFLQVVD'],
+       ['EYKIGGKA', 'RAVKGGGRLLAG', 'KLLRIILRGARIIIRGLR', ..., 'AKCLVDKK', 'VGGAFALVSV'],
+       ['GVHLKFKPAVSRKGVKGIT', 'RILRIGARVGKVLIK', 'MKGIIGHTWKLKPTIPSGKSAKC', ..., 'GRIIRLAIKAGL']], dtype='|S28')
+>>> lib.shape
+(3, 2000)
+>>> glob_analysis = GlobalAnalysis(lib, names=['Lib 1', 'Lib 2', 'Lib 3'])
+>>> glob_analysis.plot_summary()
+
+.. image:: static/summary.png
+    :height: 600px

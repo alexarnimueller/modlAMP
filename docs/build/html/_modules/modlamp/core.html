@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.core &mdash; modlAMP v2.6.0 documentation</title>
+    <title>modlamp.core &#8212; modlAMP v2.6.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,6 +25,8 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="modlAMP v2.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -38,8 +40,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -49,7 +51,7 @@
           <div class="body" role="main">
             
   <h1>Source code for modlamp.core</h1><div class="highlight"><pre>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. currentmodule:: modlamp.core</span>
 
@@ -62,9 +64,9 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="kn">import</span> <span class="n">FastaIterator</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">distance</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="k">import</span> <span class="n">FastaIterator</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">distance</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
@@ -260,7 +262,7 @@
     <span class="k">return</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">names</span></div>
 
 
-<div class="viewcode-block" id="save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.save_fasta">[docs]</a><span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.save_fasta">[docs]</a><span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
 
 <span class="sd">    :param filename: output filename (ending .fasta)</span>
@@ -273,10 +275,10 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">o</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
-                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+                <span class="nb">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-            <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="n">seq</span></div>
+                <span class="nb">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&gt;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="o">&gt;&gt;</span> <span class="n">o</span><span class="p">,</span> <span class="n">seq</span></div>
 
 
 <div class="viewcode-block" id="mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.mutate_AA">[docs]</a><span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
@@ -543,7 +545,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">all_moms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># for passing hydrophobic moments to calculate_profile</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">all_globs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># for passing global  to calculate_profile</span></div>
 
@@ -710,7 +712,7 @@
 <span class="sd">    [&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>  <span class="c1"># check if sequences is only one sequence string and convert it to a list</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>  <span class="c1"># check if sequences is only one sequence string and convert it to a list</span>
         <span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sequences</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>  <span class="c1"># get indices of queried sequences</span>
         <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
@@ -749,7 +751,7 @@
 <span class="sd">    .. versionadded:: v2.2.3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)[</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;descriptor&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
@@ -820,14 +822,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -843,14 +842,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 17, 2016.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+        &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
+      Last updated on Nov 24, 2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>
