@@ -211,7 +211,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
         plt.show()
 
 
-def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color='red', ylim=None):
+def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color='red', seq=False, ylim=None):
     """ Function to generate sequence profile plots of a given amino acid scale or a moment thereof.
 
     .. note::
@@ -223,6 +223,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color
     :param scalename: {str} Amino acid scale to be used to describe the sequence.
     :param filename: {str} Filename  where to safe the plot. *default = None* --> show the plot
     :param color: {str} Color of the plot line.
+    :param seq: {bool} Whether the amino acid sequence should be plotted as the title.
     :param ylim: {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)
     :return: a profile plot of the input sequence interactively or with the specified *filename*
     :Example:
@@ -261,8 +262,10 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
-        ax.set_title('Sequence Profile For ' + sequence, fontsize=16, fontweight='bold')
-        ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window), fontsize=12)
+        ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window),
+                fontsize=16, fontweight='bold')
+        if seq:
+            ax.set_title(sequence, fontsize=16, fontweight='bold', y=1.02)
         if ylim:
             ax.set_ylim(ylim)
         else:
@@ -281,7 +284,7 @@ def plot_profile(sequence, window=5, scalename='eisenberg', filename=None, color
             plt.show()
 
 
-def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None):
+def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False):
     """A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
     properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
 
@@ -289,6 +292,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *no*
     :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
+    :param seq: {bool} whether the amino acid sequence should be plotted as a title.
     :return: a helical wheel projection plot of the given sequence (interactively or in **filename**)
     :Example:
 
@@ -405,6 +409,9 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     cur_axes.axes.get_xaxis().set_visible(False)
     cur_axes.axes.get_yaxis().set_visible(False)
 
+    if seq:
+        plt.title(sequence, fontweight='bold', fontsize=20)
+    
     # show or save plot
     if filename:
         plt.savefig(filename, dpi=150)
