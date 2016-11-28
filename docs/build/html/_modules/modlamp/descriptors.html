@@ -639,7 +639,7 @@
 <span class="sd">        :param window: {int} correlation window for descriptor calculation in a sliding window approach</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
-<span class="sd">        :return: calculated descriptor numpy.array in self.descriptor</span>
+<span class="sd">        :return: calculated descriptor numpy.array in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = PeptideDescriptor(&#39;GLFDIVKKVVGALGSL&#39;,&#39;PPCALI&#39;)</span>
@@ -664,7 +664,7 @@
 <span class="sd">        :param window: {int} correlation window for descriptor calculation in a sliding window approach</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
-<span class="sd">        :return: calculated descriptor numpy.array in self.descriptor</span>
+<span class="sd">        :return: calculated descriptor numpy.array in the attribute :py:attr:`descriptor`.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = PeptideDescriptor(&#39;GLFDIVKKVVGALGSL&#39;,&#39;pepcats&#39;)</span>
@@ -693,8 +693,8 @@
 <span class="sd">        :param modality: {&#39;max&#39; or &#39;mean&#39;} Calculate respectively maximum or mean hydrophobic moment.</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
-<span class="sd">        :return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in</span>
-<span class="sd">            :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)</span>
+<span class="sd">        :return: Calculated descriptor as a numpy.array in the attribute :py:attr:`descriptor` and all possible global</span>
+<span class="sd">            values in :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = PeptideDescriptor(&#39;GLFDIVKKVVGALGSL&#39;,&#39;eisenberg&#39;)</span>
@@ -746,8 +746,8 @@
 <span class="sd">        :param modality: {&#39;max&#39; or &#39;mean&#39;} Calculate respectively maximum or mean hydrophobic moment.</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
-<span class="sd">        :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in</span>
-<span class="sd">            :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)</span>
+<span class="sd">        :return: Calculated descriptor as a numpy.array in the attribute :py:attr:`descriptor` and all possible global</span>
+<span class="sd">            values in :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = PeptideDescriptor(&#39;GLFDIVKKVVGALGSL&#39;,&#39;eisenberg&#39;)</span>
@@ -791,7 +791,8 @@
 <span class="sd">        :param window: {int} size of sliding window used (odd-numbered).</span>
 <span class="sd">        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the</span>
 <span class="sd">            attribute :py:attr:`descriptor`.</span>
-<span class="sd">        :return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor</span>
+<span class="sd">        :return: Fitted slope and intercept of calculated profile for every given sequence in the attribute</span>
+<span class="sd">            :py:attr:`descriptor`.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = PeptideDescriptor(&#39;KLLKLLKKVVGALG&#39;,&#39;kytedoolittle&#39;)</span>

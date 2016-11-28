@@ -245,7 +245,8 @@ class BaseDescriptor(object):
         :py:attr:`names`.
 
         :param filename: {str} ``.FASTA`` file with sequences and headers to read
-        :return: list of sequences in self.sequences with corresponding sequence names in self.names
+        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
+            :py:attr:`names`.
         """
         self.sequences, self.names = read_fasta(filename)
 
@@ -254,8 +255,8 @@ class BaseDescriptor(object):
 
         :param outputfile: {str} filename of the output ``.FASTA`` file
         :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
-        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
-        """
+        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
+            :py:attr:`names`.        """
         save_fasta(self, outputfile, names=names)
 
     def count_aa(self, scale='relative', append=False):
@@ -331,9 +332,9 @@ class BaseDescriptor(object):
         self.descriptor = shuffle(self.descriptor.transpose()).transpose()
 
     def sequence_order_shuffle(self):
-        """Method for shuffling sequence order in self.sequences.
+        """Method for shuffling sequence order in the attribute :py:attr:`sequences`.
 
-        :return: sequences in :py:attr:`self.sequences` with shuffled order in the list.
+        :return: sequences in :py:attr:`sequences` with shuffled order in the list.
         :Example:
 
         >>> D.sequences

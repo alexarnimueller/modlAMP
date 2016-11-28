@@ -588,7 +588,7 @@ class PeptideDescriptor(BaseDescriptor):
         :param window: {int} correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: calculated descriptor numpy.array in self.descriptor
+        :return: calculated descriptor numpy.array in the attribute :py:attr:`descriptor`.
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','PPCALI')
@@ -613,7 +613,7 @@ class PeptideDescriptor(BaseDescriptor):
         :param window: {int} correlation window for descriptor calculation in a sliding window approach
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: calculated descriptor numpy.array in self.descriptor
+        :return: calculated descriptor numpy.array in the attribute :py:attr:`descriptor`.
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','pepcats')
@@ -642,8 +642,8 @@ class PeptideDescriptor(BaseDescriptor):
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as a numpy.array in self.descriptor and all possible global values in
-            :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)
+        :return: Calculated descriptor as a numpy.array in the attribute :py:attr:`descriptor` and all possible global
+            values in :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -695,8 +695,8 @@ class PeptideDescriptor(BaseDescriptor):
         :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Calculated descriptor as numpy.array in self.descriptor and all possible global values in
-            :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)
+        :return: Calculated descriptor as a numpy.array in the attribute :py:attr:`descriptor` and all possible global
+            values in :py:attr:`all_globs` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
         >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
@@ -740,7 +740,8 @@ class PeptideDescriptor(BaseDescriptor):
         :param window: {int} size of sliding window used (odd-numbered).
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
-        :return: Fitted slope and intercept of calculated profile for every given sequence in self.descriptor
+        :return: Fitted slope and intercept of calculated profile for every given sequence in the attribute
+            :py:attr:`descriptor`.
         :Example:
 
         >>> AMP = PeptideDescriptor('KLLKLLKKVVGALG','kytedoolittle')

@@ -296,7 +296,8 @@
 <span class="sd">        :py:attr:`names`.</span>
 
 <span class="sd">        :param filename: {str} ``.FASTA`` file with sequences and headers to read</span>
-<span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in self.names</span>
+<span class="sd">        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in</span>
+<span class="sd">            :py:attr:`names`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">read_fasta</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -305,8 +306,8 @@
 
 <span class="sd">        :param outputfile: {str} filename of the output ``.FASTA`` file</span>
 <span class="sd">        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers</span>
-<span class="sd">        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in</span>
+<span class="sd">            :py:attr:`names`.        &quot;&quot;&quot;</span>
         <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseDescriptor.count_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.count_aa">[docs]</a>    <span class="k">def</span> <span class="nf">count_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s">&#39;relative&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -382,9 +383,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="BaseDescriptor.sequence_order_shuffle"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.sequence_order_shuffle">[docs]</a>    <span class="k">def</span> <span class="nf">sequence_order_shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method for shuffling sequence order in self.sequences.</span>
+        <span class="sd">&quot;&quot;&quot;Method for shuffling sequence order in the attribute :py:attr:`sequences`.</span>
 
-<span class="sd">        :return: sequences in :py:attr:`self.sequences` with shuffled order in the list.</span>
+<span class="sd">        :return: sequences in :py:attr:`sequences` with shuffled order in the list.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; D.sequences</span>
