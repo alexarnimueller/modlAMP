@@ -5,7 +5,7 @@ from ..sequences import Oblique
 
 class TestOblique(unittest.TestCase):
     S = Oblique(10, 10, 30)
-    S.generate_oblique()
+    S.generate_sequences()
     
     def test_seq_num(self):
         self.assertEqual(len(self.S.sequences), 10)

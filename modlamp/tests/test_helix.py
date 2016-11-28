@@ -5,7 +5,7 @@ from ..sequences import Helices
 
 class TestHelices(unittest.TestCase):
     H = Helices(1, 18, 40)
-    H.generate_helices()
+    H.generate_sequences()
     
     def test_seq_length(self):
         self.assertIn(len(self.H.sequences[0]), range(10, 41))
