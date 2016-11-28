@@ -24,6 +24,8 @@ Class                               Characteristics
 
 .. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary`
     class. To remove duplicates, call the class methods :py:func:`self.filter_duplicates()`.
+    
+.. seealso:: :class:`modlamp.core.BaseSequence` from which all classes in this module inherit.
 """
 
 from numpy import random
@@ -31,8 +33,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import BaseSequence, mutate_AA, aminoacids, clean, save_fasta, keep_natural_aa, filter_unnatural, template, \
-    filter_aa, filter_duplicates, ngrams_apd
+from core import BaseSequence, clean, ngrams_apd
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
@@ -84,7 +85,7 @@ class Random(BaseSequence):
         :return: A list of random AMP sequences with defined AA probabilities
         :Example:
 
-        >>> b = Random(5,20,6)
+        >>> b = Random(6, 5, 20)
         >>> b.generate_sequences(proba='AMP')
         >>> b.sequences
         ['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
@@ -513,7 +514,7 @@ class HelicesACP(BaseSequence):
             self.sequences.append(''.join(self.seq))
 
 
-class MixedLibrary:
+class MixedLibrary(BaseSequence):
     """Base class for holding a virtual peptide library.
 
     This class :class:`MixedLibrary` incorporates methods to generate a virtual peptide library composed out of different
@@ -521,12 +522,12 @@ class MixedLibrary:
     :class:`Kinked`, :class:`Oblique` or :class:`Random`.
     """
 
-    def __init__(self, number, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1,
+    def __init__(self, seqnum, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1,
                  randAMPnoCM=1):
         """initializing method of the class :class:`MixedLibrary`. Except from **number**, all other parameters are
         ratios of sequences of the given sequence class.
 
-        :param number: number of sequences to be generated
+        :param seqnum: {int} number of sequences to be generated
         :param centrosymmetric: ratio of symmetric centrosymmetric sequences in the library
         :param centroasymmetric: ratio of asymmetric centrosymmetric sequences in the library
         :param helix: ratio of amphipathic helical sequences in the library
@@ -541,9 +542,8 @@ class MixedLibrary:
             probable that you will not get the exact size of library that you entered as the parameter **number**. If you
             generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
         """
-        self.names = []
-        self.sequences = []
-        self.libsize = int(number)
+        super(MixedLibrary, self).__init__(seqnum)  # inherit methods and some attributes from BaseSequence
+        self.libsize = int(seqnum)
         norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
         self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
                        'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
@@ -630,39 +630,6 @@ class MixedLibrary:
         self.libsize = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
-
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
 
 class Hepahelices(BaseSequence):
     """Base class for peptide sequences probable to form helices and include a heparin-binding-domain.
@@ -714,9 +681,9 @@ class Hepahelices(BaseSequence):
             self.sequences.append(''.join(seq))
 
 
-class AMPngrams:
+class AMPngrams(BaseSequence):
     """Class for sequence generation from the most prominent ngrams (2, 3, 4grams) found in all natural AMP
-    sequences extracted from the `APD3 <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
+    sequences extracted from the `APD3 <http://aps.unmc.edu/AP/>`_ (version August 2016 with 2727 sequences).
     For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
     assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
     spaces were removed.
@@ -740,9 +707,8 @@ class AMPngrams:
         >>> s.ngrams
         array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG', ...]
         """
+        super(AMPngrams, self).__init__(seqnum)  # inherit from BaseSequences and combine with n_min & n_max
         self.ngrams = ngrams_apd()
-        self.seqnum = seqnum
-        self.sequences = list()
         self.n_min = n_min
         self.n_max = n_max
     
@@ -755,76 +721,3 @@ class AMPngrams:
             size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
             # build sequence from a random selection of ngrams
             self.sequences.append(''.join(self.ngrams[np.random.randint(0, self.ngrams.shape[0], size=size)]))
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> h.sequences
-        ['IRSIRRRLSKLARSLGRGARSLGRG']
-        >>> h.mutate_AA(3,1)
-        >>> h.sequences
-        ['IRSIRRRKSKLARQLGRGFRSLGRG']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
-
-        :param filename: output filename (ending .fasta)
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a FASTA formatted file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
