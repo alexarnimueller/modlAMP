@@ -28,6 +28,15 @@ class BaseSequence(object):
         :param lenmin: minimal length of the generated sequences
         :param lenmax: maximal length of the generated sequences
         :return: attributes :py:attr:`seqnum`, :py:attr:`lenmin` and :py:attr:`lenmax`.
+        :Example:
+        
+        >>> b = BaseSequence(10, 7, 28)
+        >>> b.seqnum
+        10
+        >>> b.lenmin
+        7
+        >>> b.lenmax
+        28
         """
         aminoacids(self)
         self.sequences = list()
@@ -42,6 +51,12 @@ class BaseSequence(object):
         :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
         :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
         :return: a fasta file containing the generated sequences
+        :Example:
+        
+        >>> b = BaseSequence(2)
+        >>> b.sequences = ['KLLSLSLALDLLS', 'KLPERTVVNSSDF']
+        >>> b.names = ['Sequence1', 'Sequence2']
+        >>> b.save_fasta('/location/of/fasta/file.fasta', names=True)
         """
         if os.path.exists(filename):
             os.remove(filename)  # remove outputfile, it it exists
@@ -83,6 +98,13 @@ class BaseSequence(object):
         """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
 
         :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.
+        :Example:
+        
+        >>> b = BaseSequence(4)
+        >>> b.sequences = ['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK', 'KLAKLAKKLAKLAK']
+        >>> b.filter_duplicates()
+        >>> b.sequences
+        ['KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK']
 
         .. versionadded:: v2.2.5
         """
@@ -99,6 +121,13 @@ class BaseSequence(object):
 
         :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
             accordingly (if present).
+        :Example:
+        
+        >>> b = BaseSequence(2)
+        >>> b.sequences = ['BBBsdflUasUJfBJ', 'GLFDIVKKVVGALGSL']
+        >>> b.keep_natural_aa()
+        >>> b.sequences
+        ['GLFDIVKKVVGALGSL']
         """
         natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
                       'Y']
@@ -122,6 +151,13 @@ class BaseSequence(object):
 
         :param aminoacids: {list} amino acids to be filtered
         :return: filtered list of sequences names in the corresponding attributes.
+        :Example:
+        
+        >>> b = BaseSequence(3)
+        >>> b.sequences = ['AAALLLIIIKKK', 'CCEERRT', 'LLVVIIFFFQQ']
+        >>> b.filter_aa(['C'])
+        >>> b.sequences
+        ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
         """
     
         pattern = re.compile('|'.join(aminoacids))

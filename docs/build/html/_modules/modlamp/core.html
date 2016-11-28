@@ -81,6 +81,15 @@
 <span class="sd">        :param lenmin: minimal length of the generated sequences</span>
 <span class="sd">        :param lenmax: maximal length of the generated sequences</span>
 <span class="sd">        :return: attributes :py:attr:`seqnum`, :py:attr:`lenmin` and :py:attr:`lenmax`.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; b = BaseSequence(10, 7, 28)</span>
+<span class="sd">        &gt;&gt;&gt; b.seqnum</span>
+<span class="sd">        10</span>
+<span class="sd">        &gt;&gt;&gt; b.lenmin</span>
+<span class="sd">        7</span>
+<span class="sd">        &gt;&gt;&gt; b.lenmax</span>
+<span class="sd">        28</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -95,6 +104,12 @@
 <span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
 <span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
 <span class="sd">        :return: a fasta file containing the generated sequences</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; b = BaseSequence(2)</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences = [&#39;KLLSLSLALDLLS&#39;, &#39;KLPERTVVNSSDF&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b.names = [&#39;Sequence1&#39;, &#39;Sequence2&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b.save_fasta(&#39;/location/of/fasta/file.fasta&#39;, names=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># remove outputfile, it it exists</span>
@@ -136,6 +151,13 @@
         <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
 
 <span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; b = BaseSequence(4)</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b.filter_duplicates()</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences</span>
+<span class="sd">        [&#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
 
 <span class="sd">        .. versionadded:: v2.2.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -152,6 +174,13 @@
 
 <span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
 <span class="sd">            accordingly (if present).</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; b = BaseSequence(2)</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences = [&#39;BBBsdflUasUJfBJ&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b.keep_natural_aa()</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences</span>
+<span class="sd">        [&#39;GLFDIVKKVVGALGSL&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">natural_aa</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;Y&#39;</span><span class="p">]</span>
@@ -175,6 +204,13 @@
 
 <span class="sd">        :param aminoacids: {list} amino acids to be filtered</span>
 <span class="sd">        :return: filtered list of sequences names in the corresponding attributes.</span>
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; b = BaseSequence(3)</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences = [&#39;AAALLLIIIKKK&#39;, &#39;CCEERRT&#39;, &#39;LLVVIIFFFQQ&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b.filter_aa([&#39;C&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences</span>
+<span class="sd">        [&#39;AAALLLIIIKKK&#39;, &#39;LLVVIIFFFQQ&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>

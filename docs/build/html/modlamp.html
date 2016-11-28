@@ -4213,11 +4213,22 @@ are used with their standard options.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">attributes <code class="xref py py-attr docutils literal"><span class="pre">seqnum</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">lenmax</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">attributes <code class="xref py py-attr docutils literal"><span class="pre">seqnum</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">lenmax</span></code>.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">seqnum</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">lenmin</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">lenmax</span>
+<span class="go">28</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -4234,11 +4245,19 @@ are used with their standard options.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a fasta file containing the generated sequences</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KLLSLSLALDLLS&#39;</span><span class="p">,</span> <span class="s1">&#39;KLPERTVVNSSDF&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sequence1&#39;</span><span class="p">,</span> <span class="s1">&#39;Sequence2&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">save_fasta</span><span class="p">(</span><span class="s1">&#39;/location/of/fasta/file.fasta&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -4281,8 +4300,17 @@ are used with their standard options.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and corresponding names.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">filter_duplicates</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
+</pre></div>
+</div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.2.5.</span></p>
 </div>
@@ -4300,8 +4328,17 @@ that is not in <code class="docutils literal"><span class="pre">['A','C','D,'E',
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
 accordingly (if present).</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BBBsdflUasUJfBJ&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">keep_natural_aa</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;GLFDIVKKVVGALGSL&#39;]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -4317,8 +4354,17 @@ argument list <em>aminoacids</em>.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences names in the corresponding attributes.</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AAALLLIIIKKK&#39;</span><span class="p">,</span> <span class="s1">&#39;CCEERRT&#39;</span><span class="p">,</span> <span class="s1">&#39;LLVVIIFFFQQ&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">filter_aa</span><span class="p">([</span><span class="s1">&#39;C&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;AAALLLIIIKKK&#39;, &#39;LLVVIIFFFQQ&#39;]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
