@@ -1,38 +1,33 @@
 import unittest
+from ..core import BaseSequence
 from ..sequences import Random
 from ..descriptors import PeptideDescriptor
 
 
 class TestCore(unittest.TestCase):
-    sequences = ['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggo']
-    seq2 = ['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggorst']
-    r = Random(10, 20, 1)
-    r.sequences = sequences
-    s = PeptideDescriptor(seq2)
-    l = Random(7, 28, 100)
+    b = BaseSequence(1, 10, 20)
+    b.sequences = ['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggo']
+    s = PeptideDescriptor(['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggorst'])
+    l = Random(100, 7, 28)
     l.generate_sequences()
     d = PeptideDescriptor(l.sequences, 'eisenberg')
     d.calculate_moment()
+
+    def test_filter_aa(self):
+        self.b.filter_aa(['C'])
+        self.assertEqual(len(self.b.sequences), 5)
+
+    def test_filter_duplicates(self):
+        self.b.filter_duplicates()
+        self.assertEqual(len(self.b.sequences), 4)
 
     def test_keep_natural_aa(self):
         self.s.keep_natural_aa()
         self.assertNotIn(['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggorst'], self.s.sequences)
 
-    def test_filter_aa(self):
-        self.r.filter_aa(['C'])
-        self.assertEqual(len(self.r.sequences), 5)
-
-    def test_filter_duplicates(self):
-        self.r.filter_duplicates()
-        self.assertEqual(len(self.r.sequences), 4)
-
-    def test_filter_unnatural(self):
-        self.r.filter_unnatural()
-        self.assertNotIn(['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggo'], self.r.sequences)
-
     def test_mutate(self):
-        self.r.mutate_AA(1, 1)
-        self.assertNotEqual(self.sequences, self.r.sequences)
+        self.b.mutate_AA(1, 1.)
+        self.assertNotEqual('GLFDIVKKVVGALG', self.b.sequences[0])
 
     def test_rand_selection(self):
         self.d.random_selection(10)

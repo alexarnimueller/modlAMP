@@ -84,14 +84,14 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">core</span> <span class="k">import</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">filter_aa</span><span class="p">,</span> \
-    <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">ngrams_apd</span>
+<span class="kn">from</span> <span class="nn">core</span> <span class="k">import</span> <span class="n">BaseSequence</span><span class="p">,</span> <span class="n">mutate_AA</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">,</span> <span class="n">clean</span><span class="p">,</span> <span class="n">save_fasta</span><span class="p">,</span> <span class="n">keep_natural_aa</span><span class="p">,</span> <span class="n">filter_unnatural</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> \
+    <span class="n">filter_aa</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="p">,</span> <span class="n">ngrams_apd</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;modlab&quot;</span>
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;restructuredtext en&quot;</span>
 
 
-<div class="viewcode-block" id="Random"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random">[docs]</a><span class="k">class</span> <span class="nc">Random</span><span class="p">:</span>
+<div class="viewcode-block" id="Random"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random">[docs]</a><span class="k">class</span> <span class="nc">Random</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for random peptide sequences</span>
 <span class="sd">    This class incorporates methods for generating peptide random peptide sequences of defined length.</span>
@@ -130,17 +130,6 @@
 <span class="sd">    ===  ====    ======    =========    ==========</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Random.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length</span>
-<span class="sd">        :param lenmax: maximal sequence length</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: initialized class attributes for sequence number and length</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Random.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.generate_sequences">[docs]</a>    <span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proba</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to actually generate the sequences.</span>
 
@@ -148,119 +137,36 @@
 <span class="sd">        :return: A list of random AMP sequences with defined AA probabilities</span>
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; r = Random(5,20,6)</span>
-<span class="sd">        &gt;&gt;&gt; r.generate_sequences(proba=&#39;AMP&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; r.sequences</span>
+<span class="sd">        &gt;&gt;&gt; b = Random(5,20,6)</span>
+<span class="sd">        &gt;&gt;&gt; b.generate_sequences(proba=&#39;AMP&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; b.sequences</span>
 <span class="sd">        [&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span>  <span class="c1"># default probability = rand</span>
         <span class="k">if</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMPnoCM&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMPnoCM</span>
         <span class="k">elif</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMP&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_AMP</span>
         <span class="k">elif</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;randnoCM&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_randnoCM</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prob_rand</span>  <span class="c1"># default probability = rand</span>
 
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lenmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lenmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span>
-                                                 <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed random selection of amino acid, probabilities = prob</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Random.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
-
-<span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a fasta file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Random.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Random.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Random.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Random.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Random.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Random.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">))</span>  <span class="c1"># weighed random selection of amino acid,</span>
+                <span class="c1"># probabilities = prob</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="Helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices">[docs]</a><span class="k">class</span> <span class="nc">Helices</span><span class="p">:</span>
+<div class="viewcode-block" id="Helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices">[docs]</a><span class="k">class</span> <span class="nc">Helices</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for peptide sequences probable to form helices.</span>
 
 <span class="sd">    This class incorporates methods for generating presumed amphipathic alpha-helical peptide sequences.</span>
 <span class="sd">    These sequences are generated by placing basic residues along the sequence with distance 3-4 AA to each other.</span>
 <span class="sd">    The remaining empty spots are filled up by hydrophobic AAs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Helices.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length</span>
-<span class="sd">        :param lenmax: maximal sequence length</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined variables as instances</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Helices.generate_helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.generate_helices">[docs]</a>    <span class="k">def</span> <span class="nf">generate_helices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`</span>
 
@@ -289,83 +195,10 @@
                 <span class="k">while</span> <span class="n">seq</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span>  <span class="c1"># fill up remaining spots with hydrophobic AAs</span>
                     <span class="n">seq</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Helices.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Helices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
-
-<span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a fasta file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Helices.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Helices.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Helices.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Helices.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Helices.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="Kinked"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked">[docs]</a><span class="k">class</span> <span class="nc">Kinked</span><span class="p">:</span>
+<div class="viewcode-block" id="Kinked"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked">[docs]</a><span class="k">class</span> <span class="nc">Kinked</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for peptide sequences probable to form helices with a kink.</span>
 <span class="sd">    This class incorporates methods for presumed kinked amphipathic alpha-helical peptide sequences:</span>
@@ -373,17 +206,6 @@
 <span class="sd">    The remaining spots are filled up by hydrophobic AAs. Then, a basic residue is replaced by proline, presumably</span>
 <span class="sd">    leading to a kink in the hydrophobic face of the amphipathic helices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Kinked.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">,</span> <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length</span>
-<span class="sd">        :param lenmax: maximal sequence length</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Kinked.generate_kinked"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.generate_kinked">[docs]</a>    <span class="k">def</span> <span class="nf">generate_kinked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to actually generate the presumed kinked sequences with features defined in the class instances.</span>
 
@@ -420,100 +242,16 @@
             <span class="n">propos</span> <span class="o">=</span> <span class="n">poslist</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">poslist</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
             <span class="n">seq</span><span class="p">[</span><span class="n">propos</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;P&#39;</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Kinked.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; S.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; S.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; S.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Kinked.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
-
-<span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a fasta file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Kinked.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Kinked.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Kinked.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Kinked.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Kinked.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="Oblique"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique">[docs]</a><span class="k">class</span> <span class="nc">Oblique</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Oblique"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique">[docs]</a><span class="k">class</span> <span class="nc">Oblique</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for oblique sequences with a so called linear hydrophobicity gradient.</span>
 
 <span class="sd">    This class incorporates methods for generating peptide sequences with a linear hydrophobicity gradient, meaning that</span>
 <span class="sd">    these sequences have a hydrophobic tail. This feature gives rise to the hypothesis that they orient themselves</span>
 <span class="sd">    tilted/oblique in membrane environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Oblique.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length</span>
-<span class="sd">        :param lenmax: maximal sequence length</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Oblique.generate_oblique"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.generate_oblique">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oblique</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate the possible oblique sequences.</span>
 
@@ -546,83 +284,10 @@
                     <span class="n">seq</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">):</span>  <span class="c1"># transform last 3rd of sequence into hydrophobic ones --&gt; hydrophobicity gradient = oblique</span>
                 <span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AA_hyd</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Oblique.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Oblique.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
-
-<span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a fasta file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Oblique.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Oblique.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Oblique.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Oblique.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Oblique.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="Centrosymmetric"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric">[docs]</a><span class="k">class</span> <span class="nc">Centrosymmetric</span><span class="p">:</span>
+<div class="viewcode-block" id="Centrosymmetric"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric">[docs]</a><span class="k">class</span> <span class="nc">Centrosymmetric</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for peptide sequences produced out of 7 AA centro-symmetric blocks yielding peptides of length</span>
 <span class="sd">    14 or 21 AA (2*7 or 3*7).</span>
 
@@ -632,15 +297,6 @@
 <span class="sd">    is used, two or three identical blocks are concatenated. If the method :func:`generate_asymmetric()` is used,</span>
 <span class="sd">    two or three different blocks are concatenated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Centrosymmetric.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqnum</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined number of sequences to generate, empty list to store produced sequences</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Centrosymmetric.generate_symmetric"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.generate_symmetric">[docs]</a>    <span class="k">def</span> <span class="nf">generate_symmetric</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The :func:`generate_symmetric()` method generates overall symmetric sequences out of two or three blocks of</span>
 <span class="sd">        identical centro-symmetric sequence blocks of 7 amino acids. The resulting sequence presumably has a large</span>
@@ -709,83 +365,10 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">continue</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; S.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; S.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; S.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta formatted file.</span>
-
-<span class="sd">        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a fasta file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Centrosymmetric.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Centrosymmetric.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="AmphipathicArc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc">[docs]</a><span class="k">class</span> <span class="nc">AmphipathicArc</span><span class="p">:</span>
+<div class="viewcode-block" id="AmphipathicArc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc">[docs]</a><span class="k">class</span> <span class="nc">AmphipathicArc</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="c1"># TODO: add test cases</span>
     <span class="sd">&quot;&quot;&quot;Base class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with</span>
 <span class="sd">    different arc sizes.</span>
@@ -818,17 +401,6 @@
 <span class="sd">    ===   ====   =====</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="AmphipathicArc.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimum sequence length</span>
-<span class="sd">        :param lenmax: maximum sequence length</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax`and :py:attr:`seqnum`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="AmphipathicArc.generate_arc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.generate_arc">[docs]</a>    <span class="k">def</span> <span class="nf">generate_arc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arcsize</span><span class="o">=</span><span class="s1">&#39;160&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.</span>
 <span class="sd">        :param arcsize: {str} to choose among &#39;80&#39;, &#39;120&#39;, &#39;160&#39;, &#39;200&#39;, &#39;240&#39;.</span>
@@ -913,83 +485,10 @@
             <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">aa</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a .fasta file.</span>
-
-<span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.</span>
-<span class="sd">        :return: a fasta file containing the generated sequences.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AmphipathicArc.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Duplicate** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="HelicesACP"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP">[docs]</a><span class="k">class</span> <span class="nc">HelicesACP</span><span class="p">:</span>
+<div class="viewcode-block" id="HelicesACP"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP">[docs]</a><span class="k">class</span> <span class="nc">HelicesACP</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="c1"># TODO: add test cases</span>
     <span class="sd">&quot;&quot;&quot;Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.</span>
 
@@ -1048,17 +547,6 @@
 <span class="sd">    Y 	0.000   0.016   0.000   0.000   0.000   0.000   0.000   0.000</span>
 <span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="HelicesACP.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length.</span>
-<span class="sd">        :param lenmax: maximal sequence length.</span>
-<span class="sd">        :param seqnum: number of seqeunces to generate.</span>
-<span class="sd">        :return: initialized class attributes for sequence number and length.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="HelicesACP.generate_helices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.generate_helices">[docs]</a>    <span class="k">def</span> <span class="nf">generate_helices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate the sequences with the mentioned amino acid probabilities.</span>
 <span class="sd">        :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides</span>
@@ -1080,80 +568,7 @@
                 <span class="n">l</span> <span class="o">=</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">18</span><span class="o">*</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="mi">18</span><span class="p">)</span>  <span class="c1"># for helices &gt;18aa, the probabilities start from the beginning again</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AAs</span><span class="p">,</span>
                                                  <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prob</span><span class="p">[:,</span> <span class="n">l</span><span class="p">]))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="HelicesACP.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to save generated sequences in a fasta file.</span>
-
-<span class="sd">        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.</span>
-<span class="sd">        :return: a fasta file containing the generated sequences.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="HelicesACP.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;IAKAGRAIIK&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; H.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; H.sequences</span>
-<span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="HelicesACP.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="HelicesACP.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="HelicesACP.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="HelicesACP.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Duplicate** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="MixedLibrary"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.MixedLibrary">[docs]</a><span class="k">class</span> <span class="nc">MixedLibrary</span><span class="p">:</span>
@@ -1307,7 +722,7 @@
         <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Hepahelices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices">[docs]</a><span class="k">class</span> <span class="nc">Hepahelices</span><span class="p">:</span>
+<div class="viewcode-block" id="Hepahelices"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices">[docs]</a><span class="k">class</span> <span class="nc">Hepahelices</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for peptide sequences probable to form helices and include a heparin-binding-domain.</span>
 
 <span class="sd">    This class is used to construct presumed amphipathic helices that include a heparin-binding-domain (HBD)</span>
@@ -1319,20 +734,6 @@
 
 <span class="sd">    .. versionadded:: v2.3.1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Hepahelices.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param lenmin: minimal sequence length, minimal 8!</span>
-<span class="sd">        :param lenmax: maximal sequence length, maximal 50!</span>
-<span class="sd">        :param seqnum: number of sequences to generate</span>
-<span class="sd">        :return: defined variables as instances</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">aminoacids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">lenmin</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="ow">or</span> <span class="n">lenmax</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="s2">&quot;Wrong sequence length.</span><span class="se">\n</span><span class="s2">Minimum: 8</span><span class="se">\n</span><span class="s2">Maximum: 50&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lenmin</span><span class="p">,</span> <span class="n">lenmax</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Hepahelices.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.generate_sequences">[docs]</a>    <span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate helical sequences with class features defined in :class:`Hepahelices()`</span>
 
@@ -1368,80 +769,7 @@
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># if sequence length is 8, take HBD as whole sequence</span>
                 <span class="n">seq</span> <span class="o">=</span> <span class="n">hbd</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="Hepahelices.mutate_AA"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.mutate_AA">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to mutate with **prob** probability a **nr** of positions per sequence randomly.</span>
-
-<span class="sd">        :param nr: number of mutations to perform per sequence</span>
-<span class="sd">        :param prob: probability of mutating a sequence</span>
-<span class="sd">        :return: In the attribute :py:attr:`sequences`: mutated sequences</span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; h.sequences</span>
-<span class="sd">        [&#39;IRSIRRRLSKLARSLGRGARSLGRG&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; h.mutate_AA(3,1)</span>
-<span class="sd">        &gt;&gt;&gt; h.sequences</span>
-<span class="sd">        [&#39;IRSIRRRKSKLARQLGRGFRSLGRG&#39;]</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.mutate_AA()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_AA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Hepahelices.save_fasta"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.save_fasta">[docs]</a>    <span class="k">def</span> <span class="nf">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.</span>
-
-<span class="sd">        :param filename: output filename (ending .fasta)</span>
-<span class="sd">        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers</span>
-<span class="sd">        :return: a FASTA formatted file containing the generated sequences</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.save_fasta()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">save_fasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Hepahelices.keep_natural_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.keep_natural_aa">[docs]</a>    <span class="k">def</span> <span class="nf">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character</span>
-<span class="sd">        that is not in [&#39;A&#39;,&#39;C&#39;,&#39;D,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;].</span>
-
-<span class="sd">        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered</span>
-<span class="sd">            accordingly.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.keep_natural_aa()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keep_natural_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Hepahelices.filter_unnatural"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.filter_unnatural">[docs]</a>    <span class="k">def</span> <span class="nf">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.</span>
-
-<span class="sd">        :return: Filtered sequence list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_unnatural()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_unnatural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Hepahelices.filter_duplicates"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.filter_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`</span>
-
-<span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences`</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_sequences()`</span>
-
-<span class="sd">        .. versionadded:: v2.2.5</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Hepahelices.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.Hepahelices.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to filter out sequences with given amino acids in the argument list *aminoacids*.</span>
-<span class="sd">        **Dublicates** sequences are removed as well.</span>
-
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
-<span class="sd">        :return: filtered list of sequences in the attribute :py:attr:`sequences`.</span>
-
-<span class="sd">        .. seealso:: :func:`modlamp.core.filter_aa()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="o">=</span><span class="n">aminoacids</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="AMPngrams"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AMPngrams">[docs]</a><span class="k">class</span> <span class="nc">AMPngrams</span><span class="p">:</span>

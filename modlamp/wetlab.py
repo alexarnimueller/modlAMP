@@ -207,7 +207,7 @@ class CD:
         fig, ax = plt.subplots()
         line1 = ax.plot(w, dt / 1000)
         line2 = ax.plot(w, dw / 1000)
-        plt.setp(line1, color='r', linewidth=2.0, label='TFE', linestyle='--')
+        plt.setp(line1, color='b', linewidth=2.0, label='TFE', linestyle='--')
         plt.setp(line2, color='b', linewidth=2.0, label='Water')
         plt.title(title, fontsize=18, fontweight='bold')
         ax.set_xlabel('Wavelength (nm)', fontsize=16)
@@ -231,21 +231,21 @@ class CD:
             d = self.meanres_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.meanres_ellipticity[i + 1][:, 1]
-            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
+            y_label = b"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(self.meanres_ellipticity) * 1.1
             y_max = np.max(self.meanres_ellipticity) * 1.1
         elif data == 'molar ellipticity':
             d = self.molar_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
+            y_label = b"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(self.molar_ellipticity) * 1.1
             y_max = np.max(self.molar_ellipticity) * 1.1
         else:
             d = self.circular_dichroism[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = r"$\Delta A \ast 32.986 \ast 10^{-3}$"
+            y_label = b"$\Delta A \ast 32.986 \ast 10^{-3}$"
             y_min = np.min(self.circular_dichroism) * 1.1
             y_max = np.max(self.circular_dichroism) * 1.1
     
@@ -294,7 +294,7 @@ class CD:
                     d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
                     
                     if self.solvent[i] == 'T':  # color
-                        col = 'r'
+                        col = 'b'
                     else:
                         col = 'b'
                     
@@ -346,9 +346,8 @@ class CD:
         .. math::
             ([\Theta]_{222} / [\Theta]_{222\infty}) * 100 \%
         
-        *See also:* `Shepherd, N. E., Hoang, H. N., Abbenante, G. & Fairlie, D. P. *J. Am. Chem. Soc. 127, 2974–2983 (
-        2005). <https://dx.doi.org/10.1021/ja0456003>`_
-        
+        :Reference: `Shepherd, N. E., Hoang, H. N., Abbenante, G. & Fairlie, D. P. J. Am. Chem. Soc. 127, 2974–2983
+            (2005). <https://dx.doi.org/10.1021/ja0456003>`_
         :param temperature: {float} experiment temperature in °C
         :param k: {float, 2.4 - 4.5} finite length correction factor. Can be adapted to the helicity of a known peptide.
         :param induction: {bool} wether the helical induction upon changing from one solvent to another should be

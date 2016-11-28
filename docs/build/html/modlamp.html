@@ -1550,7 +1550,7 @@ class. To remove duplicates, call the class methods <code class="xref py py-func
 </div>
 <dl class="class">
 <dt id="modlamp.sequences.Random">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Random</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Random</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for random peptide sequences
 This class incorporates methods for generating peptide random peptide sequences of defined length.
 The amino acid probabilities can be chosen from different probabilities:</p>
@@ -1701,27 +1701,6 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="modlamp.sequences.Random.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">initialized class attributes for sequence number and length</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="modlamp.sequences.Random.generate_sequences">
 <code class="descname">generate_sequences</code><span class="sig-paren">(</span><em>proba='rand'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.generate_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.generate_sequences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to actually generate the sequences.</p>
@@ -1737,153 +1716,11 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="n">proba</span><span class="o">=</span><span class="s1">&#39;AMP&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">sequences</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">(</span><span class="n">proba</span><span class="o">=</span><span class="s1">&#39;AMP&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
 </pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta formatted file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Random.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Random.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Random.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -1891,32 +1728,11 @@ accordingly.</td>
 
 <dl class="class">
 <dt id="modlamp.sequences.Helices">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Helices</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Helices</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptide sequences probable to form helices.</p>
 <p>This class incorporates methods for generating presumed amphipathic alpha-helical peptide sequences.
 These sequences are generated by placing basic residues along the sequence with distance 3-4 AA to each other.
 The remaining empty spots are filled up by hydrophobic AAs.</p>
-<dl class="method">
-<dt id="modlamp.sequences.Helices.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined variables as instances</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="modlamp.sequences.Helices.generate_helices">
 <code class="descname">generate_helices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.generate_helices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.generate_helices" title="Permalink to this definition">¶</a></dt>
@@ -1939,179 +1755,16 @@ The remaining empty spots are filled up by hydrophobic AAs.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="modlamp.sequences.Helices.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Helices.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta formatted file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Helices.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Helices.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Helices.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Helices.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Helices.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Helices.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="modlamp.sequences.Kinked">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Kinked</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Kinked</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptide sequences probable to form helices with a kink.
 This class incorporates methods for presumed kinked amphipathic alpha-helical peptide sequences:
 Sequences are generated by placing basic residues along the sequence with distance 3-4 AA to each other.
 The remaining spots are filled up by hydrophobic AAs. Then, a basic residue is replaced by proline, presumably
 leading to a kink in the hydrophobic face of the amphipathic helices.</p>
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined attributes <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmax</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">seqnum</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="modlamp.sequences.Kinked.generate_kinked">
 <code class="descname">generate_kinked</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.generate_kinked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.generate_kinked" title="Permalink to this definition">¶</a></dt>
@@ -2135,178 +1788,15 @@ leading to a kink in the hydrophobic face of the amphipathic helices.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta formatted file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Kinked.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Kinked.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Kinked.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="modlamp.sequences.Oblique">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Oblique</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Oblique</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for oblique sequences with a so called linear hydrophobicity gradient.</p>
 <p>This class incorporates methods for generating peptide sequences with a linear hydrophobicity gradient, meaning that
 these sequences have a hydrophobic tail. This feature gives rise to the hypothesis that they orient themselves
 tilted/oblique in membrane environment.</p>
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined attributes <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmax</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">seqnum</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="modlamp.sequences.Oblique.generate_oblique">
 <code class="descname">generate_oblique</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.generate_oblique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.generate_oblique" title="Permalink to this definition">¶</a></dt>
@@ -2329,153 +1819,11 @@ tilted/oblique in membrane environment.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta formatted file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Oblique.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Oblique.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Oblique.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="modlamp.sequences.Centrosymmetric">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Centrosymmetric</code><span class="sig-paren">(</span><em>seqnum=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Centrosymmetric</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptide sequences produced out of 7 AA centro-symmetric blocks yielding peptides of length
 14 or 21 AA (2*7 or 3*7).</p>
 <p>This class incorporates methods to generate special peptide sequences with an overall presumed
@@ -2483,21 +1831,6 @@ hydrophobic moment. Sequences are generated by centro-symmetric blocks of seven 
 are added to build a final sequence of length 14 or 21 amino acids length. If the method <a class="reference internal" href="#modlamp.sequences.Centrosymmetric.generate_symmetric" title="modlamp.sequences.Centrosymmetric.generate_symmetric"><code class="xref py py-func docutils literal"><span class="pre">generate_symmetric()</span></code></a>
 is used, two or three identical blocks are concatenated. If the method <a class="reference internal" href="#modlamp.sequences.Centrosymmetric.generate_asymmetric" title="modlamp.sequences.Centrosymmetric.generate_asymmetric"><code class="xref py py-func docutils literal"><span class="pre">generate_asymmetric()</span></code></a> is used,
 two or three different blocks are concatenated.</p>
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>seqnum=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqnum</strong> &#8211; number of sequences to generate</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">defined number of sequences to generate, empty list to store produced sequences</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="modlamp.sequences.Centrosymmetric.generate_symmetric">
 <code class="descname">generate_symmetric</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.generate_symmetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.generate_symmetric" title="Permalink to this definition">¶</a></dt>
@@ -2547,153 +1880,11 @@ hydrophobic    moment.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta formatted file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Centrosymmetric.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Centrosymmetric.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Centrosymmetric.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="modlamp.sequences.AmphipathicArc">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">AmphipathicArc</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">AmphipathicArc</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with
 different arc sizes.</p>
 <p>The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:</p>
@@ -2793,27 +1984,6 @@ different arc sizes.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimum sequence length</li>
-<li><strong>lenmax</strong> &#8211; maximum sequence length</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined attributes <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmax`and</span> <span class="pre">:py:attr:`seqnum</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="modlamp.sequences.AmphipathicArc.generate_arc">
 <code class="descname">generate_arc</code><span class="sig-paren">(</span><em>arcsize='160'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.generate_arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.generate_arc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.
@@ -2857,153 +2027,11 @@ the sequence amino acids to  hydrophobic.
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a .fasta file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.AmphipathicArc.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#AmphipathicArc.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.AmphipathicArc.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Duplicate</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="modlamp.sequences.HelicesACP">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">HelicesACP</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">HelicesACP</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.</p>
 <p>This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
 distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
@@ -3508,27 +2536,6 @@ distribution of alpha-helical ACPs. For each of the positions in the helix (1-18
 </tbody>
 </table>
 <dl class="method">
-<dt id="modlamp.sequences.HelicesACP.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length.</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length.</li>
-<li><strong>seqnum</strong> &#8211; number of seqeunces to generate.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">initialized class attributes for sequence number and length.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="modlamp.sequences.HelicesACP.generate_helices">
 <code class="descname">generate_helices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.generate_helices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.generate_helices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to generate the sequences with the mentioned amino acid probabilities.
@@ -3548,148 +2555,6 @@ according to the position in the helix wheel.</p>
 </pre></div>
 </div>
 <p>[&#8216;FLFDVAKKVAGTALT&#8217;, &#8216;GLGIILGAGG&#8217;, &#8216;GLRIKLGVWAKKA&#8217;, &#8216;GFWGFIKTI&#8217;]</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to save generated sequences in a fasta file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename in which sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are saved.</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IAKAGRAIIK&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.HelicesACP.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Duplicate</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
-</div>
 </dd></dl>
 
 </dd></dl>
@@ -3857,7 +2722,7 @@ All sequences are between 7 and 28 amino acids in length.</p>
 
 <dl class="class">
 <dt id="modlamp.sequences.Hepahelices">
-<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Hepahelices</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.sequences.</code><code class="descname">Hepahelices</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for peptide sequences probable to form helices and include a heparin-binding-domain.</p>
 <p>This class is used to construct presumed amphipathic helices that include a heparin-binding-domain (HBD)
 probable to bind heparin. The HBD sequence for alpha-helices usually has the following form: <strong>XBBBXXBX</strong>
@@ -3867,27 +2732,6 @@ Vasc. Biol.</em> <strong>24</strong>, 1549–1557 (2004).</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version v2.3.1.</span></p>
 </div>
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>lenmin</em>, <em>lenmax</em>, <em>seqnum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lenmin</strong> &#8211; minimal sequence length, minimal 8!</li>
-<li><strong>lenmax</strong> &#8211; maximal sequence length, maximal 50!</li>
-<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">defined variables as instances</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="modlamp.sequences.Hepahelices.generate_sequences">
 <code class="descname">generate_sequences</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.generate_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.generate_sequences" title="Permalink to this definition">¶</a></dt>
@@ -3907,148 +2751,6 @@ Vasc. Biol.</em> <strong>24</strong>, 1549–1557 (2004).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;GRLARSLKRKLNRLVRGGGRLVRGGG&#39;, &#39;IRSIRRRLSKLARSLGRGARSLGRG&#39;, &#39;RAVKRKVNKLLKGAAKVLKGAAKVLKGAAK&#39;, ... ]</span>
 </pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.mutate_AA">
-<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.mutate_AA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
-<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">In the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>: mutated sequences</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IRSIRRRLSKLARSLGRGARSLGRG&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;IRSIRRRKSKLARQLGRGFRSLGRG&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.mutate_AA" title="modlamp.core.mutate_AA"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.mutate_AA()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.save_fasta">
-<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.save_fasta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for saving sequences in the instance <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> to a file in FASTA format.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> &#8211; output filename (ending .fasta)</li>
-<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a FASTA formatted file containing the generated sequences</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.save_fasta" title="modlamp.core.save_fasta"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.save_fasta()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.keep_natural_aa">
-<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-that is not in [&#8216;A&#8217;,&#8217;C&#8217;,&#8217;D,&#8217;E&#8217;,&#8217;F&#8217;,&#8217;G&#8217;,&#8217;H&#8217;,&#8217;I&#8217;,&#8217;K&#8217;,&#8217;L&#8217;,&#8217;M&#8217;,&#8217;N&#8217;,&#8217;P&#8217;,&#8217;Q&#8217;,&#8217;R&#8217;,&#8217;S&#8217;,&#8217;T&#8217;,&#8217;V&#8217;,&#8217;W&#8217;,&#8217;Y&#8217;].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
-accordingly.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.keep_natural_aa" title="modlamp.core.keep_natural_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.keep_natural_aa()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.filter_unnatural">
-<code class="descname">filter_unnatural</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.filter_unnatural"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.filter_unnatural" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with unnatural amino acids from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_unnatural" title="modlamp.core.filter_unnatural"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_unnatural()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.filter_duplicates">
-<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.filter_duplicates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_sequences" title="modlamp.core.filter_sequences"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_sequences()</span></code></a></p>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified">New in version v2.2.5.</span></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="modlamp.sequences.Hepahelices.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#Hepahelices.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.Hepahelices.filter_aa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to filter out sequences with given amino acids in the argument list <em>aminoacids</em>.
-<strong>Dublicates</strong> sequences are removed as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.filter_aa" title="modlamp.core.filter_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.filter_aa()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -5485,13 +4187,15 @@ The calculation is based on the fromula by Fairlie and co-workers:</p>
 </div><p>The helicity is then calculated as the ratio of</p>
 <div class="math">
 <p><img src="_images/math/c5bcef898662e2800a2ce52971f99526331a0c85.png" alt="([\Theta]_{222} / [\Theta]_{222\infty}) * 100 \%"/></p>
-</div><p><em>See also:</em> <a class="reference external" href="https://dx.doi.org/10.1021/ja0456003">Shepherd, N. E., Hoang, H. N., Abbenante, G. &amp; Fairlie, D. P. *J. Am. Chem. Soc. 127, 2974–2983 (
-2005).</a></p>
-<table class="docutils field-list" frame="void" rules="none">
+</div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Reference:</th><td class="field-body"><p class="first"><a class="reference external" href="https://dx.doi.org/10.1021/ja0456003">Shepherd, N. E., Hoang, H. N., Abbenante, G. &amp; Fairlie, D. P. J. Am. Chem. Soc. 127, 2974–2983
+(2005).</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>temperature</strong> &#8211; {float} experiment temperature in °C</li>
 <li><strong>k</strong> &#8211; {float, 2.4 - 4.5} finite length correction factor. Can be adapted to the helicity of a known peptide.</li>
 <li><strong>induction</strong> &#8211; {bool} wether the helical induction upon changing from one solvent to another should be
@@ -5500,10 +4204,10 @@ calculated.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">approximate helicity for every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">helicity_values</span></code>.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">approximate helicity for every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">helicity_values</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -5599,7 +4303,7 @@ alphabetically.</td>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_global()</p>
+<p class="last"><a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_global" title="modlamp.descriptors.PeptideDescriptor.calculate_global"><code class="xref py py-func docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor.calculate_global()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -5628,7 +4332,7 @@ hydrophiobic moment for the chosen window size found in the sequence will be ret
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">modlamp.descriptors.PeptideDescriptor.calculate_moment()</p>
+<p class="last"><a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor.calculate_moment" title="modlamp.descriptors.PeptideDescriptor.calculate_moment"><code class="xref py py-func docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor.calculate_moment()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -5697,6 +4401,148 @@ are used with their standard options.</p>
 <div class="section" id="module-modlamp.core">
 <span id="modlamp-core"></span><h2>2.9. modlamp.core<a class="headerlink" href="#module-modlamp.core" title="Permalink to this headline">¶</a></h2>
 <p>Core helper functions for other modules.</p>
+<dl class="class">
+<dt id="modlamp.core.BaseSequence">
+<em class="property">class </em><code class="descclassname">modlamp.core.</code><code class="descname">BaseSequence</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for sequence classes in the module <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a>.</p>
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seqnum</strong> &#8211; number of sequences to generate</li>
+<li><strong>lenmin</strong> &#8211; minimal length of the generated sequences</li>
+<li><strong>lenmax</strong> &#8211; maximal length of the generated sequences</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">attributes <code class="xref py py-attr docutils literal"><span class="pre">seqnum</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">lenmin</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">lenmax</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.save_fasta">
+<code class="descname">save_fasta</code><span class="sig-paren">(</span><em>filename</em>, <em>names=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.save_fasta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.save_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save generated sequences in a <code class="docutils literal"><span class="pre">.FASTA</span></code> formatted file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; output filename in which the sequences from <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> are safed in fasta format.</li>
+<li><strong>names</strong> &#8211; {bool} whether sequence names from <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> should be saved as sequence identifiers</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a fasta file containing the generated sequences</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.mutate_AA">
+<code class="descname">mutate_AA</code><span class="sig-paren">(</span><em>nr</em>, <em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.mutate_AA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.mutate_AA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to mutate with <strong>prob</strong> probability a <strong>nr</strong> of positions per sequence randomly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nr</strong> &#8211; number of mutations to perform per sequence</li>
+<li><strong>prob</strong> &#8211; probability of mutating a sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">mutated sequences in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IAKAGRAIIK&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">mutate_AA</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;NAKAGRAWIK&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.filter_duplicates">
+<code class="descname">filter_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.filter_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter duplicates in the sequences from the class attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequences list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and corresponding names.</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.keep_natural_aa">
+<code class="descname">keep_natural_aa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.keep_natural_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.keep_natural_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+that is not in <code class="docutils literal"><span class="pre">['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y']</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filtered sequence list in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>. The other attributes are also filtered
+accordingly (if present).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.filter_aa">
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.filter_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+argument list <em>aminoacids</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; {list} amino acids to be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences names in the corresponding attributes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.core.BaseSequence.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to clean / clear / empty the attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">freshly initialized, empty class attributes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="modlamp.core.load_scale">
 <code class="descclassname">modlamp.core.</code><code class="descname">load_scale</code><span class="sig-paren">(</span><em>scalename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#load_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.load_scale" title="Permalink to this definition">¶</a></dt>

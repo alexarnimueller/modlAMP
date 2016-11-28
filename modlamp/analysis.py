@@ -110,7 +110,7 @@ class GlobalAnalysis(object):
         
         :return: {numpy.ndarray} Eisenberg hydrophobicities in the attribute :py:attr:`H`.
         
-        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_global()
+        .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_global()`
         """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
@@ -128,7 +128,7 @@ class GlobalAnalysis(object):
         :param modality: {'max' or 'mean'} calculate respectively maximum or mean hydrophobic moment.
         :return: {numpy.ndarray} calculated hydrophobic moments in the attribute :py:attr:`uH`.
         
-        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_moment()
+        .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_moment()`
         """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
@@ -269,9 +269,9 @@ class GlobalAnalysis(object):
         ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
         ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
         ax5.set_xlim(np.min(self.charge) - 1., np.max(self.charge) + 1.)
-        ax5.text(0.5, 0.95, r'amide: $true$', verticalalignment='center', horizontalalignment='right',
+        ax5.text(0.5, 0.95, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
                  transform=ax5.transAxes, fontsize=15)
-        ax5.text(0.7, 0.95, r'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
+        ax5.text(0.7, 0.95, b'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
                  transform=ax5.transAxes, fontsize=15)
         ax5.legend()
         

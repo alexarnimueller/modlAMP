@@ -12,11 +12,137 @@ import random
 import re
 
 import numpy as np
+import pandas as pd
 from Bio.SeqIO.FastaIO import FastaIterator
 from scipy.spatial import distance
 
 __author__ = "modlab"
 __docformat__ = "restructuredtext en"
+
+
+class BaseSequence(object):
+    """Base class for sequence classes in the module :mod:`modlamp.sequences`."""
+    def __init__(self, seqnum, lenmin=7, lenmax=28):
+        """
+        :param seqnum: number of sequences to generate
+        :param lenmin: minimal length of the generated sequences
+        :param lenmax: maximal length of the generated sequences
+        :return: attributes :py:attr:`seqnum`, :py:attr:`lenmin` and :py:attr:`lenmax`.
+        """
+        aminoacids(self)
+        self.sequences = list()
+        self.names = list()
+        self.lenmin = int(lenmin)
+        self.lenmax = int(lenmax)
+        self.seqnum = int(seqnum)
+    
+    def save_fasta(self, filename, names=False):
+        """Method to save generated sequences in a ``.FASTA`` formatted file.
+
+        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
+        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
+        :return: a fasta file containing the generated sequences
+        """
+        if os.path.exists(filename):
+            os.remove(filename)  # remove outputfile, it it exists
+
+        with open(filename, 'w') as o:
+            for n, seq in enumerate(self.sequences):
+                if names:
+                    print >> o, '>' + str(self.names[n])
+                else:
+                    print >> o, '>Seq_' + str(n)
+                print >> o, seq
+        
+    def mutate_AA(self, nr, prob):
+        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
+
+        :param nr: number of mutations to perform per sequence
+        :param prob: probability of mutating a sequence
+        :return: mutated sequences in the attribute :py:attr:`sequences`.
+        :Example:
+
+        >>> b = BaseSequence(1)
+        >>> b.sequences = ['IAKAGRAIIK']
+        >>> b.mutate_AA(3, 1.)
+        >>> b.sequences
+        ['NAKAGRAWIK']
+        """
+        for s in range(len(self.sequences)):
+            mutate = np.random.choice([1, 0], 1, p=[prob,
+                                         1 - float(prob)])  # mutate: yes or no? probability = mutation probability
+            if mutate == 1:
+                seq = list(self.sequences[s])
+                cnt = 0
+                while cnt < nr:  # mutate "nr" AA
+                    seq[random.choice(range(len(seq)))] = random.choice(self.AAs)
+                    cnt += 1
+                self.sequences[s] = ''.join(seq)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.
+
+        .. versionadded:: v2.2.5
+        """
+        if not self.names:
+            self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
+        df = pd.DataFrame(zip(self.sequences, self.names), columns=['Sequences', 'Names'])
+        df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
+        self.sequences = df['Sequences'].get_values().tolist()
+        self.names = df['Names'].get_values().tolist()
+    
+    def keep_natural_aa(self):
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ``['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y']``.
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly (if present).
+        """
+        natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
+                      'Y']
+    
+        seqs = []
+        names = []
+    
+        for i, s in enumerate(self.sequences):
+            seq = list(s.upper())
+            if all(c in natural_aa for c in seq):
+                seqs.append(s.upper())
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+    
+        self.sequences = seqs
+        self.names = names
+
+    def filter_aa(self, aminoacids):
+        """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+        argument list *aminoacids*.
+
+        :param aminoacids: {list} amino acids to be filtered
+        :return: filtered list of sequences names in the corresponding attributes.
+        """
+    
+        pattern = re.compile('|'.join(aminoacids))
+        seqs = []
+        names = []
+    
+        for i, s in enumerate(self.sequences):
+            if not pattern.search(s):
+                seqs.append(s)
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+
+        self.sequences = seqs
+        self.names = names
+        
+    def clean(self):
+        """Method to clean / clear / empty the attributes :py:attr:`sequences` and :py:attr:`names`.
+
+        :return: freshly initialized, empty class attributes.
+        """
+        self.__init__(self.seqnum, self.lenmin, self.lenmax)
 
 
 def load_scale(scalename):
@@ -325,7 +451,6 @@ def aminoacids(self):
     ===  ====    ======   =========    ==========
 
     """
-    self.sequences = list()
     # AA classes:
     self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
     self.AA_basic = ['K', 'R']
