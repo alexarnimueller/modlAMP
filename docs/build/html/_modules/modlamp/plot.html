@@ -264,7 +264,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="plot_profile"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_profile">[docs]</a><span class="k">def</span> <span class="nf">plot_profile</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_profile"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.plot_profile">[docs]</a><span class="k">def</span> <span class="nf">plot_profile</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">seq</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Function to generate sequence profile plots of a given amino acid scale or a moment thereof.</span>
 
 <span class="sd">    .. note::</span>
@@ -276,6 +276,7 @@
 <span class="sd">    :param scalename: {str} Amino acid scale to be used to describe the sequence.</span>
 <span class="sd">    :param filename: {str} Filename  where to safe the plot. *default = None* --&gt; show the plot</span>
 <span class="sd">    :param color: {str} Color of the plot line.</span>
+<span class="sd">    :param seq: {bool} Whether the amino acid sequence should be plotted as the title.</span>
 <span class="sd">    :param ylim: {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)</span>
 <span class="sd">    :return: a profile plot of the input sequence interactively or with the specified *filename*</span>
 <span class="sd">    :Example:</span>
@@ -314,8 +315,10 @@
         <span class="c1"># axis labes and title</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;sequence position&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">scalename</span> <span class="o">+</span> <span class="s1">&#39; value&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sequence Profile For &#39;</span> <span class="o">+</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq_profile</span><span class="p">),</span> <span class="s1">&#39;window size: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq_profile</span><span class="p">),</span> <span class="s1">&#39;window size: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">window</span><span class="p">),</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">seq</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ylim</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -334,7 +337,7 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="helical_wheel"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.helical_wheel">[docs]</a><span class="k">def</span> <span class="nf">helical_wheel</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">colorcoding</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">,</span> <span class="n">lineweights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="helical_wheel"><a class="viewcode-back" href="../../modlamp.html#modlamp.plot.helical_wheel">[docs]</a><span class="k">def</span> <span class="nf">helical_wheel</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">colorcoding</span><span class="o">=</span><span class="s1">&#39;rainbow&#39;</span><span class="p">,</span> <span class="n">lineweights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seq</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the</span>
 <span class="sd">    properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.</span>
 
@@ -342,6 +345,7 @@
 <span class="sd">    :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *no*</span>
 <span class="sd">    :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence</span>
 <span class="sd">    :param filename: {str} filename  where to safe the plot. *default = None* --&gt; show the plot</span>
+<span class="sd">    :param seq: {bool} whether the amino acid sequence should be plotted as a title.</span>
 <span class="sd">    :return: a helical wheel projection plot of the given sequence (interactively or in **filename**)</span>
 <span class="sd">    :Example:</span>
 
@@ -458,6 +462,9 @@
     <span class="n">cur_axes</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">cur_axes</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">seq</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    
     <span class="c1"># show or save plot</span>
     <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
@@ -725,7 +732,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 24, 2016.
+      Last updated on Nov 28, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

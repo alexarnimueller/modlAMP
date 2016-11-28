@@ -13,6 +13,7 @@ Module                      Characteristics
 :mod:`modlamp.plot`         Module incorporating functions to visualize descriptor.
 :mod:`modlamp.ml`           Module incorporating machine learning functions for training SVM or RF models on peptides.
 :mod:`modlamp.wetlab`       Module incorporating classes for analysis of wetlab data like circular dichroism plots.
+:mod:`modlamp.analysis`     Module incorporating the :class:`GlobalAnalysis` class for sequence library analysis and comparison.
 :mod:`modlamp.core`         Module incorporating helper functions for other modules.
 =========================== ==========================================================================================================
 

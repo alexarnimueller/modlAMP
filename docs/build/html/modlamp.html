@@ -91,7 +91,10 @@
 <tr class="row-even"><td><a class="reference internal" href="#module-modlamp.wetlab" title="modlamp.wetlab"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.wetlab</span></code></a></td>
 <td>Module incorporating classes for analysis of wetlab data like circular dichroism plots.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-modlamp.analysis" title="modlamp.analysis"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.analysis</span></code></a></td>
+<td>Module incorporating the <code class="xref py py-class docutils literal"><span class="pre">GlobalAnalysis</span></code> class for sequence library analysis and comparison.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-modlamp.core" title="modlamp.core"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.core</span></code></a></td>
 <td>Module incorporating helper functions for other modules.</td>
 </tr>
 </tbody>
@@ -4820,7 +4823,7 @@ are plottet in different colors.</p>
 
 <dl class="function">
 <dt id="modlamp.plot.plot_profile">
-<code class="descclassname">modlamp.plot.</code><code class="descname">plot_profile</code><span class="sig-paren">(</span><em>sequence</em>, <em>window=5</em>, <em>scalename='eisenberg'</em>, <em>filename=None</em>, <em>color='red'</em>, <em>ylim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_profile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">plot_profile</code><span class="sig-paren">(</span><em>sequence</em>, <em>window=5</em>, <em>scalename='Eisenberg'</em>, <em>filename=None</em>, <em>color='red'</em>, <em>seq=False</em>, <em>ylim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#plot_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.plot_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate sequence profile plots of a given amino acid scale or a moment thereof.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -4837,6 +4840,7 @@ are plottet in different colors.</p>
 <li><strong>scalename</strong> &#8211; {str} Amino acid scale to be used to describe the sequence.</li>
 <li><strong>filename</strong> &#8211; {str} Filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
 <li><strong>color</strong> &#8211; {str} Color of the plot line.</li>
+<li><strong>seq</strong> &#8211; {bool} Whether the amino acid sequence should be plotted as the title.</li>
 <li><strong>ylim</strong> &#8211; {tuple of float} Y-Axis limits. Provide as tuple, e.g. (0.5, -0.2)</li>
 </ul>
 </td>
@@ -4859,7 +4863,7 @@ are plottet in different colors.</p>
 
 <dl class="function">
 <dt id="modlamp.plot.helical_wheel">
-<code class="descclassname">modlamp.plot.</code><code class="descname">helical_wheel</code><span class="sig-paren">(</span><em>sequence</em>, <em>colorcoding='rainbow'</em>, <em>lineweights=True</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#helical_wheel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.helical_wheel" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.plot.</code><code class="descname">helical_wheel</code><span class="sig-paren">(</span><em>sequence</em>, <em>colorcoding='rainbow'</em>, <em>lineweights=True</em>, <em>filename=None</em>, <em>seq=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/plot.html#helical_wheel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.plot.helical_wheel" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
 properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4871,6 +4875,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <li><strong>colorcoding</strong> &#8211; {str} the color coding to be used, available: <em>rainbow</em>, <em>charge</em>, <em>no</em></li>
 <li><strong>lineweights</strong> &#8211; {boolean} defines whether connection lines decrease in thickness along the sequence</li>
 <li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
+<li><strong>seq</strong> &#8211; {bool} whether the amino acid sequence should be plotted as a title.</li>
 </ul>
 </td>
 </tr>
@@ -6300,7 +6305,7 @@ E.g. &#8216;euclidean&#8217;, &#8216;minkowsky&#8217;.</li>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, modlab ETH Zurich, Alex Mueller.
-      Last updated on Nov 24, 2016.
+      Last updated on Nov 28, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
