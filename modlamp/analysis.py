@@ -15,6 +15,9 @@ import pandas as pd
 from modlamp.core import count_aa
 from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 
+__author__ = "Alex Müller, Gisela Gabernet"
+__docformat__ = "restructuredtext en"
+
 
 class GlobalAnalysis(object):
     """

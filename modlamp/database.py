@@ -18,7 +18,7 @@ import requests
 from lxml import html
 from mysql.connector import Error
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 

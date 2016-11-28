@@ -22,7 +22,7 @@ from os.path import dirname, join
 
 import numpy as np
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 

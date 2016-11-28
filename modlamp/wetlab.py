@@ -23,7 +23,7 @@ import pandas as pd
 
 from modlamp.descriptors import GlobalDescriptor
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 

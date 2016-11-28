@@ -165,7 +165,7 @@ The same holds true for the **CAMP** database:
 ['GLFDIVKKVVGALGSL','GLFDIVKKVVGTLAGL']
 
 **modlAMP** also hosts a module for connecting to your own database on a private server.
-Peptide sequences included in any table in the database can be downloaded with **modlAMP**.
+Peptide sequences included in any table in the database can be downloaded.
 
 .. note::
     The :py:func:`modlamp.database.query_database` function allows connection and queries to a personal database. For

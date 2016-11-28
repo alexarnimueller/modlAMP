@@ -5,7 +5,7 @@ Welcome to modlAMP's documentation!
 
 **Authors:** Alex Müller, Gisela Gabernet
 
-**Copyright:** 2016 `modlab ETH Zurich, Switzerland <http://www.cadd.ethz.ch>`_.
+**Copyright:** 2017 `ETH Zurich, Switzerland; modlamp <http://www.cadd.ethz.ch>`_.
 
 This is a **Python package** (Python 2.7) that was designed for working with peptides, proteins or any
 sequence of natural amino acids. It incorporates several modules, like sequence generation (module ``sequences``),

@@ -50,7 +50,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx.ext.imgmath',
+    #'sphinx.ext.imgmath',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.autosummary'
 ]

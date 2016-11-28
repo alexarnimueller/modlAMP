@@ -30,7 +30,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from modlamp.descriptors import PeptideDescriptor
 from modlamp.core import count_aa
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 

@@ -13,24 +13,20 @@ Class                                Characteristics
 :py:class:`PeptideDescriptor`        AA scale based global or convoluted descriptors (auto-/cross-correlated).
 =============================        ============================================================================
 
+.. seealso:: :class:`modlamp.core.BaseDescriptor` from which the classes in :mod:`modlamp.descriptors` inherit.
 """
 
-import collections
-import os
-from os.path import dirname, join
-import sys
 import json
+import sys
+from os.path import dirname, join
 
 import numpy as np
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.utils import shuffle
 
-from core import load_scale, read_fasta, save_fasta, filter_unnatural, filter_values, filter_aa, count_aa, \
-    random_selection, minmax_selection, filter_sequences, filter_duplicates, keep_natural_aa, aa_weights, aa_energies
+from core import BaseDescriptor, load_scale, count_aa, aa_weights, aa_energies
 
-__author__ = 'modlab'
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
@@ -125,7 +121,7 @@ def _charge(seq, ph=7.0, amide=False):
     return round(pos_charge - neg_charge, 3)
 
 
-class GlobalDescriptor(object):
+class GlobalDescriptor(BaseDescriptor):
     """
     Base class for global, non-amino acid scale dependant descriptors. The following descriptors can be calculated by
     the **methods** linked below:
@@ -142,29 +138,6 @@ class GlobalDescriptor(object):
     - `Hydrophobic Ratio    <modlamp.html#modlamp.descriptors.GlobalDescriptor.hydrophobic_ratio>`_
     - `all of the above     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_all>`_
     """
-
-    def __init__(self, seqs):
-        """
-        :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
-            descriptor values for.
-        :return: initialized lists self.sequences, self.names and dictionary self.AA with amino acid scale values
-        :Example:
-
-        >>> from modlamp.descriptors import GlobalDescriptor
-        >>> desc = GlobalDescriptor('KLAKLAKKLAKLAK')
-        >>> desc.sequences
-        ['KLAKLAKKLAKLAK']
-        >>> desc = GlobalDescriptor('/Path/to/file.fasta')  # load sequences from .fasta file
-        >>> desc.sequences
-        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
-        """
-        d = PeptideDescriptor(seqs, 'eisenberg')
-        self.sequences = d.sequences
-        self.names = d.names
-        self.descriptor = d.descriptor
-        self.target = d.target
-        self.scaler = None
-        self.featurenames = list()
 
     def length(self, append=False):
         """
@@ -541,234 +514,8 @@ class GlobalDescriptor(object):
         self.boman_index(append=True)  # Boman index
         self.hydrophobic_ratio(append=True)  # Hydrophobic ratio
 
-    def feature_scaling(self, stype='standard', fit=True):
-        """Method for feature scaling of the calculated descriptor matrix.
 
-        :param stype: {str} **'standard'** or **'minmax'**, type of scaling to be used
-        :param fit: {boolean}, defines whether the used scaler is first fitting on the data (True) or
-            whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
-        :return: scaled descriptor values in :py:attr:`self.descriptor`
-        :Example:
-
-        >>> desc.descriptor
-        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> desc.feature_scaling(stype='minmax',fit=True)
-        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
-        """
-        if stype in ['standard', 'minmax']:
-            if stype == 'standard':
-                self.scaler = StandardScaler()
-            elif stype == 'minmax':
-                self.scaler = MinMaxScaler()
-
-            if fit:
-                self.descriptor = self.scaler.fit_transform(self.descriptor)
-            else:
-                self.descriptor = self.scaler.transform(self.descriptor)
-        else:
-            print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
-
-    def feature_shuffle(self):
-        """Method for shuffling features randomly.
-
-        :return: descriptor matrix with shuffled feature columns in the attribute :py:attr:`descriptor`
-        :Example:
-
-        >>> desc.descriptor
-        array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])
-        >>> desc.feature_shuffle()
-        array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
-        """
-        self.descriptor = shuffle(self.descriptor.transpose()).transpose()
-
-    def filter_values(self, values, operator='=='):
-        """Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
-        size as the number of features in the descriptor matrix!) The operator option tells the method whether to
-        filter for values equal, lower, higher ect. to the given values in the **values** array.
-
-        :param values: List/array of values to filter the attribute :py:attr:`descriptor` for
-        :param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
-        :return: filtered descriptor matrix and updated sequences in the corresponding attributes.
-        :Example:
-        
-        >>> min(desc.descriptor)
-        array([ 0.04523998])
-        >>> desc.descriptor.shape
-        (412, 1)
-        >>> desc.filter_values([0.1], operator='>')
-        >>> min(desc.descriptor)
-        array([ 0.10344828])
-        >>> desc.descriptor.shape
-        (168, 1)
-
-        .. seealso:: :func:`modlamp.core.filter_values()`
-        """
-        filter_values(self, values, operator)
-
-    def filter_duplicates(self):
-        """
-        Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-        :Example:
-        
-        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'GLFDIVKKVVGGKKASSERT'])
-        >>> desc.filter_duplicates()
-        >>> desc.sequences
-        ['KLLKLLKKLLKLLK', 'GLFDIVKKVVGGKKASSERT']
-        
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-        :Example:
-        
-        >>> desc = GlobalDescriptor(['ACDEFGHIKLMNPQRSTVWY', 'JOGHURT', 'ELVISISKING'])
-        >>> desc.keep_natural_aa()
-        >>> desc.sequences
-        ['ACDEFGHIKLMNPQRSTVWY', 'ELVISISKING']
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
-        amino acids in the argument list **aminoacids**.
-
-        :param aminoacids: List/array of amino acids {str.upper} to filter for
-        :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
-        :Example:
-        
-        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'ACCDFACAD'])
-        >>> desc.filter_aa(['C'])
-        >>> desc.sequences
-        ['KLLKLLKKLLKLLK']
-        
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids)
-
-    def filter_sequences(self, sequences):
-        """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
-        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an
-        updated descriptor instance.
-
-        :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
-        :return: updated instance
-        :Example:
-
-        >>> desc = GlobalDescriptor(['KLLKLLKKLLKLLK', 'KLLK', 'KLLLKLKLKLL'])
-        >>> desc.filter_sequences(['KLLK'])
-        >>> desc.sequences
-        ['KLLKLLKKLLKLLK', 'KLLLKLKLKLL']
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.4
-        """
-        filter_sequences(self, sequences)
-    
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def random_selection(self, num):
-        """Method to select a random number of sequences (with names and descriptors if present) out of a given
-        descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
-
-    def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
-        """Method to select a specified number of sequences out of a given descriptor instance according to the
-        minmax algorithm.
-
-        :param iterations: {int} number of sequences to retrieve.
-        :param distmetric: {str} distance metric to calculate the distances between the sequences in descriptor space.
-            Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
-            E.g. 'euclidean', 'minkowsky'.
-        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.minmax_selection()`
-
-        .. versionadded:: v2.2.6
-        """
-        minmax_selection(self, iterations, distmetric, randseed)
-
-    def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
-        """Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
-        class :class:`modlamp.descriptors.GlobalDescriptor`.
-
-        :param filename: {str} filename of the data file to be loaded
-        :param delimiter: {str} column delimiter
-        :param targets: {boolean} whether last column in the file contains a target class vector
-        :param header: {int} number of header lines to skip in the file
-        :return: loaded sequences, descriptor values and targets in the corresponding attributes.
-        """
-        data = np.genfromtxt(filename, delimiter=delimiter, skip_header=header)
-        data = data[:, 1:]  # skip sequences as they are "nan" when read as float
-        seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
-        seqs = seqs[:, 0]
-        if targets:
-            self.target = np.array(data[:, -1], dtype='int')
-        self.sequences = seqs
-        self.descriptor = data
-
-    def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
-        """Method to save the descriptor values to a .csv/.txt file
-
-        :param filename: {str} filename of the output file
-        :param delimiter: {str} column delimiter
-        :param targets: {list} target class vector to be added to descriptor (same length as :py:attr:`sequences`)
-        :param header: {str} header to be written at the beginning of the file
-        :return: output file with peptide names and descriptor values
-        """
-        seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
-        ids = np.array(self.names, dtype='|S80')[:, np.newaxis]
-        if ids.shape == seqs.shape:
-            names = np.hstack((ids, seqs))
-        else:
-            names = seqs
-        if targets and len(targets) == len(self.sequences):
-            target = np.array(targets)[:, np.newaxis]
-            data = np.hstack((names, self.descriptor, target))
-        else:
-            data = np.hstack((names, self.descriptor))
-        np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)
-
-    def save_fasta(self, outputfile, names=False):
-        """Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
-
-        :param outputfile: {str} filename of the output FASTA file
-        :param names: {boolean} whether sequence names from self.names should be saved as sequence identifiers
-        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
-        """
-        save_fasta(self, outputfile, names=names)
-
-
-class PeptideDescriptor(object):
+class PeptideDescriptor(BaseDescriptor):
     """Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor
     calculation:
 
@@ -803,7 +550,7 @@ class PeptideDescriptor(object):
 
     """
 
-    def __init__(self, seqs, scalename='eisenberg'):
+    def __init__(self, seqs, scalename='Eisenberg'):
         """
         :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
             descriptor values for.
@@ -820,33 +567,8 @@ class PeptideDescriptor(object):
         >>> seqs.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
-        if type(seqs) == list and seqs[0].isupper():
-            self.sequences = seqs
-            self.names = []
-        elif type(seqs) == np.ndarray and seqs[0].isupper():
-            self.sequences = seqs.tolist()
-            self.names = []
-        elif type(seqs) == str and seqs.isupper():
-            self.sequences = [seqs]
-            self.names = []
-        elif os.path.isfile(seqs):
-            if seqs.endswith('.fasta'):  # read .fasta file
-                self.sequences, self.names = read_fasta(seqs)
-            elif seqs.endswith('.csv'):  # read .csv file with sequences every line
-                with open(seqs) as f:
-                    self.sequences = list()
-                    for line in f:
-                        if line.isupper():
-                            self.sequences.append(line.strip())
-            else:
-                print "Sorry, currently only .fasta or .csv files can be read!"
-        else:
-            print "'inputfile' does not exist, is not a valid list of sequences or is not a valid sequence string"
-
+        super(PeptideDescriptor, self).__init__(seqs)
         self.scalename, self.scale = load_scale(scalename.lower())
-        self.descriptor = np.array([[]])
-        self.target = np.array([], dtype='int')
-        self.scaler = None
         self.all_moms = list()  # for passing hydrophobic moments to calculate_profile
         self.all_globs = list()  # for passing global  to calculate_profile
 
@@ -859,24 +581,6 @@ class PeptideDescriptor(object):
         .. seealso:: :func:`modlamp.core.load_scale()`
         """
         self.scalename, self.scale = load_scale(scalename.lower())
-
-    def read_fasta(self, filename):
-        """Method for loading sequences from a FASTA formatted file into the attributes :py:attr:`sequences` and
-        :py:attr:`names`. This method is used by the base class :class:`PeptideDescriptor` if the input is a FASTA file.
-
-        :param filename: {str} .fasta file with sequences and headers to read
-        :return: list of sequences in self.sequences with corresponding sequence names in self.names
-        """
-        self.sequences, self.names = read_fasta(filename)
-
-    def save_fasta(self, outputfile, names=False):
-        """Method for saving sequences from :py:attr:`sequences` to a FASTA formatted file.
-
-        :param outputfile: {str} filename of the output FASTA file
-        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
-        :return: list of sequences in self.sequences with corresponding sequence names in the attribute :py:attr:`names`
-        """
-        save_fasta(self, outputfile, names=names)
 
     def calculate_autocorr(self, window, append=False):
         """Method for auto-correlating the amino acid values for a given descriptor scale
@@ -897,7 +601,7 @@ class PeptideDescriptor(object):
         .. versionchanged:: v.2.3.0
         """
         desc = Parallel(n_jobs=-1)(delayed(_one_autocorr)(seq, window, self.scale) for seq in self.sequences)
-        
+
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
@@ -920,7 +624,7 @@ class PeptideDescriptor(object):
         (1, 147)
         """
         desc = Parallel(n_jobs=-1)(delayed(_one_crosscorr)(seq, window, self.scale) for seq in self.sequences)
-        
+
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
@@ -1067,233 +771,3 @@ class PeptideDescriptor(object):
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
             self.descriptor = np.array(desc)
-
-    def count_aa(self, scale='relative', append=False):
-        """Method for producing the amino acid distribution for the given sequences as a descriptor
-
-        :param scale: {'absolute' or 'relative'} defines whether counts or frequencies are given for each AA
-        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
-            attribute :py:attr:`descriptor`.
-        :return: the amino acid distributions for every sequence individually in the attribute :py:attr:`descriptor`
-        :Example:
-
-        >>> AMP = PeptideDescriptor('ACDEFGHIKLMNPQRSTVWY') # aa_count() does not depend on the descriptor scale
-        >>> AMP.count_aa()
-        >>> AMP.descriptor
-        array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])
-        >>> AMP.descriptor.shape
-        (1, 20)
-        
-        .. seealso:: :py:func:`modlamp.core.count_aa()`
-        """
-        desc = list()
-        scl = 1
-        for seq in self.sequences:
-            if scale == 'relative':
-                scl = len(seq)
-            d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
-            od = collections.OrderedDict(sorted(d.items()))
-            desc.append(od.values())
-
-        if append:
-            self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-        else:
-            self.descriptor = np.array(desc)
-
-    def feature_scaling(self, stype='standard', fit=True):
-        """Method for feature scaling of the calculated descriptor matrix.
-
-        :param stype: {'standard' or 'minmax'} type of scaling to be used
-        :param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or
-            whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
-        :return: scaled descriptor values in :py:attr:`descriptor`
-        :Example:
-
-        >>> D.descriptor
-        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
-        >>> D.feature_scaling(type='minmax',fit=True)
-        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
-        """
-        if stype in ['standard', 'minmax']:
-            if stype == 'standard':
-                self.scaler = StandardScaler()
-            elif stype == 'minmax':
-                self.scaler = MinMaxScaler()
-
-            if fit:
-                self.descriptor = self.scaler.fit_transform(self.descriptor)
-            else:
-                self.descriptor = self.scaler.transform(self.descriptor)
-        else:
-            print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
-
-    def feature_shuffle(self):
-        """Method for shuffling feature columns randomly.
-
-        :return: descriptor matrix with shuffled feature columns in :py:attr:`descriptor`
-        :Example:
-
-        >>> D.descriptor
-        array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])
-        >>> D.feature_shuffle()
-        array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
-        """
-        self.descriptor = shuffle(self.descriptor.transpose()).transpose()
-
-    def sequence_order_shuffle(self):
-        """Method for shuffling sequence order in self.sequences.
-
-        :return: sequences in :py:attr:`self.sequences` with shuffled order in the list.
-        :Example:
-
-        >>> D.sequences
-        ['LILRALKGAARALKVA','VKIAKIALKIIKGLG','VGVRLIKGIGRVARGAI','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV']
-        >>> D.sequence_order_shuffle()
-        >>> D.sequences
-        ['VGVRLIKGIGRVARGAI','LILRALKGAARALKVA','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV','VKIAKIALKIIKGLG']
-        """
-        self.sequences = shuffle(self.sequences)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_values(self, values, operator='=='):
-        """Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of value (same
-        size as the number of features in the descriptor matrix!)
-
-        :param values: List of values to filter
-        :param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
-        :return: filtered descriptor matrix and updated sequences in the corresponding attributes.
-
-        .. seealso:: :func:`modlamp.core.filter_values()`
-        """
-        filter_values(self, values, operator)
-
-    def filter_duplicates(self):
-        """
-        Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter sequences and corresponding descriptor values, if the sequences contain any of the given
-        amino acids in the argument list **aminoacids**.
-
-        :param aminoacids: List/array of amino acids to filter for
-        :return: filtered descriptor matrix and updated sequences and names in the corresponding attributes.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids)
-
-    def filter_sequences(self, sequences):
-        """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
-        corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an
-        updated descriptor instance.
-
-        :param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.4
-        """
-        filter_sequences(self, sequences)
-
-    def random_selection(self, num):
-        """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a
-        given descriptor instance.
-
-        :param num: {int} number of entries to be randomly selected
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.random_selection()`
-
-        .. versionadded:: v2.2.3
-        """
-        random_selection(self, num)
-
-    def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
-        """Method to select a specified number of sequences out of a given descriptor instance according to the
-        minmax algorithm.
-
-        :param iterations: {int} Number of sequences to retrieve.
-        :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
-            Choose from scipy.spacial.distance (http://docs.scipy.org/doc/scipy/reference/spatial.distance.html).
-            E.g. 'euclidean', 'minkowsky'.
-        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
-        :return: updated instance
-
-        .. seealso:: :func:`modlamp.core.minmax_selection()`
-
-        .. versionadded:: v2.2.6
-        """
-        minmax_selection(self, iterations, distmetric, randseed)
-
-    def load_descriptordata(self, filename, delimiter=",", targets=False, header=0):
-        """Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
-        class :class:`modlamp.descriptors.PeptideDescriptor`.
-
-        .. note::
-            The data file should **not** have any headers
-
-        :param filename: filenam of the data file to be loaded
-        :param delimiter: column delimiter
-        :param targets: {boolean} whether last column in the file contains a target class vector
-        :param header: {int} number of header lines to skip in the file
-        :return: loaded sequences, descriptor values and targets in the corresponding attributes.
-        """
-        data = np.genfromtxt(filename, delimiter=delimiter, skip_header=header)
-        data = data[:, 1:]  # skip sequences as they are "nan" when read as float
-        seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
-        seqs = seqs[:, 0]
-        if targets:
-            self.target = np.array(data[:, -1], dtype='int')
-        self.sequences = seqs
-        self.descriptor = data
-
-    def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
-        """Method to save the descriptor values to a .csv/.txt file
-
-        :param filename: filename of the output file
-        :param delimiter: column delimiter
-        :param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
-        :param header: {str} header to be written at the beginning of the file
-        :return: output file with peptide names and descriptor values
-        """
-        seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
-        ids = np.array(self.names, dtype='|S80')[:, np.newaxis]
-        if ids.shape == seqs.shape:
-            names = np.hstack((ids, seqs))
-        else:
-            names = seqs
-        if targets and len(targets) == len(self.sequences):
-            target = np.array(targets)[:, np.newaxis]
-            data = np.hstack((names, self.descriptor, target))
-        else:
-            data = np.hstack((names, self.descriptor))
-        np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)

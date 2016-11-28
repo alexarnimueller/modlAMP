@@ -1,7 +1,7 @@
 License
 =======
 
-Copyright (c) 2017, modlab ETH Zürich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider.
+Copyright (c) 2017, ETH Zürich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider.
 
 All rights reserved.
 
