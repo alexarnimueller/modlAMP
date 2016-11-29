@@ -9,21 +9,33 @@ generation (module ``sequences``). For basic instructions how to use the package
 <examplescript.html>`_.
 
 .. note::
-    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ python package manager before
-    installing **modlAMP**. It will take care of all necessary package requirements and versions.
+    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
+    before installing **modlAMP**. It will take care of all necessary package requirements and versions.
 
 
 Installation
 ************
 
-For the installation to work, ``pip`` needs to be installed. If you're not sure whether you already have pip, type
-``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
+For the installation to work properly, ``pip`` needs to be installed. If you're not sure whether you already have pip,
+type ``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
 
-When pip is installed, run the following command when located in the **modlAMP** package directory::
+With ``pip``
+------------
+
+You do not need to download the package manually. In your terminal, just type the following command::
+
+    pip install modlamp
+
+From source
+-----------
+
+Download and unpack the package and run the following command when located in the **modlAMP** package directory::
 
     make
     sudo make install
-    make doc
+
+This will install the package and all requirements.
+
 
 Usage
 *****
@@ -58,8 +70,8 @@ These commands generated a mixed peptide library comprising of 1000 sequences.
     If duplicates are present in the attribute :py:attr:`sequences`, these are removed during generation. Therefore it
     is possible that less than the specified sequences are obtained.
 
-The module :mod:`sequences` incorporates different sequence generation classes. For documentation thereof, consider the
-docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
+The module :mod:`sequences` incorporates different sequence generation classes (random, helices etc.). For
+documentation thereof, consider the docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
 
 
 Calculating Descriptor Values

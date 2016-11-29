@@ -52,6 +52,13 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
 
     .. image:: ../docs/static/uH_Eisenberg.png
         :height: 300px
+    
+    The same procedure also works for comparing two data sets:
+    
+    >>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
+    
+    .. image:: ../docs/static/uH_APD3.png
+        :height: 300px
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']

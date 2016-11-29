@@ -499,7 +499,7 @@ class HelicesACP(BaseSequence):
         """Method to generate the sequences with the mentioned amino acid probabilities.
 
         :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides
-        according to the position in the helix wheel.
+            according to the position in the helix wheel.
 
         :Example:
 
