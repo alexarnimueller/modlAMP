@@ -32,6 +32,7 @@ __docformat__ = "restructuredtext en"
 
 class BaseSequence(object):
     """Base class for sequence classes in the module :mod:`modlamp.sequences`."""
+    
     def __init__(self, seqnum, lenmin=7, lenmax=28):
         """
         :param seqnum: number of sequences to generate
@@ -70,7 +71,7 @@ class BaseSequence(object):
         """
         if os.path.exists(filename):
             os.remove(filename)  # remove outputfile, it it exists
-
+        
         with open(filename, 'w') as o:
             for n, seq in enumerate(self.sequences):
                 if names:
@@ -78,7 +79,7 @@ class BaseSequence(object):
                 else:
                     print >> o, '>Seq_' + str(n)
                 print >> o, seq
-        
+    
     def mutate_AA(self, nr, prob):
         """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
@@ -95,7 +96,8 @@ class BaseSequence(object):
         """
         for s in range(len(self.sequences)):
             mutate = np.random.choice([1, 0], 1, p=[prob,
-                                         1 - float(prob)])  # mutate: yes or no? probability = mutation probability
+                                                    1 - float(
+                                                        prob)])  # mutate: yes or no? probability = mutation probability
             if mutate == 1:
                 seq = list(self.sequences[s])
                 cnt = 0
@@ -103,7 +105,7 @@ class BaseSequence(object):
                     seq[random.choice(range(len(seq)))] = random.choice(self.AAs)
                     cnt += 1
                 self.sequences[s] = ''.join(seq)
-
+    
     def filter_duplicates(self):
         """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
 
@@ -141,20 +143,20 @@ class BaseSequence(object):
         """
         natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
                       'Y']
-    
+        
         seqs = []
         names = []
-    
+        
         for i, s in enumerate(self.sequences):
             seq = list(s.upper())
             if all(c in natural_aa for c in seq):
                 seqs.append(s.upper())
                 if hasattr(self, 'names') and self.names:
                     names.append(self.names[i])
-    
+        
         self.sequences = seqs
         self.names = names
-
+    
     def filter_aa(self, aminoacids):
         """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
         argument list *aminoacids*.
@@ -169,20 +171,20 @@ class BaseSequence(object):
         >>> b.sequences
         ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
         """
-    
+        
         pattern = re.compile('|'.join(aminoacids))
         seqs = []
         names = []
-    
+        
         for i, s in enumerate(self.sequences):
             if not pattern.search(s):
                 seqs.append(s)
                 if hasattr(self, 'names') and self.names:
                     names.append(self.names[i])
-
+        
         self.sequences = seqs
         self.names = names
-        
+    
     def clean(self):
         """Method to clean / clear / empty the attributes :py:attr:`sequences` and :py:attr:`names`.
 
@@ -196,6 +198,7 @@ class BaseDescriptor(object):
     Base class inheriting to both peptide descriptor classes :py:class:`modlamp.descriptors.GlobalDescriptor` and
     :py:class:`modlamp.descriptors.PeptideDescriptor`.
     """
+    
     def __init__(self, seqs):
         """
         :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the
@@ -235,11 +238,11 @@ class BaseDescriptor(object):
                 print "Sorry, currently only .fasta or .csv files can be read!"
         else:
             print "'inputfile' does not exist, is not a valid list of AA sequences or is not a valid sequence string"
-
+        
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
         self.scaler = None
-
+    
     def read_fasta(self, filename):
         """Method for loading sequences from a ``.FASTA`` formatted file into the attributes :py:attr:`sequences` and
         :py:attr:`names`.
@@ -249,7 +252,7 @@ class BaseDescriptor(object):
             :py:attr:`names`.
         """
         self.sequences, self.names = read_fasta(filename)
-
+    
     def save_fasta(self, outputfile, names=False):
         """Method for saving sequences from :py:attr:`sequences` to a ``.FASTA`` formatted file.
 
@@ -258,7 +261,7 @@ class BaseDescriptor(object):
         :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
             :py:attr:`names`.        """
         save_fasta(self, outputfile, names=names)
-
+    
     def count_aa(self, scale='relative', append=False):
         """Method for producing the amino acid distribution for the given sequences as a descriptor
 
@@ -285,12 +288,12 @@ class BaseDescriptor(object):
             d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
             od = collections.OrderedDict(sorted(d.items()))
             desc.append(od.values())
-
+        
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
             self.descriptor = np.array(desc)
-
+    
     def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
 
@@ -310,14 +313,14 @@ class BaseDescriptor(object):
                 self.scaler = StandardScaler()
             elif stype == 'minmax':
                 self.scaler = MinMaxScaler()
-
+            
             if fit:
                 self.descriptor = self.scaler.fit_transform(self.descriptor)
             else:
                 self.descriptor = self.scaler.transform(self.descriptor)
         else:
             print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
-
+    
     def feature_shuffle(self):
         """Method for shuffling feature columns randomly.
 
@@ -330,7 +333,7 @@ class BaseDescriptor(object):
         array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
         """
         self.descriptor = shuffle(self.descriptor.transpose()).transpose()
-
+    
     def sequence_order_shuffle(self):
         """Method for shuffling sequence order in the attribute :py:attr:`sequences`.
 
@@ -344,7 +347,7 @@ class BaseDescriptor(object):
         ['VGVRLIKGIGRVARGAI','LILRALKGAARALKVA','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV','VKIAKIALKIIKGLG']
         """
         self.sequences = shuffle(self.sequences)
-
+    
     def random_selection(self, num):
         """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
         descriptor instance.
@@ -369,7 +372,7 @@ class BaseDescriptor(object):
 
         .. versionadded:: v2.2.3
         """
-
+        
         sel = np.random.choice(len(self.sequences), size=num, replace=False)
         self.sequences = np.array(self.sequences)[sel].tolist()
         if hasattr(self, 'descriptor') and self.descriptor.size:
@@ -378,7 +381,7 @@ class BaseDescriptor(object):
             self.names = np.array(self.names)[sel].tolist()
         if hasattr(self, 'target') and self.target.size:
             self.target = self.target[sel]
-
+    
     def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
         """Method to select a specified number of sequences according to the minmax algorithm.
 
@@ -390,37 +393,37 @@ class BaseDescriptor(object):
 
         .. seealso:: **SciPy** http://docs.scipy.org/doc/scipy/reference/spatial.distance.html
         """
-
+        
         # Storing M into pool, where selections get deleted
         pool = self.descriptor  # Store pool where selections get deleted
         minmaxidx = list()  # Store original indices of selections to return
-
+        
         # Randomly selecting first peptide into the sele
         np.random.seed(randseed)
         idx = int(np.random.random_integers(0, len(pool), 1))
         sele = pool[idx:idx + 1, :]
         minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
-
+        
         # Deleting peptide in selection from pool
         pool = np.delete(pool, idx, axis=0)
-
+        
         for i in range(iterations - 1):
             # Calculating distance from sele to the rest of the peptides
             dist = distance.cdist(pool, sele, distmetric)
-
+            
             # Choosing maximal distances for every sele instance
             maxidx = np.argmax(dist, axis=0)
             maxcols = np.max(dist, axis=0)
-
+            
             # Choosing minimal distance among the maximal distances
             minmax = np.argmin(maxcols)
             maxidx = int(maxidx[minmax])
-
+            
             # Adding it to selection and removing from pool
             sele = np.append(sele, pool[maxidx:maxidx + 1, :], axis=0)
             pool = np.delete(pool, maxidx, axis=0)
             minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
-
+        
         self.sequences = np.array(self.sequences)[minmaxidx].tolist()
         if hasattr(self, 'descriptor') and self.descriptor.size:
             self.descriptor = self.descriptor[minmaxidx]
@@ -428,7 +431,7 @@ class BaseDescriptor(object):
             self.names = np.array(self.names)[minmaxidx].tolist()
         if hasattr(self, 'target') and self.target.size:
             self.target = self.descriptor[minmaxidx]
-
+    
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
         corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted as well. The method returns an updated
@@ -454,7 +457,7 @@ class BaseDescriptor(object):
             sequences = [sequences]
         for s in sequences:  # get indices of queried sequences
             indices.append(self.sequences.index(s))
-
+        
         self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
         if hasattr(self, 'descriptor') and self.descriptor.size:
             self.descriptor = np.delete(self.descriptor, indices, 0)
@@ -462,7 +465,7 @@ class BaseDescriptor(object):
             self.names = np.delete(np.array(self.names), indices, 0).tolist()
         if hasattr(self, 'target') and self.target.size:
             self.target = np.delete(self.target, indices, 0)
-
+    
     def filter_values(self, values, operator='=='):
         """Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
         size as the number of features in the descriptor matrix!) The operator option tells the method whether to
@@ -493,7 +496,7 @@ class BaseDescriptor(object):
                 indices = np.where(self.descriptor[:, d] <= values[d])[0]
             elif operator == '>=':
                 indices = np.where(self.descriptor[:, d] >= values[d])[0]
-
+            
             # filter descriptor matrix, sequence list and names list according to obtained indices
             self.sequences = np.array(self.sequences)[indices].tolist()
             if hasattr(self, 'descriptor') and self.descriptor.size:
@@ -502,7 +505,7 @@ class BaseDescriptor(object):
                 self.names = np.array(self.names)[indices].tolist()
             if hasattr(self, 'target') and self.target.size:
                 self.target = self.target[indices]
-
+    
     def filter_aa(self, aminoacids):
         """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
         argument list *aminoacids*.
@@ -517,13 +520,13 @@ class BaseDescriptor(object):
         >>> b.sequences
         ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
         """
-
+        
         pattern = re.compile('|'.join(aminoacids))
         seqs = []
         desc = []
         names = []
         target = []
-
+        
         for i, s in enumerate(self.sequences):
             if not pattern.search(s):
                 seqs.append(s)
@@ -533,12 +536,12 @@ class BaseDescriptor(object):
                     names.append(self.names[i])
                 if hasattr(self, 'target') and self.target.size:
                     target.append(self.target[i])
-
+        
         self.sequences = seqs
         self.names = names
         self.descriptor = np.array(desc)
         self.target = np.array(target, dtype='int')
-
+    
     def filter_duplicates(self):
         """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
 
@@ -557,13 +560,14 @@ class BaseDescriptor(object):
             self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
         if not self.target:
             self.target = [0] * len(self.sequences)
-        df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]), columns=['Sequences', 'Names', 'Descriptor', 'Target'])
+        df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]),
+                          columns=['Sequences', 'Names', 'Descriptor', 'Target'])
         df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
         self.sequences = df['Sequences'].get_values().tolist()
         self.names = df['Names'].get_values().tolist()
         self.descriptor = df['Descriptor'].get_values()
         self.target = df['Target'].get_values()
-
+    
     def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
         that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
@@ -578,15 +582,15 @@ class BaseDescriptor(object):
         >>> b.sequences
         ['GLFDIVKKVVGALGSL']
         """
-
+        
         natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
                       'Y']
-
+        
         seqs = []
         desc = []
         names = []
         target = []
-
+        
         for i, s in enumerate(self.sequences):
             seq = list(s.upper())
             if all(c in natural_aa for c in seq):
@@ -597,12 +601,12 @@ class BaseDescriptor(object):
                     names.append(self.names[i])
                 if hasattr(self, 'target') and self.target.size:
                     target.append(self.target[i])
-
+        
         self.sequences = seqs
         self.names = names
         self.descriptor = np.array(desc)
         self.target = np.array(target, dtype='int')
-
+    
     def load_descriptordata(self, filename, delimiter=",", targets=False, skip_header=0):
         """Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
         class :class:`modlamp.descriptors.PeptideDescriptor`.
@@ -623,7 +627,7 @@ class BaseDescriptor(object):
             self.target = np.array(data[:, -1], dtype='int')
         self.sequences = seqs
         self.descriptor = data
-
+    
     def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
         """Method to save the descriptor values to a .csv/.txt file
 
@@ -660,22 +664,22 @@ def load_scale(scalename):
                  'K': [2.28], 'L': [1.74], 'M': [2.5], 'N': [2.33], 'P': [0.22], 'Q': [3.05], 'R': [1.91], 'S': [2.14],
                  'T': [2.18], 'V': [2.37], 'W': [2], 'Y': [2.01]},
         'abhprk': {'A': [0, 0, 0, 0, 0, 0], 'C': [0, 0, 0, 0, 0, 0], 'D': [1, 0, 0, 1, 0, 0], 'E': [1, 0, 0, 1, 0, 0],
-                 'F': [0, 0, 1, 0, 1, 0], 'G': [0, 0, 0, 0, 0, 0], 'H': [0, 0, 0, 1, 1, 0], 'I': [0, 0, 1, 0, 0, 0],
-                 'K': [0, 1, 0, 1, 0, 0], 'L': [0, 0, 1, 0, 0, 0], 'M': [0, 0, 1, 0, 0, 0], 'N': [0, 0, 0, 1, 0, 0],
-                 'P': [0, 0, 0, 0, 0, 1], 'Q': [0, 0, 0, 1, 0, 0], 'R': [0, 1, 0, 1, 0, 0], 'S': [0, 0, 0, 1, 0, 0],
-                 'T': [0, 0, 0, 1, 0, 0], 'V': [0, 0, 1, 0, 0, 0], 'W': [0, 0, 1, 0, 1, 0], 'Y': [0, 0, 0, 1, 1, 0]},
+                   'F': [0, 0, 1, 0, 1, 0], 'G': [0, 0, 0, 0, 0, 0], 'H': [0, 0, 0, 1, 1, 0], 'I': [0, 0, 1, 0, 0, 0],
+                   'K': [0, 1, 0, 1, 0, 0], 'L': [0, 0, 1, 0, 0, 0], 'M': [0, 0, 1, 0, 0, 0], 'N': [0, 0, 0, 1, 0, 0],
+                   'P': [0, 0, 0, 0, 0, 1], 'Q': [0, 0, 0, 1, 0, 0], 'R': [0, 1, 0, 1, 0, 0], 'S': [0, 0, 0, 1, 0, 0],
+                   'T': [0, 0, 0, 1, 0, 0], 'V': [0, 0, 1, 0, 0, 0], 'W': [0, 0, 1, 0, 1, 0], 'Y': [0, 0, 0, 1, 1, 0]},
         'argos': {'I': [0.77], 'F': [1.2], 'V': [0.14], 'L': [2.3], 'W': [0.07], 'M': [2.3], 'A': [0.64], 'G': [-0.48],
                   'C': [0.25], 'Y': [-0.41], 'P': [-0.31], 'T': [-0.13], 'S': [-0.25], 'H': [-0.87], 'E': [-0.94],
                   'N': [-0.89], 'Q': [-0.61], 'D': [-1], 'K': [-1], 'R': [-0.68]},
         'bulkiness': {'A': [0.443], 'C': [0.551], 'D': [0.453], 'E': [0.557], 'F': [0.898], 'G': [0], 'H': [0.563],
                       'I': [0.985], 'K': [0.674], 'L': [0.985], 'M': [0.703], 'N': [0.516], 'P': [0.768], 'Q': [0.605],
                       'R': [0.596], 'S': [0.332], 'T': [0.677], 'V': [0.995], 'W': [1], 'Y': [0.801]},
-        'charge_physio': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [0.1],
-                          'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
-                          'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
-        'charge_acidic': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [1.],
-                          'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
-                          'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
+        'charge_phys': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [0.1],
+                        'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
+                        'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
+        'charge_acid': {'A': [0.], 'C': [-.1], 'D': [-1.], 'E': [-1.], 'F': [0.], 'G': [0.], 'H': [1.],
+                        'I': [0.], 'K': [1.], 'L': [0.], 'M': [0.], 'N': [0.], 'P': [0.], 'Q': [0.],
+                        'R': [1.], 'S': [0.], 'T': [0.], 'V': [0.], 'W': [0.], 'Y': [0.]},
         'cougar': {'A': [0.25, 0.62, 1.89], 'C': [0.208, 0.29, 1.73], 'D': [0.875, -0.9, 3.13],
                    'E': [0.833, -0.74, 3.14], 'F': [0.042, 1.2, 1.53], 'G': [1, 0.48, 2.67], 'H': [0.083, -0.4, 3],
                    'I': [0.667, 1.4, 1.97], 'K': [0.708, -1.5, 2.28], 'L': [0.292, 1.1, 1.74], 'M': [0, 0.64, 2.5],
@@ -846,7 +850,7 @@ def save_fasta(self, filename, names=False):
     """
     if os.path.exists(filename):
         os.remove(filename)  # remove outputfile, it it exists
-
+    
     with open(filename, 'w') as o:
         for n, seq in enumerate(self.sequences):
             if names:
@@ -864,9 +868,9 @@ def aa_weights():
     .. versionadded:: v2.4.1
     """
     weights = {'A': 89.093, 'C': 121.158, 'D': 133.103, 'E': 147.129, 'F': 165.189, 'G': 75.067,
-                  'H': 155.155, 'I': 131.173, 'K': 146.188, 'L': 131.173, 'M': 149.211, 'N': 132.118,
-                  'P': 115.131, 'Q': 146.145, 'R': 174.20, 'S': 105.093, 'T': 119.119, 'V': 117.146,
-                  'W': 204.225, 'Y': 181.189}
+               'H': 155.155, 'I': 131.173, 'K': 146.188, 'L': 131.173, 'M': 149.211, 'N': 132.118,
+               'P': 115.131, 'Q': 146.145, 'R': 174.20, 'S': 105.093, 'T': 119.119, 'V': 117.146,
+               'W': 204.225, 'Y': 181.189}
     return weights
 
 
@@ -937,29 +941,29 @@ def aminoacids(self):
     self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     # AA probability from the APD3 database:
     self.prob_AMP = [0.0766, 0.071, 0.026, 0.0264, 0.0405, 0.1172, 0.021, 0.061, 0.0958, 0.0838, 0.0123, 0.0386, 0.0463,
-                0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
+                     0.0251, 0.0545, 0.0613, 0.0455, 0.0572, 0.0155, 0.0244]
     # AA probability from the APD2 database without Cys and Met (synthesis reasons)
     self.prob_AMPnoCM = [0.08122777777777779, 0., 0.030627777777777778, 0.03102777777777778, 0.04512777777777778,
-                    0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
-                    0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
-                    0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
-                    0.02012777777777778, 0.02902777777777778]
+                         0.12182777777777778, 0.02562777777777778, 0.06562777777777778, 0.10042777777777778,
+                         0.08842777777777779, 0., 0.04322777777777778, 0.05092777777777778, 0.02972777777777778,
+                         0.05912777777777778, 0.06592777777777778, 0.05012777777777778, 0.06182777777777778,
+                         0.02012777777777778, 0.02902777777777778]
     # equal AA probabilities:
     self.prob_rand = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
-                 0.05, 0.05, 0.05, 0.05]
+                      0.05, 0.05, 0.05, 0.05]
     # equal AA probabilities but 0 for Cys and Met:
     self.prob_randnoCM = [0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
-                     0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
-                     0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
-                     0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
-                     0.05555555555, 0.05555555555]
+                          0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+                          0.05555555555, 0.0, 0.05555555555, 0.05555555555, 0.05555555555,
+                          0.05555555555, 0.05555555555, 0.05555555555, 0.05555555555,
+                          0.05555555555, 0.05555555555]
     # AA probabilities for perfect amphipathic helix of different arc sizes
     self.prob_amphihel = [[0.04545455, 0., 0.04545454, 0.04545455, 0., 0.04545455,
-                        0.04545455, 0., 0.25, 0., 0., 0.04545454, 0.04545455, 0.04545454,
-                        0.25, 0.04545454, 0.04545454, 0., 0., 0.04545454],
-                        [0., 0., 0., 0., 0.2, 0., 0., 0.2, 0., 0.2, 0., 0.,
-                        0., 0., 0., 0., 0., 0.2, 0.2, 0.]]
-
+                           0.04545455, 0., 0.25, 0., 0., 0.04545454, 0.04545455, 0.04545454,
+                           0.25, 0.04545454, 0.04545454, 0., 0., 0.04545454],
+                          [0., 0., 0., 0., 0.2, 0., 0., 0.2, 0., 0.2, 0., 0.,
+                           0., 0., 0., 0., 0., 0.2, 0.2, 0.]]
+    
     # helical ACP AA probabilities, depending on the position of the AA in the helix.
     self.prob_ACPhel = np.array([[0.0483871, 0., 0., 0.0483871, 0.01612903,
                                   0.12903226, 0.03225807, 0.09677419, 0.19354839, 0.5,
@@ -1042,6 +1046,7 @@ def aminoacids(self):
                                   0., 0.01612903, 0., 0., 0.,
                                   0., 0., 0.]])
 
+
 def ngrams_apd():
     """Function returning the most frequent 2-, 3- and 4-grams from all sequences in the `APD3
     <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
@@ -1052,18 +1057,18 @@ def ngrams_apd():
     :return: numpy.array containing most frequent ngrams
     """
     ngrams = np.array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG',
-           'GV', 'GT', 'GS', 'GR', 'IAG', 'GG', 'GF', 'GC', 'GGYG', 'GA', 'GL',
-           'GK', 'GI', 'IPC', 'KAA', 'LAK', 'GLGG', 'GGLG', 'CKIT', 'GAGK',
-           'LLSG', 'LKK', 'FLP', 'LSG', 'SCK', 'LLS', 'GETC', 'VLG', 'GKLL',
-           'LLG', 'C', 'KCKI', 'G', 'VGK', 'CSC', 'TKKC', 'GCS', 'GKA', 'IGK',
-           'GESC', 'KVCY', 'KKL', 'KKI', 'KKC', 'LGGL', 'GLL', 'CGE', 'GGYC',
-           'GLLS', 'GLF', 'AKK', 'GKAA', 'ESCV', 'GLP', 'CGES', 'PCGE', 'FL',
-           'CGET', 'GLW', 'KGAA', 'KAAL', 'GGY', 'GGG', 'IKG', 'LKG', 'GGL',
-           'CK', 'GTC', 'CG', 'SKKC', 'CS', 'CR', 'KC', 'AGKA', 'KA', 'KG',
-           'LKCK', 'SCKL', 'KK', 'KI', 'KN', 'KL', 'SK', 'KV', 'SL', 'SC',
-           'SG', 'AAA', 'VAK', 'AAL', 'AAK', 'GGGG', 'KNVA', 'GGGL', 'GYG',
-           'LG', 'LA', 'LL', 'LK', 'LS', 'LP', 'GCSC', 'TC', 'GAA', 'AA', 'VA',
-           'VC', 'AG', 'VG', 'AI', 'AK', 'VL', 'AL', 'TPGC', 'IK', 'IA', 'IG',
-           'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
-          dtype='|S4')
+                       'GV', 'GT', 'GS', 'GR', 'IAG', 'GG', 'GF', 'GC', 'GGYG', 'GA', 'GL',
+                       'GK', 'GI', 'IPC', 'KAA', 'LAK', 'GLGG', 'GGLG', 'CKIT', 'GAGK',
+                       'LLSG', 'LKK', 'FLP', 'LSG', 'SCK', 'LLS', 'GETC', 'VLG', 'GKLL',
+                       'LLG', 'C', 'KCKI', 'G', 'VGK', 'CSC', 'TKKC', 'GCS', 'GKA', 'IGK',
+                       'GESC', 'KVCY', 'KKL', 'KKI', 'KKC', 'LGGL', 'GLL', 'CGE', 'GGYC',
+                       'GLLS', 'GLF', 'AKK', 'GKAA', 'ESCV', 'GLP', 'CGES', 'PCGE', 'FL',
+                       'CGET', 'GLW', 'KGAA', 'KAAL', 'GGY', 'GGG', 'IKG', 'LKG', 'GGL',
+                       'CK', 'GTC', 'CG', 'SKKC', 'CS', 'CR', 'KC', 'AGKA', 'KA', 'KG',
+                       'LKCK', 'SCKL', 'KK', 'KI', 'KN', 'KL', 'SK', 'KV', 'SL', 'SC',
+                       'SG', 'AAA', 'VAK', 'AAL', 'AAK', 'GGGG', 'KNVA', 'GGGL', 'GYG',
+                       'LG', 'LA', 'LL', 'LK', 'LS', 'LP', 'GCSC', 'TC', 'GAA', 'AA', 'VA',
+                       'VC', 'AG', 'VG', 'AI', 'AK', 'VL', 'AL', 'TPGC', 'IK', 'IA', 'IG',
+                       'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
+                      dtype='|S4')
     return ngrams
