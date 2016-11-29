@@ -3,11 +3,11 @@
 from setuptools import setup
 from pip.req import parse_requirements
 
-# parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements('requirements.txt')
+# parse the requirements from the requirements file
+install_reqs = parse_requirements('requirements.txt', session='hack')
 reqs = [str(ir.req) for ir in install_reqs]
 
-with open('README') as f:
+with open('README.rst') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
@@ -19,12 +19,13 @@ setup(name='modlamp',
       long_description=readme,
       author='modlab, Alex Müller, Gisela Gabernet',
       author_email='alex.mueller@pharma.ethz.ch',
-      url='https://www.cadd.ethz.ch/software/modlamp.html',
+      url='https://gitlab.com/arni/modlAMP',
+      download_url='',
       license=lic,
       keywords="antimicrobial peptide descriptor sequences QSAR machine learning design",
       packages=['modlamp'],
       package_data={'modlamp': ['data/*.csv', 'data/*.fasta']},
-      scripts=['bin/example_modlamp.py'],
+      scripts=['bin/example_modlamp.py', 'bin/example_descriptors.py'],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Science/Research',

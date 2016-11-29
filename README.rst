@@ -67,10 +67,10 @@ The following example shows how to generate a library of 1000 sequences out of a
 These commands generated a mixed peptide library comprising of 1000 sequences.
 
 .. note::
-    If duplicates are present in the attribute :py:attr:`sequences`, these are removed during generation. Therefore it
+    If duplicates are present in the attribute ``sequences``, these are removed during generation. Therefore it
     is possible that less than the specified sequences are obtained.
 
-The module :mod:`sequences` incorporates different sequence generation classes (random, helices etc.). For
+The module ``sequences`` incorporates different sequence generation classes (random, helices etc.). For
 documentation thereof, consider the docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
 
 
@@ -163,7 +163,7 @@ Database Connection
 -------------------
 
 Peptides from the two most prominent AMP databases `APD <http://aps.unmc.edu/AP/>`_ and `CAMP <http://camp.bicnirrh
-.res.in/>`_ can be directly scraped with the :mod:`modlamp.database` module.
+.res.in/>`_ can be directly scraped with the ``modlamp.database`` module.
 
 For downloading a set of sequences from the **APD** database, first get the IDs of the sequences you want to query
 from the APD website. Then proceed as follows:
@@ -180,7 +180,7 @@ The same holds true for the **CAMP** database:
 Peptide sequences included in any table in the database can be downloaded.
 
 .. note::
-    The :py:func:`modlamp.database.query_database` function allows connection and queries to a personal database. For
+    The ``modlamp.database.query_database`` function allows connection and queries to a personal database. For
     successful connection, the database configuration needs to be specified in the ``db_config.json`` file, which is
     located in ``modlamp/data/`` by default.
 
@@ -198,8 +198,8 @@ Loading Prepared Datasets
 -------------------------
 
 For AMP QSAR models, different options exist of choosing negative / inactive peptide examples. We assembled several
-datasets for classification tasks, that can be read by the :mod:`modlamp.datasets` module. The available datasets can
-be found in the documentation of the :mod:`modlamp.datasets` module.
+datasets for classification tasks, that can be read by the ``modlamp.datasets`` module. The available datasets can
+be found in the documentation of the ``modlamp.datasets`` module.
 
 :Example: **Helical AMPs vs. random all helical peptides**
 
@@ -209,9 +209,9 @@ be found in the documentation of the :mod:`modlamp.datasets` module.
 ['target_names', 'target', 'feature_names', 'sequences']
 
 The variable ``data`` holds **four different keys, which can also be called as its attributes**. The available
-attributes for :py:func:`load_helicalAMPset()` are :py:attr:`target_names` (target names), :py:attr:`target` (the
-target class vector), :py:attr:`feature_names` (the name of the data features, here: 'Sequence') and
-:py:attr:`sequences` (the loaded sequences).
+attributes for ``load_helicalAMPset()`` are ``target_names`` (target names), ``target`` (the
+target class vector), ``feature_names`` (the name of the data features, here: 'Sequence') and
+``sequences`` (the loaded sequences).
 
 :Example:
 
@@ -226,7 +226,7 @@ array([0, 0, 0, 0, 0 .... 1, 1, 1, 1])
 Analysing Wetlab Circular Dichroism Data
 ----------------------------------------
 
-The modlule :mod:`modlamp.wetlab` includes the class :py:class:`modlamp.wetlab.CD` to analyse raw circular dichroism
+The modlule ``modlamp.wetlab` includes the class ``modlamp.wetlab.CD`` to analyse raw circular dichroism
 data from wetlab experiments. The following example shows how to load a raw datafile and calculate secondary
 structure contents:
 
@@ -246,8 +246,6 @@ array([[   260.        ,   -266.95804196],
             2  Klak         T    76.38     3.048
             3  Klak         W    25.06     0.000 ...
 
-.. seealso:: :py:func:`modlamp.wetlab.CD.helicity()`
-
 The read and calculated values can finally be plotted as follows:
 
 >>> cd.plot(data='mean residue ellipticity', combine=True)
@@ -263,7 +261,7 @@ The read and calculated values can finally be plotted as follows:
 Analysis of Different Sequence Libraries
 ----------------------------------------
 
-The modlule :mod:`modlamp.analysis` includes the class :py:class:`modlamp.analysis.GlobalAnalysis` to compare
+The modlule ``modlamp.analysis`` includes the class ``modlamp.analysis.GlobalAnalysis`` to compare
 different sequence libraries. Learn how to use it with the following example:
 
 >>> lib  # sequence library with 3 sub-libraries
