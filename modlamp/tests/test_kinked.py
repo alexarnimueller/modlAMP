@@ -1,6 +1,6 @@
 import unittest
 
-from ..sequences import Kinked
+from modlamp.sequences import Kinked
 
 
 class TestKink(unittest.TestCase):

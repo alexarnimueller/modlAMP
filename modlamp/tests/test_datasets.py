@@ -1,5 +1,5 @@
 import unittest
-from ..datasets import load_helicalAMPset, load_AMPvsTMset, load_ACPvsNeg, load_AMPvsUniProt
+from modlamp.datasets import load_helicalAMPset, load_AMPvsTMset, load_ACPvsNeg, load_AMPvsUniProt
 
 
 class TestHelicalSet(unittest.TestCase):

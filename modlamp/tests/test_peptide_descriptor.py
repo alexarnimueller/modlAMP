@@ -1,7 +1,7 @@
 import unittest
 from os.path import abspath, join
 import numpy as np
-from ..descriptors import PeptideDescriptor
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = 'modlab'
 

@@ -1,6 +1,6 @@
 import unittest
 from numpy.random import randint
-from ..sequences import AMPngrams
+from modlamp.sequences import AMPngrams
 
 
 class TestNgram(unittest.TestCase):

@@ -1,5 +1,5 @@
 import unittest
-from ..sequences import Centrosymmetric
+from modlamp.sequences import Centrosymmetric
 
 
 class TestCentrosymmetric(unittest.TestCase):

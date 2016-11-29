@@ -1,6 +1,6 @@
 import unittest
 
-from ..sequences import Oblique
+from modlamp.sequences import Oblique
 
 
 class TestOblique(unittest.TestCase):
