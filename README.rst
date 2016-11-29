@@ -5,8 +5,8 @@ README
 
 This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
 amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
-generation (module ``sequences``). For basic instructions how to use the package, see Usage_ or this `example script
-<examplescript.html>`_.
+generation (module ``sequences``). For basic instructions how to use the package, see Usage_ or the `documentation
+<http://www.cadd.ethz.ch/software/modlamp.html>`_.
 
 .. note::
     You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
@@ -41,7 +41,7 @@ Usage
 *****
 
 This section gives a quick overview of different capabilities of modlAMP. For a detailed description of all modules see
-the `module documentation <modlamp.html>`_.
+the `module documentation <http://www.cadd.ethz.ch/software/modlamp.html>`_.
 
 Importing modules
 -----------------
@@ -71,7 +71,7 @@ These commands generated a mixed peptide library comprising of 1000 sequences.
     is possible that less than the specified sequences are obtained.
 
 The module ``sequences`` incorporates different sequence generation classes (random, helices etc.). For
-documentation thereof, consider the docs for `sequences <modlamp.html#module-modlamp.sequences>`_.
+documentation thereof, consider the docs for the module ``modlamp.sequences``.
 
 
 Calculating Descriptor Values
@@ -103,7 +103,7 @@ scales. Here an example for the pepCATS scale:
 array([[ 0.6875    ,  0.46666667,  0.42857143,  0.61538462,  0.58333333,
 
 Many more **amino acid scales** are available for descriptor calculation. The complete list can be found in the
-documentation for the `descriptors <modlamp.html#module-modlamp.descriptors>`_.
+documentation for the ``modlamp.descriptors`` module.
 
 
 Plotting Features
@@ -155,8 +155,8 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 .. image:: static/3D_scatter.png
     :height: 300px
 
-Further plotting methods like **helical wheel plots** are available. See the documentation for the
-`plot <modlamp.html#module-modlamp.plot>`_ module.
+Further plotting methods like **helical wheel plots** are available. See the documentation for the ``modlamp.plot``
+module.
 
 
 Database Connection
@@ -275,3 +275,18 @@ array([['ARVFVRAVRIYIRVLKAFAKL', 'IRVYVRIVRGFGRVVRAYARV', 'IRIFIRIARGFGRAIRVFVRI
 
 .. image:: static/summary.png
     :height: 600px
+
+
+Documentation
+-------------
+
+Detailed documentation of all modules is available from the `modlAMP documentation website <http://www.cadd.ethz
+.ch/software/modlamp.html>`_.
+
+
+Citing modlAMP
+--------------
+
+If you are using **modlAMP** for a scientific publication, please cite the following paper:
+
+Müller A. T. et al. 2017
