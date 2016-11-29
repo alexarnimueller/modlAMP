@@ -71,8 +71,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'modlAMP'
-copyright = u'2016, modlab ETH Zurich, Alex Mueller'
-author = u'modlab - Alex Mueller'
+copyright = u'2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider (modlab)'
+author = u'modlab - Alex Müller, Gisela Gabernet'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
