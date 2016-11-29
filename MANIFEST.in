@@ -1,2 +1,2 @@
-include LICENSE requirements.txt Makefile descriptors/scales/*.csv
+include LICENSE requirements.txt Makefile
 recursive-include docs *
