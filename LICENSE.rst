@@ -1,7 +1,7 @@
 License
 =======
 
-Copyright (c) 2016, modlab ETH Zurich, Alex Müller
+Copyright (c) 2017, ETH Zürich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider.
 
 All rights reserved.
 
@@ -25,7 +25,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSE
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 If you use **modlAMP** in a scientific publication, we would appreciate citations to the following paper:
 
-Müller A. et al.
+Müller A. et al. 2017

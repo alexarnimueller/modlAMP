@@ -5,15 +5,15 @@ from ..sequences import Random
 
 class TestRandom(unittest.TestCase):
 
-    S = Random(10,30,10)
+    S = Random(10, 10, 30)
     S.generate_sequences('randnoCM')
 
     def test_seq_num(self):
-        self.assertEqual(len(self.S.sequences),10)
+        self.assertEqual(len(self.S.sequences), 10)
 
     def test_seq_len(self):
         for seq in self.S.sequences:
-            self.assertIn(len(seq),range(10,31))
+            self.assertIn(len(seq), range(10, 31))
 
     def test_noCM(self):
         for s in self.S.sequences:

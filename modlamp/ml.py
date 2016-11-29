@@ -32,7 +32,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import *
 from sklearn.svm import SVC
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
@@ -247,9 +247,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     plt.xlabel(xlab)
     plt.ylabel(ylab)
     plt.ylim(0.0, 1.1)
-    plt.semilogx(param_range, train_scores_mean, label="Training score", color="r")
+    plt.semilogx(param_range, train_scores_mean, label="Training score", color="b")
     plt.fill_between(param_range, train_scores_mean - train_scores_std,
-                     train_scores_mean + train_scores_std, alpha=0.2, color="r")
+                     train_scores_mean + train_scores_std, alpha=0.2, color="b")
     plt.semilogx(param_range, test_scores_mean, label="Cross-validation score",
                  color="g")
     plt.fill_between(param_range, test_scores_mean - test_scores_std,

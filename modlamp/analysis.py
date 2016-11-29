@@ -10,9 +10,13 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import pandas as pd
 
 from modlamp.core import count_aa
 from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
+
+__author__ = "Alex Müller, Gisela Gabernet"
+__docformat__ = "restructuredtext en"
 
 
 class GlobalAnalysis(object):
@@ -22,27 +26,42 @@ class GlobalAnalysis(object):
     .. versionadded:: 2.6.0
     """
     
-    def __init__(self, library):
+    def __init__(self, library, names=None):
         """
-        :param library: {numpy.ndarray} sequence library, if 2D, the rows are considered as sub-libraries.
+        :param library: {list, numpy.ndarray, pandas.DataFrame} sequence library, if 2D, the rows are considered as
+            sub-libraries.
+        :param names: {list} list of library names to plot as labels and legend
         :Example:
         
-        >>> g = GlobalAnalysis(numpy.array(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...]))
+        >>> g = GlobalAnalysis(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...], names=['Library1'])
         """
         
         if type(library) == np.ndarray:
             self.library = library
-            # reshape library to 2D array if without sub-libraries
-            if len(self.library.shape) == 1:
-                self.library = self.library.reshape((1, -1))
-    
-            self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
-            self.H = np.zeros(self.library.shape, dtype='float64')
-            self.uH = np.zeros(self.library.shape, dtype='float64')
-            self.charge = np.zeros(self.library.shape, dtype='float64')
-            self.len = np.zeros(self.library.shape, dtype='float64')
+        elif type(library) == pd.core.frame.DataFrame:
+            if library.shape[0] > library.shape[1]:  # if each library is a column
+                self.library = library.values.T
+                if not names:
+                    self.libnames = library.columns.values.tolist()  # take library names from column headers
+            else:  # if each library is a row
+                self.library = library.values
+                if not names:
+                    self.libnames = library.index.values.tolist()  # take library names from row headers
         else:
-            raise TypeError('Input library must be of type numpy.ndarray!')
+            self.library = np.array(library)
+        # reshape library to 2D array if without sub-libraries
+        if len(self.library.shape) == 1:
+            self.library = self.library.reshape((1, -1))
+            if not names:
+                self.libnames = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
+        
+        if names:
+            self.libnames = names
+        self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
+        self.H = np.zeros(self.library.shape, dtype='float64')
+        self.uH = np.zeros(self.library.shape, dtype='float64')
+        self.charge = np.zeros(self.library.shape, dtype='float64')
+        self.len = np.zeros(self.library.shape, dtype='float64')
     
     def calc_aa_freq(self, plot=True):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
@@ -94,7 +113,7 @@ class GlobalAnalysis(object):
         
         :return: {numpy.ndarray} Eisenberg hydrophobicities in the attribute :py:attr:`H`.
         
-        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_global()
+        .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_global()`
         """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
@@ -112,7 +131,7 @@ class GlobalAnalysis(object):
         :param modality: {'max' or 'mean'} calculate respectively maximum or mean hydrophobic moment.
         :return: {numpy.ndarray} calculated hydrophobic moments in the attribute :py:attr:`uH`.
         
-        .. seealso:: modlamp.descriptors.PeptideDescriptor.calculate_moment()
+        .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_moment()`
         """
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
@@ -166,7 +185,7 @@ class GlobalAnalysis(object):
         fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(25, 15))
         ((ax2, ax5, ax1), (ax3, ax4, ax6)) = axes
         plt.suptitle('Summary', fontweight='bold', fontsize=16.)
-        labels = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
+        labels = self.libnames
         colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
         num = len(labels)
 
@@ -253,9 +272,9 @@ class GlobalAnalysis(object):
         ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
         ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
         ax5.set_xlim(np.min(self.charge) - 1., np.max(self.charge) + 1.)
-        ax5.text(0.75, 0.95, r'amide: $true$', verticalalignment='center', horizontalalignment='right',
+        ax5.text(0.5, 0.95, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
                  transform=ax5.transAxes, fontsize=15)
-        ax5.text(0.75, 0.88, r'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
+        ax5.text(0.7, 0.95, b'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
                  transform=ax5.transAxes, fontsize=15)
         ax5.legend()
         
@@ -274,6 +293,9 @@ class GlobalAnalysis(object):
         ax6.set_xlabel('H', fontweight='bold', fontsize=14.)
         ax6.set_ylabel('Charge', fontweight='bold', fontsize=14.)
         ax6.set_zlabel('uH', fontweight='bold', fontsize=14.)
+        ax6.set_xlim([np.min(self.H), np.max(self.H)])
+        ax6.set_ylim([np.min(self.charge), np.max(self.charge)])
+        ax6.set_zlim([np.min(self.uH), np.max(self.uH)])
         ax6.legend(loc='best')
         
         if filename:

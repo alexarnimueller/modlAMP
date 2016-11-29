@@ -1,26 +1,26 @@
 Welcome to modlAMP's documentation!
 ===================================
 
-**modlamp**
+**modlAMP**
 
-**Copyright:** 2016 `modlab ETH Zurich <http://www.cadd.ethz.ch>`_.
+**Authors:** Alex Müller, Gisela Gabernet
 
-This is a **python package** that is designed for working with peptides, proteins or any amino acid sequence of natural
-amino acids. It incorporates several modules, like descriptor calculation (module descriptors) or sequence generation
-(module sequences). For basic instructions how to use the package, check the `README <readme.html>`_ or the
-`example script <examplescript.html>`_.
+**Copyright:** 2017 `ETH Zurich, Switzerland; (modlab) <http://www.cadd.ethz.ch>`_.
 
-The package has the following contents:
+This is a **Python package** (Python 2.7) that was designed for working with peptides, proteins or any
+sequence of natural amino acids. It incorporates several modules, like sequence generation (module ``sequences``),
+sequence library analysis (module ``analysis``) or descriptor calculation (module ``descriptors``). For
+basic instructions on how to use the package, check the `README <readme.html>`_ or the `example script <examplescript
+.html>`_.
 
 .. toctree::
-   :caption: Table of Contents
+   :caption: The package has the following contents:
    :maxdepth: 3
    :numbered:
 
    readme
    modlamp
    examplescript
-   contributing
    license
    todo
 

@@ -50,7 +50,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx.ext.pngmath',
+    #'sphinx.ext.imgmath',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.autosummary'
 ]
@@ -64,7 +64,7 @@ templates_path = ['templates']
 source_suffix = '.rst'
 
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+source_encoding = 'utf-8'
 
 # The master toctree document.
 master_doc = 'index'

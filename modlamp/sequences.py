@@ -15,15 +15,17 @@ Class                               Characteristics
 :py:class:`Kinked`                  Generates presumed amphipathic helices with a kink (Pro residue).
 :py:class:`Oblique`                 Generates presumed oblique oriented sequences in presence of libid membranes.
 :py:class:`Centrosymmetric`         Generates centrosymmetric sequences with a symmetry axis.
-:py:class:`MixedLibrary`            Generates a mixed library of sequences of all other classes.
+:py:class:`AmphipathicArc`          Generates presumed amphipathic helices with controlled hydrophobic arc size.
+:py:class:`HelicesACP`              Generates sequences with the amino acid probabiliy of helical ACPs.
+:py:class:`MixedLibrary`            Generates a mixed library of sequences of most other classes.
 :py:class:`Hepahelices`             Generates presumed amphipathic helices with a heparin-binding-domain.
 :py:class:`AMPngrams`               Generates sequences from most frequent ngrams in the APD3.
-:py:class:`HelicesACP`              Generates sequences with the amino acid probabiliy of helical ACPs.
-:py:class:`AmphipathicArc`          Generates presumed amphipathic helices with controlled hydrophobic arc size.
 ============================        ===============================================================================
 
 .. note:: During the process of sequence generation, duplicates are only removed for the :py:class:`MixedLibrary`
     class. To remove duplicates, call the class methods :py:func:`self.filter_duplicates()`.
+    
+.. seealso:: :class:`modlamp.core.BaseSequence` from which all classes in this module inherit.
 """
 
 from numpy import random
@@ -31,16 +33,15 @@ from itertools import cycle
 
 import numpy as np
 
-from core import mutate_AA, aminoacids, clean, save_fasta, keep_natural_aa, filter_unnatural, template, filter_aa, \
-    filter_duplicates, ngrams_apd
+from core import BaseSequence, ngrams_apd
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
-class Random:
-    """
-    Class for random peptide sequences
+class Random(BaseSequence):
+    """Class for random peptide sequences.
+
     This class incorporates methods for generating peptide random peptide sequences of defined length.
     The amino acid probabilities can be chosen from different probabilities:
 
@@ -77,17 +78,6 @@ class Random:
     ===  ====    ======    =========    ==========
 
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length
-        :param lenmax: maximal sequence length
-        :param seqnum: number of sequences to generate
-        :return: initialized class attributes for sequence number and length
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
     def generate_sequences(self, proba='rand'):
         """Method to actually generate the sequences.
 
@@ -95,131 +85,47 @@ class Random:
         :return: A list of random AMP sequences with defined AA probabilities
         :Example:
 
-        >>> r = Random(5,20,6)
-        >>> r.generate_sequences(proba='AMP')
-        >>> r.sequences
+        >>> b = Random(6, 5, 20)
+        >>> b.generate_sequences(proba='AMP')
+        >>> b.sequences
         ['CYGALWHIFV','NIVRHHAPSTVIK','LCPNPILGIV','TAVVRGKESLTP','GTGSVCKNSCRGRFGIIAF','VIIGPSYGDAEYA']
         """
-        clean(self)
-        self.prob = self.prob_rand  # default probability = rand
+        self.clean()
         if proba == 'AMPnoCM':
             self.prob = self.prob_AMPnoCM
         elif proba == 'AMP':
             self.prob = self.prob_AMP
         elif proba == 'randnoCM':
             self.prob = self.prob_randnoCM
+        else:
+            self.prob = self.prob_rand  # default probability = rand
 
         for s in range(self.seqnum):
             self.seq = []
             for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                self.seq.append(np.random.choice(self.AAs,
-                                                 p=self.prob))  # weighed random selection of amino acid, probabilities = prob
+                self.seq.append(np.random.choice(self.AAs, p=self.prob))  # weighed random selection of amino acid,
+                # probabilities = prob
             self.sequences.append(''.join(self.seq))
 
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
 
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are saved in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.
-        :return: a fasta file containing the generated sequences.
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Duplicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class Helices:
-    """Base class for peptide sequences probable to form helices.
-
+class Helices(BaseSequence):
+    """Class for peptide sequences probable to form helices.
     This class incorporates methods for generating presumed amphipathic alpha-helical peptide sequences.
     These sequences are generated by placing basic residues along the sequence with distance 3-4 AA to each other.
     The remaining empty spots are filled up by hydrophobic AAs.
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length
-        :param lenmax: maximal sequence length
-        :param seqnum: number of sequences to generate
-        :return: defined variables as instances
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_helices(self):
+    def generate_sequences(self):
         """Method to generate amphipathic helical sequences with class features defined in :class:`Helices()`
 
         :return: In the attribute :py:attr:`sequences`: a list of sequences with presumed amphipathic helical structure.
         :Example:
 
-        >>> h = Helices(7,21,5)
-        >>> h.generate_helices()
+        >>> h = Helices(5, 7, 21)
+        >>> h.generate_sequences()
         >>> h.sequences
         ['KGIKVILKLAKAGVKAVRL','IILKVGKV','IAKAGRAIIK','LKILKVVGKGIRLIVRIIKAL','KAGKLVAKGAKVAAKAIKI']
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
             basepos = random.choice(range(4))  # select spot for first basic residue from 0 to 3
@@ -238,112 +144,27 @@ class Helices:
 
             self.sequences.append(''.join(seq))
 
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
+class Kinked(BaseSequence):
+    """Class for peptide sequences probable to form helices with a kink.
 
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
-
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Duplicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class Kinked:
-    """
-    Base class for peptide sequences probable to form helices with a kink.
     This class incorporates methods for presumed kinked amphipathic alpha-helical peptide sequences:
     Sequences are generated by placing basic residues along the sequence with distance 3-4 AA to each other.
     The remaining spots are filled up by hydrophobic AAs. Then, a basic residue is replaced by proline, presumably
     leading to a kink in the hydrophobic face of the amphipathic helices.
     """
-
-    def __init__(self, lenmin, lenmax, seqnum, ):
-        """
-        :param lenmin: minimal sequence length
-        :param lenmax: maximal sequence length
-        :param seqnum: number of sequences to generate
-        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_kinked(self):
+    def generate_sequences(self):
         """Method to actually generate the presumed kinked sequences with features defined in the class instances.
 
         :return: sequence list with strings stored in the attribute :py:attr:`sequences`
         :Example:
 
-        >>> k = Kinked(7,28,8)
-        >>> k.generate_kinked()
+        >>> k = Kinked(8, 7, 28)
+        >>> k.generate_sequences()
         >>> k.sequences
-        ['IILRLHPIG','ARGAKVAIKAIRGIAPGGRVVAKVVKVG','GGKVGRGVAFLVRIILK','KAVKALAKGAPVILCVAKVI',
-        'IGIRVWRAVIKVIPVAVRGLRL','RIGRVIVPVIRGL','AKAARIVAMLAR','LGAKGWRLALKGIPAAIKLGKV']
+        ['IILRLHPIG','ARGAKVAIKAIRGIAPGGRVVAKVVKVG','GGKVGRGVAFLVRIILK','KAVKALAKGAPVILCVAKVI', ...]
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             poslist = []  # used to
             seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
@@ -369,110 +190,26 @@ class Kinked:
 
             self.sequences.append(''.join(seq))
 
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> S.sequences
-        ['IAKAGRAIIK']
-        >>> S.mutate_AA(3,1)
-        >>> S.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
-
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class Oblique(object):
-    """Base class for oblique sequences with a so called linear hydrophobicity gradient.
+class Oblique(BaseSequence):
+    """Class for oblique sequences with a so called linear hydrophobicity gradient.
 
     This class incorporates methods for generating peptide sequences with a linear hydrophobicity gradient, meaning that
     these sequences have a hydrophobic tail. This feature gives rise to the hypothesis that they orient themselves
     tilted/oblique in membrane environment.
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length
-        :param lenmax: maximal sequence length
-        :param seqnum: number of sequences to generate
-        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax` and :py:attr:`seqnum`
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_oblique(self):
+    def generate_sequences(self):
         """Method to generate the possible oblique sequences.
 
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
-        >>> o = Oblique(10,30,4)
-        >>> o.generate_oblique()
+        >>> o = Oblique(4, 10, 30)
+        >>> o.generate_sequences()
         >>> o.sequences
         ['GLLKVIRIAAKVLKVAVLVGIIAI','AIGKAGRLALKVIKVVIKVALILLAAVA','KILRAAARVIKGGIKAIVIL','VRLVKAIGKLLRIILRLARLAVGGILA']
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
             basepos = random.choice(range(4))  # select spot for first basic residue from 0 to 3
@@ -495,82 +232,9 @@ class Oblique(object):
 
             self.sequences.append(''.join(seq))
 
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
-
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class Centrosymmetric:
-    """Base class for peptide sequences produced out of 7 AA centro-symmetric blocks yielding peptides of length
+class Centrosymmetric(BaseSequence):
+    """Class for peptide sequences produced out of 7 AA centro-symmetric blocks yielding peptides of length
     14 or 21 AA (2*7 or 3*7).
 
     This class incorporates methods to generate special peptide sequences with an overall presumed
@@ -579,15 +243,6 @@ class Centrosymmetric:
     is used, two or three identical blocks are concatenated. If the method :func:`generate_asymmetric()` is used,
     two or three different blocks are concatenated.
     """
-
-    def __init__(self, seqnum=1):
-        """
-        :param seqnum: number of sequences to generate
-        :return: defined number of sequences to generate, empty list to store produced sequences
-        """
-        aminoacids(self)
-        self.seqnum = int(seqnum)
-
     def generate_symmetric(self):
         """The :func:`generate_symmetric()` method generates overall symmetric sequences out of two or three blocks of
         identical centro-symmetric sequence blocks of 7 amino acids. The resulting sequence presumably has a large
@@ -602,7 +257,7 @@ class Centrosymmetric:
         >>> s.sequences
         ['ARIFIRAARIFIRA','GRIYIRGGRIYIRGGRIYIRG','IRGFGRIIRGFGRIIRGFGRI','GKAYAKGGKAYAKG','AKGYGKAAKGYGKAAKGYGKA']
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # iterate over number of sequences to generate
             n = random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
             seq = ['X'] * 7  # template sequence AA list with length 7
@@ -635,7 +290,7 @@ class Centrosymmetric:
         >>> S.sequences
         ['GRLFLRGAKGFGKAVRVWVRV','IKGWGKILKLYLKL','LKAYAKLVKAWAKVLRLFLRL','IRLWLRIIKAFAKI','LRIFIRLVKLWLKVIRLWLRI']
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # iterate over number of sequences to generate
             n = random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
             seq = ['X'] * 7  # template sequence AA list with length 7
@@ -658,244 +313,10 @@ class Centrosymmetric:
                 self.blocks.append(''.join(seq))
             self.sequences.append(''.join(self.blocks))
 
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> S.sequences
-        ['IAKAGRAIIK']
-        >>> S.mutate_AA(3,1)
-        >>> S.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
-
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-class Helices_ACP:
-    """Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.
-
-    This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
-    distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
-    62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences.
-    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
-    AA  position0 	position1 	position2 	position3 	position4 	position5 	position6 	position7 	position8 	position9
-    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
-    A 	0.048387 	0.000000 	0.000000 	0.048387 	0.016129 	0.129032 	0.032258 	0.096774 	0.193548 	0.500000
-    C 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
-    D 	0.000000 	0.016129 	0.000000 	0.274194 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.000000
-    E 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.064516 	0.000000 	0.016129
-    F 	0.161290 	0.048387 	0.306452 	0.000000 	0.048387 	0.000000 	0.000000 	0.016129 	0.000000 	0.016129
-    G 	0.645161 	0.000000 	0.177419 	0.145161 	0.000000 	0.016129 	0.258065 	0.112903 	0.064516 	0.080645
-    H 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.032258 	0.000000
-    I 	0.048387 	0.112903 	0.016129 	0.080645 	0.338710 	0.274194 	0.000000 	0.048387 	0.145161 	0.064516
-    K 	0.000000 	0.032258 	0.016129 	0.129032 	0.129032 	0.000000 	0.387097 	0.338710 	0.048387 	0.032258
-    L 	0.048387 	0.709677 	0.129032 	0.048387 	0.096774 	0.322581 	0.209677 	0.064516 	0.112903 	0.064516
-    M 	0.000000 	0.016129 	0.016129 	0.048387 	0.016129 	0.032258 	0.000000 	0.000000 	0.000000 	0.000000
-    N 	0.000000 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000
-    P 	0.000000 	0.000000 	0.145161 	0.016129 	0.032258 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000
-    Q 	0.000000 	0.000000 	0.016129 	0.016129 	0.000000 	0.000000 	0.016129 	0.000000 	0.016129 	0.000000
-    R 	0.000000 	0.016129 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129 	0.016129
-    S 	0.016129 	0.000000 	0.016129 	0.129032 	0.032258 	0.032258 	0.048387 	0.177419 	0.000000 	0.032258
-    T 	0.016129 	0.016129 	0.000000 	0.016129 	0.048387 	0.016129 	0.000000 	0.016129 	0.000000 	0.016129
-    V 	0.016129 	0.016129 	0.016129 	0.016129 	0.209677 	0.161290 	0.016129 	0.048387 	0.338710 	0.161290
-    W 	0.000000 	0.000000 	0.129032 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.016129 	0.000000
-    Y 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
-    ==  =========   =========   =========   =========   =========   =========   =========   =========   =========   =========
-
-    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
-    AA  position10 	position11 	position12 	position13 	position14 	position15 	position16 	position17
-    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
-    A 	0.048387 	0.112903 	0.100000 	0.185185 	0.078431 	0.120000 	0.170732 	0.166667
-    C 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.024390 	0.194444
-    D 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
-    E 	0.048387 	0.016129 	0.000000 	0.018519 	0.000000 	0.000000 	0.000000 	0.000000
-    F 	0.000000 	0.096774 	0.066667 	0.018519 	0.000000 	0.020000 	0.146341 	0.000000
-    G 	0.225806 	0.032258 	0.066667 	0.203704 	0.137255 	0.100000 	0.000000 	0.055556
-    H 	0.000000 	0.209677 	0.000000 	0.000000 	0.000000 	0.160000 	0.000000 	0.000000
-    I 	0.032258 	0.064516 	0.183333 	0.000000 	0.000000 	0.100000 	0.268293 	0.000000
-    K 	0.419355 	0.080645 	0.000000 	0.037037 	0.294118 	0.040000 	0.024390 	0.027778
-    L 	0.032258 	0.032258 	0.283333 	0.240741 	0.039216 	0.280000 	0.073171 	0.222222
-    M 	0.000000 	0.000000 	0.033333 	0.000000 	0.019608 	0.020000 	0.000000 	0.000000
-    N 	0.032258 	0.000000 	0.000000 	0.000000 	0.019608 	0.020000 	0.000000 	0.000000
-    P 	0.016129 	0.000000 	0.000000 	0.129630 	0.176471 	0.000000 	0.000000 	0.000000
-    Q 	0.000000 	0.016129 	0.000000 	0.018519 	0.000000 	0.000000 	0.000000 	0.000000
-    R 	0.016129 	0.016129 	0.000000 	0.018519 	0.019608 	0.000000 	0.048780 	0.000000
-    S 	0.096774 	0.048387 	0.016667 	0.000000 	0.156863 	0.100000 	0.000000 	0.055556
-    T 	0.016129 	0.112903 	0.000000 	0.018519 	0.039216 	0.020000 	0.000000 	0.055556
-    V 	0.000000 	0.145161 	0.250000 	0.111111 	0.019608 	0.020000 	0.219512 	0.222222
-    W 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.024390 	0.000000
-    Y 	0.000000 	0.016129 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
-    ==  ==========  ==========  ==========  ==========  ==========  ==========  ==========  ==========
-
-    """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length.
-        :param lenmax: maximal sequence length.
-        :param seqnum: number of seqeunces to generate.
-        :return: initialized class attributes for sequence number and length.
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_sequences(self):
-        """Method to generate the sequences with the mentioned amino acid probabilities.
-        :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides according
-        to the position in the helix wheel.
-        :Example:
-
-        >>> helACP = Helix_ACP(7,18,4)
-        >>> helACP.generate_sequences()
-        >>> helACP.sequences
-        """
-        clean(self)
-        self.prob = self.prob_ACPhel
-        for s in range(self.seqnum):
-            self.seq = []
-            for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
-                l = l - 18*(l/18) #for helices >18aa, the probabilities start from the beginning again
-                self.seq.append(np.random.choice(self.AAs,
-                                                 p=self.prob[:, l]))
-            self.sequences.append(''.join(self.seq))
-
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta file.
-
-        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.
-        :param names: {bool} whether sequence names from :py:attr:`names`should be saved as sequence identifiers.
-        :return: a fasta file containing the generated sequences.
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Duplicate** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class AmphipathicArc:
+class AmphipathicArc(BaseSequence):
     # TODO: add test cases
-    """Base class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with
+    """Class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with
     different arc sizes.
 
     The probability values for the Hydrophobic and Polar positions of the helix can be found in the following table:
@@ -926,44 +347,33 @@ class AmphipathicArc:
     ===   ====   =====
 
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimum sequence length
-        :param lenmax: maximum sequence length
-        :param seqnum: number of sequences to generate
-        :return: defined attributes :py:attr:`lenmin`, :py:attr:`lenmax`and :py:attr:`seqnum`
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_arc(self, arcsize='160'):
+    def generate_arc(self, arcsize=160):
         """Method to generate the possible amphipathic helices with defined hydrophobic arc sizes.
-        :param arcsize: {str} to choose among '80', '120', '160', '200', '240'.
+
+        :param arcsize: {int} to choose among 80, 120, 160, 200, 240.
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
-        >>> amphi_hel = Amphipathic_arc(10,25,4)
-        >>> amphi_hel.generate_arc('80')
+        >>> amphi_hel = AmphipathicArc(4, 10, 25)
+        >>> amphi_hel.generate_arc(80)
         >>> amphi_hel.sequences
-
         ['YLYANLRQE', 'GVKPRIK', 'RWKKKVKDSVKDFEKRFKDIEKRIQRKLA', 'KIKEQLRNSVSGWHRN']
         """
-        clean(self)
+        self.clean()
         self.prob = self.prob_amphihel
 
-        if arcsize == '80':
+        if arcsize == 80:
             idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
-        elif arcsize == '120':
+        elif arcsize == 120:
             idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0]
-        elif arcsize == '160':
+        elif arcsize == 160:
             idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
-        elif arcsize == '200':
+        elif arcsize == 200:
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
-        elif arcsize == '240':
+        elif arcsize == 240:
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
         else:
-            print "Arc size unknown, choose among: '80', '120', '160', '200', '240'."
+            print "Arc size unknown, choose among: 80, 120, 160, 200, 240."
 
         for s in range(self.seqnum):
             seq = []
@@ -975,17 +385,17 @@ class AmphipathicArc:
             self.sequences.append(''.join(seq))
 
     def generate_mixed_arcs(self):
-        """ Method to generate sequences of mixed arc sizes.
+        """Method to generate sequences of mixed arc sizes.
+
         :return: A list of sequences in :py:attr:`sequences`
         :Example:
 
-        >>> amphi_hel = Amphipathic_arc(7,30,10)
+        >>> amphi_hel = Amphipathic_arc(10, 7, 30)
         >>> amphi_hel.generate_mixed_arcs()
         >>> amphi_hel.sequences
-
         ['KIRRAFRNNLK', 'PFWKRWARWFKRWHRKLKTVFAKVTALL', 'AVFRTIKAVF', 'AIVHFFLTFLAELWQFLK']
         """
-        clean(self)
+        self.clean()
         self.prob = self.prob_amphihel
         idx = [[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
             [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
@@ -1006,13 +416,14 @@ class AmphipathicArc:
 
     def make_H_gradient(self):
         """Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of
-        the sequence amino acids to  hydrophobic.
+        the sequence amino acids to hydrophobic.
+
         :return: A list of sequences in :py:attr:`sequences`
         :Example:
 
-        >>> amphi_grad = Amphipathic_arc(7,30,10)
+        >>> amphi_grad = AmphipathicArc(10, 7, 30)
         >>> amphi_grad.generate_mixed_arcs()
-        >>> amphi_grad.make_gradient()
+        >>> amphi_grad.make_H_gradient()
         >>> amphi_grad.sequences
 
         """
@@ -1023,83 +434,10 @@ class AmphipathicArc:
                 seq[-aa] = random.choice(self.AAs, p=self.prob[1])
             self.sequences[s] = ''.join(seq)
 
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta file.
 
-        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.
-        :return: a fasta file containing the generated sequences.
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Duplicate** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class HelicesACP:
+class HelicesACP(BaseSequence):
     # TODO: add test cases
-    """Base class for peptides sequences with the amino acid probability of alpha-helical ACPs.
+    """Class for peptides sequences with the amino acid probability of alpha-helical ACPs.
 
     This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
     distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
@@ -1156,128 +494,43 @@ class HelicesACP:
     Y 	0.000   0.016   0.000   0.000   0.000   0.000   0.000   0.000
     ==  =====   =====   =====   =====   =====   =====   =====   =====
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length.
-        :param lenmax: maximal sequence length.
-        :param seqnum: number of seqeunces to generate.
-        :return: initialized class attributes for sequence number and length.
-        """
-        aminoacids(self)
-        template(self, lenmin, lenmax, seqnum)
-
-    def generate_helices(self):
+    def generate_sequences(self):
         """Method to generate the sequences with the mentioned amino acid probabilities.
+
         :return: A list of potentially helical peptides with the amino acid distribution of ACP helical peptides
         according to the position in the helix wheel.
 
         :Example:
 
-        >>> helACP = Helix_ACP(7,18,4)
-        >>> helACP.generate_helices()
+        >>> helACP = Helix_ACP(4, 7, 18)
+        >>> helACP.generate_sequences()
         >>> helACP.sequences
-
         ['FLFDVAKKVAGTALT', 'GLGIILGAGG', 'GLRIKLGVWAKKA', 'GFWGFIKTI']
         """
-        clean(self)
+        self.clean()
         self.prob = self.prob_ACPhel
         for s in range(self.seqnum):
             self.seq = []
             for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
-                l = l - 18*(l/18)  # for helices >18aa, the probabilities start from the beginning again
-                self.seq.append(np.random.choice(self.AAs,
-                                                 p=self.prob[:, l]))
+                l = l - 18 * (l / 18)  # for helices >18aa, the probabilities start from the beginning again
+                self.seq.append(np.random.choice(self.AAs, p=self.prob[:, l]))
             self.sequences.append(''.join(self.seq))
 
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a fasta file.
 
-        :param filename: output filename in which sequences from :py:attr:`sequences` are saved.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers.
-        :return: a fasta file containing the generated sequences.
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> H.sequences
-        ['IAKAGRAIIK']
-        >>> H.mutate_AA(3,1)
-        >>> H.sequences
-        ['NAKAGRAWIK']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Duplicate** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class MixedLibrary:
-    """Base class for holding a virtual peptide library.
+class MixedLibrary(BaseSequence):
+    """Class for holding a virtual peptide library.
 
     This class :class:`MixedLibrary` incorporates methods to generate a virtual peptide library composed out of different
     sub-libraries. The available library subtypes are all from the classes :class:`Centrosymmetric`, :class:`Helices`,
     :class:`Kinked`, :class:`Oblique` or :class:`Random`.
     """
 
-    def __init__(self, number, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1,
+    def __init__(self, seqnum, centrosymmetric=1, centroasymmetric=1, helix=1, kinked=1, oblique=1, rand=1, randAMP=1,
                  randAMPnoCM=1):
         """initializing method of the class :class:`MixedLibrary`. Except from **number**, all other parameters are
         ratios of sequences of the given sequence class.
 
-        :param number: number of sequences to be generated
+        :param seqnum: {int} number of sequences to be generated
         :param centrosymmetric: ratio of symmetric centrosymmetric sequences in the library
         :param centroasymmetric: ratio of asymmetric centrosymmetric sequences in the library
         :param helix: ratio of amphipathic helical sequences in the library
@@ -1292,9 +545,8 @@ class MixedLibrary:
             probable that you will not get the exact size of library that you entered as the parameter **number**. If you
             generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.
         """
-        self.names = []
-        self.sequences = []
-        self.libsize = int(number)
+        super(MixedLibrary, self).__init__(seqnum)  # inherit methods and some attributes from BaseSequence
+        self.libsize = int(seqnum)
         norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
         self.ratios = {'sym': float(centrosymmetric) / norm, 'asy': float(centroasymmetric) / norm,
                        'hel': float(helix) / norm, 'knk': float(kinked) / norm, 'obl': float(oblique) / norm,
@@ -1308,7 +560,7 @@ class MixedLibrary:
                      'AMP': int(round(float(self.libsize) * self.ratios['AMP'], ndigits=0)),
                      'nCM': int(round(float(self.libsize) * self.ratios['nCM'], ndigits=0))}
 
-    def generate_library(self):
+    def generate_sequences(self):
         """This method generates a virtual sequence library with the subtype ratios initialized in class :class:`MixedLibrary()`.
         All sequences are between 7 and 28 amino acids in length.
 
@@ -1319,7 +571,7 @@ class MixedLibrary:
 
         >>> lib = MixedLibrary(10000,centrosymmetric=5,centroasymmetric=5,helix=3,kinked=3,oblique=2,rand=10,
         randAMP=10,randAMPnoCM=5)
-        >>> lib.generate_library()
+        >>> lib.generate_sequences()
         >>> lib.libsize  # as duplicates were present, the library does not have the size that was sepecified
         9126
         >>> lib.sequences
@@ -1339,11 +591,11 @@ class MixedLibrary:
         Ca = Centrosymmetric(self.nums['asy'])
         Ca.generate_asymmetric()
         H = Helices(7, 28, self.nums['hel'])
-        H.generate_helices()
+        H.generate_sequences()
         K = Kinked(7, 28, self.nums['knk'])
-        K.generate_kinked()
+        K.generate_sequences()
         O = Oblique(7, 28, self.nums['obl'])
-        O.generate_oblique()
+        O.generate_sequences()
         R = Random(7, 28, self.nums['ran'])
         R.generate_sequences('rand')
         Ra = Random(7, 28, self.nums['AMP'])
@@ -1381,78 +633,31 @@ class MixedLibrary:
         self.libsize = len(self.sequences)
         self.nums = {k: self.names.count(k) for k in self.nums.keys()}  # update the number of sequences for every class
 
-    def save_fasta(self, filename, names=False):
-        """Method to save generated sequences in a .fasta formatted file.
 
-        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-
-class Hepahelices:
-    """Base class for peptide sequences probable to form helices and include a heparin-binding-domain.
+class Hepahelices(BaseSequence):
+    """Class for peptide sequences probable to form helices and include a heparin-binding-domain.
 
     This class is used to construct presumed amphipathic helices that include a heparin-binding-domain (HBD)
     probable to bind heparin. The HBD sequence for alpha-helices usually has the following form: **XBBBXXBX**
     (B: basic AA; X: hydrophobic, uncharged AA, with mainly Ser & Gly).
 
-    More on the HBD: Munoz, E. M. & Linhardt, R. J. Heparin-Binding Domains in Vascular Biology. *Arterioscler. Thromb.
-    Vasc. Biol.* **24**, 1549–1557 (2004).
+    :Reference: Munoz, E. M. & Linhardt, R. J. Heparin-Binding Domains in Vascular Biology. *Arterioscler. Thromb.
+        Vasc. Biol.* **24**, 1549–1557 (2004).
 
     .. versionadded:: v2.3.1
     """
-
-    def __init__(self, lenmin, lenmax, seqnum):
-        """
-        :param lenmin: minimal sequence length, minimal 8!
-        :param lenmax: maximal sequence length, maximal 50!
-        :param seqnum: number of sequences to generate
-        :return: defined variables as instances
-        """
-        aminoacids(self)
-        if lenmin < 8 or lenmax > 50:
-            print "Wrong sequence length.\nMinimum: 8\nMaximum: 50"
-        else:
-            template(self, lenmin, lenmax, seqnum)
-
     def generate_sequences(self):
         """Method to generate helical sequences with class features defined in :class:`Hepahelices()`
 
         :return: In the attribute :py:attr:`sequences`: a list of sequences including a heparin-binding-domain.
         :Example:
 
-        >>> h = Hepahelices(8,21,10)  # minimal length: 8, maximal length: 50
+        >>> h = Hepahelices(10, 8,21)  # minimal length: 8, maximal length: 50
         >>> h.generate_sequences()
         >>> h.sequences
         ['GRLARSLKRKLNRLVRGGGRLVRGGG', 'IRSIRRRLSKLARSLGRGARSLGRG', 'RAVKRKVNKLLKGAAKVLKGAAKVLKGAAK', ... ]
         """
-        clean(self)
+        self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             # generate heparin binding domain with the from HBBBHPBH (H: hydrophobic, B: basic, P: polar)
             hbd = [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + [random.choice(self.AA_basic)] + \
@@ -1478,83 +683,10 @@ class Hepahelices:
 
             self.sequences.append(''.join(seq))
 
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
 
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> h.sequences
-        ['IRSIRRRLSKLARSLGRGARSLGRG']
-        >>> h.mutate_AA(3,1)
-        >>> h.sequences
-        ['IRSIRRRKSKLARQLGRGFRSLGRG']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
-
-        :param filename: output filename (ending .fasta)
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a FASTA formatted file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)
-
-
-class AMPngrams:
+class AMPngrams(BaseSequence):
     """Class for sequence generation from the most prominent ngrams (2, 3, 4grams) found in all natural AMP
-    sequences extracted from the `APD3 <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.
+    sequences extracted from the `APD3 <http://aps.unmc.edu/AP/>`_ (version August 2016 with 2727 sequences).
     For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
     assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
     spaces were removed.
@@ -1578,9 +710,8 @@ class AMPngrams:
         >>> s.ngrams
         array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG', ...]
         """
+        super(AMPngrams, self).__init__(seqnum)  # inherit from BaseSequences and combine with n_min & n_max
         self.ngrams = ngrams_apd()
-        self.seqnum = seqnum
-        self.sequences = list()
         self.n_min = n_min
         self.n_max = n_max
     
@@ -1589,80 +720,8 @@ class AMPngrams:
         
         :return: list of sequences in :py:attr:`sequences`
         """
+        self.clean()
         for _ in range(self.seqnum):
             size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
             # build sequence from a random selection of ngrams
             self.sequences.append(''.join(self.ngrams[np.random.randint(0, self.ngrams.shape[0], size=size)]))
-
-    def mutate_AA(self, nr, prob):
-        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-        :param nr: number of mutations to perform per sequence
-        :param prob: probability of mutating a sequence
-        :return: In the attribute :py:attr:`sequences`: mutated sequences
-        :Example:
-
-        >>> h.sequences
-        ['IRSIRRRLSKLARSLGRGARSLGRG']
-        >>> h.mutate_AA(3,1)
-        >>> h.sequences
-        ['IRSIRRRKSKLARQLGRGFRSLGRG']
-
-        .. seealso:: :func:`modlamp.core.mutate_AA()`
-        """
-        mutate_AA(self, nr, prob)
-
-    def save_fasta(self, filename, names=False):
-        """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
-
-        :param filename: output filename (ending .fasta)
-        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a FASTA formatted file containing the generated sequences
-
-        .. seealso:: :func:`modlamp.core.save_fasta()`
-        """
-        save_fasta(self, filename, names=names)
-
-    def keep_natural_aa(self):
-        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-            accordingly.
-
-        .. seealso:: :func:`modlamp.core.keep_natural_aa()`
-
-        .. versionadded:: v2.2.5
-        """
-        keep_natural_aa(self)
-
-    def filter_unnatural(self):
-        """Method to filter out sequences with unnatural amino acids from :py:attr:`sequences`.
-
-        :return: Filtered sequence list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_unnatural()`
-        """
-        filter_unnatural(self)
-
-    def filter_duplicates(self):
-        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
-
-        :return: filtered sequences list in the attribute :py:attr:`sequences`
-
-        .. seealso:: :func:`modlamp.core.filter_sequences()`
-
-        .. versionadded:: v2.2.5
-        """
-        filter_duplicates(self)
-
-    def filter_aa(self, aminoacids):
-        """Method to filter out sequences with given amino acids in the argument list *aminoacids*.
-        **Dublicates** sequences are removed as well.
-
-        :param aminoacids: list of amino acids to be filtered
-        :return: filtered list of sequences in the attribute :py:attr:`sequences`.
-
-        .. seealso:: :func:`modlamp.core.filter_aa()`
-        """
-        filter_aa(self, aminoacids=aminoacids)

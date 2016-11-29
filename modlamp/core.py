@@ -4,7 +4,14 @@
 
 .. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
-Core helper functions for other modules.
+Core helper functions and classes for other modules. The two main classes are:
+
+=============================    =======================================================================================
+Class                            Characteristics
+=============================    =======================================================================================
+:py:class:`BaseSequence`         Base class inheriting to all sequence classes in the module :py:mod:`modlamp.sequences`
+:py:class:`BaseDescriptor`       Base class inheriting to the two descriptor classes in :py:mod:`modlamp.descriptors`
+=============================    =======================================================================================
 """
 
 import os
@@ -12,11 +19,632 @@ import random
 import re
 
 import numpy as np
+import pandas as pd
+import collections
 from Bio.SeqIO.FastaIO import FastaIterator
 from scipy.spatial import distance
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.utils import shuffle
 
-__author__ = "modlab"
+__author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
+
+
+class BaseSequence(object):
+    """Base class for sequence classes in the module :mod:`modlamp.sequences`."""
+    def __init__(self, seqnum, lenmin=7, lenmax=28):
+        """
+        :param seqnum: number of sequences to generate
+        :param lenmin: minimal length of the generated sequences
+        :param lenmax: maximal length of the generated sequences
+        :return: attributes :py:attr:`seqnum`, :py:attr:`lenmin` and :py:attr:`lenmax`.
+        :Example:
+        
+        >>> b = BaseSequence(10, 7, 28)
+        >>> b.seqnum
+        10
+        >>> b.lenmin
+        7
+        >>> b.lenmax
+        28
+        """
+        aminoacids(self)
+        self.sequences = list()
+        self.names = list()
+        self.lenmin = int(lenmin)
+        self.lenmax = int(lenmax)
+        self.seqnum = int(seqnum)
+    
+    def save_fasta(self, filename, names=False):
+        """Method to save generated sequences in a ``.FASTA`` formatted file.
+
+        :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
+        :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
+        :return: a fasta file containing the generated sequences
+        :Example:
+        
+        >>> b = BaseSequence(2)
+        >>> b.sequences = ['KLLSLSLALDLLS', 'KLPERTVVNSSDF']
+        >>> b.names = ['Sequence1', 'Sequence2']
+        >>> b.save_fasta('/location/of/fasta/file.fasta', names=True)
+        """
+        if os.path.exists(filename):
+            os.remove(filename)  # remove outputfile, it it exists
+
+        with open(filename, 'w') as o:
+            for n, seq in enumerate(self.sequences):
+                if names:
+                    print >> o, '>' + str(self.names[n])
+                else:
+                    print >> o, '>Seq_' + str(n)
+                print >> o, seq
+        
+    def mutate_AA(self, nr, prob):
+        """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
+
+        :param nr: number of mutations to perform per sequence
+        :param prob: probability of mutating a sequence
+        :return: mutated sequences in the attribute :py:attr:`sequences`.
+        :Example:
+
+        >>> b = BaseSequence(1)
+        >>> b.sequences = ['IAKAGRAIIK']
+        >>> b.mutate_AA(3, 1.)
+        >>> b.sequences
+        ['NAKAGRAWIK']
+        """
+        for s in range(len(self.sequences)):
+            mutate = np.random.choice([1, 0], 1, p=[prob,
+                                         1 - float(prob)])  # mutate: yes or no? probability = mutation probability
+            if mutate == 1:
+                seq = list(self.sequences[s])
+                cnt = 0
+                while cnt < nr:  # mutate "nr" AA
+                    seq[random.choice(range(len(seq)))] = random.choice(self.AAs)
+                    cnt += 1
+                self.sequences[s] = ''.join(seq)
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.
+        :Example:
+        
+        >>> b = BaseSequence(4)
+        >>> b.sequences = ['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK', 'KLAKLAKKLAKLAK']
+        >>> b.filter_duplicates()
+        >>> b.sequences
+        ['KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK']
+
+        .. versionadded:: v2.2.5
+        """
+        if not self.names:
+            self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
+        df = pd.DataFrame(zip(self.sequences, self.names), columns=['Sequences', 'Names'])
+        df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
+        self.sequences = df['Sequences'].get_values().tolist()
+        self.names = df['Names'].get_values().tolist()
+    
+    def keep_natural_aa(self):
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ``['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y']``.
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly (if present).
+        :Example:
+        
+        >>> b = BaseSequence(2)
+        >>> b.sequences = ['BBBsdflUasUJfBJ', 'GLFDIVKKVVGALGSL']
+        >>> b.keep_natural_aa()
+        >>> b.sequences
+        ['GLFDIVKKVVGALGSL']
+        """
+        natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
+                      'Y']
+    
+        seqs = []
+        names = []
+    
+        for i, s in enumerate(self.sequences):
+            seq = list(s.upper())
+            if all(c in natural_aa for c in seq):
+                seqs.append(s.upper())
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+    
+        self.sequences = seqs
+        self.names = names
+
+    def filter_aa(self, aminoacids):
+        """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+        argument list *aminoacids*.
+
+        :param aminoacids: {list} amino acids to be filtered
+        :return: filtered list of sequences names in the corresponding attributes.
+        :Example:
+        
+        >>> b = BaseSequence(3)
+        >>> b.sequences = ['AAALLLIIIKKK', 'CCEERRT', 'LLVVIIFFFQQ']
+        >>> b.filter_aa(['C'])
+        >>> b.sequences
+        ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
+        """
+    
+        pattern = re.compile('|'.join(aminoacids))
+        seqs = []
+        names = []
+    
+        for i, s in enumerate(self.sequences):
+            if not pattern.search(s):
+                seqs.append(s)
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+
+        self.sequences = seqs
+        self.names = names
+        
+    def clean(self):
+        """Method to clean / clear / empty the attributes :py:attr:`sequences` and :py:attr:`names`.
+
+        :return: freshly initialized, empty class attributes.
+        """
+        self.__init__(self.seqnum, self.lenmin, self.lenmax)
+
+
+class BaseDescriptor(object):
+    """
+    Base class inheriting to both peptide descriptor classes :py:class:`modlamp.descriptors.GlobalDescriptor` and
+    :py:class:`modlamp.descriptors.PeptideDescriptor`.
+    """
+    def __init__(self, seqs):
+        """
+        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the
+            descriptor values for.
+        :param scalename: {str} name of the amino acid scale (one of the given list above) used to calculate the
+            descriptor values
+        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with
+            amino acid scale values of the scale name in :py:attr:`scalename`.
+        :Example:
+
+        >>> AMP = BaseDescriptor('KLLKLLKKLLKLLK','pepCATS')
+        >>> AMP.sequences
+        ['KLLKLLKKLLKLLK']
+        >>> seqs = BaseDescriptor('/Path/to/file.fasta', 'eisenberg')  # load sequences from .fasta file
+        >>> seqs.sequences
+        ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
+        """
+        if type(seqs) == list and seqs[0].isupper():
+            self.sequences = seqs
+            self.names = []
+        elif type(seqs) == np.ndarray and seqs[0].isupper():
+            self.sequences = seqs.tolist()
+            self.names = []
+        elif type(seqs) == str and seqs.isupper():
+            self.sequences = [seqs]
+            self.names = []
+        elif os.path.isfile(seqs):
+            if seqs.endswith('.fasta'):  # read .fasta file
+                self.sequences, self.names = read_fasta(seqs)
+            elif seqs.endswith('.csv'):  # read .csv file with sequences every line
+                with open(seqs) as f:
+                    self.sequences = list()
+                    for line in f:
+                        if line.isupper():
+                            self.sequences.append(line.strip())
+            else:
+                print "Sorry, currently only .fasta or .csv files can be read!"
+        else:
+            print "'inputfile' does not exist, is not a valid list of AA sequences or is not a valid sequence string"
+
+        self.descriptor = np.array([[]])
+        self.target = np.array([], dtype='int')
+        self.scaler = None
+
+    def read_fasta(self, filename):
+        """Method for loading sequences from a ``.FASTA`` formatted file into the attributes :py:attr:`sequences` and
+        :py:attr:`names`.
+
+        :param filename: {str} ``.FASTA`` file with sequences and headers to read
+        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
+            :py:attr:`names`.
+        """
+        self.sequences, self.names = read_fasta(filename)
+
+    def save_fasta(self, outputfile, names=False):
+        """Method for saving sequences from :py:attr:`sequences` to a ``.FASTA`` formatted file.
+
+        :param outputfile: {str} filename of the output ``.FASTA`` file
+        :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
+        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
+            :py:attr:`names`.        """
+        save_fasta(self, outputfile, names=names)
+
+    def count_aa(self, scale='relative', append=False):
+        """Method for producing the amino acid distribution for the given sequences as a descriptor
+
+        :param scale: {'absolute' or 'relative'} defines whether counts or frequencies are given for each AA
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
+        :return: the amino acid distributions for every sequence individually in the attribute :py:attr:`descriptor`
+        :Example:
+
+        >>> AMP = PeptideDescriptor('ACDEFGHIKLMNPQRSTVWY') # aa_count() does not depend on the descriptor scale
+        >>> AMP.count_aa()
+        >>> AMP.descriptor
+        array([[ 0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, ... ]])
+        >>> AMP.descriptor.shape
+        (1, 20)
+
+        .. seealso:: :py:func:`modlamp.core.count_aa()`
+        """
+        desc = list()
+        scl = 1
+        for seq in self.sequences:
+            if scale == 'relative':
+                scl = len(seq)
+            d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
+            od = collections.OrderedDict(sorted(d.items()))
+            desc.append(od.values())
+
+        if append:
+            self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+        else:
+            self.descriptor = np.array(desc)
+
+    def feature_scaling(self, stype='standard', fit=True):
+        """Method for feature scaling of the calculated descriptor matrix.
+
+        :param stype: {'standard' or 'minmax'} type of scaling to be used
+        :param fit: {boolean} defines whether the used scaler is first fitting on the data (True) or
+            whether the already fitted scaler in :py:attr:`scaler` should be used to transform (False).
+        :return: scaled descriptor values in :py:attr:`descriptor`
+        :Example:
+
+        >>> D.descriptor
+        array([[0.155],[0.34],[0.16235294],[-0.08842105],[0.116]])
+        >>> D.feature_scaling(type='minmax',fit=True)
+        array([[0.56818182],[1.],[0.5853447],[0.],[0.47714988]])
+        """
+        if stype in ['standard', 'minmax']:
+            if stype == 'standard':
+                self.scaler = StandardScaler()
+            elif stype == 'minmax':
+                self.scaler = MinMaxScaler()
+
+            if fit:
+                self.descriptor = self.scaler.fit_transform(self.descriptor)
+            else:
+                self.descriptor = self.scaler.transform(self.descriptor)
+        else:
+            print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
+
+    def feature_shuffle(self):
+        """Method for shuffling feature columns randomly.
+
+        :return: descriptor matrix with shuffled feature columns in :py:attr:`descriptor`
+        :Example:
+
+        >>> D.descriptor
+        array([[0.80685625,167.05234375,39.56818125,-0.26338667,155.16888667,33.48778]])
+        >>> D.feature_shuffle()
+        array([[155.16888667,-0.26338667,167.05234375,0.80685625,39.56818125,33.48778]])
+        """
+        self.descriptor = shuffle(self.descriptor.transpose()).transpose()
+
+    def sequence_order_shuffle(self):
+        """Method for shuffling sequence order in the attribute :py:attr:`sequences`.
+
+        :return: sequences in :py:attr:`sequences` with shuffled order in the list.
+        :Example:
+
+        >>> D.sequences
+        ['LILRALKGAARALKVA','VKIAKIALKIIKGLG','VGVRLIKGIGRVARGAI','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV']
+        >>> D.sequence_order_shuffle()
+        >>> D.sequences
+        ['VGVRLIKGIGRVARGAI','LILRALKGAARALKVA','LRGLRGVIRGGKAIVRVGK','GGKLVRLIARIGKGV','VKIAKIALKIIKGLG']
+        """
+        self.sequences = shuffle(self.sequences)
+
+    def random_selection(self, num):
+        """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
+        descriptor instance.
+
+        :param num: {int} number of entries to be randomly selected
+        :return: updated instance
+        :Example:
+
+        >>> h = Helices(7, 28, 100)
+        >>> h.generate_helices()
+        >>> d = PeptideDescriptor(h.sequences, 'eisenberg')
+        >>> d.calculate_moment()
+        >>> len(d.sequences)
+        100
+        >>> len(d.descriptor)
+        100
+        >>> d.random_selection(10)
+        >>> len(d.descriptor)
+        10
+        >>> len(d.descriptor)
+        10
+
+        .. versionadded:: v2.2.3
+        """
+
+        sel = np.random.choice(len(self.sequences), size=num, replace=False)
+        self.sequences = np.array(self.sequences)[sel].tolist()
+        if hasattr(self, 'descriptor') and self.descriptor.size:
+            self.descriptor = self.descriptor[sel]
+        if hasattr(self, 'names') and self.names:
+            self.names = np.array(self.names)[sel].tolist()
+        if hasattr(self, 'target') and self.target.size:
+            self.target = self.target[sel]
+
+    def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+        """Method to select a specified number of sequences according to the minmax algorithm.
+
+        :param iterations: {int} Number of sequences to retrieve.
+        :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
+            Choose from 'euclidean' or 'minkowsky'.
+        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
+        :return: updated instance
+
+        .. seealso:: **SciPy** http://docs.scipy.org/doc/scipy/reference/spatial.distance.html
+        """
+
+        # Storing M into pool, where selections get deleted
+        pool = self.descriptor  # Store pool where selections get deleted
+        minmaxidx = list()  # Store original indices of selections to return
+
+        # Randomly selecting first peptide into the sele
+        np.random.seed(randseed)
+        idx = int(np.random.random_integers(0, len(pool), 1))
+        sele = pool[idx:idx + 1, :]
+        minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
+
+        # Deleting peptide in selection from pool
+        pool = np.delete(pool, idx, axis=0)
+
+        for i in range(iterations - 1):
+            # Calculating distance from sele to the rest of the peptides
+            dist = distance.cdist(pool, sele, distmetric)
+
+            # Choosing maximal distances for every sele instance
+            maxidx = np.argmax(dist, axis=0)
+            maxcols = np.max(dist, axis=0)
+
+            # Choosing minimal distance among the maximal distances
+            minmax = np.argmin(maxcols)
+            maxidx = int(maxidx[minmax])
+
+            # Adding it to selection and removing from pool
+            sele = np.append(sele, pool[maxidx:maxidx + 1, :], axis=0)
+            pool = np.delete(pool, maxidx, axis=0)
+            minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
+
+        self.sequences = np.array(self.sequences)[minmaxidx].tolist()
+        if hasattr(self, 'descriptor') and self.descriptor.size:
+            self.descriptor = self.descriptor[minmaxidx]
+        if hasattr(self, 'names') and self.names:
+            self.names = np.array(self.names)[minmaxidx].tolist()
+        if hasattr(self, 'target') and self.target.size:
+            self.target = self.descriptor[minmaxidx]
+
+    def filter_sequences(self, sequences):
+        """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
+        corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted as well. The method returns an updated
+        descriptor instance.
+
+        :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
+        :return: updated instance without filtered sequences
+        :Example:
+
+        >>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
+        >>> d = PeptideDescriptor(sequences, 'pepcats')
+        >>> d.calculate_crosscorr(7)
+        >>> len(d.descriptor)
+        5
+        >>> d.filter_sequences('KLLKLLKKLLKLLK')
+        >>> len(d.descriptor)
+        4
+        >>> d.sequences
+        ['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
+        """
+        indices = list()
+        if isinstance(sequences, basestring):  # check if sequences is only one sequence string and convert it to a list
+            sequences = [sequences]
+        for s in sequences:  # get indices of queried sequences
+            indices.append(self.sequences.index(s))
+
+        self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
+        if hasattr(self, 'descriptor') and self.descriptor.size:
+            self.descriptor = np.delete(self.descriptor, indices, 0)
+        if hasattr(self, 'names') and self.names:
+            self.names = np.delete(np.array(self.names), indices, 0).tolist()
+        if hasattr(self, 'target') and self.target.size:
+            self.target = np.delete(self.target, indices, 0)
+
+    def filter_values(self, values, operator='=='):
+        """Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
+        size as the number of features in the descriptor matrix!) The operator option tells the method whether to
+        filter for values equal, lower, higher ect. to the given values in the *values* array.
+
+        :param values: {list} values to filter the attribute :py:attr:`descriptor` for
+        :param operator: {str} filter criterion, available the operators ``==``, ``<``, ``>``, ``<=``and ``>=``.
+        :return: descriptor matrix and updated sequences containing only entries with descriptor values given in
+            *values* in the corresponding attributes.
+        :Example:
+
+        >>> desc.descriptor  # desc = BaseDescriptor instance
+        array([[ 0.7666517 ],
+               [ 0.38373498]])
+        >>> desc.filter_values([0.5], '<')
+        >>> desc.descriptor
+        array([[ 0.38373498]])
+        """
+        dim = self.descriptor.shape[1]
+        for d in range(dim):  # for all the features in self.descriptor
+            if operator == '==':
+                indices = np.where(self.descriptor[:, d] == values[d])[0]
+            elif operator == '<':
+                indices = np.where(self.descriptor[:, d] < values[d])[0]
+            elif operator == '>':
+                indices = np.where(self.descriptor[:, d] > values[d])[0]
+            elif operator == '<=':
+                indices = np.where(self.descriptor[:, d] <= values[d])[0]
+            elif operator == '>=':
+                indices = np.where(self.descriptor[:, d] >= values[d])[0]
+
+            # filter descriptor matrix, sequence list and names list according to obtained indices
+            self.sequences = np.array(self.sequences)[indices].tolist()
+            if hasattr(self, 'descriptor') and self.descriptor.size:
+                self.descriptor = self.descriptor[indices]
+            if hasattr(self, 'names') and self.names:
+                self.names = np.array(self.names)[indices].tolist()
+            if hasattr(self, 'target') and self.target.size:
+                self.target = self.target[indices]
+
+    def filter_aa(self, aminoacids):
+        """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
+        argument list *aminoacids*.
+
+        :param aminoacids: list of amino acids to be filtered
+        :return: filtered list of sequences, descriptor values, target values and names in the corresponding attributes.
+        :Example:
+
+        >>> b = BaseSequence(3)
+        >>> b.sequences = ['AAALLLIIIKKK', 'CCEERRT', 'LLVVIIFFFQQ']
+        >>> b.filter_aa(['C'])
+        >>> b.sequences
+        ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
+        """
+
+        pattern = re.compile('|'.join(aminoacids))
+        seqs = []
+        desc = []
+        names = []
+        target = []
+
+        for i, s in enumerate(self.sequences):
+            if not pattern.search(s):
+                seqs.append(s)
+                if hasattr(self, 'descriptor') and self.descriptor.size:
+                    desc.append(self.descriptor[i])
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+                if hasattr(self, 'target') and self.target.size:
+                    target.append(self.target[i])
+
+        self.sequences = seqs
+        self.names = names
+        self.descriptor = np.array(desc)
+        self.target = np.array(target, dtype='int')
+
+    def filter_duplicates(self):
+        """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`
+
+        :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.
+        :Example:
+
+        >>> b = BaseSequence(4)
+        >>> b.sequences = ['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK', 'KLAKLAKKLAKLAK']
+        >>> b.filter_duplicates()
+        >>> b.sequences
+        ['KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK']
+
+        .. versionadded:: v2.2.5
+        """
+        if not self.names:
+            self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
+        if not self.target:
+            self.target = [0] * len(self.sequences)
+        df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]), columns=['Sequences', 'Names', 'Descriptor', 'Target'])
+        df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
+        self.sequences = df['Sequences'].get_values().tolist()
+        self.names = df['Names'].get_values().tolist()
+        self.descriptor = df['Descriptor'].get_values()
+        self.target = df['Target'].get_values()
+
+    def keep_natural_aa(self):
+        """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
+        that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
+
+        :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
+            accordingly (if present).
+        :Example:
+
+        >>> b = BaseSequence(2)
+        >>> b.sequences = ['BBBsdflUasUJfBJ', 'GLFDIVKKVVGALGSL']
+        >>> b.keep_natural_aa()
+        >>> b.sequences
+        ['GLFDIVKKVVGALGSL']
+        """
+
+        natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W',
+                      'Y']
+
+        seqs = []
+        desc = []
+        names = []
+        target = []
+
+        for i, s in enumerate(self.sequences):
+            seq = list(s.upper())
+            if all(c in natural_aa for c in seq):
+                seqs.append(s.upper())
+                if hasattr(self, 'descriptor') and self.descriptor.size:
+                    desc.append(self.descriptor[i])
+                if hasattr(self, 'names') and self.names:
+                    names.append(self.names[i])
+                if hasattr(self, 'target') and self.target.size:
+                    target.append(self.target[i])
+
+        self.sequences = seqs
+        self.names = names
+        self.descriptor = np.array(desc)
+        self.target = np.array(target, dtype='int')
+
+    def load_descriptordata(self, filename, delimiter=",", targets=False, skip_header=0):
+        """Method to load any data file with sequences and descriptor values and save it to a new insatnce of the
+        class :class:`modlamp.descriptors.PeptideDescriptor`.
+
+        .. note:: Headers are not considered. To skip initial lines in the file, use the *skip_header* option.
+
+        :param filename: {str} filename of the data file to be loaded
+        :param delimiter: {str} column delimiter
+        :param targets: {boolean} whether last column in the file contains a target class vector
+        :param skip_header: {int} number of initial lines to skip in the file
+        :return: loaded sequences, descriptor values and targets in the corresponding attributes.
+        """
+        data = np.genfromtxt(filename, delimiter=delimiter, skip_header=skip_header)
+        data = data[:, 1:]  # skip sequences as they are "nan" when read as float
+        seqs = np.genfromtxt(filename, delimiter=delimiter, dtype="str")
+        seqs = seqs[:, 0]
+        if targets:
+            self.target = np.array(data[:, -1], dtype='int')
+        self.sequences = seqs
+        self.descriptor = data
+
+    def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
+        """Method to save the descriptor values to a .csv/.txt file
+
+        :param filename: filename of the output file
+        :param delimiter: column delimiter
+        :param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
+        :param header: {str} header to be written at the beginning of the file
+        :return: output file with peptide names and descriptor values
+        """
+        seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
+        ids = np.array(self.names, dtype='|S80')[:, np.newaxis]
+        if ids.shape == seqs.shape:
+            names = np.hstack((ids, seqs))
+        else:
+            names = seqs
+        if targets and len(targets) == len(self.sequences):
+            target = np.array(targets)[:, np.newaxis]
+            data = np.hstack((names, self.descriptor, target))
+        else:
+            data = np.hstack((names, self.descriptor))
+        np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)
 
 
 def load_scale(scalename):
@@ -228,32 +856,6 @@ def save_fasta(self, filename, names=False):
             print >> o, seq
 
 
-def mutate_AA(self, nr, prob):
-    """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
-
-    :param nr: number of mutations to perform per sequence
-    :param prob: probability of mutating a sequence
-    :return: In the attribute :py:attr:`sequences`: mutated sequences
-    :Example:
-
-    >>> h.sequences
-    ['IAKAGRAIIK']
-    >>> h.mutate_AA(3, 1.)
-    >>> h.sequences
-    ['NAKAARAWIK']
-    """
-    for s in range(len(self.sequences)):
-        mutate = np.random.choice([1, 0], 1,
-                                  p=[prob, 1 - float(prob)])  # mutate: yes or no? probability = mutation probability
-        if mutate == 1:
-            seq = list(self.sequences[s])
-            cnt = 0
-            while cnt < nr:  # mutate "nr" AA
-                seq[random.choice(range(len(seq)))] = random.choice(self.AAs)
-                cnt += 1
-            self.sequences[s] = ''.join(seq)
-
-
 def aa_weights():
     """Function holding molecular weight data on all natural amino acids.
     
@@ -325,7 +927,6 @@ def aminoacids(self):
     ===  ====    ======   =========    ==========
 
     """
-    self.sequences = list()
     # AA classes:
     self.AA_hyd = ['G', 'A', 'L', 'I', 'V']
     self.AA_basic = ['K', 'R']
@@ -466,292 +1067,3 @@ def ngrams_apd():
            'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
           dtype='|S4')
     return ngrams
-
-
-def template(self, lenmin, lenmax, seqnum):
-    """Method used by different classes in :mod:`modlamp.sequences` to generate length and number templates for all
-    needed instances.
-
-    :param lenmin: minimal length of the generated sequences
-    :param lenmax: maximal length of the generated sequences
-    :param seqnum: number of sequences to generate
-    :return: all needed instances (involving numbers and lengths) of the classes in this package
-    """
-    self.lenmin = int(lenmin)
-    self.lenmax = int(lenmax)
-    self.seqnum = int(seqnum)
-
-
-def clean(self):
-    """Method to clean / clear / empty the attributes :py:attr:`sequences`, :py:attr:`names` and :py:attr:`descriptor`.
-
-    :return: freshly initialized, empty class attributes.
-    """
-    self.names = []
-    self.sequences = []
-    self.target = np.array([], dtype='int')
-    self.descriptor = np.array([])
-    self.scaler = None
-    self.all_moms = list()  # for passing hydrophobic moments to calculate_profile
-    self.all_globs = list()  # for passing global  to calculate_profile
-
-
-def filter_duplicates(self):
-    """Method to filter duplicates in the sequences from the class attribute :py:attr:`sequences`.
-    This function does not filter other attributes!
-
-    :return: filtered sequence list in the attribute :py:attr:`sequences`.
-    :Example:
-    
-    >>> d.sequences
-    ['DIAAVHTELVSCLNACWPALAGVCSSAL', 'KHVVRNKTDFFYFSQRE', 'WPMMVES', 'GHHDAPH', 'DIAAVHTELVSCLNACWPALAGVCSSAL']
-    >>> d.filter_duplicates()
-    >>> d.sequences
-    ['DIAAVHTELVSCLNACWPALAGVCSSAL', 'KHVVRNKTDFFYFSQRE', 'WPMMVES', 'GHHDAPH']
-    """
-    seq_list = [x for x in set(self.sequences)]  # remove duplicates
-    self.sequences = seq_list
-
-
-def keep_natural_aa(self):
-    """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
-    that is not in ['A','C','D,'E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y'].
-
-    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-        accordingly (if present).
-    """
-
-    natural_aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
-
-    seqs = []
-    desc = []
-    names = []
-    target = []
-
-    for i, s in enumerate(self.sequences):
-        seq = list(s.upper())
-        if all(c in natural_aa for c in seq):
-            seqs.append(s.upper())
-            if hasattr(self, 'descriptor') and self.descriptor.size:
-                desc.append(self.descriptor[i])
-            if hasattr(self, 'names') and self.names:
-                names.append(self.names[i])
-            if hasattr(self, 'target') and self.target.size:
-                target.append(self.target[i])
-
-    self.sequences = seqs
-    self.names = names
-    self.descriptor = np.array(desc)
-    self.target = np.array(target, dtype='int')
-
-
-def filter_unnatural(self):
-    """Method to filter out sequences from the class attribute :py:attr:`sequences` with non-proteinogenic
-    amino acids ['B', 'J', 'O', 'U', 'X', 'Z', 'b, 'j', 'o', 'u', 'x', 'z'].
-
-    :return: filtered sequence list in the attribute :py:attr:`sequences`. The other attributes are also filtered
-        accordingly (if present).
-    """
-    pattern = re.compile('|'.join(['B', 'J', 'O', 'U', 'X', 'Z', 'b', 'j', 'o', 'u', 'x', 'z']))
-    seqs = []
-    desc = []
-    names = []
-    target = []
-
-    for i, s in enumerate(self.sequences):
-        if not pattern.search(s):
-            seqs.append(s)
-            if hasattr(self, 'descriptor') and self.descriptor.size:
-                desc.append(self.descriptor[i])
-            if hasattr(self, 'names') and self.names:
-                names.append(self.names[i])
-            if hasattr(self, 'target') and len(self.target):
-                target.append(self.target[i])
-
-    self.sequences = seqs
-    self.names = names
-    self.descriptor = np.array(desc)
-    self.target = np.array(target, dtype='int')
-
-
-def filter_aa(self, aminoacids):
-    """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
-    argument list *aminoacids*.
-
-    :param aminoacids: list of amino acids to be filtered
-    :return: filtered list of sequences, descriptor values, target values and names in the corresponding attributes.
-    """
-
-    pattern = re.compile('|'.join(aminoacids))
-    seqs = []
-    desc = []
-    names = []
-    target = []
-
-    for i, s in enumerate(self.sequences):
-        if not pattern.search(s):
-            seqs.append(s)
-            if hasattr(self, 'descriptor') and self.descriptor.size:
-                desc.append(self.descriptor[i])
-            if hasattr(self, 'names') and self.names:
-                names.append(self.names[i])
-            if hasattr(self, 'target') and self.target.size:
-                target.append(self.target[i])
-
-    self.sequences = seqs
-    self.names = names
-    self.descriptor = np.array(desc)
-    self.target = np.array(target, dtype='int')
-
-
-def filter_values(self, values, operator='=='):
-    """Method to filter the descriptor matrix in the attribute :py:attr:`descriptor` for a given list of values (same
-    size as the number of features in the descriptor matrix!) The operator option tells the method whether to
-    filter for values equal, lower, higher ect. to the given values in the **values** array.
-
-    :param values: List/array of values to filter the attribute :py:attr:`descriptor` for
-    :param operator: filter criterion, available are all SQL like operators: ``==``, ``<``, ``>``, ``<=``and ``>=``.
-    :return: descriptor matrix and updated sequences containing only entries with descriptor values given in
-        **values** in the corresponding attributes.
-    """
-    dim = self.descriptor.shape[1]
-    for d in range(dim):  # for all the features in self.descriptor
-        if operator == '==':
-            indices = np.where(self.descriptor[:, d] == values[d])[0]
-        elif operator == '<':
-            indices = np.where(self.descriptor[:, d] < values[d])[0]
-        elif operator == '>':
-            indices = np.where(self.descriptor[:, d] > values[d])[0]
-        elif operator == '<=':
-            indices = np.where(self.descriptor[:, d] <= values[d])[0]
-        elif operator == '>=':
-            indices = np.where(self.descriptor[:, d] >= values[d])[0]
-
-        # filter descriptor matrix, sequence list and names list according to obtained indices
-        self.sequences = np.array(self.sequences)[indices].tolist()
-        if hasattr(self, 'descriptor') and self.descriptor.size:
-            self.descriptor = self.descriptor[indices]
-        if hasattr(self, 'names') and self.names:
-            self.names = np.array(self.names)[indices].tolist()
-        if hasattr(self, 'target') and self.target.size:
-            self.target = self.target[indices]
-
-
-def filter_sequences(self, sequences):
-    """Method to filter out entries for given sequences in **sequences** out of a descriptor instance. All
-    corresponding fields of these sequences (*descriptor*, *name*) are deleted as well. The method returns an updated
-    descriptor instance.
-
-    :param sequences: list of sequences to be filtered out of the whole instance, including corresponding data
-    :return: updated instance without filtered sequences
-    :Example:
-
-    >>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
-    >>> d = PeptideDescriptor(sequences, 'pepcats')
-    >>> d.calculate_crosscorr(7)
-    >>> len(d.descriptor)
-    5
-    >>> d.filter_sequences('KLLKLLKKLLKLLK')
-    >>> len(d.descriptor)
-    4
-    >>> d.sequences
-    ['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
-    """
-    indices = list()
-    if isinstance(sequences, basestring):  # check if sequences is only one sequence string and convert it to a list
-        sequences = [sequences]
-    for s in sequences:  # get indices of queried sequences
-        indices.append(self.sequences.index(s))
-
-    self.sequences = np.delete(np.array(self.sequences), indices, 0).tolist()
-    if hasattr(self, 'descriptor') and self.descriptor.size:
-        self.descriptor = np.delete(self.descriptor, indices, 0)
-    if hasattr(self, 'names') and self.names:
-        self.names = np.delete(np.array(self.names), indices, 0).tolist()
-    if hasattr(self, 'target') and self.target.size:
-        self.target = np.delete(self.target, indices, 0)
-
-
-def random_selection(self, num):
-    """Method to randomly select a specified number of sequences (with names and descriptors if present) out of a given
-    descriptor instance.
-
-    :param num: {int} number of entries to be randomly selected
-    :return: updated instance
-    :Example:
-
-    >>> h = Helices(7, 28, 100)
-    >>> h.generate_helices()
-    >>> d = PeptideDescriptor(h.sequences, 'eisenberg')
-    >>> d.calculate_moment()
-    >>> len(d.sequences)
-    100
-    >>> len(d.descriptor)
-    100
-    >>> d.random_selection(10)
-    >>> len(d.descriptor)
-    10
-    >>> len(d.descriptor)
-    10
-
-    .. versionadded:: v2.2.3
-    """
-
-    sel = np.random.choice(len(self.sequences), size=num, replace=False)
-    self.sequences = np.array(self.sequences)[sel].tolist()
-    if hasattr(self, 'descriptor') and self.descriptor.size:
-        self.descriptor = self.descriptor[sel]
-    if hasattr(self, 'names') and self.names:
-        self.names = np.array(self.names)[sel].tolist()
-    if hasattr(self, 'target') and self.target.size:
-        self.target = self.target[sel]
-
-
-def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
-    """Method to select a specified number of sequences according to the minmax algorithm.
-
-    :param iterations: {int} Number of sequences to retrieve.
-    :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
-        Choose:// docs.scipy.org / doc / scipy / reference / spatial.distance.html).
-        E.g. 'euclidean', 'minkowsky'.
-    :param randseed: {int} Set a random seed for numpy to pick the first sequence.
-    :return: updated instance
-    """
-
-    # Storing M into pool, where selections get deleted
-    pool = self.descriptor  # Store pool where selections get deleted
-    minmaxidx = list()  # Store original indices of selections to return
-
-    # Randomly selecting first peptide into the sele
-    np.random.seed(randseed)
-    idx = int(np.random.random_integers(0, len(pool), 1))
-    sele = pool[idx:idx + 1, :]
-    minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
-
-    # Deleting peptide in selection from pool
-    pool = np.delete(pool, idx, axis=0)
-
-    for i in range(iterations - 1):
-        # Calculating distance from sele to the rest of the peptides
-        dist = distance.cdist(pool, sele, distmetric)
-
-        # Choosing maximal distances for every sele instance
-        maxidx = np.argmax(dist, axis=0)
-        maxcols = np.max(dist, axis=0)
-
-        # Choosing minimal distance among the maximal distances
-        minmax = np.argmin(maxcols)
-        maxidx = int(maxidx[minmax])
-
-        # Adding it to selection and removing from pool
-        sele = np.append(sele, pool[maxidx:maxidx + 1, :], axis=0)
-        pool = np.delete(pool, maxidx, axis=0)
-        minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx:maxidx + 1, :], axis=1))))
-
-    self.sequences = np.array(self.sequences)[minmaxidx].tolist()
-    if hasattr(self, 'descriptor') and self.descriptor.size:
-        self.descriptor = self.descriptor[minmaxidx]
-    if hasattr(self, 'names') and self.names:
-        self.names = np.array(self.names)[minmaxidx].tolist()
-    if hasattr(self, 'target') and self.target.size:
-        self.target = self.descriptor[minmaxidx]
