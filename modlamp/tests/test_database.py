@@ -1,5 +1,5 @@
 import unittest
-import os
+from os.path import join, dirname
 from modlamp.database import query_apd, query_camp
 from modlamp.database import _read_db_config
 
@@ -7,7 +7,7 @@ from modlamp.database import _read_db_config
 class TestConnect(unittest.TestCase):
 
     def test_config_read(self):
-        conf = _read_db_config(os.path.join(os.path.dirname(__file__), '../data/db_config.json'))
+        conf = _read_db_config(join(dirname(__file__), '../data/db_config.json'))
         d = ['host', 'password', 'user', 'database']
         self.assertEqual(set(conf.keys()), set(d))
 

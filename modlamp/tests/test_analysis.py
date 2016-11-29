@@ -1,13 +1,12 @@
 import unittest
-import os
 
 from modlamp.analysis import GlobalAnalysis
 from modlamp.core import read_fasta
-from os.path import abspath, join
+from os.path import dirname, join
 
 
 class TestAnalysis(unittest.TestCase):
-    sequences, _ = read_fasta(join(abspath('.'), 'modlamp/tests/files/lib.fasta'))
+    sequences, _ = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
     a = GlobalAnalysis(sequences)
     
     def test_libshape(self):

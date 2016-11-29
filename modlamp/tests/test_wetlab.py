@@ -1,11 +1,11 @@
 import unittest
-from os.path import abspath, join
+from os.path import dirname, join
 
 from modlamp.wetlab import CD
 
 
 class TestCD(unittest.TestCase):
-    cd = CD(join(abspath('.'), 'modlamp/tests/files'), 180, 260, amide=True)
+    cd = CD(join(dirname(__file__), 'files'), 180, 260, amide=True)
     
     def test_init(self):
         self.assertIsNotNone(self.cd.filenames)
