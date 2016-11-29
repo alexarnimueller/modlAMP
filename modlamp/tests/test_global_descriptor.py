@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from ..descriptors import GlobalDescriptor
+from modlamp.descriptors import GlobalDescriptor
 
 
 __author__ = 'modlab'

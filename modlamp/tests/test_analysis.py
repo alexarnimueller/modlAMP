@@ -1,6 +1,8 @@
 import unittest
-from ..analysis import GlobalAnalysis
-from ..core import read_fasta
+import os
+
+from modlamp.analysis import GlobalAnalysis
+from modlamp.core import read_fasta
 from os.path import abspath, join
 
 

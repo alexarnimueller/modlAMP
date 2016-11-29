@@ -1,7 +1,7 @@
 import re
 import unittest
 
-from ..sequences import Hepahelices
+from modlamp.sequences import Hepahelices
 
 
 class TestHepa(unittest.TestCase):

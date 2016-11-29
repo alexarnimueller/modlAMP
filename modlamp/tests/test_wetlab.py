@@ -1,7 +1,7 @@
 import unittest
 from os.path import abspath, join
 
-from ..wetlab import CD
+from modlamp.wetlab import CD
 
 
 class TestCD(unittest.TestCase):

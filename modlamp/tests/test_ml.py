@@ -1,8 +1,8 @@
 import unittest
 
-from ..ml import train_best_model
-from ..datasets import load_ACPvsNeg
-from ..descriptors import PeptideDescriptor
+from modlamp.ml import train_best_model
+from modlamp.datasets import load_ACPvsNeg
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = 'modlab'
 
