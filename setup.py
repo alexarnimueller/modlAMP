@@ -13,7 +13,7 @@ with open('README') as f:
 with open('LICENSE') as f:
     lic = f.read()
 
-setup(name='modlAMP',
+setup(name='modlamp',
       version='2.6.0',
       description='modlabs peptide package with for in silico peptide QSAR studies',
       long_description=readme,
@@ -22,7 +22,7 @@ setup(name='modlAMP',
       url='https://www.cadd.ethz.ch/software/modlamp.html',
       license=lic,
       keywords="antimicrobial peptide descriptor sequences QSAR machine learning design",
-      packages=['modlamp', 'tests'],
+      packages=['modlamp'],
       package_data={'modlamp': ['data/*.csv', 'data/*.fasta']},
       scripts=['bin/example_modlamp.py'],
       classifiers=[
