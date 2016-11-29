@@ -30,7 +30,7 @@ setup(name='modlamp',
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Science/Research',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
-          'License :: OSI Approved :: BSD-3',
+          'License :: OSI Approved :: BSD License',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7'],
       install_requires=install_reqs
