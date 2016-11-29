@@ -1042,7 +1042,6 @@ def aminoacids(self):
                                   0., 0.01612903, 0., 0., 0.,
                                   0., 0., 0.]])
 
-
 def ngrams_apd():
     """Function returning the most frequent 2-, 3- and 4-grams from all sequences in the `APD3
     <http://aps.unmc.edu/AP/>`_, version August 2016 with 2727 sequences.

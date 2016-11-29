@@ -1,7 +1,7 @@
 import unittest
 import os
-from ..database import query_apd, query_camp
-from ..database import _read_db_config
+from modlamp.database import query_apd, query_camp
+from modlamp.database import _read_db_config
 
 
 class TestConnect(unittest.TestCase):
