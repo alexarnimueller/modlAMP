@@ -80,8 +80,8 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
                     E.g. StandardScaler(), MinMaxScaler(), Normalizer().
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        (choose from `model evaluation <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`).
-    :param param_grid: {dict} parameter grid for the gridsearch (see sklearn.grid_search).
+        (choose from `scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`).
+    :param param_grid: {dict} parameter grid for the gridsearch (see `sklearn.grid_search <http://scikit-learn.org/stable/modules/model_evaluation.html>` ).
     :param cv: {int} number of folds for cross-validation.
     :return: best estimator pipeline.
 
@@ -205,13 +205,13 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param x_train: {array} descriptor values for training data.
     :param y_train: {array} class values for training data.
     :param param_name: {string} parameter to assess in the validation curve plot. For SVM,
-        "clf__C" (C parameter), "clf__gamma" (gamma parameter). For RF, "clf__n_estimators" (number of trees),
+        "clf__C" (C parameter), "clf__gamma" (gamma parameter). For Random Forest, "clf__n_estimators" (number of trees),
         "clf__max_depth" (max num of branches per tree, "clf__min_samples_split" (min number of samples required to split an
         internal tree node), "clf__min_samples_leaf" (min number of samples in newly created leaf).
     :param param_range: {list} parameter range for the validation curve.
     :param cv: {int} number of folds for cross-validation.
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        (choose from http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
+        `sklearn.model_evaluation.scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`.
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
@@ -296,13 +296,42 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
     :param filename: {string} valid path for the file to store the predictions.
     :param save_csv: {bool} if true additionally saves csv file with predicitons.
     :return: pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
-        are the predicted probability of the peptide belonging to class0 and class1, respectively.
+        are the predicted probability of the peptide belonging to class 0 and class 1, respectively.
+
+    :Example:
+
+    >>> from modlamp.ml import train_best_model, predict
+    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp import descriptors
+    >>> from modlamp.sequences import Helices
+    >>> data = load_ACPvsNeg()
+
+    Calculating descriptor from the data
+    >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
+    >>> desc.calculate_autocorr(7)
+    >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
+
+    Generating 10 de novo Helical sequences to predict their activity
+    >>> H = Helices(seqnum=10, lenmin=7, lenmax=28)
+    >>> H.generate_sequences()
+
+    Calculating descriptor for the newly generated sequences
+    >>> descH = descriptors.PeptideDescriptor(H.sequences, scalename='pepcats')
+    >>> descH.calculate_autocorr(7)
+
+    >>> df = predict(best_svm_model, x_test=descH.descriptor, seqs_test=H.sequences)
+    >>> df.head(3)
+           ID             Sequence  Pred_prob_class0  Pred_prob_class1
+    0   0  IVKVIKLGAKAVKAAVRLI          0.026383          0.973617
+    1   1        RAIKAVVRLGRIA          0.020023          0.979977
+    2   2     GVKIIRGGVRGIKIVV          0.106643          0.893357
+
     """
-# TODO: add examples
+# TODO: change in examples load_ACPvsNeg with new dataset example.
     if filename is None:
         filename = 'probability_predictions'
 
-    pred_probs = classifier.predict_proba(x_test, n_jobs=-1)
+    pred_probs = classifier.predict_proba(x_test)
 
     if not (y_test.size and names_test):
         dictpred = {'ID': range(len(x_test)), 'Sequence': seqs_test,
@@ -341,12 +370,35 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :param X: {array} descriptor values for training data.
     :param y: {array} class values for training data.
     :param cv: {int} number of folds for cross-validation.
-    :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
-                    (http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter).
+    :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
+    `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`.
     :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
+
+    :Example:
+
+    >>> from modlamp.ml import train_best_model, score_cv
+    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp import descriptors
+    >>> from modlamp.sequences import Helices
+    >>> data = load_ACPvsNeg()
+
+    Calculating descriptor from the data
+    >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
+    >>> desc.calculate_autocorr(7)
+    >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
+
+    Cross validation scores
+    >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
+             Metrics  Mean CV score     StDev
+    0   accuracy       0.904552  0.057164
+    1  precision       0.924167  0.037676
+    2     recall       0.884211  0.107348
+    3         f1       0.900237  0.062511
+    4    roc_auc       0.954294  0.035819
+
     """
-# TODO: examples
+# TODO: change example for other existing dataset
     if metrics is None:
         metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
 
@@ -375,8 +427,8 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
 def score_testset(classifier, X_test, y_test):
     """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
-    (roc_auc). See sklearn.metrics for more information
-    (http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics).
+    (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`
+    for more information.
 
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X_test: {array} descriptor values for the test data.
