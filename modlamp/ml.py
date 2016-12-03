@@ -8,12 +8,12 @@ This module contains different functions to facilitate machine learning mainly u
 Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
 check the scikit-learn documentation.
 
-=============================    =========================================================================================================================================
+=============================    ==========================================================================================================================================
 Model                            Reference
-=============================    =========================================================================================================================================
-Support Vector Machine           `sklearn.svm.SVC <http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`
-Random Forest                    `sklearn.ensemble.RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`
-=============================    =========================================================================================================================================
+=============================    ==========================================================================================================================================
+Support Vector Machine           `sklearn.svm.SVC <http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_
+Random Forest                    `sklearn.ensemble.RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_
+=============================    ==========================================================================================================================================
 
 .. versionadded:: 2.2.0
 """
@@ -80,8 +80,8 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
                     E.g. StandardScaler(), MinMaxScaler(), Normalizer().
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        (choose from `scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`).
-    :param param_grid: {dict} parameter grid for the gridsearch (see `sklearn.grid_search <http://scikit-learn.org/stable/modules/model_evaluation.html>` ).
+        (choose from `scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
+    :param param_grid: {dict} parameter grid for the gridsearch (see `sklearn.grid_search <http://scikit-learn.org/stable/modules/model_evaluation.html>`_).
     :param cv: {int} number of folds for cross-validation.
     :return: best estimator pipeline.
 
@@ -211,7 +211,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param param_range: {list} parameter range for the validation curve.
     :param cv: {int} number of folds for cross-validation.
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        `sklearn.model_evaluation.scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`.
+        `sklearn.model_evaluation.scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
@@ -371,7 +371,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :param y: {array} class values for training data.
     :param cv: {int} number of folds for cross-validation.
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
-    `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`.
+    `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
 
@@ -427,7 +427,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
 def score_testset(classifier, X_test, y_test):
     """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
-    (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`
+    (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`_
     for more information.
 
     :param classifier: {classifier instance} trained classifier used for predictions.
