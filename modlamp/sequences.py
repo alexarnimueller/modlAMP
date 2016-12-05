@@ -315,7 +315,6 @@ class Centrosymmetric(BaseSequence):
 
 
 class AmphipathicArc(BaseSequence):
-    # TODO: add test cases
     """Class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with
     different arc sizes.
 
@@ -354,6 +353,7 @@ class AmphipathicArc(BaseSequence):
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
+        >>> from modlamp.sequences import AmphipathicArc
         >>> amphi_hel = AmphipathicArc(4, 10, 25)
         >>> amphi_hel.generate_arc(80)
         >>> amphi_hel.sequences
@@ -436,7 +436,6 @@ class AmphipathicArc(BaseSequence):
 
 
 class HelicesACP(BaseSequence):
-    # TODO: add test cases
     """Class for peptides sequences with the amino acid probability of alpha-helical ACPs.
 
     This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability
@@ -444,55 +443,8 @@ class HelicesACP(BaseSequence):
     62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences
     (Gabernet et al., MedChemComm 2016).
 
-    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====
-    AA  pos0    pos1 	pos2 	pos3 	pos4 	pos5 	pos6 	pos7 	pos8 	pos9
-    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====
-    A 	0.048 	0.000 	0.000 	0.048 	0.016 	0.129 	0.032 	0.097 	0.193 	0.500
-    C 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000
-    D 	0.000 	0.016 	0.000 	0.274 	0.017 	0.000 	0.000 	0.016 	0.000 	0.000
-    E 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.064 	0.000 	0.016
-    F 	0.161 	0.048 	0.306 	0.000 	0.048 	0.000 	0.000 	0.016 	0.000	0.016
-    G 	0.645 	0.000 	0.177 	0.145 	0.000 	0.016 	0.258 	0.113 	0.064 	0.081
-    H 	0.000 	0.000 	0.000 	0.016 	0.000 	0.000 	0.016 	0.000 	0.032 	0.000
-    I 	0.048 	0.113 	0.016 	0.081 	0.338 	0.274 	0.000 	0.048 	0.145	0.064
-    K 	0.000 	0.032 	0.016 	0.129 	0.129 	0.000 	0.387 	0.338 	0.048 	0.032
-    L 	0.048 	0.710 	0.129 	0.048 	0.096 	0.322 	0.210 	0.064	0.113 	0.064
-    M 	0.000 	0.016 	0.016 	0.048 	0.016 	0.032 	0.000 	0.000 	0.000 	0.000
-    N 	0.000 	0.016 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000
-    P 	0.000 	0.000 	0.145 	0.016 	0.032 	0.016 	0.000 	0.000	0.000 	0.000
-    Q 	0.000 	0.000 	0.016 	0.016 	0.000 	0.000 	0.016 	0.000 	0.016 	0.000
-    R 	0.000 	0.016 	0.016 	0.000 	0.016 	0.000 	0.016 	0.000 	0.016 	0.016
-    S 	0.016 	0.000 	0.016 	0.129 	0.032 	0.032 	0.048 	0.177 	0.000 	0.032
-    T 	0.016 	0.016 	0.000 	0.016 	0.048 	0.016 	0.000 	0.016 	0.000 	0.016
-    V 	0.016 	0.016 	0.016 	0.016 	0.209 	0.161 	0.016 	0.048 	0.338 	0.161
-    W 	0.000 	0.000 	0.129 	0.016 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000
-    Y 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000
-    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====
-
-    ==  =====   =====   =====   =====   =====   =====   =====   =====
-    AA  pos10   pos11   pos12   pos13   pos14   pos15 	pos16 	pos17
-    ==  =====   =====   =====   =====   =====   =====   =====   =====
-    A 	0.048   0.113   0.100   0.185   0.078   0.120   0.170   0.167
-    C 	0.016   0.000   0.000   0.000   0.000   0.000   0.024   0.194
-    D 	0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000
-    E 	0.048   0.016   0.000   0.019   0.000   0.000   0.000   0.000
-    F 	0.000   0.097   0.067   0.019   0.000   0.020   0.146   0.000
-    G 	0.225   0.032   0.067   0.204   0.137   0.100   0.000   0.055
-    H 	0.000   0.210   0.000   0.000   0.000   0.160   0.000   0.000
-    I 	0.032   0.065   0.183   0.000   0.000   0.100   0.268   0.000
-    K 	0.419   0.081   0.000   0.037   0.294   0.040   0.024   0.028
-    L 	0.032   0.032   0.283   0.240   0.039   0.280   0.073   0.222
-    M 	0.000   0.000   0.033   0.000   0.020   0.020   0.000   0.000
-    N 	0.032   0.000   0.000   0.000   0.020   0.020   0.000   0.000
-    P 	0.016   0.000   0.000   0.130   0.176   0.000   0.000   0.000
-    Q 	0.000   0.016   0.000   0.019   0.000   0.000   0.000   0.000
-    R 	0.016   0.016   0.000   0.019   0.019   0.000   0.049   0.000
-    S 	0.096   0.048   0.017   0.000   0.157   0.100   0.000   0.056
-    T 	0.016   0.113   0.000   0.019   0.039   0.020   0.000   0.056
-    V 	0.000   0.145   0.250   0.111   0.020   0.020   0.220   0.222
-    W 	0.000   0.000   0.000   0.000   0.000   0.000   0.024   0.000
-    Y 	0.000   0.016   0.000   0.000   0.000   0.000   0.000   0.000
-    ==  =====   =====   =====   =====   =====   =====   =====   =====
+    .. image:: ../docs/static/helixplot_legend.png
+        :height: 300px
     """
     def generate_sequences(self):
         """Method to generate the sequences with the mentioned amino acid probabilities.
@@ -502,7 +454,8 @@ class HelicesACP(BaseSequence):
 
         :Example:
 
-        >>> helACP = Helix_ACP(4, 7, 18)
+        >>> from modlamp.sequences import HelicesACP
+        >>> helACP = HelicesACP(4, 7, 18)
         >>> helACP.generate_sequences()
         >>> helACP.sequences
         ['FLFDVAKKVAGTALT', 'GLGIILGAGG', 'GLRIKLGVWAKKA', 'GFWGFIKTI']
