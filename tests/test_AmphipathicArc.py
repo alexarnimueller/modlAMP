@@ -15,8 +15,8 @@ class TestAmphipathicArc(unittest.TestCase):
 
 	def test_seq_arc(self):
 		for seq in self.S.sequences:
-			self.assertTrue(any(s in seq[0][0] for s in ('A', 'D', 'E', 'G', 'H', 'K', 'N', 'P', 'Q', 'R', 'S', 'T', 'Y')))
-			self.assertTrue(any(s in seq[0][1] for s in ('F', 'I', 'L', 'V', 'W')))
+			self.assertTrue(any(s in seq[0] for s in ('A', 'D', 'E', 'G', 'H', 'K', 'N', 'P', 'Q', 'R', 'S', 'T', 'Y')))
+			self.assertTrue(any(s in seq[1] for s in ('F', 'I', 'L', 'V', 'W')))
 
 	S.make_H_gradient()
 
