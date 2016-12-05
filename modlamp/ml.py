@@ -88,36 +88,34 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     :Example:
 
     >>> from modlamp.ml import train_best_model
-    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp.datasets import load_ACPvsRandom
     >>> from modlamp import descriptors
 
     Loading a dataset for training.
 
-    >>> data = load_ACPvsNeg()
-    >>> data.sequences[188]
-    'FLFKLIPKAIKGLVKAIRK'
-    >>> data.target[188]
-    '1'
-    >>> data.target_names
-    array(['Neg', 'ACP'], dtype='|S3')
+    >>> data = load_ACPvsRandom()
+    >>> len(data.sequences)
+    826
+    >>>list(data.target_names)
+    ['Random', 'ACP']
 
     Calculating Pepcats descriptor in autocorrelation modality:
 
     >>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
     >>> descr.calculate_autocorr(7)
     >>> descr.descriptor
-    array([[ 0.77777778,  0.11111111,  0.22222222, ...,  0.08333333,
+    array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,
+         0.21428571,  0.        ],
+       [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,
          0.        ,  0.        ],
-       [ 0.56521739,  0.04347826,  0.13043478, ...,  0.05882353,
-         0.        ,  0.        ],
-       [ 0.81818182,  0.27272727,  0.09090909, ...,  0.        ,
-         0.        ,  0.        ],
+       [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,
+         0.26666667,  0.        ],
        ...,
-       [ 0.92307692,  0.07692308,  0.07692308, ...,  0.        ,
+       [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,
          0.        ,  0.        ],
-       [ 0.94736842,  0.10526316,  0.        , ...,  0.        ,
-         0.        ,  0.        ],
-       [ 0.94736842,  0.10526316,  0.        , ...,  0.        ,
+       [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,
+         0.09090909,  0.        ],
+       [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,
          0.        ,  0.        ]])
 
 
@@ -127,19 +125,18 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     >>> y_train = data.target
     >>> best_svm_model = train_best_model('svm', X_train, y_train)
     Best score (scorer: make_scorer(matthews_corrcoef)) and parameters from a 10-fold cross validation:
-    0.850469628236
-    {'clf__C': 0.1, 'clf__kernel': 'linear'}
+    0.739995453978
+    {'clf__gamma': 0.1, 'clf__C': 10.0, 'clf__kernel': 'rbf'}
 
     >>> best_svm_model.get_params()
-    {'clf': SVC(C=0.1, cache_size=200, class_weight='balanced', coef0=0.0,
-       decision_function_shape=None, degree=3, gamma='auto', kernel='linear',
+    {'clf': SVC(C=10.0, cache_size=200, class_weight='balanced', coef0=0.0,
+       decision_function_shape=None, degree=3, gamma=0.1, kernel='rbf',
        max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
        verbose=False),
-     'clf__C': 0.1,
-     ...
-     'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
-      ('clf', SVC(C=0.1, cache_size=200, class_weight='balanced', coef0=0.0,
-         decision_function_shape=None, degree=3, gamma='auto', kernel='linear',
+    ...
+    'steps': [('scl', StandardScaler(copy=True, with_mean=True, with_std=True)),
+      ('clf', SVC(C=10.0, cache_size=200, class_weight='balanced', coef0=0.0,
+         decision_function_shape=None, degree=3, gamma=0.1, kernel='rbf',
          max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,
          verbose=False))]}
     """
@@ -220,29 +217,36 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
     :Example:
 
-    >>> from modlamp.ml import train_best_model, plot_validation_curve
-    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp.ml import train_best_model
+    >>> from modlamp.datasets import load_ACPvsRandom
     >>> from modlamp import descriptors
 
     Loading a dataset for training.
 
-    >>> data = load_ACPvsNeg()
-    >>> data.sequences[188]
-    'FLFKLIPKAIKGLVKAIRK'
-    >>> data.target[188]
-    '1'
-    >>> data.target_names
-    array(['Neg', 'ACP'], dtype='|S3')
+    >>> data = load_ACPvsRandom()
+    >>> len(data.sequences)
+    826
+    >>>list(data.target_names)
+    ['Random', 'ACP']
 
-    Calculating Pepcats descriptor in autocorrelation:
+    Calculating Pepcats descriptor in autocorrelation modality:
 
     >>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
     >>> descr.calculate_autocorr(7)
-    >>> descr.descriptor[0]
-    array([ 0.77777778,  0.11111111,  0.22222222,  0.16666667,  0.        ,
-        ...
-        0.        ,  0.66666667,  0.        ,  0.08333333,  0.08333333,
-        0.        ,  0.        ])
+    >>> descr.descriptor
+    array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,
+         0.21428571,  0.        ],
+       [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,
+         0.        ,  0.        ],
+       [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,
+         0.26666667,  0.        ],
+       ...,
+       [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,
+         0.        ,  0.        ],
+       [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,
+         0.09090909,  0.        ],
+       [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,
+         0.        ,  0.        ]])
 
 
     Training an SVM model with this data:
@@ -250,7 +254,11 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     >>> X_train = descr.descriptor
     >>> y_train = data.target
     >>> best_svm_model = train_best_model('svm', X_train, y_train)
-    >>> plot_validation_curve(best_svm_model, descr.descriptor, data.target, param_name='clf__C', param_range=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000])
+    Best score (scorer: make_scorer(matthews_corrcoef)) and parameters from a 10-fold cross validation:
+    0.739995453978
+    {'clf__gamma': 0.1, 'clf__C': 10.0, 'clf__kernel': 'rbf'}
+
+    >>> plot_validation_curve(best_svm_model, X_train, y_train, param_name='clf__gamma', param_range=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000])
 
     .. image:: ../docs/static/validation_curve.png
         :height: 300px
@@ -301,10 +309,10 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
     :Example:
 
     >>> from modlamp.ml import train_best_model, predict
-    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp.datasets import load_ACPvsRandom
     >>> from modlamp import descriptors
     >>> from modlamp.sequences import Helices
-    >>> data = load_ACPvsNeg()
+    >>> data = load_ACPvsRandom()
 
     Calculating descriptor from the data
     >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
@@ -312,7 +320,7 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
     >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
 
     Generating 10 de novo Helical sequences to predict their activity
-    >>> H = Helices(seqnum=10, lenmin=7, lenmax=28)
+    >>> H = Helices(seqnum=10, lenmin=7, lenmax=30)
     >>> H.generate_sequences()
 
     Calculating descriptor for the newly generated sequences
@@ -321,13 +329,12 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
 
     >>> df = predict(best_svm_model, x_test=descH.descriptor, seqs_test=H.sequences)
     >>> df.head(3)
-           ID             Sequence  Pred_prob_class0  Pred_prob_class1
-    0   0  IVKVIKLGAKAVKAAVRLI          0.026383          0.973617
-    1   1        RAIKAVVRLGRIA          0.020023          0.979977
-    2   2     GVKIIRGGVRGIKIVV          0.106643          0.893357
+       ID                   Sequence  Pred_prob_class0  Pred_prob_class1
+    0   0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833
+    1   1                LGVRVLRIIIR          0.007239          0.992761
+    2   2              VGIRLARGVGRIG          0.071436          0.928564
 
     """
-# TODO: change in examples load_ACPvsNeg with new dataset example.
     if filename is None:
         filename = 'probability_predictions'
 
@@ -378,10 +385,9 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_cv
-    >>> from modlamp.datasets import load_ACPvsNeg
+    >>> from modlamp.datasets import load_ACPvsRandom
     >>> from modlamp import descriptors
-    >>> from modlamp.sequences import Helices
-    >>> data = load_ACPvsNeg()
+    >>> data = load_ACPvsRandom()
 
     Calculating descriptor from the data
     >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
@@ -390,15 +396,14 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
 
     Cross validation scores
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-             Metrics  Mean CV score     StDev
-    0   accuracy       0.904552  0.057164
-    1  precision       0.924167  0.037676
-    2     recall       0.884211  0.107348
-    3         f1       0.900237  0.062511
-    4    roc_auc       0.954294  0.035819
+         Metrics  Mean CV score     StDev
+    0   accuracy       0.841199  0.051708
+    1  precision       0.930872  0.024897
+    2     recall       0.735763  0.093979
+    3         f1       0.819435  0.064995
+    4    roc_auc       0.914607  0.039345
 
     """
-# TODO: change example for other existing dataset
     if metrics is None:
         metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
 
@@ -434,6 +439,34 @@ def score_testset(classifier, X_test, y_test):
     :param X_test: {array} descriptor values for the test data.
     :param y_test: {array} class values for the test data.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
+
+    :Example:
+
+    >>> from modlamp.ml import train_best_model, score_testset
+    >>> from sklearn.model_selection import train_test_split
+    >>> from modlamp.datasets import load_ACPvsRandom
+    >>> from modlamp import descriptors
+    >>> data = load_ACPvsRandom()
+
+    Calculating descriptor from the data
+    >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
+    >>> desc.calculate_autocorr(7)
+
+    Splitting into train and test sets
+    >>> X_train, X_test, y_train, y_test = train_test_split(desc.descriptor, data.target, test_size = 0.33)
+
+    Training an SVM model with the training set
+    >>> best_svm_model = train_best_model('svm', X_train,y_train)
+
+    Calculating the test set scores
+    >>> score_testset(best_svm_model, X_test, y_test)
+             Metrics    Scores
+    0        MCC  0.838751
+    1   accuracy  0.919414
+    2  precision  0.923664
+    3     recall  0.909774
+    4         f1  0.916667
+    5    roc_auc  0.919173
     """
 
     metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
