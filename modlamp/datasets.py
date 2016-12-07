@@ -2,17 +2,17 @@
 """
 .. currentmodule:: modlamp.datasets
 
-.. moduleauthor:: modlab Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
+.. moduleauthor:: ETH Zurich Alex Mueller <alex.mueller@pharma.ethz.ch>
 
 This module incorporates functions to load different peptide datasets used for classification.
 
 =============================        ============================================================================
 Function                             Data
 =============================        ============================================================================
-:py:func:`load_AMPvsTMset`           Antimicrobial peptides versus trans-membrane sequences
-:py:func:`load_helicalAMPset`        Helical antimicrobial peptides versus other helical peptides
-:py:func:`load_ACPvsNeg`             Helical anticancer peptides versus other mixed sequences
-:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from *UniProt*
+:py:func:`load_AMPvsTM`              Antimicrobial peptides versus trans-membrane sequences
+:py:func:`load_AMPvsUniProt`         AMPs from the *APD3* versus other peptides from the *UniProt* database
+:py:func:`load_ACPvsTM`              Anticancer peptides (*CancerPPD*) versus helical transmembrane sequences
+:py:func:`load_ACPvsRandom`          Anticancer peptides (*CancerPPD*) versus random scrambled AMP sequences
 :py:func:`load_custom`               A custom data set provided in ``modlamp/data`` as a ``.csv`` file
 =============================        ============================================================================
 """
@@ -63,28 +63,31 @@ class Bunch(dict):
         pass
 
 
-def load_AMPvsTMset():
-    """Function to load a dataset consisting of **AMP sequences and transmembrane regions of proteins** for classification.
+def load_AMPvsTM():
+    """Function to load a dataset consisting of **AMP sequences** and **transmembrane regions of proteins** for
+    classification.
 
     The AMP class consists of an intersection of all activity annotations of the `APD2 <http://aps.unmc.edu/AP/>`_ and
     `CAMP <http://camp.bicnirrh.res.in/>`_ databases, where for gram positive, gram negative and antifungal exact
     matches were observed. A detailed description of how the dataset was compiled can be found in the following
-    publication: *Schneider P. et al. 2016, Mol. Inf.*
+    publication: Schneider, P., Müller, A. T., Gabernet, G., Button, A. L., Posselt, G., Wessler, S., Hiss, J. A. and
+    Schneider, G. (2016), Hybrid Network Model for “Deep Learning” of Chemical Data: Application to Antimicrobial
+    Peptides. Mol. Inf.. `doi:10.1002/minf.201600011 <http://onlinelibrary.wiley.com/doi/10.1002/minf.201600011/full>`_
 
-    =================    ====
+    =================    ===
     Classes                2
     Samples per class    206
     Samples total        412
-    Dimensionality        1
-    =================    ====
+    Dimensionality         1
+    =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
         the    classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
         features.
     :Example:
 
-    >>> from modlamp.datasets import load_AMPvsTMset
-    >>> data = load_AMPvsTMset()
+    >>> from modlamp.datasets import load_AMPvsTM
+    >>> data = load_AMPvsTM()
     >>> data.sequences
     ['AAGAATVLLVIVLLAGSYLAVLA','LWIVIACLACVGSAAALTLRA','FYRFYMLREGTAVPAVWFSIELIFGLFA','GTLELGVDYGRAN',...]
     >>> list(data.target_names)
@@ -114,38 +117,41 @@ def load_AMPvsTMset():
                  feature_names=['Sequence'])
 
 
-def load_helicalAMPset():
-    """Function to load a dataset consisting of **helical AMP sequences and other helical peptides** for classification.
+def load_AMPvsUniProt():
+    """Function to load a dataset consisting of the whole **APD3** versus the same number of sequences randomly
+    extracted from the **UniProt** database, to be used for classification.
 
-    The AMP class consists of 363 helical annotated sequences from the `APD2 <http://aps.unmc.edu/AP/>`_
-    (extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the
-    `PDB <http://www.rcsb.org/pdb/home/home.do>`_, out of which alpha helical regions were extracted. 363 sequences
-    were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.
+    The AMP class consists of 2646 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_ (extracted Jan. 2016).
+    The UniProt class consists of 2646 randomly extracted protein sequences from the `UniProt Database
+    <http://uniprot.org/>`_ with the search query *length 10 TO 50*.
 
-    =================    ====
-    Classes                2
-    Samples per class    363
-    Samples total        726
-    Dimensionality        1
-    =================    ====
+    =================    =====
+    Classes                 2
+    AMP Samples          2646
+    UniProt Samples      2646
+    Samples total        5292
+    Dimensionality          1
+    =================    =====
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
         the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
         features.
     :Example:
 
-    >>> from modlamp.datasets import load_helicalAMPset
-    >>> data = load_helicalAMPset()
-    >>> data.sequences[:5]
-    ['FDQAQTEIQATMEEN','DVDAALHYLARLVEAG','RCPLVIDYLIDLATRS','NPATLMMFFK','NLEDSIQILRTD']
+    >>> from modlamp.datasets import load_AMPvsUniProt
+    >>> data = load_AMPvsUniProt()
+    >>> data.sequences[:10]
+    ['GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV', 'YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY', ... ]
     >>> list(data.target_names)
-    ['HEL', 'AMP']
+    ['AMP', 'UniProt']
     >>> len(data.sequences)
-    726
+    5292
+    >>> data.target[:10]
+    array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'helicalAMPset.csv')) as csv_file:
+    with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples = int(temp[0])
@@ -162,22 +168,24 @@ def load_helicalAMPset():
                  target_names=target_names,
                  feature_names=['Sequence'])
 
-def load_ACPvsTM():
-    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides extracted
-     from alpha-helical transmembrane regions of proteins for classification.
 
-    The ACP class consists of a collection of 413 ACPs from the `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_
-    database with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+def load_ACPvsTM():
+    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides
+    extracted from alpha-helical transmembrane regions of proteins for classification.
+
+    The ACP class consists of a collection of 413 ACPs from the `CancerPPD
+    <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ database with length between 7 and 30 aa and without cysteines
+    to facilitate peptide synthesis.
 
     The Negative peptide set contains a random selection of 413 transmembrane alpha-helices (extracted from
     the `PDBTM <http://pdbtm.enzim.hu/>`_ ) isolated directly from the proteins crystal structure.
 
     =================    ===
-    Classes              2
+    Classes                2
     ACP peptides         413
     Negative peptides    413
     Total peptides       826
-    Dimensionality       1
+    Dimensionality         1
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
@@ -187,8 +195,8 @@ def load_ACPvsTM():
 
     >>> from modlamp.datasets import load_ACPvsTM
     >>> data = load_ACPvsTM()
-    >>> data.sequences[:5]
-    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA', 'AFGMALKLLKKVL', 'AIGKFLHSAKKFGKAFVGEIMNS']
+    >>> data.sequences[:4]
+    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA', 'AFGMALKLLKKVL']
     >>> list(data.target_names)
     ['TM', 'ACP']
     >>> len(data.sequences)
@@ -225,11 +233,11 @@ def load_ACPvsRandom():
      of AMPs in the APD2 database.
 
     =================    ===
-    Classes              2
+    Classes                2
     ACP peptides         413
     Negative peptides    413
     Total peptides       826
-    Dimensionality       1
+    Dimensionality         1
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
@@ -249,65 +257,6 @@ def load_ACPvsRandom():
 
     module_path = dirname(__file__)
     with open(join(module_path, 'data', 'ACP_CancPPD_vs_Random.csv')) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
-
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
-                 feature_names=['Sequence'])
-
-
-def load_AMPvsUniProt():
-    """Function to load a dataset consisting of **APD3 < 80% internal similarity versus UniProt not antimicrobial,
-    not secretory, 10-50 AA and verified** for classification.
-
-    The AMP class consists of 1609 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_. The whole APD3 was
-    extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the
-    `CD-Hit tool <http://cd-hit.org>`_. The UniProt class is constructed out of extracted protein sequences from the
-    `UniProt Database <http://uniprot.org/>`_ with the search query *NOT secretory NOT antimicrobial
-    AND length 10 TO 50*. These sequences were as well subjected to a similarity filtering of 80% yielding 4279
-    sequences.
-
-    =================    =====
-    Classes                 2
-    AMP Samples          1609
-    UniProt Samples      4279
-    Samples total        5888
-    Dimensionality          1
-    =================    =====
-
-    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
-    :Example:
-
-    >>> from modlamp.datasets import load_AMPvsUniProt
-    >>> data = load_AMPvsUniProt()
-    >>> data.sequences[:5]
-    ['GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV',
-    'YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY',
-    'DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC',
-    'NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC',
-    'VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK']
-    >>> list(data.target_names)
-    ['AMP', 'UniProt']
-    >>> len(data.sequences)
-    5888
-    >>> data.target[:10]
-    array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    """
-
-    module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples = int(temp[0])
