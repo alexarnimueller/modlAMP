@@ -162,27 +162,21 @@ def load_helicalAMPset():
                  target_names=target_names,
                  feature_names=['Sequence'])
 
+def load_ACPvsTM():
+    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides extracted
+     from alpha-helical transmembrane regions of proteins for classification.
 
-def load_ACPvsNeg():
-    """Function to load a dataset consisting of **alpha-helical ACP sequences and negative peptides extracted from
-    alpha-helical transmembrane and non-transmembrane regions of proteins** for classification.
+    The ACP class consists of a collection of 413 ACPs from the `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_
+    database with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
 
-    The ACP class consists of a collection of ACPs from the `APD2 <http://aps.unmc.edu/AP/>`_ and
-    `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ databases, manually curated by `Gisela Gabernet
-    <gisela.gabernet@pharma.ethz.ch>`_ at modlab ETH Zürich, checking the original literature and annotated active
-    against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,
-    haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to
-    facilitate synthesis.
-
-    The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
-    the `PDBTM <http://pdbtm.enzim.hu/>`_ ) and 47 non-transmembrane helices (extracted from the `PDB
-    <http://www.rcsb.org/pdb/home/home.do>`_) isolated directly from the proteins crystal structure.
+    The Negative peptide set contains a random selection of 413 transmembrane alpha-helices (extracted from
+    the `PDBTM <http://pdbtm.enzim.hu/>`_ ) isolated directly from the proteins crystal structure.
 
     =================    ===
     Classes              2
-    ACP peptides         95
-    Negative peptides    94
-    Total peptides       189
+    ACP peptides         413
+    Negative peptides    413
+    Total peptides       826
     Dimensionality       1
     =================    ===
 
@@ -191,18 +185,70 @@ def load_ACPvsNeg():
         features.
     :Example:
 
-    >>> from modlamp.datasets import load_ACPvsNeg
-    >>> data = load_ACPvsNeg()
-    >>> data.sequences
-    ['VLTIIATIFMPLTFIAGI', 'QLGAGLSVGLSGLAAGFAIGIVG', 'WLYLILGIIFGIFGPIFNKWVL', 'VTWLLFLLGFVAILI'...]
+    >>> from modlamp.datasets import load_ACPvsTM
+    >>> data = load_ACPvsTM()
+    >>> data.sequences[:5]
+    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA', 'AFGMALKLLKKVL', 'AIGKFLHSAKKFGKAFVGEIMNS']
     >>> list(data.target_names)
-    ['Neg', 'ACP']
+    ['TM', 'ACP']
     >>> len(data.sequences)
-    189
+    826
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'ACPvsNeg.csv')) as csv_file:
+    with open(join(module_path, 'data', 'ACP_CancPPD_vs_TM.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples = int(temp[0])
+        n_features = int(temp[1])
+        target_names = np.array(temp[2:])
+        sequences = np.empty((n_samples, n_features), dtype='|S100')
+        target = np.empty((n_samples,), dtype=np.int)
+
+        for i, ir in enumerate(data_file):
+            sequences[i] = np.asarray(ir[0], dtype=np.str)
+            target[i] = np.asarray(ir[-1], dtype=np.int)
+
+    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+                 target_names=target_names,
+                 feature_names=['Sequence'])
+
+
+def load_ACPvsRandom():
+    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides generated
+     randomly with the amino acid composition of AMPs.
+
+    The ACP class consists of a collection of 413 ACPs from the `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_
+    database with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+
+    The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition
+     of AMPs in the APD2 database.
+
+    =================    ===
+    Classes              2
+    ACP peptides         413
+    Negative peptides    413
+    Total peptides       826
+    Dimensionality       1
+    =================    ===
+
+    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+        features.
+    :Example:
+
+    >>> from modlamp.datasets import load_ACPvsRandom
+    >>> data = load_ACPvsRandom()
+    >>> data.sequences[:5]
+    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA', 'AFGMALKLLKKVL', 'AIGKFLHSAKKFGKAFVGEIMNS']
+    >>> list(data.target_names)
+    ['Random', 'ACP']
+    >>> len(data.sequences)
+    826
+    """
+
+    module_path = dirname(__file__)
+    with open(join(module_path, 'data', 'ACP_CancPPD_vs_Random.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples = int(temp[0])

@@ -1,5 +1,5 @@
 import unittest
-from modlamp.datasets import load_helicalAMPset, load_AMPvsTMset, load_ACPvsNeg, load_AMPvsUniProt
+from modlamp.datasets import load_helicalAMPset, load_AMPvsTMset, load_ACPvsTM, load_ACPvsRandom, load_AMPvsUniProt
 
 
 class TestHelicalSet(unittest.TestCase):
@@ -24,15 +24,31 @@ class TestTMSet(unittest.TestCase):
         self.assertEqual([0, 0, 1, 1], [int(self.data.target[i]) for i in [0, 205, 206, 411]])
 
 
-class TestACPNeg(unittest.TestCase):
+class TestACPvsTM(unittest.TestCase):
     
-    data = load_ACPvsNeg()
+    data = load_ACPvsTM()
 
     def test_sequences(self):
-        self.assertEqual('GLFGVLAKVAAHVVPAIAEHF', self.data.sequences[123])
+        self.assertEqual('NAVGTGVMGGMVTATVLAIFF', self.data.sequences[600])
 
     def test_targets(self):
-        self.assertEqual([0, 0, 1, 1], [int(self.data.target[i]) for i in [0, 93, 94, 188]])
+        self.assertEqual([1, 1, 0, 0], [self.data.target[i] for i in [0, 412, 413, 825]])
+
+    def test_n_sequences(self):
+        self.assertEqual(826, len(self.data.sequences))
+
+class TestACPvsRandom(unittest.TestCase):
+
+    data = load_ACPvsRandom()
+
+    def test_sequences(self):
+        self.assertEqual('KVTYLLLEGGK', self.data.sequences[600])
+
+    def test_targets(self):
+        self.assertEqual([1, 1, 0, 0], [self.data.target[i] for i in [0, 412, 413, 825]])
+
+    def test_n_sequences(self):
+        self.assertEqual(826, len(self.data.sequences))
         
 
 class TestAMPUniport(unittest.TestCase):
