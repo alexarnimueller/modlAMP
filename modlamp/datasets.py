@@ -226,8 +226,9 @@ def load_ACPvsRandom():
     """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides generated
      randomly with the amino acid composition of AMPs.
 
-    The ACP class consists of a collection of 413 ACPs from the `CancerPPD <http://crdd.osdd.net/raghava/cancerppd/index.php>`_
-    database with length between 7 and 30 aa and without Cysteines to facilitate synthesis.
+    The ACP class consists of a collection of 413 ACPs from the `CancerPPD
+    <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ database with length between 7 and 30 aa and without cysteines
+    to facilitate peptide synthesis.
 
     The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition
      of AMPs in the APD2 database.
