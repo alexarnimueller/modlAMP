@@ -378,10 +378,9 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :param y: {array} class values for training data.
     :param cv: {int} number of folds for cross-validation.
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
-    `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
+        `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param names: {list} names of the metrics to display on the dataframe.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
-
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_cv
@@ -396,13 +395,12 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
 
     Cross validation scores
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-         Metrics  Mean CV score     StDev
+    ID   Metrics  Mean CV score     StDev
     0   accuracy       0.841199  0.051708
     1  precision       0.930872  0.024897
     2     recall       0.735763  0.093979
     3         f1       0.819435  0.064995
     4    roc_auc       0.914607  0.039345
-
     """
     if metrics is None:
         metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
@@ -439,7 +437,6 @@ def score_testset(classifier, X_test, y_test):
     :param X_test: {array} descriptor values for the test data.
     :param y_test: {array} class values for the test data.
     :return: pandas dataframe containing the cross validation scores for the specified metrics.
-
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_testset
@@ -460,7 +457,7 @@ def score_testset(classifier, X_test, y_test):
 
     Calculating the test set scores
     >>> score_testset(best_svm_model, X_test, y_test)
-             Metrics    Scores
+    ID  Metrics   Scores
     0        MCC  0.838751
     1   accuracy  0.919414
     2  precision  0.923664

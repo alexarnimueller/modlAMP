@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &#8212; modlAMP v2.6.1 documentation</title>
+    <title>modlamp.sequences &#8212; modlAMP v2.6.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.6.1',
+        VERSION:     'v2.6.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="modlAMP v2.6.1 documentation" href="../../index.html" />
+    <link rel="top" title="modlAMP v2.6.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -368,7 +368,6 @@
 
 
 <div class="viewcode-block" id="AmphipathicArc"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.AmphipathicArc">[docs]</a><span class="k">class</span> <span class="nc">AmphipathicArc</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
-    <span class="c1"># TODO: add test cases</span>
     <span class="sd">&quot;&quot;&quot;Class for generating positively-charged amphipathic peptide sequences based on an alpha-helix pattern with</span>
 <span class="sd">    different arc sizes.</span>
 
@@ -407,6 +406,7 @@
 <span class="sd">        :return: A list of sequences in the attribute :py:attr:`sequences`.</span>
 <span class="sd">        :Example:</span>
 
+<span class="sd">        &gt;&gt;&gt; from modlamp.sequences import AmphipathicArc</span>
 <span class="sd">        &gt;&gt;&gt; amphi_hel = AmphipathicArc(4, 10, 25)</span>
 <span class="sd">        &gt;&gt;&gt; amphi_hel.generate_arc(80)</span>
 <span class="sd">        &gt;&gt;&gt; amphi_hel.sequences</span>
@@ -489,7 +489,6 @@
 
 
 <div class="viewcode-block" id="HelicesACP"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP">[docs]</a><span class="k">class</span> <span class="nc">HelicesACP</span><span class="p">(</span><span class="n">BaseSequence</span><span class="p">):</span>
-    <span class="c1"># TODO: add test cases</span>
     <span class="sd">&quot;&quot;&quot;Class for peptides sequences with the amino acid probability of alpha-helical ACPs.</span>
 
 <span class="sd">    This class incorporates methods for generating presumed alpha-helical peptides with the amino acid probability</span>
@@ -497,55 +496,8 @@
 <span class="sd">    62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences</span>
 <span class="sd">    (Gabernet et al., MedChemComm 2016).</span>
 
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
-<span class="sd">    AA  pos0    pos1 	pos2 	pos3 	pos4 	pos5 	pos6 	pos7 	pos8 	pos9</span>
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
-<span class="sd">    A 	0.048 	0.000 	0.000 	0.048 	0.016 	0.129 	0.032 	0.097 	0.193 	0.500</span>
-<span class="sd">    C 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000</span>
-<span class="sd">    D 	0.000 	0.016 	0.000 	0.274 	0.017 	0.000 	0.000 	0.016 	0.000 	0.000</span>
-<span class="sd">    E 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.064 	0.000 	0.016</span>
-<span class="sd">    F 	0.161 	0.048 	0.306 	0.000 	0.048 	0.000 	0.000 	0.016 	0.000	0.016</span>
-<span class="sd">    G 	0.645 	0.000 	0.177 	0.145 	0.000 	0.016 	0.258 	0.113 	0.064 	0.081</span>
-<span class="sd">    H 	0.000 	0.000 	0.000 	0.016 	0.000 	0.000 	0.016 	0.000 	0.032 	0.000</span>
-<span class="sd">    I 	0.048 	0.113 	0.016 	0.081 	0.338 	0.274 	0.000 	0.048 	0.145	0.064</span>
-<span class="sd">    K 	0.000 	0.032 	0.016 	0.129 	0.129 	0.000 	0.387 	0.338 	0.048 	0.032</span>
-<span class="sd">    L 	0.048 	0.710 	0.129 	0.048 	0.096 	0.322 	0.210 	0.064	0.113 	0.064</span>
-<span class="sd">    M 	0.000 	0.016 	0.016 	0.048 	0.016 	0.032 	0.000 	0.000 	0.000 	0.000</span>
-<span class="sd">    N 	0.000 	0.016 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000</span>
-<span class="sd">    P 	0.000 	0.000 	0.145 	0.016 	0.032 	0.016 	0.000 	0.000	0.000 	0.000</span>
-<span class="sd">    Q 	0.000 	0.000 	0.016 	0.016 	0.000 	0.000 	0.016 	0.000 	0.016 	0.000</span>
-<span class="sd">    R 	0.000 	0.016 	0.016 	0.000 	0.016 	0.000 	0.016 	0.000 	0.016 	0.016</span>
-<span class="sd">    S 	0.016 	0.000 	0.016 	0.129 	0.032 	0.032 	0.048 	0.177 	0.000 	0.032</span>
-<span class="sd">    T 	0.016 	0.016 	0.000 	0.016 	0.048 	0.016 	0.000 	0.016 	0.000 	0.016</span>
-<span class="sd">    V 	0.016 	0.016 	0.016 	0.016 	0.209 	0.161 	0.016 	0.048 	0.338 	0.161</span>
-<span class="sd">    W 	0.000 	0.000 	0.129 	0.016 	0.000 	0.000 	0.000 	0.000 	0.016 	0.000</span>
-<span class="sd">    Y 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000 	0.000</span>
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====   =====   =====</span>
-
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
-<span class="sd">    AA  pos10   pos11   pos12   pos13   pos14   pos15 	pos16 	pos17</span>
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
-<span class="sd">    A 	0.048   0.113   0.100   0.185   0.078   0.120   0.170   0.167</span>
-<span class="sd">    C 	0.016   0.000   0.000   0.000   0.000   0.000   0.024   0.194</span>
-<span class="sd">    D 	0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000</span>
-<span class="sd">    E 	0.048   0.016   0.000   0.019   0.000   0.000   0.000   0.000</span>
-<span class="sd">    F 	0.000   0.097   0.067   0.019   0.000   0.020   0.146   0.000</span>
-<span class="sd">    G 	0.225   0.032   0.067   0.204   0.137   0.100   0.000   0.055</span>
-<span class="sd">    H 	0.000   0.210   0.000   0.000   0.000   0.160   0.000   0.000</span>
-<span class="sd">    I 	0.032   0.065   0.183   0.000   0.000   0.100   0.268   0.000</span>
-<span class="sd">    K 	0.419   0.081   0.000   0.037   0.294   0.040   0.024   0.028</span>
-<span class="sd">    L 	0.032   0.032   0.283   0.240   0.039   0.280   0.073   0.222</span>
-<span class="sd">    M 	0.000   0.000   0.033   0.000   0.020   0.020   0.000   0.000</span>
-<span class="sd">    N 	0.032   0.000   0.000   0.000   0.020   0.020   0.000   0.000</span>
-<span class="sd">    P 	0.016   0.000   0.000   0.130   0.176   0.000   0.000   0.000</span>
-<span class="sd">    Q 	0.000   0.016   0.000   0.019   0.000   0.000   0.000   0.000</span>
-<span class="sd">    R 	0.016   0.016   0.000   0.019   0.019   0.000   0.049   0.000</span>
-<span class="sd">    S 	0.096   0.048   0.017   0.000   0.157   0.100   0.000   0.056</span>
-<span class="sd">    T 	0.016   0.113   0.000   0.019   0.039   0.020   0.000   0.056</span>
-<span class="sd">    V 	0.000   0.145   0.250   0.111   0.020   0.020   0.220   0.222</span>
-<span class="sd">    W 	0.000   0.000   0.000   0.000   0.000   0.000   0.024   0.000</span>
-<span class="sd">    Y 	0.000   0.016   0.000   0.000   0.000   0.000   0.000   0.000</span>
-<span class="sd">    ==  =====   =====   =====   =====   =====   =====   =====   =====</span>
+<span class="sd">    .. image:: ../docs/static/helixplot_legend.png</span>
+<span class="sd">        :height: 300px</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="HelicesACP.generate_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.sequences.HelicesACP.generate_sequences">[docs]</a>    <span class="k">def</span> <span class="nf">generate_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to generate the sequences with the mentioned amino acid probabilities.</span>
@@ -555,7 +507,8 @@
 
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; helACP = Helix_ACP(4, 7, 18)</span>
+<span class="sd">        &gt;&gt;&gt; from modlamp.sequences import HelicesACP</span>
+<span class="sd">        &gt;&gt;&gt; helACP = HelicesACP(4, 7, 18)</span>
 <span class="sd">        &gt;&gt;&gt; helACP.generate_sequences()</span>
 <span class="sd">        &gt;&gt;&gt; helACP.sequences</span>
 <span class="sd">        [&#39;FLFDVAKKVAGTALT&#39;, &#39;GLGIILGAGG&#39;, &#39;GLRIKLGVWAKKA&#39;, &#39;GFWGFIKTI&#39;]</span>
@@ -811,13 +764,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.6.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider (modlab).
-      Last updated on Nov 29, 2016.
+      Last updated on Dec 18, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

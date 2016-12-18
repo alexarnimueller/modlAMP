@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v2.6.1 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v2.6.2 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.6.1',
+        VERSION:     'v2.6.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v2.6.1 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v2.6.2 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.2 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -1248,7 +1248,8 @@ different arc sizes.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">AmphipathicArc</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="k">import</span> <span class="n">AmphipathicArc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span> <span class="o">=</span> <span class="n">AmphipathicArc</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">generate_arc</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">amphi_hel</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;YLYANLRQE&#39;, &#39;GVKPRIK&#39;, &#39;RWKKKVKDSVKDFEKRFKDIEKRIQRKLA&#39;, &#39;KIKEQLRNSVSGWHRN&#39;]</span>
@@ -1311,504 +1312,7 @@ the sequence amino acids to hydrophobic.</p>
 distribution of alpha-helical ACPs. For each of the positions in the helix (1-18) the amino acid distribution among
 62 anuran and hymenopteran alpha-helical ACPs was computed and is used to design the new sequences
 (Gabernet et al., MedChemComm 2016).</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="4%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">AA</th>
-<th class="head">pos0</th>
-<th class="head">pos1</th>
-<th class="head">pos2</th>
-<th class="head">pos3</th>
-<th class="head">pos4</th>
-<th class="head">pos5</th>
-<th class="head">pos6</th>
-<th class="head">pos7</th>
-<th class="head">pos8</th>
-<th class="head">pos9</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>0.048</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.048</td>
-<td>0.016</td>
-<td>0.129</td>
-<td>0.032</td>
-<td>0.097</td>
-<td>0.193</td>
-<td>0.500</td>
-</tr>
-<tr class="row-odd"><td>C</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>D</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.274</td>
-<td>0.017</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>E</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.064</td>
-<td>0.000</td>
-<td>0.016</td>
-</tr>
-<tr class="row-even"><td>F</td>
-<td>0.161</td>
-<td>0.048</td>
-<td>0.306</td>
-<td>0.000</td>
-<td>0.048</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-</tr>
-<tr class="row-odd"><td>G</td>
-<td>0.645</td>
-<td>0.000</td>
-<td>0.177</td>
-<td>0.145</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.258</td>
-<td>0.113</td>
-<td>0.064</td>
-<td>0.081</td>
-</tr>
-<tr class="row-even"><td>H</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.032</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>I</td>
-<td>0.048</td>
-<td>0.113</td>
-<td>0.016</td>
-<td>0.081</td>
-<td>0.338</td>
-<td>0.274</td>
-<td>0.000</td>
-<td>0.048</td>
-<td>0.145</td>
-<td>0.064</td>
-</tr>
-<tr class="row-even"><td>K</td>
-<td>0.000</td>
-<td>0.032</td>
-<td>0.016</td>
-<td>0.129</td>
-<td>0.129</td>
-<td>0.000</td>
-<td>0.387</td>
-<td>0.338</td>
-<td>0.048</td>
-<td>0.032</td>
-</tr>
-<tr class="row-odd"><td>L</td>
-<td>0.048</td>
-<td>0.710</td>
-<td>0.129</td>
-<td>0.048</td>
-<td>0.096</td>
-<td>0.322</td>
-<td>0.210</td>
-<td>0.064</td>
-<td>0.113</td>
-<td>0.064</td>
-</tr>
-<tr class="row-even"><td>M</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.048</td>
-<td>0.016</td>
-<td>0.032</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>N</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>P</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.145</td>
-<td>0.016</td>
-<td>0.032</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>Q</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>R</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.016</td>
-</tr>
-<tr class="row-odd"><td>S</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.129</td>
-<td>0.032</td>
-<td>0.032</td>
-<td>0.048</td>
-<td>0.177</td>
-<td>0.000</td>
-<td>0.032</td>
-</tr>
-<tr class="row-even"><td>T</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.048</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.016</td>
-</tr>
-<tr class="row-odd"><td>V</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.209</td>
-<td>0.161</td>
-<td>0.016</td>
-<td>0.048</td>
-<td>0.338</td>
-<td>0.161</td>
-</tr>
-<tr class="row-even"><td>W</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.129</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>Y</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="5%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">AA</th>
-<th class="head">pos10</th>
-<th class="head">pos11</th>
-<th class="head">pos12</th>
-<th class="head">pos13</th>
-<th class="head">pos14</th>
-<th class="head">pos15</th>
-<th class="head">pos16</th>
-<th class="head">pos17</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>0.048</td>
-<td>0.113</td>
-<td>0.100</td>
-<td>0.185</td>
-<td>0.078</td>
-<td>0.120</td>
-<td>0.170</td>
-<td>0.167</td>
-</tr>
-<tr class="row-odd"><td>C</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.024</td>
-<td>0.194</td>
-</tr>
-<tr class="row-even"><td>D</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>E</td>
-<td>0.048</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.019</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>F</td>
-<td>0.000</td>
-<td>0.097</td>
-<td>0.067</td>
-<td>0.019</td>
-<td>0.000</td>
-<td>0.020</td>
-<td>0.146</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>G</td>
-<td>0.225</td>
-<td>0.032</td>
-<td>0.067</td>
-<td>0.204</td>
-<td>0.137</td>
-<td>0.100</td>
-<td>0.000</td>
-<td>0.055</td>
-</tr>
-<tr class="row-even"><td>H</td>
-<td>0.000</td>
-<td>0.210</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.160</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>I</td>
-<td>0.032</td>
-<td>0.065</td>
-<td>0.183</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.100</td>
-<td>0.268</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>K</td>
-<td>0.419</td>
-<td>0.081</td>
-<td>0.000</td>
-<td>0.037</td>
-<td>0.294</td>
-<td>0.040</td>
-<td>0.024</td>
-<td>0.028</td>
-</tr>
-<tr class="row-odd"><td>L</td>
-<td>0.032</td>
-<td>0.032</td>
-<td>0.283</td>
-<td>0.240</td>
-<td>0.039</td>
-<td>0.280</td>
-<td>0.073</td>
-<td>0.222</td>
-</tr>
-<tr class="row-even"><td>M</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.033</td>
-<td>0.000</td>
-<td>0.020</td>
-<td>0.020</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>N</td>
-<td>0.032</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.020</td>
-<td>0.020</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>P</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.130</td>
-<td>0.176</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>Q</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.019</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-<tr class="row-even"><td>R</td>
-<td>0.016</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.019</td>
-<td>0.019</td>
-<td>0.000</td>
-<td>0.049</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>S</td>
-<td>0.096</td>
-<td>0.048</td>
-<td>0.017</td>
-<td>0.000</td>
-<td>0.157</td>
-<td>0.100</td>
-<td>0.000</td>
-<td>0.056</td>
-</tr>
-<tr class="row-even"><td>T</td>
-<td>0.016</td>
-<td>0.113</td>
-<td>0.000</td>
-<td>0.019</td>
-<td>0.039</td>
-<td>0.020</td>
-<td>0.000</td>
-<td>0.056</td>
-</tr>
-<tr class="row-odd"><td>V</td>
-<td>0.000</td>
-<td>0.145</td>
-<td>0.250</td>
-<td>0.111</td>
-<td>0.020</td>
-<td>0.020</td>
-<td>0.220</td>
-<td>0.222</td>
-</tr>
-<tr class="row-even"><td>W</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.024</td>
-<td>0.000</td>
-</tr>
-<tr class="row-odd"><td>Y</td>
-<td>0.000</td>
-<td>0.016</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-</tr>
-</tbody>
-</table>
+<a class="reference internal image-reference" href="_images/helixplot_legend.png"><img alt="_images/helixplot_legend.png" src="_images/helixplot_legend.png" style="height: 300px;" /></a>
 <dl class="method">
 <dt id="modlamp.sequences.HelicesACP.generate_sequences">
 <code class="descname">generate_sequences</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/sequences.html#HelicesACP.generate_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.sequences.HelicesACP.generate_sequences" title="Permalink to this definition">¶</a></dt>
@@ -1824,7 +1328,8 @@ according to the position in the helix wheel.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span> <span class="o">=</span> <span class="n">Helix_ACP</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="k">import</span> <span class="n">HelicesACP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span> <span class="o">=</span> <span class="n">HelicesACP</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">helACP</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;FLFDVAKKVAGTALT&#39;, &#39;GLGIILGAGG&#39;, &#39;GLRIKLGVWAKKA&#39;, &#39;GFWGFIKTI&#39;]</span>
@@ -2141,17 +1646,17 @@ as function input.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsTMset" title="modlamp.datasets.load_AMPvsTMset"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsTMset()</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsTM" title="modlamp.datasets.load_AMPvsTM"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsTM()</span></code></a></td>
 <td>Antimicrobial peptides versus trans-membrane sequences</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_helicalAMPset" title="modlamp.datasets.load_helicalAMPset"><code class="xref py py-func docutils literal"><span class="pre">load_helicalAMPset()</span></code></a></td>
-<td>Helical antimicrobial peptides versus other helical peptides</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_ACPvsNeg" title="modlamp.datasets.load_ACPvsNeg"><code class="xref py py-func docutils literal"><span class="pre">load_ACPvsNeg()</span></code></a></td>
-<td>Helical anticancer peptides versus other mixed sequences</td>
-</tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_AMPvsUniProt" title="modlamp.datasets.load_AMPvsUniProt"><code class="xref py py-func docutils literal"><span class="pre">load_AMPvsUniProt()</span></code></a></td>
-<td>AMPs from the <em>APD3</em> versus other peptides from <em>UniProt</em></td>
+<td>AMPs from the <em>APD3</em> versus other peptides from the <em>UniProt</em> database</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_ACPvsTM" title="modlamp.datasets.load_ACPvsTM"><code class="xref py py-func docutils literal"><span class="pre">load_ACPvsTM()</span></code></a></td>
+<td>Anticancer peptides (<em>CancerPPD</em>) versus helical transmembrane sequences</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.datasets.load_ACPvsRandom" title="modlamp.datasets.load_ACPvsRandom"><code class="xref py py-func docutils literal"><span class="pre">load_ACPvsRandom()</span></code></a></td>
+<td>Anticancer peptides (<em>CancerPPD</em>) versus random scrambled AMP sequences</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.datasets.load_custom" title="modlamp.datasets.load_custom"><code class="xref py py-func docutils literal"><span class="pre">load_custom()</span></code></a></td>
 <td>A custom data set provided in <code class="docutils literal"><span class="pre">modlamp/data</span></code> as a <code class="docutils literal"><span class="pre">.csv</span></code> file</td>
@@ -2193,17 +1698,20 @@ package.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.datasets.load_AMPvsTMset">
-<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsTMset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsTMset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsTMset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load a dataset consisting of <strong>AMP sequences and transmembrane regions of proteins</strong> for classification.</p>
+<dt id="modlamp.datasets.load_AMPvsTM">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsTM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsTM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of <strong>AMP sequences</strong> and <strong>transmembrane regions of proteins</strong> for
+classification.</p>
 <p>The AMP class consists of an intersection of all activity annotations of the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
 <a class="reference external" href="http://camp.bicnirrh.res.in/">CAMP</a> databases, where for gram positive, gram negative and antifungal exact
 matches were observed. A detailed description of how the dataset was compiled can be found in the following
-publication: <em>Schneider P. et al. 2016, Mol. Inf.</em></p>
+publication: Schneider, P., Müller, A. T., Gabernet, G., Button, A. L., Posselt, G., Wessler, S., Hiss, J. A. and
+Schneider, G. (2016), Hybrid Network Model for “Deep Learning” of Chemical Data: Application to Antimicrobial
+Peptides. Mol. Inf.. <a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1002/minf.201600011/full">doi:10.1002/minf.201600011</a></p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="81%" />
-<col width="19%" />
+<col width="85%" />
+<col width="15%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Classes</td>
@@ -2232,8 +1740,8 @@ features.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_AMPvsTMset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTMset</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_AMPvsTM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTM</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;,&#39;LWIVIACLACVGSAAALTLRA&#39;,&#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;,&#39;GTLELGVDYGRAN&#39;,...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
@@ -2247,127 +1755,12 @@ features.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.datasets.load_helicalAMPset">
-<code class="descclassname">modlamp.datasets.</code><code class="descname">load_helicalAMPset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_helicalAMPset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_helicalAMPset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load a dataset consisting of <strong>helical AMP sequences and other helical peptides</strong> for classification.</p>
-<p>The AMP class consists of 363 helical annotated sequences from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a>
-(extracted Dez. 14 2015). The HEL class is constructed out of extracted all alpha annotated proteins from the
-<a class="reference external" href="http://www.rcsb.org/pdb/home/home.do">PDB</a>, out of which alpha helical regions were extracted. 363 sequences
-were then randomly chosen from this extracted set to get equally balanced datasets in terms of numbers of sequences.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="81%" />
-<col width="19%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Classes</td>
-<td>2</td>
-</tr>
-<tr class="row-even"><td>Samples per class</td>
-<td>363</td>
-</tr>
-<tr class="row-odd"><td>Samples total</td>
-<td>726</td>
-</tr>
-<tr class="row-even"><td>Dimensionality</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
-the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
-features.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_helicalAMPset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">[&#39;FDQAQTEIQATMEEN&#39;,&#39;DVDAALHYLARLVEAG&#39;,&#39;RCPLVIDYLIDLATRS&#39;,&#39;NPATLMMFFK&#39;,&#39;NLEDSIQILRTD&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
-<span class="go">[&#39;HEL&#39;, &#39;AMP&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-<span class="go">726</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="modlamp.datasets.load_ACPvsNeg">
-<code class="descclassname">modlamp.datasets.</code><code class="descname">load_ACPvsNeg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_ACPvsNeg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_ACPvsNeg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load a dataset consisting of <strong>alpha-helical ACP sequences and negative peptides extracted from
-alpha-helical transmembrane and non-transmembrane regions of proteins</strong> for classification.</p>
-<p>The ACP class consists of a collection of ACPs from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD2</a> and
-<a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> databases, manually curated by <a class="reference external" href="mailto:gisela&#46;gabernet&#37;&#52;&#48;pharma&#46;ethz&#46;ch">Gisela Gabernet</a> at modlab ETH Zürich, checking the original literature and annotated active
-against at least one of the following cancer types at a concentration of 50 µM: breast, lung, skin,
-haematological, and cervical. Selected sequences with length between 7 and 30 aa and without Cysteines to
-facilitate synthesis.</p>
-<p>The Negative peptide set contains a mixture of a random selection of 47 transmembrane alpha-helices (extracted from
-the <a class="reference external" href="http://pdbtm.enzim.hu/">PDBTM</a> ) and 47 non-transmembrane helices (extracted from the <a class="reference external" href="http://www.rcsb.org/pdb/home/home.do">PDB</a>) isolated directly from the proteins crystal structure.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="85%" />
-<col width="15%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Classes</td>
-<td>2</td>
-</tr>
-<tr class="row-even"><td>ACP peptides</td>
-<td>95</td>
-</tr>
-<tr class="row-odd"><td>Negative peptides</td>
-<td>94</td>
-</tr>
-<tr class="row-even"><td>Total peptides</td>
-<td>189</td>
-</tr>
-<tr class="row-odd"><td>Dimensionality</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
-the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
-features.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsNeg</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span>
-<span class="go">[&#39;VLTIIATIFMPLTFIAGI&#39;, &#39;QLGAGLSVGLSGLAAGFAIGIVG&#39;, &#39;WLYLILGIIFGIFGPIFNKWVL&#39;, &#39;VTWLLFLLGFVAILI&#39;...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
-<span class="go">[&#39;Neg&#39;, &#39;ACP&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-<span class="go">189</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="modlamp.datasets.load_AMPvsUniProt">
 <code class="descclassname">modlamp.datasets.</code><code class="descname">load_AMPvsUniProt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_AMPvsUniProt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_AMPvsUniProt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load a dataset consisting of <strong>APD3 &lt; 80% internal similarity versus UniProt not antimicrobial,
-not secretory, 10-50 AA and verified</strong> for classification.</p>
-<p>The AMP class consists of 1609 AMP sequences from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD3</a>. The whole APD3 was
-extracted (Mar. 3rd  2016) and then submitted to an internal similarity filtering with a threshold of 80% by the
-<a class="reference external" href="http://cd-hit.org">CD-Hit tool</a>. The UniProt class is constructed out of extracted protein sequences from the
-<a class="reference external" href="http://uniprot.org/">UniProt Database</a> with the search query <em>NOT secretory NOT antimicrobial
-AND length 10 TO 50</em>. These sequences were as well subjected to a similarity filtering of 80% yielding 4279
-sequences.</p>
+<dd><p>Function to load a dataset consisting of the whole <strong>APD3</strong> versus the same number of sequences randomly
+extracted from the <strong>UniProt</strong> database, to be used for classification.</p>
+<p>The AMP class consists of 2646 AMP sequences from the <a class="reference external" href="http://aps.unmc.edu/AP/">APD3</a> (extracted Jan. 2016).
+The UniProt class consists of 2646 randomly extracted protein sequences from the <a class="reference external" href="http://uniprot.org/">UniProt Database</a> with the search query <em>length 10 TO 50</em>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="77%" />
@@ -2378,13 +1771,13 @@ sequences.</p>
 <td>2</td>
 </tr>
 <tr class="row-even"><td>AMP Samples</td>
-<td>1609</td>
+<td>2646</td>
 </tr>
 <tr class="row-odd"><td>UniProt Samples</td>
-<td>4279</td>
+<td>2646</td>
 </tr>
 <tr class="row-even"><td>Samples total</td>
-<td>5888</td>
+<td>5292</td>
 </tr>
 <tr class="row-odd"><td>Dimensionality</td>
 <td>1</td>
@@ -2405,18 +1798,130 @@ features.</td>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_AMPvsUniProt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsUniProt</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">[&#39;GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV&#39;,</span>
-<span class="go">&#39;YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY&#39;,</span>
-<span class="go">&#39;DGVKLCDVPSGTWSGHCGSSSKCSQQCKDREHFAYGGACHYQFPSVKCFCKRQC&#39;,</span>
-<span class="go">&#39;NLCERASLTWTGNCGNTGHCDTQCRNWESAKHGACHKRGNWKCFCYFDC&#39;,</span>
-<span class="go">&#39;VFIDILDKVENAIHNAAQVGIGFAKPFEKLINPK&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">[&#39;GLWSKIKEVGKEAAKAAAKAAGKAALGAVSEAV&#39;, &#39;YVPLPNVPQPGRRPFPTFPGQGPFNPKIKWPQGY&#39;, ... ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <span class="go">[&#39;AMP&#39;, &#39;UniProt&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-<span class="go">5888</span>
+<span class="go">5292</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_ACPvsTM">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_ACPvsTM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_ACPvsTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_ACPvsTM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides
+extracted from alpha-helical transmembrane regions of proteins for classification.</p>
+<p>The ACP class consists of a collection of 413 ACPs from the <a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> database with length between 7 and 30 aa and without cysteines
+to facilitate peptide synthesis.</p>
+<p>The Negative peptide set contains a random selection of 413 transmembrane alpha-helices (extracted from
+the <a class="reference external" href="http://pdbtm.enzim.hu/">PDBTM</a> ) isolated directly from the proteins crystal structure.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="85%" />
+<col width="15%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>ACP peptides</td>
+<td>413</td>
+</tr>
+<tr class="row-odd"><td>Negative peptides</td>
+<td>413</td>
+</tr>
+<tr class="row-even"><td>Total peptides</td>
+<td>826</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
+the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
+features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsTM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsTM</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="go">[&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;, &#39;AFGMALKLLKKVL&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;TM&#39;, &#39;ACP&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">826</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modlamp.datasets.load_ACPvsRandom">
+<code class="descclassname">modlamp.datasets.</code><code class="descname">load_ACPvsRandom</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/datasets.html#load_ACPvsRandom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.datasets.load_ACPvsRandom" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides generated</dt>
+<dd>randomly with the amino acid composition of AMPs.</dd>
+</dl>
+<p>The ACP class consists of a collection of 413 ACPs from the <a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> database with length between 7 and 30 aa and without cysteines
+to facilitate peptide synthesis.</p>
+<dl class="docutils">
+<dt>The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition</dt>
+<dd>of AMPs in the APD2 database.</dd>
+</dl>
+<table border="1" class="docutils">
+<colgroup>
+<col width="85%" />
+<col width="15%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>ACP peptides</td>
+<td>413</td>
+</tr>
+<tr class="row-odd"><td>Negative peptides</td>
+<td>413</td>
+</tr>
+<tr class="row-even"><td>Total peptides</td>
+<td>826</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
+the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
+features.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;, &#39;AFGMALKLLKKVL&#39;, &#39;AIGKFLHSAKKFGKAFVGEIMNS&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">826</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2787,8 +2292,8 @@ Two models are available, whose parameters can be tuned. For more information of
 check the scikit-learn documentation.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="24%" />
-<col width="76%" />
+<col width="17%" />
+<col width="83%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Model</th>
@@ -2797,10 +2302,10 @@ check the scikit-learn documentation.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>Support Vector Machine</td>
-<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html</a></td>
+<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">sklearn.svm.SVC</a></td>
 </tr>
 <tr class="row-odd"><td>Random Forest</td>
-<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html</a></td>
+<td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">sklearn.ensemble.RandomForestClassifier</a></td>
 </tr>
 </tbody>
 </table>
@@ -2880,8 +2385,8 @@ the best Support Vector Machine or Random forest classifier found by grid search
 <li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
 E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
-<li><strong>param_grid</strong> &#8211; {dict} parameter grid for the gridsearch (see sklearn.grid_search).</li>
+(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">scoring-parameter</a>).</li>
+<li><strong>param_grid</strong> &#8211; {dict} parameter grid for the gridsearch (see <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html">sklearn.grid_search</a>).</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 </ul>
 </td>
@@ -2894,69 +2399,55 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 </tbody>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsNeg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
 </pre></div>
 </div>
 <p>Loading a dataset for training.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsNeg</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">188</span><span class="p">]</span>
-<span class="go">&#39;FLFKLIPKAIKGLVKAIRK&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="mi">188</span><span class="p">]</span>
-<span class="go">&#39;1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span>
-<span class="go">array([&#39;Neg&#39;, &#39;ACP&#39;], dtype=&#39;|S3&#39;)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">826</span>
+<span class="go">&gt;&gt;&gt;list(data.target_names)</span>
+<span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
 </pre></div>
 </div>
-<p>Calculating Pepcats descriptor in autocorrelation:</p>
+<p>Calculating Pepcats descriptor in autocorrelation modality:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">array([ 0.77777778,  0.11111111,  0.22222222,  0.16666667,  0.        ,</span>
-<span class="go">    0.        ,  0.52941176,  0.        ,  0.        ,  0.        ,</span>
-<span class="go">    0.        ,  0.        ,  0.5625    ,  0.        ,  0.        ,</span>
-<span class="go">    0.        ,  0.        ,  0.        ,  0.6       ,  0.        ,</span>
-<span class="go">    0.13333333,  0.        ,  0.        ,  0.        ,  0.71428571,</span>
-<span class="go">    0.        ,  0.07142857,  0.07142857,  0.        ,  0.        ,</span>
-<span class="go">    0.53846154,  0.07692308,  0.        ,  0.        ,  0.        ,</span>
-<span class="go">    0.        ,  0.66666667,  0.        ,  0.08333333,  0.08333333,</span>
-<span class="go">    0.        ,  0.        ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
+<span class="go">     0.21428571,  0.        ],</span>
+<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,</span>
+<span class="go">     0.        ,  0.        ],</span>
+<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,</span>
+<span class="go">     0.26666667,  0.        ],</span>
+<span class="go">   ...,</span>
+<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,</span>
+<span class="go">     0.        ,  0.        ],</span>
+<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,</span>
+<span class="go">     0.09090909,  0.        ],</span>
+<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,</span>
+<span class="go">     0.        ,  0.        ]])</span>
 </pre></div>
 </div>
 <p>Training an SVM model with this data:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="go">Best score and parameters from a 10-fold cross validation:</span>
-<span class="go">mean: 0.86932, std: 0.10581, params: {&#39;clf__gamma&#39;: 0.001, &#39;clf__C&#39;: 100.0, &#39;clf__kernel&#39;: &#39;rbf&#39;}</span>
+<span class="go">Best score (scorer: make_scorer(matthews_corrcoef)) and parameters from a 10-fold cross validation:</span>
+<span class="go">0.739995453978</span>
+<span class="go">{&#39;clf__gamma&#39;: 0.1, &#39;clf__C&#39;: 10.0, &#39;clf__kernel&#39;: &#39;rbf&#39;}</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
-<span class="go">{&#39;clf&#39;: SVC(C=100.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,</span>
-<span class="go">   decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
+<span class="go">{&#39;clf&#39;: SVC(C=10.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,</span>
+<span class="go">   decision_function_shape=None, degree=3, gamma=0.1, kernel=&#39;rbf&#39;,</span>
 <span class="go">   max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
 <span class="go">   verbose=False),</span>
-<span class="go"> &#39;clf__C&#39;: 100.0,</span>
-<span class="go"> &#39;clf__cache_size&#39;: 200,</span>
-<span class="go"> &#39;clf__class_weight&#39;: None,</span>
-<span class="go"> &#39;clf__coef0&#39;: 0.0,</span>
-<span class="go"> &#39;clf__decision_function_shape&#39;: None,</span>
-<span class="go"> &#39;clf__degree&#39;: 3,</span>
-<span class="go"> &#39;clf__gamma&#39;: 0.001,</span>
-<span class="go"> &#39;clf__kernel&#39;: &#39;rbf&#39;,</span>
-<span class="go"> &#39;clf__max_iter&#39;: -1,</span>
-<span class="go"> &#39;clf__probability&#39;: True,</span>
-<span class="go"> &#39;clf__random_state&#39;: 1,</span>
-<span class="go"> &#39;clf__shrinking&#39;: True,</span>
-<span class="go"> &#39;clf__tol&#39;: 0.001,</span>
-<span class="go"> &#39;clf__verbose&#39;: False,</span>
-<span class="go"> &#39;scl&#39;: StandardScaler(copy=True, with_mean=True, with_std=True),</span>
-<span class="go"> &#39;scl__copy&#39;: True,</span>
-<span class="go"> &#39;scl__with_mean&#39;: True,</span>
-<span class="go"> &#39;scl__with_std&#39;: True,</span>
-<span class="go"> &#39;steps&#39;: [(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)),</span>
-<span class="go">  (&#39;clf&#39;, SVC(C=100.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,</span>
-<span class="go">     decision_function_shape=None, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
+<span class="gp">...</span>
+<span class="go">&#39;steps&#39;: [(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)),</span>
+<span class="go">  (&#39;clf&#39;, SVC(C=10.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,</span>
+<span class="go">     decision_function_shape=None, degree=3, gamma=0.1, kernel=&#39;rbf&#39;,</span>
 <span class="go">     max_iter=-1, probability=True, random_state=1, shrinking=True, tol=0.001,</span>
 <span class="go">     verbose=False))]}</span>
 </pre></div>
@@ -2965,7 +2456,7 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 
 <dl class="function">
 <dt id="modlamp.ml.plot_validation_curve">
-<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range=None</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plotting cross-validation curve for the specified classifier, training data and parameter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2976,13 +2467,13 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
 <li><strong>param_name</strong> &#8211; {string} parameter to assess in the validation curve plot. For SVM,
-&#8220;clf__C&#8221; (C parameter), &#8220;clf__gamma&#8221; (gamma parameter). For RF, &#8220;clf__n_estimators&#8221; (number of trees),
+&#8220;clf__C&#8221; (C parameter), &#8220;clf__gamma&#8221; (gamma parameter). For Random Forest, &#8220;clf__n_estimators&#8221; (number of trees),
 &#8220;clf__max_depth&#8221; (max num of branches per tree, &#8220;clf__min_samples_split&#8221; (min number of samples required to split an
 internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples in newly created leaf).</li>
 <li><strong>param_range</strong> &#8211; {list} parameter range for the validation curve.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 <li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
+<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">sklearn.model_evaluation.scoring-parameter</a>.</li>
 <li><strong>title</strong> &#8211; {str} graph title</li>
 <li><strong>xlab</strong> &#8211; {str} x axis label.</li>
 <li><strong>ylab</strong> &#8211; {str} y axis label.</li>
@@ -2990,11 +2481,58 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">plot of the validation curve.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">plot of the validation curve.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+</pre></div>
+</div>
+<p>Loading a dataset for training.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">826</span>
+<span class="go">&gt;&gt;&gt;list(data.target_names)</span>
+<span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
+</pre></div>
+</div>
+<p>Calculating Pepcats descriptor in autocorrelation modality:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
+<span class="go">     0.21428571,  0.        ],</span>
+<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,</span>
+<span class="go">     0.        ,  0.        ],</span>
+<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,</span>
+<span class="go">     0.26666667,  0.        ],</span>
+<span class="go">   ...,</span>
+<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,</span>
+<span class="go">     0.        ,  0.        ],</span>
+<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,</span>
+<span class="go">     0.09090909,  0.        ],</span>
+<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,</span>
+<span class="go">     0.        ,  0.        ]])</span>
+</pre></div>
+</div>
+<p>Training an SVM model with this data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">Best score (scorer: make_scorer(matthews_corrcoef)) and parameters from a 10-fold cross validation:</span>
+<span class="go">0.739995453978</span>
+<span class="go">{&#39;clf__gamma&#39;: 0.1, &#39;clf__C&#39;: 10.0, &#39;clf__kernel&#39;: &#39;rbf&#39;}</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_validation_curve</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;clf__gamma&#39;</span><span class="p">,</span> <span class="n">param_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/validation_curve.png"><img alt="_images/validation_curve.png" src="_images/validation_curve.png" style="height: 300px;" /></a>
 </dd></dl>
 
 <dl class="function">
@@ -3017,12 +2555,39 @@ it returns the scoring value for the test data.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
-are the predicted probability of the peptide belonging to class0 and class1, respectively.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
+are the predicted probability of the peptide belonging to class 0 and class 1, respectively.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span><span class="p">,</span> <span class="n">predict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="k">import</span> <span class="n">Helices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor from the data
+&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
+&gt;&gt;&gt; desc.calculate_autocorr(7)
+&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, desc.descriptor, data.target)</p>
+<p>Generating 10 de novo Helical sequences to predict their activity
+&gt;&gt;&gt; H = Helices(seqnum=10, lenmin=7, lenmax=30)
+&gt;&gt;&gt; H.generate_sequences()</p>
+<p>Calculating descriptor for the newly generated sequences
+&gt;&gt;&gt; descH = descriptors.PeptideDescriptor(H.sequences, scalename=&#8217;pepcats&#8217;)
+&gt;&gt;&gt; descH.calculate_autocorr(7)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">descH</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs_test</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">   ID                   Sequence  Pred_prob_class0  Pred_prob_class1</span>
+<span class="go">0   0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833</span>
+<span class="go">1   1                LGVRVLRIIIR          0.007239          0.992761</span>
+<span class="go">2   2              VGIRLARGVGRIG          0.071436          0.928564</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -3038,17 +2603,37 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 <li><strong>X</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y</strong> &#8211; {array} class values for training data.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
-<li><strong>metrics</strong> &#8211; {list} metrics to consider for calculating the cv_scores. Choose from sklearn.metrics.scorers
-(<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>).</li>
+<li><strong>metrics</strong> &#8211; {list} metrics to consider for calculating the cv_scores. Choose from
+<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">sklearn.metrics.scorers</a>.</li>
 <li><strong>names</strong> &#8211; {list} names of the metrics to display on the dataframe.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe containing the cross validation scores for the specified metrics.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing the cross validation scores for the specified metrics.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span><span class="p">,</span> <span class="n">score_cv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor from the data
+&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
+&gt;&gt;&gt; desc.calculate_autocorr(7)
+&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, desc.descriptor, data.target)</p>
+<p>Cross validation scores
+&gt;&gt;&gt; score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
+ID   Metrics  Mean CV score     StDev
+0   accuracy       0.841199  0.051708
+1  precision       0.930872  0.024897
+2     recall       0.735763  0.093979
+3         f1       0.819435  0.064995
+4    roc_auc       0.914607  0.039345</p>
 </dd></dl>
 
 <dl class="function">
@@ -3056,8 +2641,8 @@ are the predicted probability of the peptide belonging to class0 and class1, res
 <code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
 are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
-(roc_auc). See sklearn.metrics for more information
-(<a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics">http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics</a>).</p>
+(roc_auc). See <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics">sklearn.metrics</a>
+for more information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3069,11 +2654,36 @@ are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area u
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe containing the cross validation scores for the specified metrics.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing the cross validation scores for the specified metrics.</p>
 </td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span><span class="p">,</span> <span class="n">score_testset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor from the data
+&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
+&gt;&gt;&gt; desc.calculate_autocorr(7)</p>
+<p>Splitting into train and test sets
+&gt;&gt;&gt; X_train, X_test, y_train, y_test = train_test_split(desc.descriptor, data.target, test_size = 0.33)</p>
+<p>Training an SVM model with the training set
+&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, X_train,y_train)</p>
+<p>Calculating the test set scores
+&gt;&gt;&gt; score_testset(best_svm_model, X_test, y_test)
+ID  Metrics   Scores
+0        MCC  0.838751
+1   accuracy  0.919414
+2  precision  0.923664
+3     recall  0.909774
+4         f1  0.916667
+5    roc_auc  0.919173</p>
 </dd></dl>
 
 </div>
@@ -4481,12 +4091,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.6.2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider (modlab).
-      Last updated on Nov 29, 2016.
+      Last updated on Dec 18, 2016.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
