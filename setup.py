@@ -14,7 +14,7 @@ with open('LICENSE') as f:
     lic = f.read()
 
 setup(name='modlamp',
-      version='2.6.1',
+      version='2.6.2',
       description='modlabs peptide package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='modlab, Alex Müller, Gisela Gabernet',
