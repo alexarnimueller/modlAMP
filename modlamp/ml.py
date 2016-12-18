@@ -389,11 +389,13 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     >>> data = load_ACPvsRandom()
 
     Calculating descriptor from the data
+
     >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> desc.calculate_autocorr(7)
     >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
 
     Cross validation scores
+    
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
     ID   Metrics  Mean CV score     StDev
     0   accuracy       0.841199  0.051708
@@ -446,16 +448,20 @@ def score_testset(classifier, X_test, y_test):
     >>> data = load_ACPvsRandom()
 
     Calculating descriptor from the data
+    
     >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> desc.calculate_autocorr(7)
 
     Splitting into train and test sets
+    
     >>> X_train, X_test, y_train, y_test = train_test_split(desc.descriptor, data.target, test_size = 0.33)
 
     Training an SVM model with the training set
+    
     >>> best_svm_model = train_best_model('svm', X_train,y_train)
 
     Calculating the test set scores
+    
     >>> score_testset(best_svm_model, X_test, y_test)
     ID  Metrics   Scores
     0        MCC  0.838751

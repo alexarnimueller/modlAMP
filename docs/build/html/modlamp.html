@@ -2622,18 +2622,22 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Calculating descriptor from the data
-&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
-&gt;&gt;&gt; desc.calculate_autocorr(7)
-&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, desc.descriptor, data.target)</p>
-<p>Cross validation scores
-&gt;&gt;&gt; score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-ID   Metrics  Mean CV score     StDev
-0   accuracy       0.841199  0.051708
-1  precision       0.930872  0.024897
-2     recall       0.735763  0.093979
-3         f1       0.819435  0.064995
-4    roc_auc       0.914607  0.039345</p>
+<p>Calculating descriptor from the data</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Cross validation scores</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_cv</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">ID   Metrics  Mean CV score     StDev</span>
+<span class="go">0   accuracy       0.841199  0.051708</span>
+<span class="go">1  precision       0.930872  0.024897</span>
+<span class="go">2     recall       0.735763  0.093979</span>
+<span class="go">3         f1       0.819435  0.064995</span>
+<span class="go">4    roc_auc       0.914607  0.039345</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -2668,22 +2672,30 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Calculating descriptor from the data
-&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
-&gt;&gt;&gt; desc.calculate_autocorr(7)</p>
-<p>Splitting into train and test sets
-&gt;&gt;&gt; X_train, X_test, y_train, y_test = train_test_split(desc.descriptor, data.target, test_size = 0.33)</p>
-<p>Training an SVM model with the training set
-&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, X_train,y_train)</p>
-<p>Calculating the test set scores
-&gt;&gt;&gt; score_testset(best_svm_model, X_test, y_test)
-ID  Metrics   Scores
-0        MCC  0.838751
-1   accuracy  0.919414
-2  precision  0.923664
-3     recall  0.909774
-4         f1  0.916667
-5    roc_auc  0.919173</p>
+<p>Calculating descriptor from the data</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Splitting into train and test sets</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Training an SVM model with the training set</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Calculating the test set scores</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_testset</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="go">ID  Metrics   Scores</span>
+<span class="go">0        MCC  0.838751</span>
+<span class="go">1   accuracy  0.919414</span>
+<span class="go">2  precision  0.923664</span>
+<span class="go">3     recall  0.909774</span>
+<span class="go">4         f1  0.916667</span>
+<span class="go">5    roc_auc  0.919173</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
