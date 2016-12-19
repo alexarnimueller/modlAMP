@@ -25,4 +25,5 @@ v2.5.0  23.09.2016 -- clarified documentation and replaced Biopython functions b
 v2.5.1  17.10.2016 -- bug fixes in documentation
 v2.6.0  17.11.2016 -- New module "analysis" with summary_plot method to show an overview of different peptide libraries
 v2.6.1  29.11.2016 -- Some changes in README and setup.py to make modlAMP PyPI compatible
-v2.6.2  18.12.2016 -- Updated data sets for publication
+v2.6.2  18.12.2016 -- Updated data sets for publication, version uploaded to ETH data archive
+v2.6.3  19.12.2016 -- Initial upload to PyPI
