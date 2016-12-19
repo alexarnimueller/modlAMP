@@ -6,7 +6,7 @@ README
 This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
 amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
 generation (module ``sequences``). For basic instructions how to use the package, see Usage_ or the `documentation
-<http://www.cadd.ethz.ch/software/modlamp.html>`_.
+<https://pythonhosted.org/modlamp/>`_.
 
 .. note::
     You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
@@ -280,8 +280,7 @@ array([['ARVFVRAVRIYIRVLKAFAKL', 'IRVYVRIVRGFGRVVRAYARV', 'IRIFIRIARGFGRAIRVFVRI
 Documentation
 -------------
 
-Detailed documentation of all modules is available from the `modlAMP documentation website <http://www.cadd.ethz
-.ch/software/modlamp.html>`_.
+Detailed documentation of all modules is available from the `modlAMP documentation website <https://pythonhosted.org/modlamp/>`_.
 
 
 Citing modlAMP
