@@ -371,7 +371,7 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
 
 
 def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
-    """ Returns the cross validation scores for the specified scoring metrics as a pandas data frame.
+    """ Returns the cross validation errors for the specified scoring metrics as a pandas data frame.
 
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X: {array} descriptor values for training data.
@@ -380,7 +380,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
         `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param names: {list} names of the metrics to display on the dataframe.
-    :return: pandas dataframe containing the cross validation scores for the specified metrics.
+    :return: pandas dataframe containing the cross validation errors for the specified metrics.
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_cv
@@ -394,7 +394,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     >>> desc.calculate_autocorr(7)
     >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
 
-    Cross validation scores
+    Cross validation errors
     
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
     ID   Metrics  Mean CV score     StDev
@@ -430,7 +430,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
 
 
 def score_testset(classifier, X_test, y_test):
-    """ Returns the test set scores for the specified scoring metrics as a pandas data frame. The calculated metrics
+    """ Returns the test set errors for the specified scoring metrics as a pandas data frame. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
     (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`_
     for more information.
@@ -438,7 +438,7 @@ def score_testset(classifier, X_test, y_test):
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X_test: {array} descriptor values for the test data.
     :param y_test: {array} class values for the test data.
-    :return: pandas dataframe containing the cross validation scores for the specified metrics.
+    :return: pandas dataframe containing the cross validation errors for the specified metrics.
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_testset
@@ -460,7 +460,7 @@ def score_testset(classifier, X_test, y_test):
     
     >>> best_svm_model = train_best_model('svm', X_train,y_train)
 
-    Calculating the test set scores
+    Calculating the test set errors
     
     >>> score_testset(best_svm_model, X_test, y_test)
     ID  Metrics   Scores

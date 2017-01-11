@@ -347,9 +347,9 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc.descriptor
         array([[ 63.95714286]])
         """
+        
         desc = []
-        module_path = dirname(__file__)
-        dimv = json.load(open(join(module_path, 'data', 'dimv.json')))
+        dimv = load_scale('instability')[1]
         for seq in self.sequences:
             stabindex = float()
             for i in range(len(seq) - 1):
