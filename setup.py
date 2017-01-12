@@ -5,7 +5,7 @@ from pip.req import parse_requirements
 
 # parse the requirements from the requirements file
 install_reqs = parse_requirements('requirements.txt', session='hack')
-reqs = [str(ir.req) for ir in install_reqs]
+reqs = [str(ir.req) for ir in install_reqs][:-1]
 
 with open('README.rst') as f:
     readme = f.read()
@@ -14,7 +14,7 @@ with open('LICENSE') as f:
     lic = f.read()
 
 setup(name='modlamp',
-      version='2.6.6',
+      version='2.6.7',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
