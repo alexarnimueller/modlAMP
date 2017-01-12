@@ -29,3 +29,4 @@ v2.6.2  18.12.2016 -- Updated data sets for publication, version uploaded to ETH
 v2.6.3  19.12.2016 -- Initial upload to PyPI
 v2.6.4  11.01.2017 -- Bugfix in GlobalDescriptor.instability_index
 v2.6.5  12.01.2017 -- Added 'all' option for combining all AA scales
+v2.6.6  12.01.2017 -- Requirements corrected in setup.py

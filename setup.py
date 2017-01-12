@@ -14,7 +14,7 @@ with open('LICENSE') as f:
     lic = f.read()
 
 setup(name='modlamp',
-      version='2.6.5',
+      version='2.6.6',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
@@ -34,5 +34,5 @@ setup(name='modlamp',
           'License :: OSI Approved :: BSD License',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7'],
-      install_requires=install_reqs
+      install_requires=reqs
       )
