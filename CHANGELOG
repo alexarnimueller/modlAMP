@@ -28,3 +28,4 @@ v2.6.1  29.11.2016 -- Some changes in README and setup.py to make modlAMP PyPI c
 v2.6.2  18.12.2016 -- Updated data sets for publication, version uploaded to ETH data archive
 v2.6.3  19.12.2016 -- Initial upload to PyPI
 v2.6.4  11.01.2017 -- Bugfix in GlobalDescriptor.instability_index
+v2.6.5  12.01.2017 -- Added 'all' option for combining all AA scales
