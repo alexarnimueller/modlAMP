@@ -257,6 +257,7 @@ class CD:
         :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
             ``circular dichroism``)
         :param combine: {bool} if ``True``, overlays of different solvents will be created for the same molecule.
+            The amino acid sequence in the header is used to find corresponding data.
         :return: .pdf plots saved to the directory containing the read files.
         :Example:
         
