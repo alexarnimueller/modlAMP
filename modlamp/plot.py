@@ -28,7 +28,7 @@ from scipy.stats.kde import gaussian_kde
 from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.descriptors import PeptideDescriptor
-from modlamp.core import count_aa
+from modlamp.core import count_aa, load_scale
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -62,9 +62,9 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
-
+    
     fig, ax = plt.subplots()
-
+    
     if targets:
         data = []
         cntr = 0
@@ -77,22 +77,22 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         else:
             labels = range(cntr)
         colors = colors[:cntr]
-
+    
     else:
         if x_tick_labels:
             labels = x_tick_labels
         else:
             labels = ['all data']
         data = y_values
-
+    
     # coloring faces of boxes
     median_props = dict(linestyle='-', linewidth=1, color='black')
     box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, labels=labels)
     plt.setp(box['whiskers'], color='black')
-
+    
     for patch, color in zip(box['boxes'], colors):
         patch.set(facecolor=color, edgecolor='black', alpha=0.8)
-
+    
     ax.set_xlabel('Classes', fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_title('Feature Box-Plot', fontsize=16, fontweight='bold')
@@ -101,7 +101,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-
+    
     if filename:
         plt.savefig(filename, dpi=150)
     else:
@@ -130,9 +130,9 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
-
+    
     fig, ax = plt.subplots()
-
+    
     if targets:
         for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
             t = np.array([i for i, j in enumerate(targets) if j == n])
@@ -141,10 +141,10 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
             ax.scatter(xt, yt, c=colors[n], alpha=1., s=25,
                        label='class ' + str(n))  # plot scatter for this target group
             ax.legend(loc='best')
-
+    
     else:
         ax.scatter(x_values, y_values, c=colors[0], alpha=1., s=25)
-
+    
     ax.set_xlabel(x_label, fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_title('2D Feature Plot', fontsize=16, fontweight='bold')
@@ -153,14 +153,15 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-
+    
     if filename:
         plt.savefig(filename, dpi=150)
     else:
         plt.show()
 
 
-def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None, colors=None):
+def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_label='', z_label='', filename=None,
+                    colors=None):
     """
     Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in **targets**
     are plottet in different colors.
@@ -182,13 +183,13 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     .. image:: ../docs/static/3D_scatter.png
         :height: 300px
     """
-
+    
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
-
+    
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-
+    
     if targets:
         for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
             t = np.array([i for i, j in enumerate(targets) if j == n])
@@ -198,10 +199,10 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
             ax.scatter(xt, yt, zt, c=colors[n], alpha=1., s=25,
                        label='class ' + str(n))  # plot 3Dscatter for this target
             ax.legend(loc='best')
-
+    
     else:  # plot 3D scatter for this target group
         ax.scatter(x_values, y_values, z_values, c=colors[0], alpha=1., s=25)
-
+    
     ax.set_xlabel(x_label, fontweight='bold')
     ax.set_ylabel(y_label, fontweight='bold')
     ax.set_zlabel(z_label, fontweight='bold')
@@ -211,7 +212,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('bottom')
-
+    
     if filename:
         plt.savefig(filename, dpi=150)
     else:
@@ -259,13 +260,13 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
         while (i + window) < len(sequence):
             seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
             i += 1
-
+        
         # plot
         fig, ax = plt.subplots()
         x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
         line = ax.plot(x_range, seq_profile)
         plt.setp(line, color=color, linewidth=2.0)
-
+        
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
@@ -277,13 +278,13 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
             ax.set_ylim(ylim)
         else:
             ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
-
+        
         # only left and bottom axes, no box
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
-
+        
         # show or save plot
         if filename:
             plt.savefig(filename, dpi=150)
@@ -291,15 +292,16 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
             plt.show()
 
 
-def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False):
+def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False, moment=False):
     """A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
     properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
 
-    :param sequence: {str} the peptide sequence for which the helical wheel should be drawn.
+    :param sequence: {str} the peptide sequence for which the helical wheel should be drawn
     :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *no*
     :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
-    :param seq: {bool} whether the amino acid sequence should be plotted as a title.
+    :param seq: {bool} whether the amino acid sequence should be plotted as a title
+    :param moment: {bool} whether the Eisenberg hydrophobic moment should be calculated and plotted
     :return: a helical wheel projection plot of the given sequence (interactively or in **filename**)
     :Example:
 
@@ -331,12 +333,14 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
     t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
     t_none = ['k'] * 20
+    d_eisberg = load_scale('eisenberg')[1]  # eisenberg hydrophobicity values for HM
+    
     if lineweights:
         lw = np.arange(1, 6, 5. / (len(sequence) - 1))  # line thickness array
         lw = lw[::-1]  # inverse order
     else:
         lw = [2.] * (len(sequence) - 1)
-
+    
     # check which color coding to use
     if colorcoding == 'rainbow':
         df = dict(zip(aa, f_rainbow))
@@ -351,43 +355,54 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         print("Unknown color coding, 'rainbow' used instead")
         df = dict(zip(aa, f_rainbow))
         dt = dict(zip(aa, t_rainbow))
-
+    
     # degree to radian
     deg = np.arange(float(len(sequence))) * -100.
     deg = [d + 90. for d in deg]  # start at 270 degree in unit circle (on top)
     rad = np.radians(deg)
-
+    
+    # dict for coordinates and eisenberg values
+    d_hydro = dict(zip(rad, [0.] * len(rad)))
+    
     # create figure
     fig = plt.figure(frameon=False, figsize=(10, 10))
     ax = fig.add_subplot(111)
     old = None
-
+    hm = list()
+    
     # iterate over sequence
     for i, r in enumerate(rad):
         if i < 18:
             new = (np.cos(r), np.sin(r))  # new AA coordinates
-
+            
             # plot the connecting lines
             if old is not None:
                 line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
                                     linewidth=lw[i - 1])
                 line.set_zorder(1)  # 1 = level behind circles
                 ax.add_line(line)
-        elif i == 18:
+        elif 17 < i < 36:
             new = (np.cos(r), np.sin(r))
             line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
                                 linewidth=lw[i - 1])
             line.set_zorder(1)  # 1 = level behind circles
             ax.add_line(line)
             new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
+        elif i == 36:
+            new = (np.cos(r), np.sin(r))
+            line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
+                                linewidth=lw[i - 1])
+            line.set_zorder(1)  # 1 = level behind circles
+            ax.add_line(line)
+            new = (np.cos(r) * 1.4, np.sin(r) * 1.4)
         else:
-            new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
-
+            new = (np.cos(r) * 1.4, np.sin(r) * 1.4)
+        
         # plot circles
         circ = patches.Circle(new, radius=0.1, transform=ax.transData, edgecolor='k', facecolor=df[sequence[i]])
         circ.set_zorder(2)  # level in front of lines
         ax.add_patch(circ)
-
+        
         # check if N- or C-terminus and add subscript, then plot AA letter
         if i == 0:
             ax.text(new[0], new[1], sequence[i] + b'$_N$', va='center', ha='center', transform=ax.transData,
@@ -398,9 +413,27 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         else:
             ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
                     size=20, color=dt[sequence[i]], fontweight='bold')
-
+        
+        eb = d_eisberg[sequence[i]][0]  # eisenberg value for this AA
+        hm.append([eb * new[0], eb * new[1]])  # save eisenberg hydrophobicity vector value to later calculate HM
         old = new  # save as previous coordinates
-
+    
+    # draw hydrophobic moment arrow if moment option
+    if moment:
+        v_hm = np.sum(np.array(hm), 0)
+        x = .0333 * v_hm[0]
+        y = .0333 * v_hm[1]
+        ax.arrow(0., 0., x, y, head_width=0.04, head_length=0.03, transform=ax.transData,
+                 color='k', linewidth=6.)
+        desc = PeptideDescriptor(sequence)  # calculate hydrophobic moment
+        desc.calculate_moment()
+        if abs(x) < 0.2 and y > 0.:  # right positioning of HM text so arrow does not cover it
+            z = -0.2
+        else:
+            z = 0.2
+        plt.text(0., z, str(round(desc.descriptor[0][0], 3)), fontdict={'fontsize': 20, 'fontweight': 'bold',
+                                                                        'ha': 'center'})
+    
     # plot shape
     if len(sequence) < 19:
         ax.set_xlim(-1.2, 1.2)
@@ -415,7 +448,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     cur_axes = plt.gca()
     cur_axes.axes.get_xaxis().set_visible(False)
     cur_axes.axes.get_yaxis().set_visible(False)
-
+    
     if seq:
         plt.title(sequence, fontweight='bold', fontsize=20)
     
@@ -452,56 +485,56 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
         axlabels = ['Data', 'Estimated Density']
     if not title:
         title = ""
-
+    
     # transform input to numpy array and reshape if it only contains one data row
     data = np.array(data)
-
+    
     if len(data.shape) == 1:
         data = data.reshape((1, -1))
     shp = data.shape
-
+    
     # colors
     if not colors:
         colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
     elif len(colors) != len(data) and shp != 1:  # if not enough colors for all data subtypes
         colors *= len(data)
-
+    
     # prepare figure
     fig, ax = plt.subplots()
-
+    
     # set axis labels and limits
     if axlabels is None:
         axlabels = ['', '']
     ax.set_xlabel(axlabels[0], fontsize=18)
     ax.set_ylabel(axlabels[1], fontsize=18)
     fig.suptitle(title, fontsize=16, fontweight='bold')
-
+    
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-
+    
     # plot PDE for every data row
     # if one row only
     if shp[0] == 1:
         kde = gaussian_kde(
-            data)  # this creates the kernel, given an array it will estimate the probability over that values
+                data)  # this creates the kernel, given an array it will estimate the probability over that values
         space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
         line = ax.plot(space, kde(space), label='Data')  # plot line
         plt.setp(line, color=colors[0], linewidth=2.0, alpha=.9)  # set line width and color
         ax.fill_between(space, 0, kde(space), color=colors[0], alpha=alpha)  # fill area under line
-
+    
     # if multiple rows
     else:
         for i, row in enumerate(data):
             kde = gaussian_kde(
-                row)  # this creates the kernel, given an array it will estimate the probability over that values
+                    row)  # this creates the kernel, given an array it will estimate the probability over that values
             space = np.linspace(x_min, x_max, 1000)  # these are the values over which the kernel will be evaluated
             line = ax.plot(space, kde(space), label='Run ' + str(i))  # plot line
             plt.setp(line, color=colors[i], linewidth=2.0, alpha=.9)  # set line width and color
             ax.fill_between(space, 0, kde(space), color=colors[i], alpha=alpha)  # fill area under line
-
+    
     # show or save plot
     ax.legend(loc=legendloc)
     ax.set_xlim((x_min, x_max))
@@ -533,21 +566,21 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
 
     .. versionadded:: v2.2.2
     """
-
+    
     # transform input to list of arrays (better handled by plotting functions)
     x = np.array(x)
-
+    
     # check color input and transform to list of right length
     if not colors:
         colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
-
+    
     if isinstance(colors, basestring):
         colors = [colors] * len(x)
-
+    
     # scaling for available space
     dist = len(x) - 1
     w = min(0.15 * max(dist, 1.0), 0.5)
-
+    
     fig, ax = plt.subplots()
     if len(np.array(x).shape) == 1:  # if only one dimensional data
         k = gaussian_kde(x)  # kernel density estimation
@@ -558,13 +591,13 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
         v = v / v.max() * 0.3  # scaling the violin to the available space
         ax.fill_betweenx(rng, 1, v + 1, facecolor=colors[0], alpha=0.6)
         ax.fill_betweenx(rng, 1, -v + 1, facecolor=colors[0], alpha=0.6)
-
+        
         if bp:  # print box plot if option is given
             medprops = dict(linestyle='-', linewidth=1, color='black')
             box = ax.boxplot(x, notch=1, positions=[1.], vert=1, patch_artist=True, medianprops=medprops)
             plt.setp(box['whiskers'], color='black')
             box['boxes'][0].set(facecolor=colors[0], edgecolor='black', alpha=0.7)
-        
+    
     else:  # one violin for every data element if multidimensional
         for p, d in enumerate(x):
             loc = p + 1
@@ -583,7 +616,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
             plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
             for p, patch in enumerate(box['boxes']):
                 patch.set(facecolor=colors[p], edgecolor='black', alpha=0.7)
-
+    
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
@@ -599,7 +632,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
         ax.set_title(title, fontsize=16, fontweight='bold')
     else:
         ax.set_title('Violin Plots', fontsize=16, fontweight='bold')
-
+    
     if filename:
         plt.savefig(filename, dpi=150)
     else:
@@ -625,24 +658,24 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     d = PeptideDescriptor(sequences, 'eisenberg')
     d.count_aa(scale='relative')
     perc = np.mean(d.descriptor, axis=0)
-
+    
     fig, ax = plt.subplots()
-
+    
     for a in range(20):
         plt.bar(a - 0.45, perc[a], 0.9, color=color)
-
+    
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(perc) + 0.05])
     plt.xticks(range(20), aa.keys(), fontweight='bold')
     plt.ylabel('Amino Acid Frequency', fontweight='bold')
     plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
-
+    
     # only left and bottom axes, no box
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-
+    
     if filename:
         plt.savefig(filename, dpi=150)
     else:
