@@ -275,7 +275,7 @@ class CD:
             # prepare combination of solvent plots
             d_flag = False
             if combine:
-                d = {k: self.names.count(k) for k in set(self.names)}  # create dict with name counts for double plot
+                d = {s: self.sequences.count(s) for s in set(self.sequences)}  # create dict with seq counts for combine
                 if d.values().count(2) == len(d.values()):
                     d_flag = True
     
@@ -294,7 +294,7 @@ class CD:
                     d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
                     
                     if self.solvent[i] == 'T':  # color
-                        col = 'b'
+                        col = 'r'
                     else:
                         col = 'b'
                     
