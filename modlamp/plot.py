@@ -336,7 +336,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     d_eisberg = load_scale('eisenberg')[1]  # eisenberg hydrophobicity values for HM
     
     if lineweights:
-        lw = np.arange(1, 6, 5. / (len(sequence) - 1))  # line thickness array
+        lw = np.arange(0.1, 5.5, 5. / (len(sequence) - 1))  # line thickness array
         lw = lw[::-1]  # inverse order
     else:
         lw = [2.] * (len(sequence) - 1)
@@ -372,9 +372,8 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     
     # iterate over sequence
     for i, r in enumerate(rad):
+        new = (np.cos(r), np.sin(r))  # new AA coordinates
         if i < 18:
-            new = (np.cos(r), np.sin(r))  # new AA coordinates
-            
             # plot the connecting lines
             if old is not None:
                 line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
@@ -382,14 +381,12 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
                 line.set_zorder(1)  # 1 = level behind circles
                 ax.add_line(line)
         elif 17 < i < 36:
-            new = (np.cos(r), np.sin(r))
             line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
                                 linewidth=lw[i - 1])
             line.set_zorder(1)  # 1 = level behind circles
             ax.add_line(line)
             new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
         elif i == 36:
-            new = (np.cos(r), np.sin(r))
             line = lines.Line2D((old[0], new[0]), (old[1], new[1]), transform=ax.transData, color='k',
                                 linewidth=lw[i - 1])
             line.set_zorder(1)  # 1 = level behind circles
@@ -416,7 +413,8 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         
         eb = d_eisberg[sequence[i]][0]  # eisenberg value for this AA
         hm.append([eb * new[0], eb * new[1]])  # save eisenberg hydrophobicity vector value to later calculate HM
-        old = new  # save as previous coordinates
+        
+        old = (np.cos(r), np.sin(r))  # save as previous coordinates
     
     # draw hydrophobic moment arrow if moment option
     if moment:
@@ -448,6 +446,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     cur_axes = plt.gca()
     cur_axes.axes.get_xaxis().set_visible(False)
     cur_axes.axes.get_yaxis().set_visible(False)
+    plt.tight_layout()
     
     if seq:
         plt.title(sequence, fontweight='bold', fontsize=20)
