@@ -203,10 +203,7 @@ class BaseDescriptor(object):
         """
         :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the
             descriptor values for.
-        :param scalename: {str} name of the amino acid scale (one of the given list above) used to calculate the
-            descriptor values
-        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with
-            amino acid scale values of the scale name in :py:attr:`scalename`.
+        :return: initialized attributes :py:attr:`sequences` and :py:attr:`names`.
         :Example:
 
         >>> AMP = BaseDescriptor('KLLKLLKKLLKLLK','pepCATS')
@@ -548,8 +545,7 @@ class BaseDescriptor(object):
         :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.
         :Example:
 
-        >>> b = BaseSequence(4)
-        >>> b.sequences = ['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK', 'KLAKLAKKLAKLAK']
+        >>> b = BaseDescriptor(['KLLKLLKKLLKLLK', 'KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK', 'KLAKLAKKLAKLAK'])
         >>> b.filter_duplicates()
         >>> b.sequences
         ['KLLKLLKKLLKLLK', 'KLAKLAKKLAKLAK']
@@ -560,7 +556,9 @@ class BaseDescriptor(object):
             self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
         if not self.target:
             self.target = [0] * len(self.sequences)
-        df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]),
+        if not self.descriptor:
+            self.descriptor = np.zeros(len(self.sequences))
+        df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]).T,
                           columns=['Sequences', 'Names', 'Descriptor', 'Target'])
         df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
         self.sequences = df['Sequences'].get_values().tolist()
