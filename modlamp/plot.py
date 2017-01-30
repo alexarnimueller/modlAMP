@@ -48,7 +48,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     :return: A feature box plot.
     :Example:
 
-    >>> plot_feature(d.descriptor,y_label='uH Eisenberg')  # d: PeptideDescriptor instance
+    >>> plot_feature(desc.descriptor,y_label='uH Eisenberg')  # desc: PeptideDescriptor instance
 
     .. image:: ../docs/static/uH_Eisenberg.png
         :height: 300px

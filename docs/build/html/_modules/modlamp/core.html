@@ -256,10 +256,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the</span>
 <span class="sd">            descriptor values for.</span>
-<span class="sd">        :param scalename: {str} name of the amino acid scale (one of the given list above) used to calculate the</span>
-<span class="sd">            descriptor values</span>
-<span class="sd">        :return: initialized attributes :py:attr:`sequences`, :py:attr:`names` and dictionary :py:attr:`scale` with</span>
-<span class="sd">            amino acid scale values of the scale name in :py:attr:`scalename`.</span>
+<span class="sd">        :return: initialized attributes :py:attr:`sequences` and :py:attr:`names`.</span>
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; AMP = BaseDescriptor(&#39;KLLKLLKKLLKLLK&#39;,&#39;pepCATS&#39;)</span>
@@ -411,16 +408,16 @@
 
 <span class="sd">        &gt;&gt;&gt; h = Helices(7, 28, 100)</span>
 <span class="sd">        &gt;&gt;&gt; h.generate_helices()</span>
-<span class="sd">        &gt;&gt;&gt; d = PeptideDescriptor(h.sequences, &#39;eisenberg&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; d.calculate_moment()</span>
-<span class="sd">        &gt;&gt;&gt; len(d.sequences)</span>
+<span class="sd">        &gt;&gt;&gt; desc = PeptideDescriptor(h.sequences, &#39;eisenberg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.calculate_moment()</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.sequences)</span>
 <span class="sd">        100</span>
-<span class="sd">        &gt;&gt;&gt; len(d.descriptor)</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.descriptor)</span>
 <span class="sd">        100</span>
-<span class="sd">        &gt;&gt;&gt; d.random_selection(10)</span>
-<span class="sd">        &gt;&gt;&gt; len(d.descriptor)</span>
+<span class="sd">        &gt;&gt;&gt; desc.random_selection(10)</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.descriptor)</span>
 <span class="sd">        10</span>
-<span class="sd">        &gt;&gt;&gt; len(d.descriptor)</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.descriptor)</span>
 <span class="sd">        10</span>
 
 <span class="sd">        .. versionadded:: v2.2.3</span>
@@ -495,14 +492,14 @@
 <span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; d = PeptideDescriptor(sequences, &#39;pepcats&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; d.calculate_crosscorr(7)</span>
-<span class="sd">        &gt;&gt;&gt; len(d.descriptor)</span>
+<span class="sd">        &gt;&gt;&gt; desc = PeptideDescriptor(sequences, &#39;pepcats&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; desc.calculate_crosscorr(7)</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.descriptor)</span>
 <span class="sd">        5</span>
-<span class="sd">        &gt;&gt;&gt; d.filter_sequences(&#39;KLLKLLKKLLKLLK&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; len(d.descriptor)</span>
+<span class="sd">        &gt;&gt;&gt; desc.filter_sequences(&#39;KLLKLLKKLLKLLK&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; len(desc.descriptor)</span>
 <span class="sd">        4</span>
-<span class="sd">        &gt;&gt;&gt; d.sequences</span>
+<span class="sd">        &gt;&gt;&gt; desc.sequences</span>
 <span class="sd">        [&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -601,8 +598,7 @@
 <span class="sd">        :return: filtered sequences list in the attribute :py:attr:`sequences` and corresponding names.</span>
 <span class="sd">        :Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; b = BaseSequence(4)</span>
-<span class="sd">        &gt;&gt;&gt; b.sequences = [&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; b = BaseDescriptor([&#39;KLLKLLKKLLKLLK&#39;, &#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;, &#39;KLAKLAKKLAKLAK&#39;])</span>
 <span class="sd">        &gt;&gt;&gt; b.filter_duplicates()</span>
 <span class="sd">        &gt;&gt;&gt; b.sequences</span>
 <span class="sd">        [&#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
@@ -613,7 +609,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Seq_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">))]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">]),</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">))</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
                           <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sequences&#39;</span><span class="p">,</span> <span class="s1">&#39;Names&#39;</span><span class="p">,</span> <span class="s1">&#39;Descriptor&#39;</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">])</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;Sequences&#39;</span><span class="p">,</span> <span class="s1">&#39;first&#39;</span><span class="p">)</span>  <span class="c1"># keep first occurrence of duplicate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Sequences&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -1237,7 +1235,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Jan 16, 2017.
+      Last updated on Jan 30esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

@@ -355,16 +355,16 @@ class BaseDescriptor(object):
 
         >>> h = Helices(7, 28, 100)
         >>> h.generate_helices()
-        >>> d = PeptideDescriptor(h.sequences, 'eisenberg')
-        >>> d.calculate_moment()
-        >>> len(d.sequences)
+        >>> desc = PeptideDescriptor(h.sequences, 'eisenberg')
+        >>> desc.calculate_moment()
+        >>> len(desc.sequences)
         100
-        >>> len(d.descriptor)
+        >>> len(desc.descriptor)
         100
-        >>> d.random_selection(10)
-        >>> len(d.descriptor)
+        >>> desc.random_selection(10)
+        >>> len(desc.descriptor)
         10
-        >>> len(d.descriptor)
+        >>> len(desc.descriptor)
         10
 
         .. versionadded:: v2.2.3
@@ -439,14 +439,14 @@ class BaseDescriptor(object):
         :Example:
 
         >>> sequences = ['KLLKLLKKLLKLLK', 'ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
-        >>> d = PeptideDescriptor(sequences, 'pepcats')
-        >>> d.calculate_crosscorr(7)
-        >>> len(d.descriptor)
+        >>> desc = PeptideDescriptor(sequences, 'pepcats')
+        >>> desc.calculate_crosscorr(7)
+        >>> len(desc.descriptor)
         5
-        >>> d.filter_sequences('KLLKLLKKLLKLLK')
-        >>> len(d.descriptor)
+        >>> desc.filter_sequences('KLLKLLKKLLKLLK')
+        >>> len(desc.descriptor)
         4
-        >>> d.sequences
+        >>> desc.sequences
         ['ACDEFGHIK', 'GLFDIVKKVV', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALGSL']
         """
         indices = list()

@@ -4,16 +4,34 @@
 
 .. moduleauthor:: modlab Gisela Gabernet ETH Zurich <gisela.gabernet@pharma.ethz.ch>
 
-This module contains different functions to facilitate machine learning mainly using the scikit-learn package.
-Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
-check the scikit-learn documentation.
+This module contains different functions to facilitate machine learning with peptides, mainly making use of the
+scikit-learn Python package. Two machine learning models are available, whose parameters can be tuned. For more
+information on the machine learning modules please check the `scikit-learn documentation <http://scikit-learn.org>`_.
 
-=============================    ==========================================================================================================================================
-Model                            Reference
-=============================    ==========================================================================================================================================
-Support Vector Machine           `sklearn.svm.SVC <http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_
-Random Forest                    `sklearn.ensemble.RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_
-=============================    ==========================================================================================================================================
+**The two available machine learning models in this module are:**
+
+=========================   =======================================================================================
+Model                       Reference :sup:`[1]`
+=========================   =======================================================================================
+Support Vector Machine      `sklearn.svm.SVC <http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_
+Random Forest               `sklearn.ensemble.RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_
+=========================   =======================================================================================
+
+[1] F. Pedregosa *et al., J. Mach. Learn. Res.* **2011**, 12, 2825–2830.
+
+**The following functions are included in this module:**
+
+============================================    ========================================================================
+Function name                                   Description
+============================================    ========================================================================
+:py:func:`modlamp.ml.train_best_model`          Performs a grid search on different model parameters and returns the
+                                                best fitted model and its performance as the cross-validation MCC.
+:py:func:`modlamp.ml.plot_validation_curve`     Plotting a validation curve for a parameter in the grid search.
+:py:func:`modlamp.ml.predict`                   Predict the class labels or class probabilities for peptides.
+:py:func:`modlamp.ml.score_cv`                  Evaluate the performance of the model through cross-validation.
+:py:func:`modlamp.ml.score_testset`             Evaluate the performance of the model through test-set prediction.
+============================================    ========================================================================
+
 
 .. versionadded:: 2.2.0
 """
@@ -67,8 +85,8 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     =================            =============================================================
     Method                       Description
     =================            =============================================================
-    fit(X,y)                     fit the model with the same parameters to new training data.
-    score(X,y)                   get the score of the model for test data.
+    fit(X, y)                    fit the model with the same parameters to new training data.
+    score(X, y)                  get the score of the model for test data.
     predict(X)                   get predictions for new data.
     predict_proba(X)             get probability predicitons for [class0, class1]
     get_params()                 get parameters of the trained model
@@ -77,11 +95,13 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     :param model: {str} model to train. Choose between 'svm' (Support Vector Machine) or 'rf' (Random Forest).
     :param x_train: {array} descriptor values for training data.
     :param y_train: {array} class values for training data.
-    :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
-                    E.g. StandardScaler(), MinMaxScaler(), Normalizer().
+    :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from
+        sklearn.preprocessing. E.g. StandardScaler(), MinMaxScaler(), Normalizer().
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        (choose from `scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
-    :param param_grid: {dict} parameter grid for the gridsearch (see `sklearn.grid_search <http://scikit-learn.org/stable/modules/model_evaluation.html>`_).
+        (choose from
+        `scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
+    :param param_grid: {dict} parameter grid for the gridsearch (see `sklearn.grid_search
+        <http://scikit-learn.org/stable/modules/model_evaluation.html>`_).
     :param cv: {int} number of folds for cross-validation.
     :return: best estimator pipeline.
 
@@ -89,9 +109,9 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
 
     >>> from modlamp.ml import train_best_model
     >>> from modlamp.datasets import load_ACPvsRandom
-    >>> from modlamp import descriptors
+    >>> from modlamp.descriptors import PeptideDescriptor
 
-    Loading a dataset for training.
+    Loading a dataset for training:
 
     >>> data = load_ACPvsRandom()
     >>> len(data.sequences)
@@ -99,10 +119,12 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     >>>list(data.target_names)
     ['Random', 'ACP']
 
-    Calculating Pepcats descriptor in autocorrelation modality:
+    Calculating the pepCATS descriptor values in auto-correlation modality:
 
-    >>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
+    >>> descr = PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> descr.calculate_autocorr(7)
+    >>> descr.descriptor.shape
+    (826, 42)
     >>> descr.descriptor
     array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,
          0.21428571,  0.        ],
@@ -118,8 +140,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
        [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,
          0.        ,  0.        ]])
 
-
-    Training an SVM model with this data:
+    Training an SVM model on this descriptor data:
 
     >>> X_train = descr.descriptor
     >>> y_train = data.target
@@ -161,6 +182,13 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
                           n_jobs=-1)
 
         gs.fit(x_train, y_train)
+        print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
+        print("MCC score:\t%.3f" % gs.best_score_)
+        print("Parameters:\t%s" % gs.best_params_)
+
+        # Set the best parameters to the best estimator
+        best_classifier = gs.best_estimator_
+        return best_classifier.fit(x_train, y_train)
 
     elif model.lower() == 'rf':
         pipe_rf = Pipeline([('scl', scaler),
@@ -179,24 +207,24 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
                           n_jobs=-1)
 
         gs.fit(x_train, y_train)
+        print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
+        print("MCC score:\t%.3f" % gs.best_score_)
+        print("Parameters:\t%s" % gs.best_params_)
+
+        # Set the best parameters to the best estimator
+        best_classifier = gs.best_estimator_
+        return best_classifier.fit(x_train, y_train)
 
     else:
         print "Model not supported, please choose between 'svm' and 'rf'."
-
-    print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
-    print gs.best_score_
-    print gs.best_params_
-
-    # Set the best parameters to the best estimator
-    best_classifier = gs.best_estimator_
-    return best_classifier.fit(x_train, y_train)
 
 
 def plot_validation_curve(classifier, x_train, y_train, param_name,
                           param_range,
                           cv=10, score=make_scorer(matthews_corrcoef),
                           title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
-    """Plotting cross-validation curve for the specified classifier, training data and parameter.
+    """This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
+    option ``param_range``.
 
     :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).
     :param x_train: {array} descriptor values for training data.
@@ -219,9 +247,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
     >>> from modlamp.ml import train_best_model
     >>> from modlamp.datasets import load_ACPvsRandom
-    >>> from modlamp import descriptors
+    >>> from modlamp.descriptors import PeptideDescriptor
 
-    Loading a dataset for training.
+    Loading a dataset for training:
 
     >>> data = load_ACPvsRandom()
     >>> len(data.sequences)
@@ -229,10 +257,12 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     >>>list(data.target_names)
     ['Random', 'ACP']
 
-    Calculating Pepcats descriptor in autocorrelation modality:
+    Calculating the pepCATS descriptor values in auto-correlation modality:
 
-    >>> descr = descriptors.PeptideDescriptor(data.sequences,scalename='pepcats')
+    >>> descr = PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> descr.calculate_autocorr(7)
+    >>> descr.descriptor.shape
+    (826, 42)
     >>> descr.descriptor
     array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,
          0.21428571,  0.        ],
@@ -247,7 +277,6 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
          0.09090909,  0.        ],
        [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,
          0.        ,  0.        ]])
-
 
     Training an SVM model with this data:
 
@@ -293,8 +322,9 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
 
 
 def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]), filename=None, save_csv=True):
-    """Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
-    it returns the scoring value for the test data.
+    """This function can be used to predict novel peptides with a trained classifier model. The function returns pandas
+    dataframe with predictions using the specified estimator and test data. If true class is provided, it returns the
+    scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.
     :param x_test: {array} descriptor values for testing data.
@@ -310,29 +340,35 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
 
     >>> from modlamp.ml import train_best_model, predict
     >>> from modlamp.datasets import load_ACPvsRandom
-    >>> from modlamp import descriptors
+    >>> from modlamp.descriptors import PeptideDescriptor
     >>> from modlamp.sequences import Helices
+    
+    Loading data for model training:
+    
     >>> data = load_ACPvsRandom()
 
-    Calculating descriptor from the data
-    >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
+    Calculating descriptor values from the data:
+    
+    >>> desc = PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> desc.calculate_autocorr(7)
     >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
 
-    Generating 10 de novo Helical sequences to predict their activity
+    Generating 10 *de novo* helical sequences to predict their activity:
+    
     >>> H = Helices(seqnum=10, lenmin=7, lenmax=30)
     >>> H.generate_sequences()
 
-    Calculating descriptor for the newly generated sequences
-    >>> descH = descriptors.PeptideDescriptor(H.sequences, scalename='pepcats')
+    Calculating descriptor values for the newly generated sequences:
+    
+    >>> descH = PeptideDescriptor(H.sequences, scalename='pepcats')
     >>> descH.calculate_autocorr(7)
 
     >>> df = predict(best_svm_model, x_test=descH.descriptor, seqs_test=H.sequences)
     >>> df.head(3)
-       ID                   Sequence  Pred_prob_class0  Pred_prob_class1
-    0   0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833
-    1   1                LGVRVLRIIIR          0.007239          0.992761
-    2   2              VGIRLARGVGRIG          0.071436          0.928564
+    ID                  Sequence  Pred_prob_class0  Pred_prob_class1
+    0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833
+    1                LGVRVLRIIIR          0.007239          0.992761
+    2              VGIRLARGVGRIG          0.071436          0.928564
 
     """
     if filename is None:
@@ -365,13 +401,14 @@ def predict(classifier, x_test, seqs_test, names_test=None, y_test=np.array([]),
                                                  'Pred_prob_class1', 'True_class'])
 
     if save_csv:
-        dfpred.to_csv(filename + time.strftime("-%Y%m%d-%H%M%S.csv"))
+        dfpred.to_csv(filename + time.strftime("-%Y%m%desc-%H%M%S.csv"))
 
     return dfpred
 
 
 def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
-    """ Returns the cross validation errors for the specified scoring metrics as a pandas data frame.
+    """This function can be used to evaluate the performance of a trained classifier. It returns the
+    **cross-validation scores** for the specified scoring metrics as a ``pandas.DataFrame``.
 
     :param classifier: {classifier instance} trained classifier used for predictions.
     :param X: {array} descriptor values for training data.
@@ -380,53 +417,61 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
         `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param names: {list} names of the metrics to display on the dataframe.
-    :return: pandas dataframe containing the cross validation errors for the specified metrics.
+    :return: ``pandas.DataFrame`` containing the cross validation scores for the specified metrics.
     :Example:
 
     >>> from modlamp.ml import train_best_model, score_cv
     >>> from modlamp.datasets import load_ACPvsRandom
-    >>> from modlamp import descriptors
+    >>> from modlamp.descriptors import PeptideDescriptor
+    
+    Loading data for model training:
+    
     >>> data = load_ACPvsRandom()
 
-    Calculating descriptor from the data
+    Calculating descriptor values from the data:
 
-    >>> desc = descriptors.PeptideDescriptor(data.sequences, scalename='pepcats')
+    >>> desc = PeptideDescriptor(data.sequences, scalename='pepcats')
     >>> desc.calculate_autocorr(7)
     >>> best_svm_model = train_best_model('svm', desc.descriptor, data.target)
 
-    Cross validation errors
+    Get the cross-validation scores:
     
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-    ID   Metrics  Mean CV score     StDev
-    0   accuracy       0.841199  0.051708
-    1  precision       0.930872  0.024897
-    2     recall       0.735763  0.093979
-    3         f1       0.819435  0.064995
-    4    roc_auc       0.914607  0.039345
+    ID   Metrics   Mean    Std
+    0   accuracy  0.841  0.052
+    1  precision  0.931  0.025
+    2     recall  0.736  0.094
+    3         f1  0.819  0.065
+    4    roc_auc  0.915  0.039
+    5        mcc  0.699  0.094
     """
     if metrics is None:
-        metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+        metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'mcc']
 
     means = []
     sd = []
     for metric in metrics:
-        scores = cross_val_score(classifier, X, y, cv=cv, scoring=metric)
+        if metric == 'mcc':
+            scores = cross_val_score(classifier, X, y, cv=cv, scoring=make_scorer(matthews_corrcoef), n_jobs=-1)
+        else:
+            scores = cross_val_score(classifier, X, y, cv=cv, scoring=metric, n_jobs=-1)
+        
         means.append(scores.mean())
         sd.append(scores.std())
 
     if names is None:
         dict_scores = {'Metrics': metrics,
-                       'Mean CV score': means,
-                       'StDev': sd}
+                       'Mean': means,
+                       'Std': sd}
     else:
         dict_scores = {'Metrics': names,
-                       'Mean CV score': means,
-                       'StDev': sd}
+                       'Mean': means,
+                       'Std': sd}
 
     df_scores = pd.DataFrame(dict_scores)
-    df_scores = df_scores[['Metrics', 'Mean CV score', 'StDev']]
+    df_scores = df_scores[['Metrics', 'Mean', 'Std']]
 
-    return df_scores
+    return df_scores.round(3)
 
 
 def score_testset(classifier, X_test, y_test):

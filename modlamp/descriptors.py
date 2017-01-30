@@ -496,11 +496,11 @@ class GlobalDescriptor(BaseDescriptor):
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
         
-        >>> d = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
-        >>> d.calculate_all(amide=true)
-        >>> d.featurenames
+        >>> desc = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
+        >>> desc.calculate_all(amide=true)
+        >>> desc.featurenames
         ['MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
-        >>> d.descriptor
+        >>> desc.descriptor
         array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
         """
         self.length()  # sequence length

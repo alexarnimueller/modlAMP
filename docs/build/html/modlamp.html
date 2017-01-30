@@ -470,11 +470,11 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;AFGHFKLKKLFIFGHERT&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">featurenames</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;AFGHFKLKKLFIFGHERT&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">featurenames</span>
 <span class="go">[&#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydrophRatio&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])</span>
 </pre></div>
 </div>
@@ -2027,7 +2027,7 @@ as separate boxes.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># d: PeptideDescriptor instance</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span><span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">)</span>  <span class="c1"># desc: PeptideDescriptor instance</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="height: 300px;" /></a>
@@ -2288,17 +2288,18 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 </div>
 <div class="section" id="module-modlamp.ml">
 <span id="modlamp-ml"></span><h2>2.6. modlamp.ml<a class="headerlink" href="#module-modlamp.ml" title="Permalink to this headline">¶</a></h2>
-<p>This module contains different functions to facilitate machine learning mainly using the scikit-learn package.
-Two models are available, whose parameters can be tuned. For more information of the machine learning modules please
-check the scikit-learn documentation.</p>
+<p>This module contains different functions to facilitate machine learning with peptides, mainly making use of the
+scikit-learn Python package. Two machine learning models are available, whose parameters can be tuned. For more
+information on the machine learning modules please check the <a class="reference external" href="http://scikit-learn.org">scikit-learn documentation</a>.</p>
+<p><strong>The two available machine learning models in this module are:</strong></p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="17%" />
-<col width="83%" />
+<col width="15%" />
+<col width="85%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Model</th>
-<th class="head">Reference</th>
+<th class="head">Reference <sup>[1]</sup></th>
 </tr>
 </thead>
 <tbody valign="top">
@@ -2307,6 +2308,37 @@ check the scikit-learn documentation.</p>
 </tr>
 <tr class="row-odd"><td>Random Forest</td>
 <td><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">sklearn.ensemble.RandomForestClassifier</a></td>
+</tr>
+</tbody>
+</table>
+<p>[1] F. Pedregosa <em>et al., J. Mach. Learn. Res.</em> <strong>2011</strong>, 12, 2825–2830.</p>
+<p><strong>The following functions are included in this module:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.ml.train_best_model" title="modlamp.ml.train_best_model"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.train_best_model()</span></code></a></td>
+<td>Performs a grid search on different model parameters and returns the
+best fitted model and its performance as the cross-validation MCC.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.ml.plot_validation_curve" title="modlamp.ml.plot_validation_curve"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.plot_validation_curve()</span></code></a></td>
+<td>Plotting a validation curve for a parameter in the grid search.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.ml.predict" title="modlamp.ml.predict"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.predict()</span></code></a></td>
+<td>Predict the class labels or class probabilities for peptides.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#modlamp.ml.score_cv" title="modlamp.ml.score_cv"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.score_cv()</span></code></a></td>
+<td>Evaluate the performance of the model through cross-validation.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#modlamp.ml.score_testset" title="modlamp.ml.score_testset"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.score_testset()</span></code></a></td>
+<td>Evaluate the performance of the model through test-set prediction.</td>
 </tr>
 </tbody>
 </table>
@@ -2358,10 +2390,10 @@ the best Support Vector Machine or Random forest classifier found by grid search
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>fit(X,y)</td>
+<tr class="row-even"><td>fit(X, y)</td>
 <td>fit the model with the same parameters to new training data.</td>
 </tr>
-<tr class="row-odd"><td>score(X,y)</td>
+<tr class="row-odd"><td>score(X, y)</td>
 <td>get the score of the model for test data.</td>
 </tr>
 <tr class="row-even"><td>predict(X)</td>
@@ -2383,10 +2415,11 @@ the best Support Vector Machine or Random forest classifier found by grid search
 <li><strong>model</strong> &#8211; {str} model to train. Choose between &#8216;svm&#8217; (Support Vector Machine) or &#8216;rf&#8217; (Random Forest).</li>
 <li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
-<li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from sklearn.preprocessing.
-E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
+<li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from
+sklearn.preprocessing. E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-(choose from <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">scoring-parameter</a>).</li>
+(choose from
+<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">scoring-parameter</a>).</li>
 <li><strong>param_grid</strong> &#8211; {dict} parameter grid for the gridsearch (see <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html">sklearn.grid_search</a>).</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 </ul>
@@ -2401,10 +2434,10 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="k">import</span> <span class="n">PeptideDescriptor</span>
 </pre></div>
 </div>
-<p>Loading a dataset for training.</p>
+<p>Loading a dataset for training:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="go">826</span>
@@ -2412,9 +2445,11 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
 </pre></div>
 </div>
-<p>Calculating Pepcats descriptor in autocorrelation modality:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<p>Calculating the pepCATS descriptor values in auto-correlation modality:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(826, 42)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
 <span class="go">     0.21428571,  0.        ],</span>
@@ -2431,7 +2466,7 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <span class="go">     0.        ,  0.        ]])</span>
 </pre></div>
 </div>
-<p>Training an SVM model with this data:</p>
+<p>Training an SVM model on this descriptor data:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -2458,7 +2493,8 @@ E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
 <dl class="function">
 <dt id="modlamp.ml.plot_validation_curve">
 <code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plotting cross-validation curve for the specified classifier, training data and parameter.</p>
+<dd><p>This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
+option <code class="docutils literal"><span class="pre">param_range</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2491,10 +2527,10 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="k">import</span> <span class="n">PeptideDescriptor</span>
 </pre></div>
 </div>
-<p>Loading a dataset for training.</p>
+<p>Loading a dataset for training:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="go">826</span>
@@ -2502,9 +2538,11 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 <span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
 </pre></div>
 </div>
-<p>Calculating Pepcats descriptor in autocorrelation modality:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span><span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<p>Calculating the pepCATS descriptor values in auto-correlation modality:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(826, 42)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
 <span class="go">     0.21428571,  0.        ],</span>
@@ -2539,8 +2577,9 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 <dl class="function">
 <dt id="modlamp.ml.predict">
 <code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns pandas dataframe with predictions using the specified estimator and test data. If true class is provided,
-it returns the scoring value for the test data.</p>
+<dd><p>This function can be used to predict novel peptides with a trained classifier model. The function returns pandas
+dataframe with predictions using the specified estimator and test data. If true class is provided, it returns the
+scoring value for the test data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2566,27 +2605,36 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span><span class="p">,</span> <span class="n">predict</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="k">import</span> <span class="n">PeptideDescriptor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.sequences</span> <span class="k">import</span> <span class="n">Helices</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Calculating descriptor from the data
-&gt;&gt;&gt; desc = descriptors.PeptideDescriptor(data.sequences, scalename=&#8217;pepcats&#8217;)
-&gt;&gt;&gt; desc.calculate_autocorr(7)
-&gt;&gt;&gt; best_svm_model = train_best_model(&#8216;svm&#8217;, desc.descriptor, data.target)</p>
-<p>Generating 10 de novo Helical sequences to predict their activity
-&gt;&gt;&gt; H = Helices(seqnum=10, lenmin=7, lenmax=30)
-&gt;&gt;&gt; H.generate_sequences()</p>
-<p>Calculating descriptor for the newly generated sequences
-&gt;&gt;&gt; descH = descriptors.PeptideDescriptor(H.sequences, scalename=&#8217;pepcats&#8217;)
-&gt;&gt;&gt; descH.calculate_autocorr(7)</p>
+<p>Loading data for model training:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor values from the data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Generating 10 <em>de novo</em> helical sequences to predict their activity:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Helices</span><span class="p">(</span><span class="n">seqnum</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lenmin</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">lenmax</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">generate_sequences</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor values for the newly generated sequences:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descH</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descH</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">descH</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs_test</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">   ID                   Sequence  Pred_prob_class0  Pred_prob_class1</span>
-<span class="go">0   0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833</span>
-<span class="go">1   1                LGVRVLRIIIR          0.007239          0.992761</span>
-<span class="go">2   2              VGIRLARGVGRIG          0.071436          0.928564</span>
+<span class="go">ID                  Sequence  Pred_prob_class0  Pred_prob_class1</span>
+<span class="go">0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833</span>
+<span class="go">1                LGVRVLRIIIR          0.007239          0.992761</span>
+<span class="go">2              VGIRLARGVGRIG          0.071436          0.928564</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2594,7 +2642,8 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <dl class="function">
 <dt id="modlamp.ml.score_cv">
 <code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the cross validation errors for the specified scoring metrics as a pandas data frame.</p>
+<dd><p>This function can be used to evaluate the performance of a trained classifier. It returns the
+<strong>cross-validation scores</strong> for the specified scoring metrics as a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2610,7 +2659,7 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing the cross validation errors for the specified metrics.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> containing the cross validation scores for the specified metrics.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -2619,24 +2668,28 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.ml</span> <span class="k">import</span> <span class="n">train_best_model</span><span class="p">,</span> <span class="n">score_cv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp</span> <span class="k">import</span> <span class="n">descriptors</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.descriptors</span> <span class="k">import</span> <span class="n">PeptideDescriptor</span>
 </pre></div>
 </div>
-<p>Calculating descriptor from the data</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<p>Loading data for model training:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Calculating descriptor values from the data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Cross validation errors</p>
+<p>Get the cross-validation scores:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_cv</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">ID   Metrics  Mean CV score     StDev</span>
-<span class="go">0   accuracy       0.841199  0.051708</span>
-<span class="go">1  precision       0.930872  0.024897</span>
-<span class="go">2     recall       0.735763  0.093979</span>
-<span class="go">3         f1       0.819435  0.064995</span>
-<span class="go">4    roc_auc       0.914607  0.039345</span>
+<span class="go">ID   Metrics   Mean    Std</span>
+<span class="go">0   accuracy  0.841  0.052</span>
+<span class="go">1  precision  0.931  0.025</span>
+<span class="go">2     recall  0.736  0.094</span>
+<span class="go">3         f1  0.819  0.065</span>
+<span class="go">4    roc_auc  0.915  0.039</span>
+<span class="go">5        mcc  0.699  0.094</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3322,17 +3375,10 @@ argument list <em>aminoacids</em>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>seqs</strong> &#8211; a <code class="docutils literal"><span class="pre">.FASTA</span></code> file with sequences, a list / array of sequences or a single sequence as string to calculate the
-descriptor values for.</li>
-<li><strong>scalename</strong> &#8211; {str} name of the amino acid scale (one of the given list above) used to calculate the
-descriptor values</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a <code class="docutils literal"><span class="pre">.FASTA</span></code> file with sequences, a list / array of sequences or a single sequence as string to calculate the
+descriptor values for.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">names</span></code> and dictionary <code class="xref py py-attr docutils literal"><span class="pre">scale</span></code> with
-amino acid scale values of the scale name in <code class="xref py py-attr docutils literal"><span class="pre">scalename</span></code>.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -3518,16 +3564,16 @@ descriptor instance.</p>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">Helices</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">generate_helices</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="go">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 <span class="go">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">random_selection</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">random_selection</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 <span class="go">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 <span class="go">10</span>
 </pre></div>
 </div>
@@ -3582,14 +3628,14 @@ descriptor instance.</p>
 </tbody>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHIK&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVV&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGALG&#39;</span><span class="p">,</span> <span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 <span class="go">5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">filter_sequences</span><span class="p">(</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">filter_sequences</span><span class="p">(</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">)</span>
 <span class="go">4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">sequences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;ACDEFGHIK&#39;, &#39;GLFDIVKKVV&#39;, &#39;GLFDIVKKVVGALG&#39;, &#39;GLFDIVKKVVGALGSL&#39;]</span>
 </pre></div>
 </div>
@@ -3669,8 +3715,7 @@ argument list <em>aminoacids</em>.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseSequence</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">BaseDescriptor</span><span class="p">([</span><span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLLKLLKKLLKLLK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">,</span> <span class="s1">&#39;KLAKLAKKLAKLAK&#39;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">filter_duplicates</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">sequences</span>
 <span class="go">[&#39;KLLKLLKKLLKLLK&#39;, &#39;KLAKLAKKLAKLAK&#39;]</span>
@@ -4110,7 +4155,7 @@ spaces were removed.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Jan 16, 2017.
+      Last updated on Jan 30esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
