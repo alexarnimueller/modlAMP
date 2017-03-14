@@ -187,7 +187,7 @@ class CD:
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting single CD plots"""
         
         fig, ax = plt.subplots()
-        line = ax.plot(w, d / 1000)  # used legend is 10^3 so divide by 1000
+        line = ax.plot(w, d / 1000.)  # used legend is 10^3 so divide by 1000
         plt.setp(line, color=col, linewidth=2.0)
         plt.title(title, fontsize=18, fontweight='bold')
         ax.set_xlabel('Wavelength (nm)', fontsize=16)
@@ -197,7 +197,7 @@ class CD:
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
         plt.xlim(np.min(w), np.max(w))
-        plt.ylim((y_min / 1000, y_max / 1000))
+        plt.ylim((y_min / 1000., y_max / 1000.))
         img_name = splitext(filename)[0] + '.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
     
@@ -205,8 +205,8 @@ class CD:
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
         
         fig, ax = plt.subplots()
-        line1 = ax.plot(w, dt / 1000)
-        line2 = ax.plot(w, dw / 1000)
+        line1 = ax.plot(w, dt / 1000.)
+        line2 = ax.plot(w, dw / 1000.)
         plt.setp(line1, color='b', linewidth=2.0, label='TFE', linestyle='--')
         plt.setp(line2, color='b', linewidth=2.0, label='Water')
         plt.title(title, fontsize=18, fontweight='bold')
@@ -217,7 +217,7 @@ class CD:
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
         plt.xlim(np.min(w), np.max(w))
-        plt.ylim((y_min / 1000, y_max / 1000))
+        plt.ylim((y_min / 1000., y_max / 1000.))
         plt.legend(loc=1)
         img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
@@ -231,33 +231,34 @@ class CD:
             d = self.meanres_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.meanres_ellipticity[i + 1][:, 1]
-            y_label = b"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
-            y_min = np.min(self.meanres_ellipticity) * 1.1
-            y_max = np.max(self.meanres_ellipticity) * 1.1
+            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
+            y_min = np.min(d) * 1.1
+            y_max = np.max(d) * 1.1
         elif data == 'molar ellipticity':
             d = self.molar_ellipticity[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = b"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
-            y_min = np.min(self.molar_ellipticity) * 1.1
-            y_max = np.max(self.molar_ellipticity) * 1.1
+            y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
+            y_min = np.min(d) * 1.1
+            y_max = np.max(d) * 1.1
         else:
             d = self.circular_dichroism[i][:, 1]
             if d_flag and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
-            y_label = b"$\Delta A \ast 32.986 \ast 10^{-3}$"
-            y_min = np.min(self.circular_dichroism) * 1.1
-            y_max = np.max(self.circular_dichroism) * 1.1
+            y_label = r"$\Delta A \ast 32.986 \ast 10^{-3}$"
+            y_min = np.min(d) * 1.1
+            y_max = np.max(d) * 1.1
     
         return d, d2, y_label, y_min, y_max
 
-    def plot(self, data='mean residue ellipticity', combine=True):
+    def plot(self, data='mean residue ellipticity', combine=True, ylim=None):
         """Method to generate CD plots for all read data in the initial directory.
         
         :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
             ``circular dichroism``)
         :param combine: {bool} if ``True``, overlays of different solvents will be created for the same molecule.
             The amino acid sequence in the header is used to find corresponding data.
+        :param ylim: {tuple} If not none, this tuple of values is taken as the minimum and maximum of the y axis
         :return: .pdf plots saved to the directory containing the read files.
         :Example:
         
@@ -298,6 +299,10 @@ class CD:
                         col = 'r'
                     else:
                         col = 'b'
+                    
+                    if ylim:
+                        y_min = 1000 * ylim[0]  # * 1000 because axis are usually shown as 10^3
+                        y_max = 1000 * ylim[1]
                     
                     # plot single plots
                     self._plot_single(w, d, col, y_label, self.names[i] + ' ' + self.solvent[i], f, y_min, y_max)
