@@ -35,3 +35,4 @@ v2.7.0  16.01.2017 -- Adapted modlamp.wetlab.CD to recognize same squences inste
 v2.7.1  16.01.2017 -- Hydrophobic moment arrow option added to helical_wheel function
 v2.7.2  19.01.2017 -- Slight visual adaptions in helical_wheel output
 v2.7.3  30.01.2017 -- Small bug fix in ml module and clarification of documentation in ML module
+v2.7.4  14.03.2017 -- Adapted CD plot function in wetlab to take ylim argument, bug fix in y axis label
