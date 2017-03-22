@@ -225,6 +225,9 @@ class CD:
     def _plot_all(self, data, w, y_lim):
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
     
+        colors = ['#53777A', '#542437', '#C02942', '#D95B43', '#ECD078', '#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686',
+                  '#0B486B', '#2790B0', '#94BA65', '#353432', '#4E4D4A', '##808080', '#CCCCCC']
+    
         fig, ax = plt.subplots()
         y_label = ''  # assign empty
         y_min, y_max = (0, 1)  # assign empty
@@ -236,10 +239,14 @@ class CD:
                 y_min = 1000 * y_lim[0]  # * 1000 because axis are usually shown as 10^3
                 y_max = 1000 * y_lim[1]
         
-            vars()['line' + str(i)] = ax.plot(w, d / 1000.)
-            plt.setp(vars()['line' + str(i)], color='k', linewidth=1.5, label='%s' % f, linestyle='-')
-        
-        # TODO: colors and linestyles
+            vars()['line' + str(i)] = ax.plot(w, d / 1000.)  # mark the line plots with the iterator, for labelling
+            
+            try:
+                plt.setp(vars()['line' + str(i)], color=colors[i], linewidth=1.5, label='%s' % f.split('.')[0],
+                         linestyle='-')
+            except IndexError:  # if more data than colors: start with dashed lines
+                plt.setp(vars()['line' + str(i)], color=colors[i - len(colors)], linewidth=1.5, label='%s' % f.split(
+                        '.')[0], linestyle='--')
         
         plt.title("Combined Plot", fontsize=18, fontweight='bold')
         ax.set_xlabel('Wavelength [nm]', fontsize=16)
