@@ -190,7 +190,7 @@ class CD:
         line = ax.plot(w, d / 1000.)  # used legend is 10^3 so divide by 1000
         plt.setp(line, color=col, linewidth=2.0)
         plt.title(title, fontsize=18, fontweight='bold')
-        ax.set_xlabel('Wavelength (nm)', fontsize=16)
+        ax.set_xlabel('Wavelength [nm]', fontsize=16)
         ax.set_ylabel(y_label, fontsize=16)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
@@ -210,7 +210,7 @@ class CD:
         plt.setp(line1, color='b', linewidth=2.0, label='TFE', linestyle='--')
         plt.setp(line2, color='b', linewidth=2.0, label='Water')
         plt.title(title, fontsize=18, fontweight='bold')
-        ax.set_xlabel('Wavelength (nm)', fontsize=16)
+        ax.set_xlabel('Wavelength [nm]', fontsize=16)
         ax.set_ylabel(y_label, fontsize=16)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
@@ -222,28 +222,59 @@ class CD:
         img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
 
-    def _check_datatype(self, data, i, d_flag):
+    def _plot_all(self, data, w, y_lim):
+        """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
+    
+        fig, ax = plt.subplots()
+        y_label = ''  # assign empty
+        y_min, y_max = (0, 1)  # assign empty
+        
+        for i, f in enumerate(self.filenames):
+            d, _, y_label, y_min, y_max = self._check_datatype(data, i, 'all')
+            
+            if y_lim:
+                y_min = 1000 * y_lim[0]  # * 1000 because axis are usually shown as 10^3
+                y_max = 1000 * y_lim[1]
+        
+            vars()['line' + str(i)] = ax.plot(w, d / 1000.)
+            plt.setp(vars()['line' + str(i)], color='k', linewidth=1.5, label='%s' % f, linestyle='-')
+        
+        # TODO: colors and linestyles
+        
+        plt.title("Combined Plot", fontsize=18, fontweight='bold')
+        ax.set_xlabel('Wavelength [nm]', fontsize=16)
+        ax.set_ylabel(y_label, fontsize=16)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.xaxis.set_ticks_position('bottom')
+        ax.yaxis.set_ticks_position('left')
+        plt.xlim(np.min(w), np.max(w))
+        plt.ylim((y_min / 1000., y_max / 1000.))
+        plt.legend(loc=1)
+        plt.savefig(join(self.directory, 'PDF', 'all.pdf'), dpi=150)
+
+    def _check_datatype(self, data, i, comb_flag):
         """Private function to check data type; used by :py:func`modlamp.wetlab.CD.plot` and
         :py:func`modlamp.wetlab.CD.dichroweb`"""
     
         d2 = []
         if data == 'mean residue ellipticity':
             d = self.meanres_ellipticity[i][:, 1]
-            if d_flag and i % 2 == 0:
+            if comb_flag == 'solvent' and i % 2 == 0:
                 d2 = self.meanres_ellipticity[i + 1][:, 1]
             y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(d) * 1.1
             y_max = np.max(d) * 1.1
         elif data == 'molar ellipticity':
             d = self.molar_ellipticity[i][:, 1]
-            if d_flag and i % 2 == 0:
+            if comb_flag == 'solvent' and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
             y_label = r"$[\Theta] \ast 10^{-3} (deg \ast cm^2 \ast dmol^{-1})$"
             y_min = np.min(d) * 1.1
             y_max = np.max(d) * 1.1
         else:
             d = self.circular_dichroism[i][:, 1]
-            if d_flag and i % 2 == 0:
+            if comb_flag == 'solvent' and i % 2 == 0:
                 d2 = self.molar_ellipticity[i + 1][:, 1]
             y_label = r"$\Delta A \ast 32.986 \ast 10^{-3}$"
             y_min = np.min(d) * 1.1
@@ -256,15 +287,16 @@ class CD:
         
         :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
             ``circular dichroism``)
-        :param combine: {bool} if ``True``, overlays of different solvents will be created for the same molecule.
+        :param combine: {str} if ``solvent``, overlays of different solvents will be created for the same molecule.
             The amino acid sequence in the header is used to find corresponding data.
+            if ``all``, all data is combined in one single plot
         :param ylim: {tuple} If not none, this tuple of values is taken as the minimum and maximum of the y axis
         :return: .pdf plots saved to the directory containing the read files.
         :Example:
         
         >>> cd = CD('/path/to/your/folder', 180, 260)
         >>> cd.calc_meanres_ellipticity()
-        >>> cd.plot(data='mean residue ellipticity', combine=True)
+        >>> cd.plot(data='mean residue ellipticity', combine='solvent')
         
         .. image:: ../docs/static/cd1.png
             :height: 300px
@@ -275,25 +307,23 @@ class CD:
         """
         try:
             # prepare combination of solvent plots
-            d_flag = False
-            if combine:
+            if combine == 'solvent':
                 d = {s: self.sequences.count(s) for s in set(self.sequences)}  # create dict with seq counts for combine
-                if d.values().count(2) == len(d.values()):
-                    d_flag = True
-    
+                if d.values().count(2) != len(d.values()):
+                    raise ValueError
             # check if output folder exists already, else create one
             if not exists(join(self.directory, 'PDF')):
                 makedirs(join(self.directory, 'PDF'))
     
             w = range(self.wmax, self.wmin - 1, -1)  # wavelengths
             
-            # check data option
+            # check input data option
             if data in ['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']:
                 # loop through all data for single plots
                 for i, f in enumerate(self.filenames):
                     
                     # get data type to be plotted
-                    d, d2, y_label, y_min, y_max = self._check_datatype(data, i, d_flag)
+                    d, d2, y_label, y_min, y_max = self._check_datatype(data, i, combine)
                     
                     if self.solvent[i] == 'T':  # color
                         col = 'r'
@@ -307,9 +337,12 @@ class CD:
                     # plot single plots
                     self._plot_single(w, d, col, y_label, self.names[i] + ' ' + self.solvent[i], f, y_min, y_max)
                     # plot mixed plots
-                    if d_flag and i % 2 == 0:
+                    if combine == 'solvent' and i % 2 == 0:
                         self._plot_double(w, d, d2, y_label, self.names[i], f, y_min, y_max)
-    
+                
+                if combine == 'all':
+                    self._plot_all(data, w, ylim)
+                    
             else:
                 print("ERROR\nWrong data option given!\nAvailable:")
                 print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
@@ -317,6 +350,10 @@ class CD:
         except IndexError:  # if data arrays are empty, no data was calculated
             print("ERROR\nSpecified data array empty, call the calculate functions first!")
             print("e.g. self.calc_molar_ellipticity()")
+        
+        except ValueError:
+            print("ERROR\nSolvent pairs not even / missing.")
+            print("Check if all measurements were performed in both TFE and water")
 
     def dichroweb(self, data='mean residue ellipticity'):
         """Method to save the calculated CD data into DichroWeb readable format (semi-colon separated). The produced
