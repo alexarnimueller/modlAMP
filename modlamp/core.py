@@ -627,13 +627,13 @@ class BaseDescriptor(object):
         self.sequences = seqs
         self.descriptor = data
     
-    def save_descriptor(self, filename, delimiter=',', targets=None, header=''):
+    def save_descriptor(self, filename, delimiter=',', targets=None, header=None):
         """Method to save the descriptor values to a .csv/.txt file
 
         :param filename: filename of the output file
         :param delimiter: column delimiter
         :param targets: target class vector to be added to descriptor (same length as :py:attr:`sequences`)
-        :param header: {str} header to be written at the beginning of the file
+        :param header: {str} header to be written at the beginning of the file (if ``None``: feature names are taken)
         :return: output file with peptide names and descriptor values
         """
         seqs = np.array(self.sequences, dtype='|S80')[:, np.newaxis]
@@ -647,6 +647,9 @@ class BaseDescriptor(object):
             data = np.hstack((names, self.descriptor, target))
         else:
             data = np.hstack((names, self.descriptor))
+        if not header:
+            featurenames = [['Sequence']] + self.featurenames
+            header = ', '.join([f[0] for f in featurenames])
         np.savetxt(filename, data, delimiter=delimiter, fmt='%s', header=header)
 
 

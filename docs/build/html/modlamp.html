@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v2.7.5 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v2.7.6 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.7.5',
+        VERSION:     'v2.7.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v2.7.5 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v2.7.6 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.5 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.6 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -132,6 +132,7 @@
 the <strong>methods</strong> linked below:</p>
 <ul class="simple">
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.length">Sequence Length</a></li>
+<li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.formula">Molecular Formula</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW">Molecular Weight</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge">Sequence Charge</a></li>
 <li><a class="reference external" href="modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density">Charge Density</a></li>
@@ -163,8 +164,48 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;AFDGHLKI&#39;</span><span class="p">,</span><span class="s1">&#39;KKLQRSDLLRTK&#39;</span><span class="p">,</span><span class="s1">&#39;KKLASCNNIPPR&#39;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
-<span class="go">array([[ 8], [12], [12]])</span>
+<span class="go">array([[ 8.], [12.], [12.]])</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="modlamp.descriptors.GlobalDescriptor.formula">
+<code class="descname">formula</code><span class="sig-paren">(</span><em>amide=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/descriptors.html#GlobalDescriptor.formula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.descriptors.GlobalDescriptor.formula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to calculate the molecular formula of every sequence in the attribute <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amide</strong> &#8211; {boolean} whether the sequences are C-terminally amidated.</li>
+<li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
+attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of molecular formulas {str} in the attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">([</span><span class="s1">&#39;KADSFLSADGHSADFSLDKKLKERL&#39;</span><span class="p">,</span> <span class="s1">&#39;ERTILSDFPQWWFASLDFLNC&#39;</span><span class="p">,</span> <span class="s1">&#39;ACDEFGHIKLMNPQRSTVWY&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">formula</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">C122 H197 N35 O39</span>
+<span class="go">C121 H168 N28 O33 S</span>
+<span class="go">C106 H157 N29 O30 S2</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modlamp.core.aa_formulas" title="modlamp.core.aa_formulas"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.aa_formulas()</span></code></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version v2.7.6.</span></p>
 </div>
 </dd></dl>
 
@@ -471,11 +512,12 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </tbody>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;AFGHFKLKKLFIFGHERT&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">featurenames</span>
-<span class="go">[&#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydrophRatio&#39;]</span>
+<span class="go">[&#39;Length&#39;, &#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydrophRatio&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
-<span class="go">array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])</span>
+<span class="go">array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/outputfile.csv&#39;</span><span class="p">)</span>  <span class="c1"># save the descriptor data (with feature names header)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -489,7 +531,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 calculation:</p>
 <ul class="simple">
 <li><strong>AASI</strong>           (An amino acid selectivity index scale for helical antimicrobial peptides, <em>[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.</em>)</li>
-<li><strong>ABHPRK</strong>          (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)</li>
+<li><strong>ABHPRK</strong>         (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)</li>
 <li><strong>argos</strong>          (Argos hydrophobicity amino acid scale, <em>[2] Argos, P., Rao, J. K. M. &amp; Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.</em>)</li>
 <li><strong>bulkiness</strong>      (Amino acid side chain bulkiness scale, <em>[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.</em>)</li>
 <li><strong>charge_phys</strong>    (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)</li>
@@ -3783,7 +3825,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 
 <dl class="method">
 <dt id="modlamp.core.BaseDescriptor.save_descriptor">
-<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em>, <em>header=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_descriptor</code><span class="sig-paren">(</span><em>filename</em>, <em>delimiter='</em>, <em>'</em>, <em>targets=None</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.save_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.save_descriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save the descriptor values to a .csv/.txt file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3793,7 +3835,7 @@ class <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor
 <li><strong>filename</strong> &#8211; filename of the output file</li>
 <li><strong>delimiter</strong> &#8211; column delimiter</li>
 <li><strong>targets</strong> &#8211; target class vector to be added to descriptor (same length as <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code>)</li>
-<li><strong>header</strong> &#8211; {str} header to be written at the beginning of the file</li>
+<li><strong>header</strong> &#8211; {str} header to be written at the beginning of the file (if <code class="docutils literal"><span class="pre">None</span></code>: feature names are taken)</li>
 </ul>
 </td>
 </tr>
@@ -4082,6 +4124,13 @@ spaces were removed.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="modlamp.core.aa_formulas">
+<code class="descclassname">modlamp.core.</code><code class="descname">aa_formulas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#aa_formulas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.aa_formulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function returning the molecular formulas of all amino acids. All amino acids are considered in the neutral form
+(uncharged).</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -4152,12 +4201,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.5 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.6 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Mar 22esc, 2017.
+      Last updated on Mar 23esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

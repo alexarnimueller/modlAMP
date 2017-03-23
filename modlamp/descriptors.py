@@ -125,6 +125,7 @@ class GlobalDescriptor(BaseDescriptor):
     the **methods** linked below:
 
     - `Sequence Length      <modlamp.html#modlamp.descriptors.GlobalDescriptor.length>`_
+    - `Molecular Formula    <modlamp.html#modlamp.descriptors.GlobalDescriptor.formula>`_
     - `Molecular Weight     <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_MW>`_
     - `Sequence Charge      <modlamp.html#modlamp.descriptors.GlobalDescriptor.calculate_charge>`_
     - `Charge Density       <modlamp.html#modlamp.descriptors.GlobalDescriptor.charge_density>`_
@@ -149,11 +150,11 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc = GlobalDescriptor(['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'])
         >>> desc.length()
         >>> desc.descriptor
-        array([[ 8], [12], [12]])
+        array([[ 8.], [12.], [12.]])
         """
         desc = []
         for seq in self.sequences:
-            desc.append(len(seq.strip()))
+            desc.append(float(len(seq.strip())))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -241,7 +242,7 @@ class GlobalDescriptor(BaseDescriptor):
             desc.append(round(sum(mw) - 18.015 * (len(seq) - 1), 2))  # sum over AA MW and subtract H20 MW for every
             # peptide bond
         desc = np.asarray(desc).reshape(len(desc), 1)
-        if amide:  # if sequences are amidated, subtract 0.98 from calculated MW
+        if amide:  # if sequences are amidated, subtract 0.98 from calculated MW (OH - NH2)
             desc = [d - 0.98 for d in desc]
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -276,7 +277,7 @@ class GlobalDescriptor(BaseDescriptor):
 
         desc = []
         for seq in self.sequences:
-            desc.append(_charge(seq, ph, amide))
+            desc.append(_charge(seq, ph, amide))  # calculate charge with helper function
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
@@ -547,22 +548,49 @@ class GlobalDescriptor(BaseDescriptor):
         :Example:
         
         >>> desc = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
-        >>> desc.calculate_all(amide=true)
+        >>> desc.calculate_all(amide=True)
         >>> desc.featurenames
-        ['MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
+        ['Length', 'MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
         >>> desc.descriptor
-        array([[  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
+        array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
+        >>> desc.save_descriptor('/path/to/outputfile.csv')  # save the descriptor data (with feature names header)
         """
+        
+        # This is a strange way of doing it. However, the append=True option excludes length and charge, no idea why!
+        fn = []
         self.length()  # sequence length
-        self.calculate_MW(amide=amide, append=True)  # molecular weight
-        self.calculate_charge(ph=ph, amide=amide, append=True)  # net charge
-        self.charge_density(ph=ph, amide=amide, append=True)  # charge density
-        self.isoelectric_point(amide=amide, append=True)  # pI
-        self.instability_index(append=True)  # instability index
-        self.aromaticity(append=True)  # global aromaticity
-        self.aliphatic_index(append=True)  # aliphatic index
-        self.boman_index(append=True)  # Boman index
-        self.hydrophobic_ratio(append=True)  # Hydrophobic ratio
+        l = self.descriptor
+        fn.append(self.featurenames)
+        self.calculate_MW(amide=amide)  # molecular weight
+        mw = self.descriptor
+        fn.append(self.featurenames)
+        self.calculate_charge(ph=ph, amide=amide)  # net charge
+        c = self.descriptor
+        fn.append(self.featurenames)
+        self.charge_density(ph=ph, amide=amide)  # charge density
+        cd = self.descriptor
+        fn.append(self.featurenames)
+        self.isoelectric_point(amide=amide)  # pI
+        pi = self.descriptor
+        fn.append(self.featurenames)
+        self.instability_index()  # instability index
+        si = self.descriptor
+        fn.append(self.featurenames)
+        self.aromaticity()  # global aromaticity
+        ar = self.descriptor
+        fn.append(self.featurenames)
+        self.aliphatic_index()  # aliphatic index
+        ai = self.descriptor
+        fn.append(self.featurenames)
+        self.boman_index()  # Boman index
+        bi = self.descriptor
+        fn.append(self.featurenames)
+        self.hydrophobic_ratio()  # Hydrophobic ratio
+        hr = self.descriptor
+        fn.append(self.featurenames)
+        
+        self.descriptor = np.concatenate((l, mw, c, cd, pi, si, ar, ai, bi, hr), axis=1)
+        self.featurenames = fn
 
 
 class PeptideDescriptor(BaseDescriptor):
@@ -570,7 +598,7 @@ class PeptideDescriptor(BaseDescriptor):
     calculation:
 
     - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
-    - **ABHPRK**          (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)
+    - **ABHPRK**         (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)
     - **argos**          (Argos hydrophobicity amino acid scale, *[2] Argos, P., Rao, J. K. M. & Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.*)
     - **bulkiness**      (Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
     - **charge_phys**    (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
