@@ -78,3 +78,7 @@ class TestGlobalDescriptor(unittest.TestCase):
     def test_aromaticity(self):
         self.G.aromaticity()
         self.assertAlmostEqual(0.07142857142857142, self.G.descriptor.tolist()[0][0])
+
+    def test_formula(self):
+        self.G.formula(amide=True, append=True)
+        self.assertEqual('C67 H115 N17 O16', self.G.descriptor[0, -1])

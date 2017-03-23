@@ -239,6 +239,7 @@ class BaseDescriptor(object):
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
         self.scaler = None
+        self.featurenames = []
     
     def read_fasta(self, filename):
         """Method for loading sequences from a ``.FASTA`` formatted file into the attributes :py:attr:`sequences` and
@@ -1143,3 +1144,32 @@ def ngrams_apd():
                        'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
                       dtype='|S4')
     return ngrams
+
+
+def aa_formulas():
+    """
+    Function returning the molecular formulas of all amino acids. All amino acids are considered in the neutral form
+    (uncharged).
+    """
+    formulas = {'A': {'C': 3, 'H': 7, 'N': 1, 'O': 2, 'S': 0},
+                'C': {'C': 3, 'H': 7, 'N': 1, 'O': 2, 'S': 1},
+                'D': {'C': 4, 'H': 7, 'N': 1, 'O': 4, 'S': 0},
+                'E': {'C': 5, 'H': 9, 'N': 1, 'O': 4, 'S': 0},
+                'F': {'C': 9, 'H': 11, 'N': 1, 'O': 2, 'S': 0},
+                'G': {'C': 2, 'H': 5, 'N': 1, 'O': 2, 'S': 0},
+                'H': {'C': 6, 'H': 9, 'N': 3, 'O': 2, 'S': 0},
+                'I': {'C': 6, 'H': 13, 'N': 1, 'O': 2, 'S': 0},
+                'K': {'C': 6, 'H': 14, 'N': 2, 'O': 2, 'S': 0},
+                'L': {'C': 6, 'H': 13, 'N': 1, 'O': 2, 'S': 0},
+                'M': {'C': 5, 'H': 11, 'N': 1, 'O': 2, 'S': 1},
+                'N': {'C': 4, 'H': 8, 'N': 2, 'O': 3, 'S': 0},
+                'P': {'C': 5, 'H': 9, 'N': 1, 'O': 2, 'S': 0},
+                'Q': {'C': 4, 'H': 7, 'N': 1, 'O': 4, 'S': 0},
+                'R': {'C': 6, 'H': 14, 'N': 4, 'O': 2, 'S': 0},
+                'S': {'C': 3, 'H': 7, 'N': 1, 'O': 3, 'S': 0},
+                'T': {'C': 4, 'H': 9, 'N': 1, 'O': 3, 'S': 0},
+                'V': {'C': 5, 'H': 11, 'N': 1, 'O': 2, 'S': 0},
+                'W': {'C': 11, 'H': 12, 'N': 2, 'O': 2, 'S': 0},
+                'Y': {'C': 9, 'H': 11, 'N': 1, 'O': 3, 'S': 0}
+                }
+    return formulas

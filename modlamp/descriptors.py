@@ -16,15 +16,13 @@ Class                                Characteristics
 .. seealso:: :class:`modlamp.core.BaseDescriptor` from which the classes in :mod:`modlamp.descriptors` inherit.
 """
 
-import json
 import sys
-from os.path import dirname, join
 
 import numpy as np
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
 
-from core import BaseDescriptor, load_scale, count_aa, aa_weights, aa_energies
+from core import BaseDescriptor, load_scale, count_aa, aa_weights, aa_energies, aa_formulas
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -163,6 +161,58 @@ class GlobalDescriptor(BaseDescriptor):
         else:
             self.descriptor = np.array(desc)
             self.featurenames = ['Length']
+    
+    def formula(self, amide=False, append=False):
+        """Method to calculate the molecular formula of every sequence in the attribute :py:attr:`sequences`.
+        
+        :param amide: {boolean} whether the sequences are C-terminally amidated.
+        :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
+            attribute :py:attr:`descriptor`.
+        :return: array of molecular formulas {str} in the attribute :py:attr:`descriptor`
+        :Example:
+        
+        >>> desc = GlobalDescriptor(['KADSFLSADGHSADFSLDKKLKERL', 'ERTILSDFPQWWFASLDFLNC', 'ACDEFGHIKLMNPQRSTVWY'])
+        >>> desc.formula(amide=True)
+        >>> for v in desc.descriptor:
+        ...     print v[0]
+        C122 H197 N35 O39
+        C121 H168 N28 O33 S
+        C106 H157 N29 O30 S2
+        
+        .. seealso:: :py:func:`modlamp.core.aa_formulas()`
+        
+        .. versionadded:: v2.7.6
+        """
+        desc = []
+        formulas = aa_formulas()
+        for seq in self.sequences:
+            f = {'C': 0, 'H': 0, 'N': 0, 'O': 0, 'S': 0}
+            for aa in seq:  # sum over aa weights
+                for k in f.keys():
+                    f[k] += formulas[aa][k]
+            
+            # substract H2O for every peptide bond
+            f['H'] -= 2 * (len(seq) - 1)
+            f['O'] -= (len(seq) - 1)
+            
+            if amide:  # add C-terminal amide --> replace OH with NH2
+                f['O'] -= 1
+                f['H'] += 1
+                f['N'] += 1
+            
+            if f['S'] != 0:
+                val = 'C%s H%s N%s O%s %s%s' % (f['C'], f['H'], f['N'], f['O'], 'S', f['S'])
+            else:
+                val = 'C%s H%s N%s O%s' % (f['C'], f['H'], f['N'], f['O'])
+                
+            desc.append([val])
+        
+        if append:
+            self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            self.featurenames.append('Formula')
+        else:
+            self.descriptor = np.array(desc)
+            self.featurenames = ['Formula']
 
     def calculate_MW(self, amide=False, append=False):
         """Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
