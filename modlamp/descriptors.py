@@ -37,22 +37,25 @@ def _one_autocorr(seq, window, scale):
     :param scale: {str} amino acid scale to be used to calculate descriptor
     :return: {numpy.array} calculated descriptor data
     """
-    m = list()  # list of lists to store translated sequence values
-    for l in range(len(seq)):  # translate AA sequence into values
-        m.append(scale[str(seq[l])])
-    # auto-correlation in defined sequence window
-    seqdesc = list()
-    for dist in range(window):  # for all correlation distances
-        for val in range(len(scale['A'])):  # for all features of the descriptor scale
-            valsum = list()
-            cntr = 0.
-            for pos in range(len(seq)):  # for every position in the sequence
-                if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence position
-                    cntr += 1  # counter to scale sum
-                    valsum.append(m[pos][val] * m[pos + dist][val])
-            seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
-    return seqdesc
-
+    try:
+        m = list()  # list of lists to store translated sequence values
+        for l in range(len(seq)):  # translate AA sequence into values
+            m.append(scale[str(seq[l])])
+        # auto-correlation in defined sequence window
+        seqdesc = list()
+        for dist in range(window):  # for all correlation distances
+            for val in range(len(scale['A'])):  # for all features of the descriptor scale
+                valsum = list()
+                cntr = 0.
+                for pos in range(len(seq)):  # for every position in the sequence
+                    if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence position
+                        cntr += 1  # counter to scale sum
+                        valsum.append(m[pos][val] * m[pos + dist][val])
+                seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
+        return seqdesc
+    except ZeroDivisionError:
+        print("ERROR!\nThe chosen correlation window % i is larger than the sequence %s !" % (window, seq))
+        
 
 def _one_crosscorr(seq, window, scale):
     """Private function used for calculating cross-correlated descriptors for 1 given sequence, window and an AA scale.
@@ -63,23 +66,26 @@ def _one_crosscorr(seq, window, scale):
     :param scale: {str} amino acid scale to be used to calculate descriptor
     :return: {numpy.array} calculated descriptor data
     """
-    m = list()  # list of lists to store translated sequence values
-    for l in range(len(seq)):  # translate AA sequence into values
-        m.append(scale[str(seq[l])])
-    # auto-correlation in defined sequence window
-    seqdesc = list()
-    for val in range(len(scale['A'])):  # for all features of the descriptor scale
-        for cc in range(len(scale['A'])):  # for every feature cross correlation
-            if (val + cc) < len(scale['A']):  # check if corr distance is in range of the num of features
-                for dist in range(window):  # for all correlation distances
-                    cntr = float()
-                    valsum = list()
-                    for pos in range(len(seq)):  # for every position in the sequence
-                        if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence pos
-                            cntr += 1  # counter to scale sum
-                            valsum.append(m[pos][val] * m[pos + dist][val + cc])
-                    seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
-    return seqdesc
+    try:
+        m = list()  # list of lists to store translated sequence values
+        for l in range(len(seq)):  # translate AA sequence into values
+            m.append(scale[str(seq[l])])
+        # auto-correlation in defined sequence window
+        seqdesc = list()
+        for val in range(len(scale['A'])):  # for all features of the descriptor scale
+            for cc in range(len(scale['A'])):  # for every feature cross correlation
+                if (val + cc) < len(scale['A']):  # check if corr distance is in range of the num of features
+                    for dist in range(window):  # for all correlation distances
+                        cntr = float()
+                        valsum = list()
+                        for pos in range(len(seq)):  # for every position in the sequence
+                            if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence pos
+                                cntr += 1  # counter to scale sum
+                                valsum.append(m[pos][val] * m[pos + dist][val + cc])
+                        seqdesc.append(sum(valsum) / cntr)  # append scaled correlation distance values
+        return seqdesc
+    except ZeroDivisionError:
+        print("ERROR!\nThe chosen correlation window % i is larger than the sequence %s !" % (window, seq))
 
 
 def _charge(seq, ph=7.0, amide=False):

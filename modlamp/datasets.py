@@ -123,7 +123,7 @@ def load_AMPvsUniProt():
 
     The AMP class consists of 2646 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_ (extracted Jan. 2016).
     The UniProt class consists of 2646 randomly extracted protein sequences from the `UniProt Database
-    <http://uniprot.org/>`_ with the search query *length 10 TO 50*.
+    <http://uniprot.org/>`_ with the search query *length 10 TO 50* filtered for unnatural amino acids.
 
     =================    =====
     Classes                 2
