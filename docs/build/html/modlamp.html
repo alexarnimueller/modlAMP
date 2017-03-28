@@ -2371,16 +2371,16 @@ information on the machine learning modules please check the <a class="reference
 best fitted model and its performance as the cross-validation MCC.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.ml.plot_validation_curve" title="modlamp.ml.plot_validation_curve"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.plot_validation_curve()</span></code></a></td>
-<td>Plotting a validation curve for a parameter in the grid search.</td>
+<td>Plotting a validation curve for any parameter from the grid search.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.ml.predict" title="modlamp.ml.predict"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.predict()</span></code></a></td>
-<td>Predict the class labels or class probabilities for peptides.</td>
+<td>Predict the class labels or class probabilities for given peptides.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#modlamp.ml.score_cv" title="modlamp.ml.score_cv"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.score_cv()</span></code></a></td>
-<td>Evaluate the performance of the model through cross-validation.</td>
+<td>Evaluate the performance of a given model through cross-validation.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#modlamp.ml.score_testset" title="modlamp.ml.score_testset"><code class="xref py py-func docutils literal"><span class="pre">modlamp.ml.score_testset()</span></code></a></td>
-<td>Evaluate the performance of the model through test-set prediction.</td>
+<td>Evaluate the performance of a given model through test-set prediction.</td>
 </tr>
 </tbody>
 </table>
@@ -2390,10 +2390,36 @@ best fitted model and its performance as the cross-validation MCC.</td>
 <dl class="function">
 <dt id="modlamp.ml.train_best_model">
 <code class="descclassname">modlamp.ml.</code><code class="descname">train_best_model</code><span class="sig-paren">(</span><em>model</em>, <em>x_train</em>, <em>y_train</em>, <em>scaler=StandardScaler(copy=True</em>, <em>with_mean=True</em>, <em>with_std=True)</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>param_grid=None</em>, <em>cv=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#train_best_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.train_best_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns pipeline that performs standard scaling and trains
-the best Support Vector Machine or Random forest classifier found by grid search.
-(see sklearn.preprocessing, sklearn.grid_search, sklearn.pipeline).</p>
-<p>Default parameter grids:</p>
+<dd><p>This function performs a parameter grid search on a selected classifier model and peptide training data set.
+It returns a scikit-learn pipeline that performs standard scaling and contains the best model found by the
+grid search according to the Matthews correlation coefficient.
+(see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">sklearn.preprocessing</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/grid_search.html#exhaustive-grid-search">sklearn.grid_search</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline">sklearn.pipeline.Pipeline</a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> &#8211; {str} model to train. Choose between <code class="docutils literal"><span class="pre">'svm'</span></code> (Support Vector Mchine) or <code class="docutils literal"><span class="pre">'rf'</span></code> (Random Forest).</li>
+<li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
+<li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
+<li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from
+<code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code>, e.g. <code class="docutils literal"><span class="pre">StandardScaler()</span></code>, <code class="docutils literal"><span class="pre">MinMaxScaler()</span></code>, <code class="docutils literal"><span class="pre">Normalizer()</span></code>.</li>
+<li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
+(choose from the scikit-learn
+<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">scoring-parameters</a>).</li>
+<li><strong>param_grid</strong> &#8211; <p>{dict} parameter grid for the gridsearch (see
+<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html">sklearn.grid_search</a>).</p>
+</li>
+<li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">best estimator pipeline.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Default parameter grids:</strong></p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="15%" />
@@ -2420,7 +2446,7 @@ the best Support Vector Machine or Random forest classifier found by grid search
 </tr>
 </tbody>
 </table>
-<p>Useful methods implemented in scikit-learn:</p>
+<p><strong>Useful methods implemented in scikit-learn:</strong></p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="22%" />
@@ -2453,23 +2479,6 @@ the best Support Vector Machine or Random forest classifier found by grid search
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>model</strong> &#8211; {str} model to train. Choose between &#8216;svm&#8217; (Support Vector Machine) or &#8216;rf&#8217; (Random Forest).</li>
-<li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
-<li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
-<li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from
-sklearn.preprocessing. E.g. StandardScaler(), MinMaxScaler(), Normalizer().</li>
-<li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-(choose from
-<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">scoring-parameter</a>).</li>
-<li><strong>param_grid</strong> &#8211; {dict} parameter grid for the gridsearch (see <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html">sklearn.grid_search</a>).</li>
-<li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">best estimator pipeline.</p>
-</td>
-</tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
@@ -2618,26 +2627,26 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 
 <dl class="function">
 <dt id="modlamp.ml.predict">
-<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>seqs_test</em>, <em>names_test=None</em>, <em>y_test=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function can be used to predict novel peptides with a trained classifier model. The function returns pandas
-dataframe with predictions using the specified estimator and test data. If true class is provided, it returns the
-scoring value for the test data.</p>
+<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>seqs</em>, <em>names=None</em>, <em>y=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function can be used to predict novel peptides with a trained classifier model. The function returns a
+<code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> with predictions using the specified estimator and test data. If true class is provided,
+it returns the scoring value for the test data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>classifier</strong> &#8211; {classifier instance} classifier used for predictions.</li>
-<li><strong>x_test</strong> &#8211; {array} descriptor values for testing data.</li>
-<li><strong>names_test</strong> &#8211; {list} names of the peptides in test data.</li>
-<li><strong>seqs_test</strong> &#8211; {list} sequences of the peptides in test data.</li>
-<li><strong>y_test</strong> &#8211; {array} true classes for testing data (optional).</li>
-<li><strong>filename</strong> &#8211; {string} valid path for the file to store the predictions.</li>
-<li><strong>save_csv</strong> &#8211; {bool} if true additionally saves csv file with predicitons.</li>
+<li><strong>X</strong> &#8211; {array} descriptor values of the peptides to be predicted.</li>
+<li><strong>names</strong> &#8211; {list} names of the peptides in <code class="docutils literal"><span class="pre">X</span></code>.</li>
+<li><strong>seqs</strong> &#8211; {list} sequences of the peptides in <code class="docutils literal"><span class="pre">X</span></code>.</li>
+<li><strong>y</strong> &#8211; {array} (optional) true (known) classes of the peptides.</li>
+<li><strong>filename</strong> &#8211; {string} output filename to store the predictions.</li>
+<li><strong>save_csv</strong> &#8211; {bool} if <code class="docutils literal"><span class="pre">true</span></code>, the function additionally saves a <code class="docutils literal"><span class="pre">csv</span></code> file with the predictions.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing predictions for test data. Pred_prob_class0 and Pred_prob_class1
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> containing predictions for <code class="docutils literal"><span class="pre">X</span></code>. <code class="docutils literal"><span class="pre">Pred_prob_class0</span></code> and <code class="docutils literal"><span class="pre">Pred_prob_class1</span></code>
 are the predicted probability of the peptide belonging to class 0 and class 1, respectively.</p>
 </td>
 </tr>
@@ -2671,8 +2680,8 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descH</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">descH</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs_test</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># all three shown sequences are predicted active (class 1)</span>
 <span class="go">ID                  Sequence  Pred_prob_class0  Pred_prob_class1</span>
 <span class="go">0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833</span>
 <span class="go">1                LGVRVLRIIIR          0.007239          0.992761</span>
@@ -2684,20 +2693,20 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <dl class="function">
 <dt id="modlamp.ml.score_cv">
 <code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function can be used to evaluate the performance of a trained classifier. It returns the
-<strong>cross-validation scores</strong> for the specified scoring metrics as a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>.</p>
+<dd><p>This function can be used to evaluate the performance of selected classifier model. It returns the average
+<strong>cross-validation scores</strong> for the specified scoring metrics in a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>classifier</strong> &#8211; {classifier instance} trained classifier used for predictions.</li>
+<li><strong>classifier</strong> &#8211; {classifier instance} a classifier model to be evaluated.</li>
 <li><strong>X</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y</strong> &#8211; {array} class values for training data.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 <li><strong>metrics</strong> &#8211; {list} metrics to consider for calculating the cv_scores. Choose from
 <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">sklearn.metrics.scorers</a>.</li>
-<li><strong>names</strong> &#8211; {list} names of the metrics to display on the dataframe.</li>
+<li><strong>names</strong> &#8211; {list} names of the metrics to display in the <code class="docutils literal"><span class="pre">DataFrame</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -2739,8 +2748,8 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <dl class="function">
 <dt id="modlamp.ml.score_testset">
 <code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the test set errors for the specified scoring metrics as a pandas data frame. The calculated metrics
-are Matthews correlation coefficient, accuracy, precision, recall, f1 and Area under the Receiver-Operator curve
+<dd><p>Returns the test set scores for the specified scoring metrics in a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>. The calculated metrics
+are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under the Receiver-Operator Curve
 (roc_auc). See <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics">sklearn.metrics</a>
 for more information.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2748,13 +2757,13 @@ for more information.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>classifier</strong> &#8211; {classifier instance} trained classifier used for predictions.</li>
-<li><strong>X_test</strong> &#8211; {array} descriptor values for the test data.</li>
-<li><strong>y_test</strong> &#8211; {array} class values for the test data.</li>
+<li><strong>classifier</strong> &#8211; {classifier instance} pre-trained classifier used for predictions.</li>
+<li><strong>X_test</strong> &#8211; {array} descriptor values of the test data.</li>
+<li><strong>y_test</strong> &#8211; {array} true class values of the test data.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pandas dataframe containing the cross validation errors for the specified metrics.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> containing the cross validation scores for the specified metrics.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -2768,20 +2777,20 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Calculating descriptor from the data</p>
+<p>Calculating descriptor values from the data</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">descriptors</span><span class="o">.</span><span class="n">PeptideDescriptor</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;pepcats&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Splitting into train and test sets</p>
+<p>Splitting data into train and test sets</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Training an SVM model with the training set</p>
+<p>Training a SVM model on the training set</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">best_svm_model</span> <span class="o">=</span> <span class="n">train_best_model</span><span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Calculating the test set errors</p>
+<p>Calculating the scores of the predictions on the test set</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_testset</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="go">ID  Metrics   Scores</span>
 <span class="go">0        MCC  0.838751</span>
@@ -4206,7 +4215,7 @@ spaces were removed.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Mar 23esc, 2017.
+      Last updated on Mar 27esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
