@@ -38,3 +38,4 @@ v2.7.3  30.01.2017 -- Small bug fix in ml module and clarification of documentat
 v2.7.4  14.03.2017 -- Adapted CD plot function in wetlab to take ylim argument, bug fix in y axis label
 v2.7.5  22.03.2017 -- New CD plot function to plot combined plots of all data
 v2.7.6  23.03.2017 -- Added GlobalDescriptor.formula method to calculate the molecular formula of peptides, bugfix in calculate_all()
+v2.7.7  28.03.2017 -- Removed sequences containing unnatural amino acids from the AMPvsUniProt dataset

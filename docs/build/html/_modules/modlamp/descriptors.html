@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.descriptors &#8212; modlAMP v2.7.6 documentation</title>
+    <title>modlamp.descriptors &#8212; modlAMP v2.7.7 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v2.7.6',
+        VERSION:     'v2.7.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="modlAMP v2.7.6 documentation" href="../../index.html" />
+    <link rel="top" title="modlAMP v2.7.7 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.7.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.7.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -90,22 +90,25 @@
 <span class="sd">    :param scale: {str} amino acid scale to be used to calculate descriptor</span>
 <span class="sd">    :return: {numpy.array} calculated descriptor data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list of lists to store translated sequence values</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># translate AA sequence into values</span>
-        <span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">l</span><span class="p">])])</span>
-    <span class="c1"># auto-correlation in defined sequence window</span>
-    <span class="n">seqdesc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>  <span class="c1"># for all correlation distances</span>
-        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for all features of the descriptor scale</span>
-            <span class="n">valsum</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-            <span class="n">cntr</span> <span class="o">=</span> <span class="mf">0.</span>
-            <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># for every position in the sequence</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>  <span class="c1"># check if corr distance is possible at that sequence position</span>
-                    <span class="n">cntr</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># counter to scale sum</span>
-                    <span class="n">valsum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="n">val</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">][</span><span class="n">val</span><span class="p">])</span>
-            <span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
-    <span class="k">return</span> <span class="n">seqdesc</span>
-
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list of lists to store translated sequence values</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># translate AA sequence into values</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">l</span><span class="p">])])</span>
+        <span class="c1"># auto-correlation in defined sequence window</span>
+        <span class="n">seqdesc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>  <span class="c1"># for all correlation distances</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for all features of the descriptor scale</span>
+                <span class="n">valsum</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="n">cntr</span> <span class="o">=</span> <span class="mf">0.</span>
+                <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># for every position in the sequence</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>  <span class="c1"># check if corr distance is possible at that sequence position</span>
+                        <span class="n">cntr</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># counter to scale sum</span>
+                        <span class="n">valsum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="n">val</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">][</span><span class="n">val</span><span class="p">])</span>
+                <span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
+        <span class="k">return</span> <span class="n">seqdesc</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR!</span><span class="se">\n</span><span class="s2">The chosen correlation window </span><span class="si">% i</span><span class="s2"> is larger than the sequence </span><span class="si">%s</span><span class="s2"> !&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">seq</span><span class="p">))</span>
+        
 
 <span class="k">def</span> <span class="nf">_one_crosscorr</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Private function used for calculating cross-correlated descriptors for 1 given sequence, window and an AA scale.</span>
@@ -116,23 +119,26 @@
 <span class="sd">    :param scale: {str} amino acid scale to be used to calculate descriptor</span>
 <span class="sd">    :return: {numpy.array} calculated descriptor data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list of lists to store translated sequence values</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># translate AA sequence into values</span>
-        <span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">l</span><span class="p">])])</span>
-    <span class="c1"># auto-correlation in defined sequence window</span>
-    <span class="n">seqdesc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for all features of the descriptor scale</span>
-        <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for every feature cross correlation</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">cc</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]):</span>  <span class="c1"># check if corr distance is in range of the num of features</span>
-                <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>  <span class="c1"># for all correlation distances</span>
-                    <span class="n">cntr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">()</span>
-                    <span class="n">valsum</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-                    <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># for every position in the sequence</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>  <span class="c1"># check if corr distance is possible at that sequence pos</span>
-                            <span class="n">cntr</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># counter to scale sum</span>
-                            <span class="n">valsum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="n">val</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">][</span><span class="n">val</span> <span class="o">+</span> <span class="n">cc</span><span class="p">])</span>
-                    <span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
-    <span class="k">return</span> <span class="n">seqdesc</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list of lists to store translated sequence values</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># translate AA sequence into values</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">l</span><span class="p">])])</span>
+        <span class="c1"># auto-correlation in defined sequence window</span>
+        <span class="n">seqdesc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for all features of the descriptor scale</span>
+            <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])):</span>  <span class="c1"># for every feature cross correlation</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">cc</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]):</span>  <span class="c1"># check if corr distance is in range of the num of features</span>
+                    <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>  <span class="c1"># for all correlation distances</span>
+                        <span class="n">cntr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">()</span>
+                        <span class="n">valsum</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>  <span class="c1"># for every position in the sequence</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>  <span class="c1"># check if corr distance is possible at that sequence pos</span>
+                                <span class="n">cntr</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># counter to scale sum</span>
+                                <span class="n">valsum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="n">val</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="n">dist</span><span class="p">][</span><span class="n">val</span> <span class="o">+</span> <span class="n">cc</span><span class="p">])</span>
+                        <span class="n">seqdesc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">valsum</span><span class="p">)</span> <span class="o">/</span> <span class="n">cntr</span><span class="p">)</span>  <span class="c1"># append scaled correlation distance values</span>
+        <span class="k">return</span> <span class="n">seqdesc</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR!</span><span class="se">\n</span><span class="s2">The chosen correlation window </span><span class="si">% i</span><span class="s2"> is larger than the sequence </span><span class="si">%s</span><span class="s2"> !&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">seq</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -936,13 +942,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.7.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v2.7.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Mar 27esc, 2017.
+      Last updated on Mar 28esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
