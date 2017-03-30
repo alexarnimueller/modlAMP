@@ -95,9 +95,8 @@ class BaseSequence(object):
         ['NAKAGRAWIK']
         """
         for s in range(len(self.sequences)):
-            mutate = np.random.choice([1, 0], 1, p=[prob,
-                                                    1 - float(
-                                                            prob)])  # mutate: yes or no? probability = mutation probability
+            # mutate: yes or no? prob = mutation probability
+            mutate = np.random.choice([1, 0], 1, p=[prob, 1 - float(prob)])
             if mutate == 1:
                 seq = list(self.sequences[s])
                 cnt = 0
@@ -157,11 +156,11 @@ class BaseSequence(object):
         self.sequences = seqs
         self.names = names
     
-    def filter_aa(self, aminoacids):
+    def filter_aa(self, amino_acids):
         """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
         argument list *aminoacids*.
 
-        :param aminoacids: {list} amino acids to be filtered
+        :param amino_acids: {list} amino acids to be filtered
         :return: filtered list of sequences names in the corresponding attributes.
         :Example:
         
@@ -172,7 +171,7 @@ class BaseSequence(object):
         ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
         """
         
-        pattern = re.compile('|'.join(aminoacids))
+        pattern = re.compile('|'.join(amino_acids))
         seqs = []
         names = []
         
@@ -201,8 +200,8 @@ class BaseDescriptor(object):
     
     def __init__(self, seqs):
         """
-        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the
-            descriptor values for.
+        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to
+            calculate the descriptor values for.
         :return: initialized attributes :py:attr:`sequences` and :py:attr:`names`.
         :Example:
 
@@ -380,13 +379,13 @@ class BaseDescriptor(object):
         if hasattr(self, 'target') and self.target.size:
             self.target = self.target[sel]
     
-    def minmax_selection(self, iterations, distmetric='euclidean', randseed=0):
+    def minmax_selection(self, iterations, distmetric='euclidean', seed=0):
         """Method to select a specified number of sequences according to the minmax algorithm.
 
         :param iterations: {int} Number of sequences to retrieve.
         :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.
             Choose from 'euclidean' or 'minkowsky'.
-        :param randseed: {int} Set a random seed for numpy to pick the first sequence.
+        :param seed: {int} Set a random seed for numpy to pick the first sequence.
         :return: updated instance
 
         .. seealso:: **SciPy** http://docs.scipy.org/doc/scipy/reference/spatial.distance.html
@@ -397,7 +396,7 @@ class BaseDescriptor(object):
         minmaxidx = list()  # Store original indices of selections to return
         
         # Randomly selecting first peptide into the sele
-        np.random.seed(randseed)
+        np.random.seed(seed)
         idx = int(np.random.random_integers(0, len(pool), 1))
         sele = pool[idx:idx + 1, :]
         minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx:idx + 1, :], axis=1))))
@@ -432,8 +431,8 @@ class BaseDescriptor(object):
     
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
-        corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted as well. The method returns an updated
-        descriptor instance.
+        corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted
+        as well. The method returns an updated descriptor instance.
 
         :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data
         :return: updated instance without filtered sequences
@@ -504,11 +503,11 @@ class BaseDescriptor(object):
             if hasattr(self, 'target') and self.target.size:
                 self.target = self.target[indices]
     
-    def filter_aa(self, aminoacids):
+    def filter_aa(self, amino_acids):
         """Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
         argument list *aminoacids*.
 
-        :param aminoacids: list of amino acids to be filtered
+        :param amino_acids: list of amino acids to be filtered
         :return: filtered list of sequences, descriptor values, target values and names in the corresponding attributes.
         :Example:
 
@@ -519,7 +518,7 @@ class BaseDescriptor(object):
         ['AAALLLIIIKKK', 'LLVVIIFFFQQ']
         """
         
-        pattern = re.compile('|'.join(aminoacids))
+        pattern = re.compile('|'.join(amino_acids))
         seqs = []
         desc = []
         names = []

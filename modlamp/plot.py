@@ -55,7 +55,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     
     The same procedure also works for comparing two data sets:
     
-    >>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
+    >>> plot_feature((p.descriptor, apd.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
     
     .. image:: ../docs/static/uH_APD3.png
         :height: 300px
@@ -86,7 +86,7 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         data = y_values
     
     # coloring faces of boxes
-    median_props = dict(linestyle='-', linewidth=1, color='black')
+    median_props = dict(linestyle='-', linewidth='1', color='black')
     box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, labels=labels)
     plt.setp(box['whiskers'], color='black')
     
@@ -246,12 +246,6 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
     # check if given scale is defined in PeptideDescriptor
     try:
         d = PeptideDescriptor(sequence, scalename)
-    except TypeError:
-        print("\nError\nNo sequence given!")
-    except KeyError:
-        print("\nSorry\nThis function cannot calculate a profile for the given scale '%s'." % scalename)
-        print("Use the one dimensional scales given in the documentation for modlamp.descriptors.PeptideDescriptors")
-    else:
         seq_data = list()
         seq_profile = list()
         for a in sequence:
@@ -260,13 +254,13 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
         while (i + window) < len(sequence):
             seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
             i += 1
-        
+
         # plot
         fig, ax = plt.subplots()
         x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
         line = ax.plot(x_range, seq_profile)
         plt.setp(line, color=color, linewidth=2.0)
-        
+
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
@@ -278,18 +272,24 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
             ax.set_ylim(ylim)
         else:
             ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
-        
+
         # only left and bottom axes, no box
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
-        
+
         # show or save plot
         if filename:
             plt.savefig(filename, dpi=150)
         else:
             plt.show()
+    
+    except TypeError:
+        print("\nError\nNo sequence given!")
+    except KeyError:
+        print("\nSorry\nThis function cannot calculate a profile for the given scale '%s'." % scalename)
+        print("Use the one dimensional scales given in the documentation for modlamp.descriptors.PeptideDescriptors")
 
 
 def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False, moment=False):
@@ -592,7 +592,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
         ax.fill_betweenx(rng, 1, -v + 1, facecolor=colors[0], alpha=0.6)
         
         if bp:  # print box plot if option is given
-            medprops = dict(linestyle='-', linewidth=1, color='black')
+            medprops = dict(linestyle='-', linewidth='1', color='black')
             box = ax.boxplot(x, notch=1, positions=[1.], vert=1, patch_artist=True, medianprops=medprops)
             plt.setp(box['whiskers'], color='black')
             box['boxes'][0].set(facecolor=colors[0], edgecolor='black', alpha=0.7)

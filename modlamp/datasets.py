@@ -82,7 +82,7 @@ def load_AMPvsTM():
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the    classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
         features.
     :Example:
 
@@ -230,8 +230,8 @@ def load_ACPvsRandom():
     <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ database with length between 7 and 30 aa and without cysteines
     to facilitate peptide synthesis.
 
-    The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition
-     of AMPs in the APD2 database.
+    The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid
+    composition of AMPs in the APD2 database.
 
     =================    ===
     Classes                2
@@ -248,8 +248,8 @@ def load_ACPvsRandom():
 
     >>> from modlamp.datasets import load_ACPvsRandom
     >>> data = load_ACPvsRandom()
-    >>> data.sequences[:5]
-    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA', 'AFGMALKLLKKVL', 'AIGKFLHSAKKFGKAFVGEIMNS']
+    >>> data.sequences[:3]
+    ['AAKKWAKAKWAKAKKWAKAA', 'AAVPIVNLKDELLFPSWEALFSGSE', 'AAWKWAWAKKWAKAKKWAKAA']
     >>> list(data.target_names)
     ['Random', 'ACP']
     >>> len(data.sequences)

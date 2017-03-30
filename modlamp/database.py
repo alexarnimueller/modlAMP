@@ -8,7 +8,7 @@ This module incorporates functions to connect to several peptide databases. It a
 SQL database for which the configuration is given in a specified config file.
 """
 
-from os.path import dirname, join, exists
+from os.path import exists
 import json
 from getpass import getpass
 

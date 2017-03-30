@@ -135,7 +135,7 @@
 <span class="sd">    =================    ===</span>
 
 <span class="sd">    :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,</span>
-<span class="sd">        the    classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
+<span class="sd">        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the</span>
 <span class="sd">        features.</span>
 <span class="sd">    :Example:</span>
 
@@ -283,8 +283,8 @@
 <span class="sd">    &lt;http://crdd.osdd.net/raghava/cancerppd/index.php&gt;`_ database with length between 7 and 30 aa and without cysteines</span>
 <span class="sd">    to facilitate peptide synthesis.</span>
 
-<span class="sd">    The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition</span>
-<span class="sd">     of AMPs in the APD2 database.</span>
+<span class="sd">    The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid</span>
+<span class="sd">    composition of AMPs in the APD2 database.</span>
 
 <span class="sd">    =================    ===</span>
 <span class="sd">    Classes                2</span>
@@ -301,8 +301,8 @@
 
 <span class="sd">    &gt;&gt;&gt; from modlamp.datasets import load_ACPvsRandom</span>
 <span class="sd">    &gt;&gt;&gt; data = load_ACPvsRandom()</span>
-<span class="sd">    &gt;&gt;&gt; data.sequences[:5]</span>
-<span class="sd">    [&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;, &#39;AFGMALKLLKKVL&#39;, &#39;AIGKFLHSAKKFGKAFVGEIMNS&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; data.sequences[:3]</span>
+<span class="sd">    [&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; list(data.target_names)</span>
 <span class="sd">    [&#39;Random&#39;, &#39;ACP&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; len(data.sequences)</span>

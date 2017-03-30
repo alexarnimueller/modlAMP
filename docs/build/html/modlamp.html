@@ -514,7 +514,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="s1">&#39;AFGHFKLKKLFIFGHERT&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">featurenames</span>
-<span class="go">[&#39;Length&#39;, &#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydrophRatio&#39;]</span>
+<span class="go">[&#39;Length&#39;, &#39;MW&#39;, &#39;ChargeDensity&#39;, &#39;pI&#39;, &#39;InstabilityInd&#39;, &#39;Aromaticity&#39;, &#39;AliphaticInd&#39;, &#39;BomanInd&#39;, &#39;HydRatio&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">desc</span><span class="o">.</span><span class="n">save_descriptor</span><span class="p">(</span><span class="s1">&#39;/path/to/outputfile.csv&#39;</span><span class="p">)</span>  <span class="c1"># save the descriptor data (with feature names header)</span>
@@ -707,8 +707,8 @@ values in <code class="xref py py-attr docutils literal"><span class="pre">all_m
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">,</span><span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="s1">&#39;GLFDIVKKVVGALGSL&#39;</span><span class="p">,</span> <span class="s1">&#39;eisenberg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span>
 <span class="go">array([[ 0.48790226]])</span>
 </pre></div>
@@ -1775,7 +1775,7 @@ Peptides. Mol. Inf.. <a class="reference external" href="http://onlinelibrary.wi
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Bunch, a dictionary-like object, the interesting attributes are: <code class="docutils literal"><span class="pre">sequences</span></code>, the sequences, <code class="docutils literal"><span class="pre">target</span></code>,
-the    classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
+the classification labels, <code class="docutils literal"><span class="pre">target_names</span></code>, the meaning of the labels and <code class="docutils literal"><span class="pre">feature_names</span></code>, the meaning of the
 features.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -1917,10 +1917,8 @@ features.</td>
 </dl>
 <p>The ACP class consists of a collection of 413 ACPs from the <a class="reference external" href="http://crdd.osdd.net/raghava/cancerppd/index.php">CancerPPD</a> database with length between 7 and 30 aa and without cysteines
 to facilitate peptide synthesis.</p>
-<dl class="docutils">
-<dt>The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid composition</dt>
-<dd>of AMPs in the APD2 database.</dd>
-</dl>
+<p>The Negative peptide set contains a random selection of 413 randomly generated peptides with the amino acid
+composition of AMPs in the APD2 database.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="85%" />
@@ -1958,8 +1956,8 @@ features.</td>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_ACPvsRandom</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_ACPvsRandom</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">[&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;, &#39;AFGMALKLLKKVL&#39;, &#39;AIGKFLHSAKKFGKAFVGEIMNS&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">[&#39;AAKKWAKAKWAKAKKWAKAA&#39;, &#39;AAVPIVNLKDELLFPSWEALFSGSE&#39;, &#39;AAWKWAWAKKWAKAKKWAKAA&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
 <span class="go">[&#39;Random&#39;, &#39;ACP&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
@@ -2074,7 +2072,7 @@ as separate boxes.</p>
 </div>
 <a class="reference internal image-reference" href="_images/uH_Eisenberg.png"><img alt="_images/uH_Eisenberg.png" src="_images/uH_Eisenberg.png" style="height: 300px;" /></a>
 <p>The same procedure also works for comparing two data sets:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">P</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">APD</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span> <span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_feature</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">apd</span><span class="o">.</span><span class="n">descriptor</span><span class="p">),</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;uH Eisenberg&#39;</span><span class="p">,</span> <span class="n">x_tick_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Library&#39;</span><span class="p">,</span> <span class="s1">&#39;APD3&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/uH_APD31.png"><img alt="_images/uH_APD31.png" src="_images/uH_APD31.png" style="height: 300px;" /></a>
@@ -2502,19 +2500,13 @@ grid search according to the Matthews correlation coefficient.
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(826, 42)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
-<span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
-<span class="go">     0.21428571,  0.        ],</span>
-<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,</span>
-<span class="go">     0.        ,  0.        ],</span>
-<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,</span>
-<span class="go">     0.26666667,  0.        ],</span>
+<span class="go">array([[ 1.    ,  0.15      ,  0.        , ...,  0.35714286,  0.21428571,  0.        ],</span>
+<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,  0.        ,  0.        ],</span>
+<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,  0.26666667,  0.        ],</span>
 <span class="go">   ...,</span>
-<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,</span>
-<span class="go">     0.        ,  0.        ],</span>
-<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,</span>
-<span class="go">     0.09090909,  0.        ],</span>
-<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,</span>
-<span class="go">     0.        ,  0.        ]])</span>
+<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,  0.        ,  0.        ],</span>
+<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,  0.09090909,  0.        ],</span>
+<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,  0.        ,  0.        ]])</span>
 </pre></div>
 </div>
 <p>Training an SVM model on this descriptor data:</p>
@@ -2595,19 +2587,13 @@ split an internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(826, 42)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descr</span><span class="o">.</span><span class="n">descriptor</span>
-<span class="go">array([[ 1.        ,  0.15      ,  0.        , ...,  0.35714286,</span>
-<span class="go">     0.21428571,  0.        ],</span>
-<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,</span>
-<span class="go">     0.        ,  0.        ],</span>
-<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,</span>
-<span class="go">     0.26666667,  0.        ],</span>
+<span class="go">array([[ 1.    ,  0.15      ,  0.        , ...,  0.35714286,  0.21428571,  0.        ],</span>
+<span class="go">   [ 0.64      ,  0.12      ,  0.32      , ...,  0.05263158,  0.        ,  0.        ],</span>
+<span class="go">   [ 1.        ,  0.23809524,  0.        , ...,  0.53333333,  0.26666667,  0.        ],</span>
 <span class="go">   ...,</span>
-<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,</span>
-<span class="go">     0.        ,  0.        ],</span>
-<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,</span>
-<span class="go">     0.09090909,  0.        ],</span>
-<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,</span>
-<span class="go">     0.        ,  0.        ]])</span>
+<span class="go">   [ 0.5       ,  0.22222222,  0.44444444, ...,  0.33333333,  0.        ,  0.        ],</span>
+<span class="go">   [ 0.70588235,  0.17647059,  0.23529412, ...,  0.09090909,  0.09090909,  0.        ],</span>
+<span class="go">   [ 0.6875    ,  0.1875    ,  0.1875    , ...,  0.2       ,  0.        ,  0.        ]])</span>
 </pre></div>
 </div>
 <p>Training an SVM model with this data:</p>
@@ -3086,7 +3072,7 @@ alphabetically.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>  <span class="c1"># sequences being a numpy array of amino acid sequences</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span>  <span class="c1"># sequences being a list / array of amino acid sequences</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">calc_aa_freq</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">aafreq</span>
 <span class="go">    array([[ 0.08250071,  0.        ,  0.02083928,  0.0159863 ,  0.1464459 ,</span>
@@ -3100,13 +3086,16 @@ alphabetically.</td>
 
 <dl class="method">
 <dt id="modlamp.analysis.GlobalAnalysis.calc_H">
-<code class="descname">calc_H</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_H" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calc_H</code><span class="sig-paren">(</span><em>scale='eisenberg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_H" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} Eisenberg hydrophobicities in the attribute <code class="xref py py-attr docutils literal"><span class="pre">H</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scale</strong> &#8211; {str} hydrophobicity scale to use. For available scales,
+see <a class="reference internal" href="#modlamp.descriptors.PeptideDescriptor" title="modlamp.descriptors.PeptideDescriptor"><code class="xref py py-class docutils literal"><span class="pre">modlamp.descriptors.PeptideDescriptor</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} Eisenberg hydrophobicities in the attribute <code class="xref py py-attr docutils literal"><span class="pre">H</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -3197,7 +3186,7 @@ are used with their standard options.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists of sequences</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists / arrays of sequences</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">plot_summary</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -3377,14 +3366,14 @@ accordingly (if present).</td>
 
 <dl class="method">
 <dt id="modlamp.core.BaseSequence.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>amino_acids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
 argument list <em>aminoacids</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; {list} amino acids to be filtered</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>amino_acids</strong> &#8211; {list} amino acids to be filtered</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences names in the corresponding attributes.</td>
 </tr>
@@ -3429,8 +3418,8 @@ argument list <em>aminoacids</em>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a <code class="docutils literal"><span class="pre">.FASTA</span></code> file with sequences, a list / array of sequences or a single sequence as string to calculate the
-descriptor values for.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seqs</strong> &#8211; a <code class="docutils literal"><span class="pre">.FASTA</span></code> file with sequences, a list / array of sequences or a single sequence as string to
+calculate the descriptor values for.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">initialized attributes <code class="xref py py-attr docutils literal"><span class="pre">sequences</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">names</span></code>.</td>
 </tr>
@@ -3638,7 +3627,7 @@ descriptor instance.</p>
 
 <dl class="method">
 <dt id="modlamp.core.BaseDescriptor.minmax_selection">
-<code class="descname">minmax_selection</code><span class="sig-paren">(</span><em>iterations</em>, <em>distmetric='euclidean'</em>, <em>randseed=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.minmax_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.minmax_selection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minmax_selection</code><span class="sig-paren">(</span><em>iterations</em>, <em>distmetric='euclidean'</em>, <em>seed=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.minmax_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.minmax_selection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to select a specified number of sequences according to the minmax algorithm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3648,7 +3637,7 @@ descriptor instance.</p>
 <li><strong>iterations</strong> &#8211; {int} Number of sequences to retrieve.</li>
 <li><strong>distmetric</strong> &#8211; Distance metric to calculate the distances between the sequences in descriptor space.
 Choose from &#8216;euclidean&#8217; or &#8216;minkowsky&#8217;.</li>
-<li><strong>randseed</strong> &#8211; {int} Set a random seed for numpy to pick the first sequence.</li>
+<li><strong>seed</strong> &#8211; {int} Set a random seed for numpy to pick the first sequence.</li>
 </ul>
 </td>
 </tr>
@@ -3667,8 +3656,8 @@ Choose from &#8216;euclidean&#8217; or &#8216;minkowsky&#8217;.</li>
 <dt id="modlamp.core.BaseDescriptor.filter_sequences">
 <code class="descname">filter_sequences</code><span class="sig-paren">(</span><em>sequences</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.filter_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.filter_sequences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out entries for given sequences in <em>sequences</em> out of a descriptor instance. All
-corresponding attribute values of these sequences (e.g. in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">name</span></code>) are deleted as well. The method returns an updated
-descriptor instance.</p>
+corresponding attribute values of these sequences (e.g. in <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">name</span></code>) are deleted
+as well. The method returns an updated descriptor instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3731,14 +3720,14 @@ filter for values equal, lower, higher ect. to the given values in the <em>value
 
 <dl class="method">
 <dt id="modlamp.core.BaseDescriptor.filter_aa">
-<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>aminoacids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_aa</code><span class="sig-paren">(</span><em>amino_acids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.filter_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.filter_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to filter out corresponding names and descriptor values of sequences with given amino acids in the
 argument list <em>aminoacids</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aminoacids</strong> &#8211; list of amino acids to be filtered</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>amino_acids</strong> &#8211; list of amino acids to be filtered</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filtered list of sequences, descriptor values, target values and names in the corresponding attributes.</td>
 </tr>

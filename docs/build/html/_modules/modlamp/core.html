@@ -148,9 +148,8 @@
 <span class="sd">        [&#39;NAKAGRAWIK&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)):</span>
-            <span class="n">mutate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span>
-                                                    <span class="mi">1</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span>
-                                                            <span class="n">prob</span><span class="p">)])</span>  <span class="c1"># mutate: yes or no? probability = mutation probability</span>
+            <span class="c1"># mutate: yes or no? prob = mutation probability</span>
+            <span class="n">mutate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">prob</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">prob</span><span class="p">)])</span>
             <span class="k">if</span> <span class="n">mutate</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
                 <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -210,11 +209,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="n">seqs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span></div>
     
-<div class="viewcode-block" id="BaseSequence.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseSequence.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseSequence.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseSequence.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amino_acids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out corresponding names and descriptor values of sequences with given amino acids in the</span>
 <span class="sd">        argument list *aminoacids*.</span>
 
-<span class="sd">        :param aminoacids: {list} amino acids to be filtered</span>
+<span class="sd">        :param amino_acids: {list} amino acids to be filtered</span>
 <span class="sd">        :return: filtered list of sequences names in the corresponding attributes.</span>
 <span class="sd">        :Example:</span>
 <span class="sd">        </span>
@@ -225,7 +224,7 @@
 <span class="sd">        [&#39;AAALLLIIIKKK&#39;, &#39;LLVVIIFFFQQ&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">amino_acids</span><span class="p">))</span>
         <span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -254,8 +253,8 @@
     
 <div class="viewcode-block" id="BaseDescriptor.__init__"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to calculate the</span>
-<span class="sd">            descriptor values for.</span>
+<span class="sd">        :param seqs: a ``.FASTA`` file with sequences, a list / array of sequences or a single sequence as string to</span>
+<span class="sd">            calculate the descriptor values for.</span>
 <span class="sd">        :return: initialized attributes :py:attr:`sequences` and :py:attr:`names`.</span>
 <span class="sd">        :Example:</span>
 
@@ -433,13 +432,13 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span></div>
     
-<div class="viewcode-block" id="BaseDescriptor.minmax_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.minmax_selection">[docs]</a>    <span class="k">def</span> <span class="nf">minmax_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">distmetric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">randseed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseDescriptor.minmax_selection"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.minmax_selection">[docs]</a>    <span class="k">def</span> <span class="nf">minmax_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">distmetric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to select a specified number of sequences according to the minmax algorithm.</span>
 
 <span class="sd">        :param iterations: {int} Number of sequences to retrieve.</span>
 <span class="sd">        :param distmetric: Distance metric to calculate the distances between the sequences in descriptor space.</span>
 <span class="sd">            Choose from &#39;euclidean&#39; or &#39;minkowsky&#39;.</span>
-<span class="sd">        :param randseed: {int} Set a random seed for numpy to pick the first sequence.</span>
+<span class="sd">        :param seed: {int} Set a random seed for numpy to pick the first sequence.</span>
 <span class="sd">        :return: updated instance</span>
 
 <span class="sd">        .. seealso:: **SciPy** http://docs.scipy.org/doc/scipy/reference/spatial.distance.html</span>
@@ -450,7 +449,7 @@
         <span class="n">minmaxidx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># Store original indices of selections to return</span>
         
         <span class="c1"># Randomly selecting first peptide into the sele</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">randseed</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pool</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
         <span class="n">sele</span> <span class="o">=</span> <span class="n">pool</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
         <span class="n">minmaxidx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptor</span> <span class="o">==</span> <span class="n">pool</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))))</span>
@@ -485,8 +484,8 @@
     
 <div class="viewcode-block" id="BaseDescriptor.filter_sequences"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.filter_sequences">[docs]</a>    <span class="k">def</span> <span class="nf">filter_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All</span>
-<span class="sd">        corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted as well. The method returns an updated</span>
-<span class="sd">        descriptor instance.</span>
+<span class="sd">        corresponding attribute values of these sequences (e.g. in :py:attr:`descriptor`, :py:attr:`name`) are deleted</span>
+<span class="sd">        as well. The method returns an updated descriptor instance.</span>
 
 <span class="sd">        :param sequences: {list} sequences to be filtered out of the whole instance, including corresponding data</span>
 <span class="sd">        :return: updated instance without filtered sequences</span>
@@ -557,11 +556,11 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span></div>
     
-<div class="viewcode-block" id="BaseDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aminoacids</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseDescriptor.filter_aa"><a class="viewcode-back" href="../../modlamp.html#modlamp.core.BaseDescriptor.filter_aa">[docs]</a>    <span class="k">def</span> <span class="nf">filter_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amino_acids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to filter out corresponding names and descriptor values of sequences with given amino acids in the</span>
 <span class="sd">        argument list *aminoacids*.</span>
 
-<span class="sd">        :param aminoacids: list of amino acids to be filtered</span>
+<span class="sd">        :param amino_acids: list of amino acids to be filtered</span>
 <span class="sd">        :return: filtered list of sequences, descriptor values, target values and names in the corresponding attributes.</span>
 <span class="sd">        :Example:</span>
 
@@ -572,7 +571,7 @@
 <span class="sd">        [&#39;AAALLLIIIKKK&#39;, &#39;LLVVIIFFFQQ&#39;]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aminoacids</span><span class="p">))</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">amino_acids</span><span class="p">))</span>
         <span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>

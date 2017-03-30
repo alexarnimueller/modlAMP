@@ -556,7 +556,7 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
         >>> desc.calculate_all(amide=True)
         >>> desc.featurenames
-        ['Length', 'MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
+        ['Length', 'MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydRatio']
         >>> desc.descriptor
         array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
         >>> desc.save_descriptor('/path/to/outputfile.csv')  # save the descriptor data (with feature names header)
@@ -730,46 +730,49 @@ class PeptideDescriptor(BaseDescriptor):
             values in :py:attr:`all_moms` (needed for the :py:func:`calculate_profile` method)
         :Example:
 
-        >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL','eisenberg')
-        >>> AMP.calculate_moment(window=1000, angle=100, modality='max')
+        >>> AMP = PeptideDescriptor('GLFDIVKKVVGALGSL', 'eisenberg')
+        >>> AMP.calculate_moment()
         >>> AMP.descriptor
         array([[ 0.48790226]])
         """
         if self.scale['A'] == list:
             print '\n Descriptor moment calculation is only possible for one dimensional descriptors.\n'
-            sys.exit()
-
-        desc = list()
-        for s, seq in enumerate(self.sequences):
-            wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
-            mtrx = list()
-            for l in range(len(seq)):
-                mtrx.append(self.scale[str(seq[l])])
-
-            mwdw = list()
-            for i in range(len(mtrx) - wdw + 1):
-                mwdw.append(sum(mtrx[i:i + wdw], []))
-
-            mwdw = np.asarray(mwdw)
-            rads = angle * (np.pi / 180) * np.asarray(range(wdw))  # calculate actual moment (radial)
-            vcos = (mwdw * np.cos(rads)).sum(axis=1)
-            vsin = (mwdw * np.sin(rads)).sum(axis=1)
-            moms = np.sqrt(vsin * vsin + vcos * vcos) / wdw
-
-            if modality == 'max':  # take window with maximal value
-                moment = np.max(moms)
-            elif modality == 'mean':  # take average value over all windows
-                moment = np.mean(moms)
-            else:
-                print '\nModality parameter is wrong, please choose between "max" and "mean".\n'
-                sys.exit()
-            desc.append(moment)
-            self.all_moms.append(moms)
-        desc = np.asarray(desc).reshape(len(desc), 1)
-        if append:
-            self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+    
         else:
-            self.descriptor = np.array(desc)
+            desc = []
+            for seq in self.sequences:
+                wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
+                mtrx = []
+                mwdw = []
+                
+                for aa in range(len(seq)):
+                    mtrx.append(self.scale[str(seq[aa])])
+                    
+                for i in range(len(mtrx) - wdw + 1):
+                    mwdw.append(sum(mtrx[i:i + wdw], []))
+    
+                mwdw = np.asarray(mwdw)
+                rads = angle * (np.pi / 180) * np.asarray(range(wdw))  # calculate actual moment (radial)
+                vcos = (mwdw * np.cos(rads)).sum(axis=1)
+                vsin = (mwdw * np.sin(rads)).sum(axis=1)
+                moms = np.sqrt(vsin ** 2 + vcos ** 2) / wdw
+    
+                if modality == 'max':  # take window with maximal value
+                    moment = np.max(moms)
+                elif modality == 'mean':  # take average value over all windows
+                    moment = np.mean(moms)
+                else:
+                    print '\nERROR!\nModality parameter is wrong, please choose between "max" and "mean".\n'
+                    return
+                desc.append(moment)
+                self.all_moms.append(moms)
+                
+            desc = np.asarray(desc).reshape(len(desc), 1)  # final descriptor array
+            
+            if append:
+                self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+            else:
+                self.descriptor = np.array(desc)
 
     def calculate_global(self, window=1000, modality='max', append=False):
         """Method for calculating a global / window averaging descriptor value of a given AA scale
@@ -790,26 +793,31 @@ class PeptideDescriptor(BaseDescriptor):
         """
         desc = list()
         for n, seq in enumerate(self.sequences):
-            wdw = min(window, len(seq))
-            mtrx = list()
+            wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
+            mtrx = []
+            mwdw = []
+            
             for l in range(len(seq)):  # translate AA sequence into values
                 mtrx.append(self.scale[str(seq[l])])
-            mwdw = list()
+
             for i in range(len(mtrx) - wdw + 1):
                 mwdw.append(sum(mtrx[i:i + wdw], []))  # list of all the values for the different windows
+                
             mwdw = np.asarray(mwdw)
             glob = np.sum(mwdw, axis=1) / wdw
+            outglob = float()
+            
             if modality in ['max', 'mean']:
                 if modality == 'max':
                     outglob = np.max(glob)  # returned moment will be the maximum of all windows
                 elif modality == 'mean':
                     outglob = np.mean(glob)  # returned moment will be the mean of all windows
-                desc.append(outglob)
-                self.all_globs.append(glob)
-
-            else:
-                print 'Modality parameter is wrong, please choose between "max" and "mean"\n.'
-
+                else:
+                    print 'Modality parameter is wrong, please choose between "max" and "mean"\n.'
+                    return
+            desc.append(outglob)
+            self.all_globs.append(glob)
+        
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))

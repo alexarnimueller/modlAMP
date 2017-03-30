@@ -35,7 +35,6 @@ class GlobalAnalysis(object):
         
         >>> g = GlobalAnalysis(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...], names=['Library1'])
         """
-        
         if type(library) == np.ndarray:
             self.library = library
         elif type(library) == pd.core.frame.DataFrame:
@@ -49,6 +48,7 @@ class GlobalAnalysis(object):
                     self.libnames = library.index.values.tolist()  # take library names from row headers
         else:
             self.library = np.array(library)
+            
         # reshape library to 2D array if without sub-libraries
         if len(self.library.shape) == 1:
             self.library = self.library.reshape((1, -1))
@@ -57,6 +57,7 @@ class GlobalAnalysis(object):
         
         if names:
             self.libnames = names
+            
         self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
         self.H = np.zeros(self.library.shape, dtype='float64')
         self.uH = np.zeros(self.library.shape, dtype='float64')
@@ -72,7 +73,7 @@ class GlobalAnalysis(object):
             alphabetically.
         :Example:
         
-        >>> g = GlobalAnalysis(sequences)  # sequences being a numpy array of amino acid sequences
+        >>> g = GlobalAnalysis(sequences)  # sequences being a list / array of amino acid sequences
         >>> g.calc_aa_freq()
         >>> g.aafreq
             array([[ 0.08250071,  0.        ,  0.02083928,  0.0159863 ,  0.1464459 ,
@@ -108,15 +109,17 @@ class GlobalAnalysis(object):
                 
                 plt.show()
     
-    def calc_H(self):
+    def calc_H(self, scale='eisenberg'):
         """Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.
         
+        :param scale: {str} hydrophobicity scale to use. For available scales,
+            see :class:`modlamp.descriptors.PeptideDescriptor`.
         :return: {numpy.ndarray} Eisenberg hydrophobicities in the attribute :py:attr:`H`.
         
         .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_global()`
         """
         for l in range(self.library.shape[0]):
-            d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
+            d = PeptideDescriptor(self.library[l].tolist(), scale)
             d.calculate_global()
             self.H[l] = d.descriptor[:, 0]
     
@@ -168,7 +171,7 @@ class GlobalAnalysis(object):
         :return: visual summary (plot) of the library characteristics.
         :Example:
         
-        >>> g = GlobalAnalysis(np.array([seqs1, seqs2, seqs3])  # seqs being lists of sequences
+        >>> g = GlobalAnalysis(np.array([seqs1, seqs2, seqs3])  # seqs being lists / arrays of sequences
         >>> g.plot_summary()
         
         .. image:: ../docs/static/summary.png
