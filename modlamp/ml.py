@@ -299,26 +299,23 @@ def plot_validation_curve(classifier, x_train, y_train, param_name, param_range,
         :height: 300px
 
     """
-    
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
                                                  cv=cv, scoring=score, n_jobs=-1)
-    train_scores_mean = np.mean(train_scores, axis=1)
-    train_scores_std = np.std(train_scores, axis=1)
-    test_scores_mean = np.mean(test_scores, axis=1)
-    test_scores_std = np.std(test_scores, axis=1)
+    train_mean = np.mean(train_scores, axis=1)
+    train_std = np.std(train_scores, axis=1)
+    test_mean = np.mean(test_scores, axis=1)
+    test_std = np.std(test_scores, axis=1)
     
+    # plotting
     plt.clf()
     plt.title(title)
     plt.xlabel(xlab)
     plt.ylabel(ylab)
     plt.ylim(0.0, 1.1)
-    plt.semilogx(param_range, train_scores_mean, label="Training score", color="b")
-    plt.fill_between(param_range, train_scores_mean - train_scores_std,
-                     train_scores_mean + train_scores_std, alpha=0.2, color="b")
-    plt.semilogx(param_range, test_scores_mean, label="Cross-validation score",
-                 color="g")
-    plt.fill_between(param_range, test_scores_mean - test_scores_std,
-                     test_scores_mean + test_scores_std, alpha=0.2, color="g")
+    plt.semilogx(param_range, train_mean, label="Training score", color="b")
+    plt.fill_between(param_range, train_mean - train_std, train_mean + train_std, alpha=0.2, color="b")
+    plt.semilogx(param_range, test_mean, label="Cross-validation score", color="g")
+    plt.fill_between(param_range, test_mean - test_std, test_mean + test_std, alpha=0.2, color="g")
     plt.legend(loc="best")
     
     if filename:
@@ -381,25 +378,19 @@ def predict(classifier, X, seqs, names=None, y=None, filename=None):
     
     if not (y and names):
         d_pred = {'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
-        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Sequence', 'P_class0', 'P_class1'])
-        df_pred.set_index({'Sequence': seqs})
+        df_pred = pd.DataFrame(d_pred, index=seqs)
     
     elif not y:
-        d_pred = {'Sequence': seqs, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
-        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Name', 'Sequence', 'P_class0', 'P_class1'])
-        df_pred.set_index({'Name': names})
+        d_pred = {'Name': names, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
+        df_pred = pd.DataFrame(d_pred, index=seqs)
     
     elif not names:
         d_pred = {'P_class0': preds[:, 0], 'P_class1': preds[:, 1], 'True_class': y}
-        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Sequence', 'P_class0', 'P_class1', 'True_class'])
-        df_pred.set_index({'Sequence': seqs})
+        df_pred = pd.DataFrame(d_pred, index=seqs)
     
     else:
-        d_pred = {'Sequence': seqs, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1],
-                  'True_class': y}
-        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Name', 'Sequence', 'P_class0', 'P_class1',
-                                                'True_class'])
-        df_pred.set_index({'Name': names})
+        d_pred = {'Name': names, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1], 'True_class': y}
+        df_pred = pd.DataFrame(d_pred, index=seqs)
     
     if filename:
         df_pred.to_csv(filename + time.strftime("-%Y%m%desc-%H%M%S.csv"))
@@ -451,7 +442,6 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     
     means = []
     sd = []
-    df_scores = pd.DataFrame()
     
     for metric in metrics:
         if metric == 'mcc':
@@ -461,12 +451,11 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
         
         means.append(scores.mean())
         sd.append(scores.std())
-        df_scores = pd.DataFrame({'Mean': means, 'Std': sd})
-        
-    if names is None:
-        df_scores.set_index({'Metrics': metrics})
-    else:
-        df_scores.set_index({'Metrics': names})
+    
+    df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=metrics)
+    
+    if names:
+        df_scores.set_index(names)
     
     return df_scores.round(3)
 
@@ -514,13 +503,12 @@ def score_testset(classifier, X_test, y_test):
        roc_auc  0.919173
     """
     scores = []
-    metrics = ['MCC', 'Accuracy', 'Precision', 'Recall', 'f1', 'ROC_auc']
+    metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'mcc']
     funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
     
     for f in funcs:
         scores.append(getattr(mets, f)(y_test, classifier.predict(X_test)))  # fore every metric, calculate the scores
     
-    df_scores = pd.DataFrame({'Scores': scores})
-    df_scores.set_index({'Metrics': metrics})
+    df_scores = pd.DataFrame({'Scores': scores}, index=metrics)
     
     return df_scores
