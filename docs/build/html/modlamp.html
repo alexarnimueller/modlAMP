@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v2.7.7 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v2.7.8 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v2.7.7',
+        VERSION:     'v2.7.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v2.7.7 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v2.7.8 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.7 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.8 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -2555,9 +2555,9 @@ option <code class="docutils literal"><span class="pre">param_range</span></code
 <li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
 <li><strong>param_name</strong> &#8211; {string} parameter to assess in the validation curve plot. For SVM,
-&#8220;clf__C&#8221; (C parameter), &#8220;clf__gamma&#8221; (gamma parameter). For Random Forest, &#8220;clf__n_estimators&#8221; (number of trees),
-&#8220;clf__max_depth&#8221; (max num of branches per tree, &#8220;clf__min_samples_split&#8221; (min number of samples required to split an
-internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples in newly created leaf).</li>
+&#8220;clf__C&#8221; (C parameter), &#8220;clf__gamma&#8221; (gamma parameter). For Random Forest, &#8220;clf__n_estimators&#8221; (number of trees)
+&#8220;clf__max_depth&#8221; (max num of branches per tree, &#8220;clf__min_samples_split&#8221; (min number of samples required to
+split an internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples in newly created leaf).</li>
 <li><strong>param_range</strong> &#8211; {list} parameter range for the validation curve.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 <li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
@@ -2619,7 +2619,8 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 <span class="go">{&#39;clf__gamma&#39;: 0.1, &#39;clf__C&#39;: 10.0, &#39;clf__kernel&#39;: &#39;rbf&#39;}</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_validation_curve</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;clf__gamma&#39;</span><span class="p">,</span> <span class="n">param_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_validation_curve</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;clf__gamma&#39;</span><span class="p">,</span>
+<span class="go">                          param_range=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000])</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/validation_curve.png"><img alt="_images/validation_curve.png" src="_images/validation_curve.png" style="height: 300px;" /></a>
@@ -2627,7 +2628,7 @@ internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of samples 
 
 <dl class="function">
 <dt id="modlamp.ml.predict">
-<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>seqs</em>, <em>names=None</em>, <em>y=array([]</em>, <em>dtype=float64)</em>, <em>filename=None</em>, <em>save_csv=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>seqs</em>, <em>names=None</em>, <em>y=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function can be used to predict novel peptides with a trained classifier model. The function returns a
 <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> with predictions using the specified estimator and test data. If true class is provided,
 it returns the scoring value for the test data.</p>
@@ -2638,15 +2639,15 @@ it returns the scoring value for the test data.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>classifier</strong> &#8211; {classifier instance} classifier used for predictions.</li>
 <li><strong>X</strong> &#8211; {array} descriptor values of the peptides to be predicted.</li>
-<li><strong>names</strong> &#8211; {list} names of the peptides in <code class="docutils literal"><span class="pre">X</span></code>.</li>
 <li><strong>seqs</strong> &#8211; {list} sequences of the peptides in <code class="docutils literal"><span class="pre">X</span></code>.</li>
+<li><strong>names</strong> &#8211; {list} (optional) names of the peptides in <code class="docutils literal"><span class="pre">X</span></code>.</li>
 <li><strong>y</strong> &#8211; {array} (optional) true (known) classes of the peptides.</li>
-<li><strong>filename</strong> &#8211; {string} output filename to store the predictions.</li>
-<li><strong>save_csv</strong> &#8211; {bool} if <code class="docutils literal"><span class="pre">true</span></code>, the function additionally saves a <code class="docutils literal"><span class="pre">csv</span></code> file with the predictions.</li>
+<li><strong>filename</strong> &#8211; {string} (optional) output filename to store the predictions to (<code class="docutils literal"><span class="pre">.csv</span></code> format); if <code class="docutils literal"><span class="pre">None</span></code>:
+not saved.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> containing predictions for <code class="docutils literal"><span class="pre">X</span></code>. <code class="docutils literal"><span class="pre">Pred_prob_class0</span></code> and <code class="docutils literal"><span class="pre">Pred_prob_class1</span></code>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">pandas.DataFrame</span></code> containing predictions for <code class="docutils literal"><span class="pre">X</span></code>. <code class="docutils literal"><span class="pre">P_class0</span></code> and <code class="docutils literal"><span class="pre">P_class1</span></code>
 are the predicted probability of the peptide belonging to class 0 and class 1, respectively.</p>
 </td>
 </tr>
@@ -2680,12 +2681,12 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descH</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs</span><span class="o">=</span><span class="n">H</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">descH</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">seqs</span><span class="o">=</span><span class="n">descH</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># all three shown sequences are predicted active (class 1)</span>
-<span class="go">ID                  Sequence  Pred_prob_class0  Pred_prob_class1</span>
-<span class="go">0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833</span>
-<span class="go">1                LGVRVLRIIIR          0.007239          0.992761</span>
-<span class="go">2              VGIRLARGVGRIG          0.071436          0.928564</span>
+<span class="go">                 Sequence       P_class0        P_class1</span>
+<span class="go">IAGKLAKVGLKIGKIGGKLVKGVLK       0.009167        0.990833</span>
+<span class="go">              LGVRVLRIIIR       0.007239        0.992761</span>
+<span class="go">            VGIRLARGVGRIG       0.071436        0.928564</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2734,13 +2735,13 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 </div>
 <p>Get the cross-validation scores:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_cv</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">ID   Metrics   Mean    Std</span>
-<span class="go">0   accuracy  0.841  0.052</span>
-<span class="go">1  precision  0.931  0.025</span>
-<span class="go">2     recall  0.736  0.094</span>
-<span class="go">3         f1  0.819  0.065</span>
-<span class="go">4    roc_auc  0.915  0.039</span>
-<span class="go">5        mcc  0.699  0.094</span>
+<span class="go">   Metrics   Mean    Std</span>
+<span class="go">  accuracy  0.841  0.052</span>
+<span class="go"> precision  0.931  0.025</span>
+<span class="go">    recall  0.736  0.094</span>
+<span class="go">        f1  0.819  0.065</span>
+<span class="go">   roc_auc  0.915  0.039</span>
+<span class="go">       mcc  0.699  0.094</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2792,13 +2793,13 @@ for more information.</p>
 </div>
 <p>Calculating the scores of the predictions on the test set</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_testset</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="go">ID  Metrics   Scores</span>
-<span class="go">0        MCC  0.838751</span>
-<span class="go">1   accuracy  0.919414</span>
-<span class="go">2  precision  0.923664</span>
-<span class="go">3     recall  0.909774</span>
-<span class="go">4         f1  0.916667</span>
-<span class="go">5    roc_auc  0.919173</span>
+<span class="go">   Metrics   Scores</span>
+<span class="go">       MCC  0.838751</span>
+<span class="go">  accuracy  0.919414</span>
+<span class="go"> precision  0.923664</span>
+<span class="go">    recall  0.909774</span>
+<span class="go">        f1  0.916667</span>
+<span class="go">   roc_auc  0.919173</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4210,12 +4211,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.7 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v2.7.8 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Mar 28esc, 2017.
+      Last updated on Mar 30esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

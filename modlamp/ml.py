@@ -2,7 +2,8 @@
 """
 .. currentmodule:: modlamp.ml
 
-.. moduleauthor:: modlab Gisela Gabernet ETH Zurich <gisela.gabernet@pharma.ethz.ch>, Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
+.. moduleauthor:: modlab Gisela Gabernet ETH Zurich <gisela.gabernet@pharma.ethz.ch>,
+                  Alex Mueller ETH Zurich <alex.mueller@pharma.ethz.ch>
 
 This module contains different functions to facilitate machine learning with peptides, mainly making use of the
 scikit-learn Python package. Two machine learning models are available, whose parameters can be tuned. For more
@@ -34,6 +35,7 @@ Function name                                   Description
 
 
 .. versionadded:: 2.2.0
+.. versionchanged: 2.7.8
 """
 
 import time
@@ -45,6 +47,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import validation_curve
+from sklearn import metrics as mets
 from sklearn.metrics import *
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import *
@@ -169,7 +172,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     if model.lower() == 'svm':
         pipe_svc = Pipeline([('scl', scaler),
                              ('clf', SVC(class_weight='balanced', random_state=1, probability=True))])
-
+        
         if param_grid is None:
             param_range = [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
             param_grid = [{'clf__C': param_range,
@@ -177,55 +180,53 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
                           {'clf__C': param_range,
                            'clf__gamma': param_range,
                            'clf__kernel': ['rbf']}]
-
+        
         gs = GridSearchCV(estimator=pipe_svc,
                           param_grid=param_grid,
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
-
+        
         gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)
-
+        
         # Set the best parameters to the best estimator
         best_classifier = gs.best_estimator_
         return best_classifier.fit(x_train, y_train)
-
+    
     elif model.lower() == 'rf':
         pipe_rf = Pipeline([('scl', scaler),
                             ('clf', RandomForestClassifier(random_state=1, class_weight='balanced'))])
-
+        
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 100, 500],
                            'clf__max_features': ['sqrt', 'log2', None],
                            'clf__bootstrap': [True, False],
                            'clf__criterion': ["gini"]}]
-
+        
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
-
+        
         gs.fit(x_train, y_train)
         print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)
-
+        
         # Set the best parameters to the best estimator
         best_classifier = gs.best_estimator_
         return best_classifier.fit(x_train, y_train)
-
+    
     else:
         print "Model not supported, please choose between 'svm' and 'rf'."
 
 
-def plot_validation_curve(classifier, x_train, y_train, param_name,
-                          param_range,
-                          cv=10, score=make_scorer(matthews_corrcoef),
-                          title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
+def plot_validation_curve(classifier, x_train, y_train, param_name, param_range, cv=10, score=make_scorer(
+        matthews_corrcoef), title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
     """This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
     option ``param_range``.
 
@@ -233,13 +234,14 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     :param x_train: {array} descriptor values for training data.
     :param y_train: {array} class values for training data.
     :param param_name: {string} parameter to assess in the validation curve plot. For SVM,
-        "clf__C" (C parameter), "clf__gamma" (gamma parameter). For Random Forest, "clf__n_estimators" (number of trees),
-        "clf__max_depth" (max num of branches per tree, "clf__min_samples_split" (min number of samples required to split an
-        internal tree node), "clf__min_samples_leaf" (min number of samples in newly created leaf).
+        "clf__C" (C parameter), "clf__gamma" (gamma parameter). For Random Forest, "clf__n_estimators" (number of trees)
+        "clf__max_depth" (max num of branches per tree, "clf__min_samples_split" (min number of samples required to
+        split an internal tree node), "clf__min_samples_leaf" (min number of samples in newly created leaf).
     :param param_range: {list} parameter range for the validation curve.
     :param cv: {int} number of folds for cross-validation.
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
-        `sklearn.model_evaluation.scoring-parameter <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
+        `sklearn.model_evaluation.scoring-parameter
+        <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
@@ -290,20 +292,21 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     0.739995453978
     {'clf__gamma': 0.1, 'clf__C': 10.0, 'clf__kernel': 'rbf'}
 
-    >>> plot_validation_curve(best_svm_model, X_train, y_train, param_name='clf__gamma', param_range=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000])
+    >>> plot_validation_curve(best_svm_model, X_train, y_train, param_name='clf__gamma',
+                              param_range=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000])
 
     .. image:: ../docs/static/validation_curve.png
         :height: 300px
 
     """
-
+    
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
                                                  cv=cv, scoring=score, n_jobs=-1)
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
     test_scores_mean = np.mean(test_scores, axis=1)
     test_scores_std = np.std(test_scores, axis=1)
-
+    
     plt.clf()
     plt.title(title)
     plt.xlabel(xlab)
@@ -317,26 +320,26 @@ def plot_validation_curve(classifier, x_train, y_train, param_name,
     plt.fill_between(param_range, test_scores_mean - test_scores_std,
                      test_scores_mean + test_scores_std, alpha=0.2, color="g")
     plt.legend(loc="best")
-
+    
     if filename:
         plt.savefig(filename)
     else:
         plt.show()
 
 
-def predict(classifier, X, seqs, names=None, y=np.array([]), filename=None, save_csv=True):
+def predict(classifier, X, seqs, names=None, y=None, filename=None):
     """This function can be used to predict novel peptides with a trained classifier model. The function returns a
     ``pandas.DataFrame`` with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.
     :param X: {array} descriptor values of the peptides to be predicted.
-    :param names: {list} names of the peptides in ``X``.
     :param seqs: {list} sequences of the peptides in ``X``.
+    :param names: {list} (optional) names of the peptides in ``X``.
     :param y: {array} (optional) true (known) classes of the peptides.
-    :param filename: {string} output filename to store the predictions.
-    :param save_csv: {bool} if ``true``, the function additionally saves a ``csv`` file with the predictions.
-    :return: ``pandas.DataFrame`` containing predictions for ``X``. ``Pred_prob_class0`` and ``Pred_prob_class1``
+    :param filename: {string} (optional) output filename to store the predictions to (``.csv`` format); if ``None``:
+        not saved.
+    :return: ``pandas.DataFrame`` containing predictions for ``X``. ``P_class0`` and ``P_class1``
         are the predicted probability of the peptide belonging to class 0 and class 1, respectively.
 
     :Example:
@@ -366,47 +369,42 @@ def predict(classifier, X, seqs, names=None, y=np.array([]), filename=None, save
     >>> descH = PeptideDescriptor(H.sequences, scalename='pepcats')
     >>> descH.calculate_autocorr(7)
 
-    >>> df = predict(best_svm_model, X=H.descriptor, seqs=H.sequences)
+    >>> df = predict(best_svm_model, X=descH.descriptor, seqs=descH.sequences)
     >>> df.head(3)  # all three shown sequences are predicted active (class 1)
-    ID                  Sequence  Pred_prob_class0  Pred_prob_class1
-    0  IAGKLAKVGLKIGKIGGKLVKGVLK          0.009167          0.990833
-    1                LGVRVLRIIIR          0.007239          0.992761
-    2              VGIRLARGVGRIG          0.071436          0.928564
+                     Sequence       P_class0        P_class1
+    IAGKLAKVGLKIGKIGGKLVKGVLK       0.009167        0.990833
+                  LGVRVLRIIIR       0.007239        0.992761
+                VGIRLARGVGRIG       0.071436        0.928564
 
     """
-    if filename is None:
-        filename = 'probability_predictions'
-
-    pred_probs = classifier.predict_proba(X)
-
-    if not (y.size and names):
-        dictpred = {'ID': range(len(X)), 'Sequence': seqs,
-                    'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
-        dfpred = pd.DataFrame(dictpred, columns=['ID', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
-
-    elif not y.size:
-        dictpred = {'ID': range(len(X)), 'Name': names, 'Sequence': seqs,
-                    'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1]}
-        dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0', 'Pred_prob_class1'])
-
+    preds = classifier.predict_proba(X)
+    
+    if not (y and names):
+        d_pred = {'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
+        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Sequence', 'P_class0', 'P_class1'])
+        df_pred.set_index({'Sequence': seqs})
+    
+    elif not y:
+        d_pred = {'Sequence': seqs, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
+        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Name', 'Sequence', 'P_class0', 'P_class1'])
+        df_pred.set_index({'Name': names})
+    
     elif not names:
-        dictpred = {'ID': range(len(X)), 'Sequence': seqs,
-                    'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
-                    'True_class': y}
-        dfpred = pd.DataFrame(dictpred, columns=['ID', 'Sequence', 'Pred_prob_class0',
-                                                 'Pred_prob_class1', 'True_class'])
-
+        d_pred = {'P_class0': preds[:, 0], 'P_class1': preds[:, 1], 'True_class': y}
+        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Sequence', 'P_class0', 'P_class1', 'True_class'])
+        df_pred.set_index({'Sequence': seqs})
+    
     else:
-        dictpred = {'ID': range(len(X)), 'Name': names, 'Sequence': seqs,
-                    'Pred_prob_class0': pred_probs[:, 0], 'Pred_prob_class1': pred_probs[:, 1],
-                    'True_class': y}
-        dfpred = pd.DataFrame(dictpred, columns=['ID', 'Name', 'Sequence', 'Pred_prob_class0',
-                                                 'Pred_prob_class1', 'True_class'])
-
-    if save_csv:
-        dfpred.to_csv(filename + time.strftime("-%Y%m%desc-%H%M%S.csv"))
-
-    return dfpred
+        d_pred = {'Sequence': seqs, 'P_class0': preds[:, 0], 'P_class1': preds[:, 1],
+                  'True_class': y}
+        df_pred = pd.DataFrame(d_pred, columns=['ID', 'Name', 'Sequence', 'P_class0', 'P_class1',
+                                                'True_class'])
+        df_pred.set_index({'Name': names})
+    
+    if filename:
+        df_pred.to_csv(filename + time.strftime("-%Y%m%desc-%H%M%S.csv"))
+    
+    return df_pred
 
 
 def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
@@ -440,19 +438,21 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     Get the cross-validation scores:
     
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-    ID   Metrics   Mean    Std
-    0   accuracy  0.841  0.052
-    1  precision  0.931  0.025
-    2     recall  0.736  0.094
-    3         f1  0.819  0.065
-    4    roc_auc  0.915  0.039
-    5        mcc  0.699  0.094
+       Metrics   Mean    Std
+      accuracy  0.841  0.052
+     precision  0.931  0.025
+        recall  0.736  0.094
+            f1  0.819  0.065
+       roc_auc  0.915  0.039
+           mcc  0.699  0.094
     """
     if metrics is None:
         metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'mcc']
-
+    
     means = []
     sd = []
+    df_scores = pd.DataFrame()
+    
     for metric in metrics:
         if metric == 'mcc':
             scores = cross_val_score(classifier, X, y, cv=cv, scoring=make_scorer(matthews_corrcoef), n_jobs=-1)
@@ -461,19 +461,13 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
         
         means.append(scores.mean())
         sd.append(scores.std())
-
+        df_scores = pd.DataFrame({'Mean': means, 'Std': sd})
+        
     if names is None:
-        dict_scores = {'Metrics': metrics,
-                       'Mean': means,
-                       'Std': sd}
+        df_scores.set_index({'Metrics': metrics})
     else:
-        dict_scores = {'Metrics': names,
-                       'Mean': means,
-                       'Std': sd}
-
-    df_scores = pd.DataFrame(dict_scores)
-    df_scores = df_scores[['Metrics', 'Mean', 'Std']]
-
+        df_scores.set_index({'Metrics': names})
+    
     return df_scores.round(3)
 
 
@@ -511,42 +505,22 @@ def score_testset(classifier, X_test, y_test):
     Calculating the scores of the predictions on the test set
     
     >>> score_testset(best_svm_model, X_test, y_test)
-    ID  Metrics   Scores
-    0        MCC  0.838751
-    1   accuracy  0.919414
-    2  precision  0.923664
-    3     recall  0.909774
-    4         f1  0.916667
-    5    roc_auc  0.919173
+       Metrics   Scores
+           MCC  0.838751
+      accuracy  0.919414
+     precision  0.923664
+        recall  0.909774
+            f1  0.916667
+       roc_auc  0.919173
     """
-
-    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
     scores = []
-
-    MCC = matthews_corrcoef(y_test, classifier.predict(X_test))
-    scores.append(MCC)
-
-    accuracy = accuracy_score(y_test, classifier.predict(X_test))
-    scores.append(accuracy)
-
-    precision = precision_score(y_test, classifier.predict(X_test))
-    scores.append(precision)
-
-    recall = recall_score(y_test, classifier.predict(X_test))
-    scores.append(recall)
-
-    f1 = f1_score(y_test, classifier.predict(X_test))
-    scores.append(f1)
-
-    roc_auc = roc_auc_score(y_test, classifier.predict(X_test))
-    scores.append(roc_auc)
-
-    dict_scores = {'Metrics': metrics,
-                   'Scores': scores}
-
-    df_scores = pd.DataFrame(dict_scores)
-    df_scores = df_scores[['Metrics', 'Scores']]
-
+    metrics = ['MCC', 'Accuracy', 'Precision', 'Recall', 'f1', 'ROC_auc']
+    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
+    
+    for f in funcs:
+        scores.append(getattr(mets, f)(y_test, classifier.predict(X_test)))  # fore every metric, calculate the scores
+    
+    df_scores = pd.DataFrame({'Scores': scores})
+    df_scores.set_index({'Metrics': metrics})
+    
     return df_scores
-
-
