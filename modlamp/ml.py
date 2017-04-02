@@ -57,7 +57,7 @@ __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
-def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=make_scorer(matthews_corrcoef),
+def train_best_model(model, x_train, y_train, sample_weights=None, scaler=StandardScaler(), score=make_scorer(matthews_corrcoef),
                      param_grid=None, cv=10):
     """
     This function performs a parameter grid search on a selected classifier model and peptide training data set.
@@ -67,9 +67,10 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     <http://scikit-learn.org/stable/modules/grid_search.html#exhaustive-grid-search>`_, `sklearn.pipeline.Pipeline
     <http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline>`_).
     
-    :param model: {str} model to train. Choose between ``'svm'`` (Support Vector Mchine) or ``'rf'`` (Random Forest).
+    :param model: {str} model to train. Choose between ``'svm'`` (Support Vector Machine) or ``'rf'`` (Random Forest).
     :param x_train: {array} descriptor values for training data.
     :param y_train: {array} class values for training data.
+    :param sample_weights: {array} sample weights for training data.
     :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from
         ``sklearn.preprocessing``, e.g. ``StandardScaler()``, ``MinMaxScaler()``, ``Normalizer()``.
     :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
@@ -107,7 +108,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
     fit(X, y)                    fit the model with the same parameters to new training data.
     score(X, y)                  get the score of the model for test data.
     predict(X)                   get predictions for new data.
-    predict_proba(X)             get probability predicitons for [class0, class1]
+    predict_proba(X)             get probability predictions for [class0, class1]
     get_params()                 get parameters of the trained model
     =================            =============================================================
 
@@ -177,6 +178,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         
         gs = GridSearchCV(estimator=pipe_svc,
                           param_grid=param_grid,
+                          fit_params={'sample_weight': [sample_weights]},
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
@@ -202,6 +204,7 @@ def train_best_model(model, x_train, y_train, scaler=StandardScaler(), score=mak
         
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
+                          fit_params={'sample_weight': [sample_weights]},
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
@@ -448,7 +451,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     return df_scores.round(3)
 
 
-def score_testset(classifier, X_test, y_test):
+def score_testset(classifier, X_test, y_test, sample_weights=None):
     """ Returns the test set scores for the specified scoring metrics in a ``pandas.DataFrame``. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under the Receiver-Operator Curve
     (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`_
@@ -457,6 +460,7 @@ def score_testset(classifier, X_test, y_test):
     :param classifier: {classifier instance} pre-trained classifier used for predictions.
     :param X_test: {array} descriptor values of the test data.
     :param y_test: {array} true class values of the test data.
+    :param sample_weights: {array} weights for the test data.
     :return: ``pandas.DataFrame`` containing the cross validation scores for the specified metrics.
     :Example:
 
@@ -495,7 +499,7 @@ def score_testset(classifier, X_test, y_test):
     funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
     
     for f in funcs:
-        scores.append(getattr(mets, f)(y_test, classifier.predict(X_test)))  # fore every metric, calculate the scores
+        scores.append(getattr(mets, f)(y_test, classifier.predict(X_test), sample_weights=sample_weights))  # fore every metric, calculate the scores
     
     df_scores = pd.DataFrame({'Scores': scores}, index=metrics)
     
