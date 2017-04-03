@@ -440,11 +440,11 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
         means.append(scores.mean())
         sd.append(scores.std())
     
-    df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=metrics)
-    
     if names:
-        df_scores.set_index(names)
-    
+        df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=names)
+    else:
+        df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=metrics)
+        
     return df_scores.round(3)
 
 
