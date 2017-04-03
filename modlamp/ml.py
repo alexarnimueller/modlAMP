@@ -435,7 +435,7 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
     sd = []
     
     for metric in metrics:
-        if metric == 'mcc':
+        if metric.lower() == 'mcc':
             scores = cross_val_score(classifier, X, y, cv=cv, scoring=make_scorer(matthews_corrcoef), n_jobs=-1)
         else:
             scores = cross_val_score(classifier, X, y, cv=cv, scoring=metric, n_jobs=-1)
