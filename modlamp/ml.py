@@ -45,13 +45,14 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.model_selection import validation_curve
 from sklearn import metrics as mets
 from sklearn.metrics import *
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import *
 from sklearn.svm import SVC
+from sklearn.base import clone
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -175,10 +176,10 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           {'clf__C': param_range,
                            'clf__gamma': param_range,
                            'clf__kernel': ['rbf']}]
-        
+
         gs = GridSearchCV(estimator=pipe_svc,
                           param_grid=param_grid,
-                          fit_params={'sample_weight': [sample_weights]},
+                          fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
@@ -204,7 +205,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
         
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
-                          fit_params={'sample_weight': [sample_weights]},
+                          fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
                           n_jobs=-1)
@@ -389,17 +390,16 @@ def predict(classifier, X, seqs, names=None, y=None, filename=None):
     return df_pred
 
 
-def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
+def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
     """This function can be used to evaluate the performance of selected classifier model. It returns the average
     **cross-validation scores** for the specified scoring metrics in a ``pandas.DataFrame``.
 
     :param classifier: {classifier instance} a classifier model to be evaluated.
     :param X: {array} descriptor values for training data.
     :param y: {array} class values for training data.
+    :param sample_weights: {array} weights for training data.
     :param cv: {int} number of folds for cross-validation.
-    :param metrics: {list} metrics to consider for calculating the cv_scores. Choose from
-        `sklearn.metrics.scorers <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_.
-    :param names: {list} names of the metrics to display in the ``DataFrame``.
+    :param shuffle: {bool} suffle data before making the K-fold split.
     :return: ``pandas.DataFrame`` containing the cross validation scores for the specified metrics.
     :Example:
 
@@ -428,37 +428,56 @@ def score_cv(classifier, X, y, cv=10, metrics=None, names=None):
        roc_auc  0.915  0.039
            mcc  0.699  0.094
     """
-    if metrics is None:
-        metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'mcc']
-    
-    means = []
-    sd = []
-    
-    for metric in metrics:
-        if metric.lower() == 'mcc':
-            scores = cross_val_score(classifier, X, y, cv=cv, scoring=make_scorer(matthews_corrcoef), n_jobs=-1)
+
+    cv_names = []
+    for i in range(cv):
+        cv_names.append("CV_%i" % i)
+
+    cv_scores = []
+
+    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+
+    kf = KFold(n_splits=10, random_state=42, shuffle=shuffle)
+    clf = clone(classifier)
+
+    for fold_train_index, fold_test_index in kf.split(X):
+        Xcv_train, Xcv_test = X[fold_train_index], X[fold_test_index]
+        ycv_train, ycv_test = y[fold_train_index], y[fold_test_index]
+        scores = []
+        if sample_weights is not None:
+            weightcv_train, weightcv_test = sample_weights[fold_train_index], sample_weights[fold_test_index]
+            clf.fit(Xcv_train, ycv_train, **{'clf__sample_weight': weightcv_train})
+            for f in funcs:
+                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test),
+                                               sample_weight=weightcv_test))
         else:
-            scores = cross_val_score(classifier, X, y, cv=cv, scoring=metric, n_jobs=-1)
-        
-        means.append(scores.mean())
-        sd.append(scores.std())
-    
-    if names:
-        df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=names)
-    else:
-        df_scores = pd.DataFrame({'Mean': means, 'Std': sd}, index=metrics)
-        
+            clf.fit(Xcv_train, ycv_train)
+            for f in funcs:
+                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test)))
+
+        cv_scores.append(scores)
+
+    dict_scores = dict()
+    for colname, score in zip(cv_names, cv_scores):
+        dict_scores.update({colname: score})
+
+    df_scores = pd.DataFrame(dict_scores, index=metrics)
+
+    df_scores['mean'] = df_scores.mean(axis=1)
+    df_scores['std'] = df_scores.std(axis=1)
+
     return df_scores.round(3)
 
 
-def score_testset(classifier, X_test, y_test, sample_weights=None):
+def score_testset(classifier, x_test, y_test, sample_weights=None):
     """ Returns the test set scores for the specified scoring metrics in a ``pandas.DataFrame``. The calculated metrics
     are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under the Receiver-Operator Curve
     (roc_auc). See `sklearn.metrics <http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics>`_
     for more information.
 
     :param classifier: {classifier instance} pre-trained classifier used for predictions.
-    :param X_test: {array} descriptor values of the test data.
+    :param x_test: {array} descriptor values of the test data.
     :param y_test: {array} true class values of the test data.
     :param sample_weights: {array} weights for the test data.
     :return: ``pandas.DataFrame`` containing the cross validation scores for the specified metrics.
@@ -487,20 +506,20 @@ def score_testset(classifier, X_test, y_test, sample_weights=None):
     
     >>> score_testset(best_svm_model, X_test, y_test)
        Metrics   Scores
-           MCC  0.838751
-      accuracy  0.919414
-     precision  0.923664
-        recall  0.909774
-            f1  0.916667
-       roc_auc  0.919173
+           MCC  0.839
+      accuracy  0.920
+     precision  0.924
+        recall  0.910
+            f1  0.917
+       roc_auc  0.919
     """
     scores = []
-    metrics = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'mcc']
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
     funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
     
     for f in funcs:
-        scores.append(getattr(mets, f)(y_test, classifier.predict(X_test), sample_weights=sample_weights))  # fore every metric, calculate the scores
+        scores.append(getattr(mets, f)(y_test, classifier.predict(x_test), sample_weight=sample_weights))  # fore every metric, calculate the scores
     
     df_scores = pd.DataFrame({'Scores': scores}, index=metrics)
     
-    return df_scores
+    return df_scores.round(3)
