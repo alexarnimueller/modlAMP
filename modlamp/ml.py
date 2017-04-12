@@ -420,13 +420,13 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
     Get the cross-validation scores:
     
     >>> score_cv(best_svm_model, desc.descriptor, data.target, cv=5)
-       Metrics   Mean    Std
-      accuracy  0.841  0.052
-     precision  0.931  0.025
-        recall  0.736  0.094
-            f1  0.819  0.065
-       roc_auc  0.915  0.039
-           mcc  0.699  0.094
+                   CV_0   CV_1   CV_2   CV_3   CV_4   mean    std
+        MCC        0.785  0.904  0.788  0.757  0.735  0.794  0.059
+        accuracy   0.892  0.952  0.892  0.880  0.867  0.896  0.029
+        precision  0.927  0.974  0.953  0.842  0.884  0.916  0.048
+        recall     0.864  0.925  0.854  0.889  0.864  0.879  0.026
+        f1         0.894  0.949  0.901  0.865  0.874  0.896  0.029
+        roc_auc    0.893  0.951  0.899  0.881  0.868  0.898  0.028
     """
 
     cv_names = []
