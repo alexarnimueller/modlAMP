@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v3.0.0 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v3.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v3.0.0',
+        VERSION:     'v3.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v3.0.0 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v3.0.1 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -2346,7 +2346,7 @@ best fitted model and its performance as the cross-validation MCC.</td>
 </div>
 <dl class="function">
 <dt id="modlamp.ml.train_best_model">
-<code class="descclassname">modlamp.ml.</code><code class="descname">train_best_model</code><span class="sig-paren">(</span><em>model</em>, <em>x_train</em>, <em>y_train</em>, <em>scaler=StandardScaler(copy=True</em>, <em>with_mean=True</em>, <em>with_std=True)</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>param_grid=None</em>, <em>cv=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#train_best_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.train_best_model" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">train_best_model</code><span class="sig-paren">(</span><em>model</em>, <em>x_train</em>, <em>y_train</em>, <em>sample_weights=None</em>, <em>scaler=StandardScaler(copy=True</em>, <em>with_mean=True</em>, <em>with_std=True)</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>param_grid=None</em>, <em>n_jobs=-1</em>, <em>cv=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#train_best_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.train_best_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function performs a parameter grid search on a selected classifier model and peptide training data set.
 It returns a scikit-learn pipeline that performs standard scaling and contains the best model found by the
 grid search according to the Matthews correlation coefficient.
@@ -2356,9 +2356,10 @@ grid search according to the Matthews correlation coefficient.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>model</strong> &#8211; {str} model to train. Choose between <code class="docutils literal"><span class="pre">'svm'</span></code> (Support Vector Mchine) or <code class="docutils literal"><span class="pre">'rf'</span></code> (Random Forest).</li>
+<li><strong>model</strong> &#8211; {str} model to train. Choose between <code class="docutils literal"><span class="pre">'svm'</span></code> (Support Vector Machine) or <code class="docutils literal"><span class="pre">'rf'</span></code> (Random Forest).</li>
 <li><strong>x_train</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y_train</strong> &#8211; {array} class values for training data.</li>
+<li><strong>sample_weights</strong> &#8211; {array} sample weights for training data.</li>
 <li><strong>scaler</strong> &#8211; {scaler} scaler to use in the pipe to scale data prior to training. Choose from
 <code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code>, e.g. <code class="docutils literal"><span class="pre">StandardScaler()</span></code>, <code class="docutils literal"><span class="pre">MinMaxScaler()</span></code>, <code class="docutils literal"><span class="pre">Normalizer()</span></code>.</li>
 <li><strong>score</strong> &#8211; {metrics instance} scoring function built from make_scorer() or a predefined value in string form
@@ -2367,6 +2368,7 @@ grid search according to the Matthews correlation coefficient.
 <li><strong>param_grid</strong> &#8211; <p>{dict} parameter grid for the gridsearch (see
 <a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html">sklearn.grid_search</a>).</p>
 </li>
+<li><strong>n_jobs</strong> &#8211; {int} number of parallel jobs to use for calculation. if <code class="docutils literal"><span class="pre">-1</span></code>, all available cores are used.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
 </ul>
 </td>
@@ -2425,7 +2427,7 @@ grid search according to the Matthews correlation coefficient.
 <td>get predictions for new data.</td>
 </tr>
 <tr class="row-odd"><td>predict_proba(X)</td>
-<td>get probability predicitons for [class0, class1]</td>
+<td>get probability predictions for [class0, class1]</td>
 </tr>
 <tr class="row-even"><td>get_params()</td>
 <td>get parameters of the trained model</td>
@@ -2494,7 +2496,7 @@ grid search according to the Matthews correlation coefficient.
 
 <dl class="function">
 <dt id="modlamp.ml.plot_validation_curve">
-<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">plot_validation_curve</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_train</em>, <em>y_train</em>, <em>param_name</em>, <em>param_range</em>, <em>cv=10</em>, <em>score=make_scorer(matthews_corrcoef)</em>, <em>title='Validation Curve'</em>, <em>xlab='parameter range'</em>, <em>ylab='MCC'</em>, <em>n_jobs=-1</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#plot_validation_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.plot_validation_curve" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
 option <code class="docutils literal"><span class="pre">param_range</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2516,6 +2518,7 @@ split an internal tree node), &#8220;clf__min_samples_leaf&#8221; (min number of
 <li><strong>title</strong> &#8211; {str} graph title</li>
 <li><strong>xlab</strong> &#8211; {str} x axis label.</li>
 <li><strong>ylab</strong> &#8211; {str} y axis label.</li>
+<li><strong>n_jobs</strong> &#8211; {int} number of parallel jobs to use for calculation. if <code class="docutils literal"><span class="pre">-1</span></code>, all available cores are used.</li>
 <li><strong>filename</strong> &#8211; {str} if filename given the figure is stored in the specified path.</li>
 </ul>
 </td>
@@ -2638,7 +2641,7 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 
 <dl class="function">
 <dt id="modlamp.ml.score_cv">
-<code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>cv=10</em>, <em>metrics=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_cv</code><span class="sig-paren">(</span><em>classifier</em>, <em>X</em>, <em>y</em>, <em>sample_weights=None</em>, <em>cv=10</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_cv" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function can be used to evaluate the performance of selected classifier model. It returns the average
 <strong>cross-validation scores</strong> for the specified scoring metrics in a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2649,10 +2652,9 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 <li><strong>classifier</strong> &#8211; {classifier instance} a classifier model to be evaluated.</li>
 <li><strong>X</strong> &#8211; {array} descriptor values for training data.</li>
 <li><strong>y</strong> &#8211; {array} class values for training data.</li>
+<li><strong>sample_weights</strong> &#8211; {array} weights for training data.</li>
 <li><strong>cv</strong> &#8211; {int} number of folds for cross-validation.</li>
-<li><strong>metrics</strong> &#8211; {list} metrics to consider for calculating the cv_scores. Choose from
-<a class="reference external" href="http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">sklearn.metrics.scorers</a>.</li>
-<li><strong>names</strong> &#8211; {list} names of the metrics to display in the <code class="docutils literal"><span class="pre">DataFrame</span></code>.</li>
+<li><strong>shuffle</strong> &#8211; {bool} suffle data before making the K-fold split.</li>
 </ul>
 </td>
 </tr>
@@ -2680,20 +2682,20 @@ are the predicted probability of the peptide belonging to class 0 and class 1, r
 </div>
 <p>Get the cross-validation scores:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_cv</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">   Metrics   Mean    Std</span>
-<span class="go">  accuracy  0.841  0.052</span>
-<span class="go"> precision  0.931  0.025</span>
-<span class="go">    recall  0.736  0.094</span>
-<span class="go">        f1  0.819  0.065</span>
-<span class="go">   roc_auc  0.915  0.039</span>
-<span class="go">       mcc  0.699  0.094</span>
+<span class="go">               CV_0   CV_1   CV_2   CV_3   CV_4   mean    std</span>
+<span class="go">    MCC        0.785  0.904  0.788  0.757  0.735  0.794  0.059</span>
+<span class="go">    accuracy   0.892  0.952  0.892  0.880  0.867  0.896  0.029</span>
+<span class="go">    precision  0.927  0.974  0.953  0.842  0.884  0.916  0.048</span>
+<span class="go">    recall     0.864  0.925  0.854  0.889  0.864  0.879  0.026</span>
+<span class="go">    f1         0.894  0.949  0.901  0.865  0.874  0.896  0.029</span>
+<span class="go">    roc_auc    0.893  0.951  0.899  0.881  0.868  0.898  0.028</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="modlamp.ml.score_testset">
-<code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">modlamp.ml.</code><code class="descname">score_testset</code><span class="sig-paren">(</span><em>classifier</em>, <em>x_test</em>, <em>y_test</em>, <em>sample_weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/ml.html#score_testset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.ml.score_testset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the test set scores for the specified scoring metrics in a <code class="docutils literal"><span class="pre">pandas.DataFrame</span></code>. The calculated metrics
 are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under the Receiver-Operator Curve
 (roc_auc). See <a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics">sklearn.metrics</a>
@@ -2704,8 +2706,9 @@ for more information.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>classifier</strong> &#8211; {classifier instance} pre-trained classifier used for predictions.</li>
-<li><strong>X_test</strong> &#8211; {array} descriptor values of the test data.</li>
+<li><strong>x_test</strong> &#8211; {array} descriptor values of the test data.</li>
 <li><strong>y_test</strong> &#8211; {array} true class values of the test data.</li>
+<li><strong>sample_weights</strong> &#8211; {array} weights for the test data.</li>
 </ul>
 </td>
 </tr>
@@ -2739,12 +2742,12 @@ for more information.</p>
 <p>Calculating the scores of the predictions on the test set</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score_testset</span><span class="p">(</span><span class="n">best_svm_model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="go">   Metrics   Scores</span>
-<span class="go">       MCC  0.838751</span>
-<span class="go">  accuracy  0.919414</span>
-<span class="go"> precision  0.923664</span>
-<span class="go">    recall  0.909774</span>
-<span class="go">        f1  0.916667</span>
-<span class="go">   roc_auc  0.919173</span>
+<span class="go">       MCC  0.839</span>
+<span class="go">  accuracy  0.920</span>
+<span class="go"> precision  0.924</span>
+<span class="go">    recall  0.910</span>
+<span class="go">        f1  0.917</span>
+<span class="go">   roc_auc  0.919</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4159,12 +4162,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Mar 30esc, 2017.
+      Last updated on Apr 13esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

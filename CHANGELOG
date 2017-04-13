@@ -41,3 +41,4 @@ v2.7.6  23.03.2017 -- Added GlobalDescriptor.formula method to calculate the mol
 v2.7.7  28.03.2017 -- Removed sequences containing unnatural amino acids from the AMPvsUniProt dataset
 v2.7.8  30.03.2017 -- Bug fixes and code simplifications in the ml module
 v3.0.0  30.03.2017 -- Refactoring of modlamp.sequences module. All classes now share the method generate_sequences()
+v3.0.1  13.04.2017 -- New unittests for the modlamp.ml module.
