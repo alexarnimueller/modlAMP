@@ -58,8 +58,8 @@ __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
-def train_best_model(model, x_train, y_train, sample_weights=None, scaler=StandardScaler(), score=make_scorer(matthews_corrcoef),
-                     param_grid=None, cv=10):
+def train_best_model(model, x_train, y_train, sample_weights=None, scaler=StandardScaler(),
+                     score=make_scorer(matthews_corrcoef), param_grid=None, n_jobs=-1, cv=10):
     """
     This function performs a parameter grid search on a selected classifier model and peptide training data set.
     It returns a scikit-learn pipeline that performs standard scaling and contains the best model found by the
@@ -79,6 +79,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
         `scoring-parameters <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
     :param param_grid: {dict} parameter grid for the gridsearch (see
         `sklearn.grid_search <http://scikit-learn.org/stable/modules/model_evaluation.html>`_).
+    :param n_jobs: {int} number of parallel jobs to use for calculation. if ``-1``, all available cores are used.
     :param cv: {int} number of folds for cross-validation.
     :return: best estimator pipeline.
 
@@ -182,7 +183,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
-                          n_jobs=-1)
+                          n_jobs=n_jobs)
         
         gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
@@ -208,7 +209,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
-                          n_jobs=-1)
+                          n_jobs=n_jobs)
         
         gs.fit(x_train, y_train)
         print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
@@ -224,7 +225,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
 
 
 def plot_validation_curve(classifier, x_train, y_train, param_name, param_range, cv=10, score=make_scorer(
-        matthews_corrcoef), title="Validation Curve", xlab="parameter range", ylab="MCC", filename=None):
+        matthews_corrcoef), title="Validation Curve", xlab="parameter range", ylab="MCC", n_jobs=-1, filename=None):
     """This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
     option ``param_range``.
 
@@ -243,6 +244,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name, param_range,
     :param title: {str} graph title
     :param xlab: {str} x axis label.
     :param ylab: {str} y axis label.
+    :param n_jobs: {int} number of parallel jobs to use for calculation. if ``-1``, all available cores are used.
     :param filename: {str} if filename given the figure is stored in the specified path.
     :return: plot of the validation curve.
 
@@ -292,7 +294,7 @@ def plot_validation_curve(classifier, x_train, y_train, param_name, param_range,
 
     """
     train_scores, test_scores = validation_curve(classifier, x_train, y_train, param_name, param_range,
-                                                 cv=cv, scoring=score, n_jobs=-1)
+                                                 cv=cv, scoring=score, n_jobs=n_jobs)
     train_mean = np.mean(train_scores, axis=1)
     train_std = np.std(train_scores, axis=1)
     test_mean = np.mean(test_scores, axis=1)
