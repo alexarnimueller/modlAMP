@@ -45,7 +45,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.model_selection import validation_curve
 from sklearn import metrics as mets
 from sklearn.metrics import *
@@ -438,10 +438,10 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
     funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
     metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
 
-    kf = KFold(n_splits=10, random_state=42, shuffle=shuffle)
+    kf = StratifiedKFold(n_splits=10, random_state=42, shuffle=shuffle)
     clf = clone(classifier)
 
-    for fold_train_index, fold_test_index in kf.split(X):
+    for fold_train_index, fold_test_index in kf.split(X, y):
         Xcv_train, Xcv_test = X[fold_train_index], X[fold_test_index]
         ycv_train, ycv_test = y[fold_train_index], y[fold_test_index]
         scores = []
