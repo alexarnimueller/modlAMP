@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v3.0.1 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v3.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v3.0.1',
+        VERSION:     'v3.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v3.0.1 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v3.1.0 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -2775,11 +2775,17 @@ characteristics and plot.</p>
 </table>
 <dl class="class">
 <dt id="modlamp.wetlab.CD">
-<em class="property">class </em><code class="descclassname">modlamp.wetlab.</code><code class="descname">CD</code><span class="sig-paren">(</span><em>directory</em>, <em>wmin</em>, <em>wmax</em>, <em>amide=True</em>, <em>pathlen=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">modlamp.wetlab.</code><code class="descname">CD</code><span class="sig-paren">(</span><em>directory</em>, <em>wmin</em>, <em>wmax</em>, <em>amide=True</em>, <em>pathlen=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to handle circular dichroism data files and calculate several ellipticity and helicity values.
-The class can only handle data files of the <em>Applied Photophysics</em> type.</p>
+The class can handle data files of the <em>Applied Photophysics</em> type.</p>
 <p>For explanations of different units used in CD spectroscopy,
-visit <a class="reference external" href="https://www.photophysics.com/resources/7-cd-units-conversions">https://www.photophysics.com/resources/7-cd-units-conversions</a>.</p>
+visit <a class="reference external" href="https://www.photophysics.com/resources/7-cd-units-conversions">https://www.photophysics.com/resources/7-cd-units-conversions</a> and read the following publication:</p>
+<ol class="upperalpha simple" start="14">
+<li><ol class="first upperalpha" start="10">
+<li>Greenfield, <em>Nat. Protoc.</em> <strong>2006</strong>, 1, 2876–2890.</li>
+</ol>
+</li>
+</ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All files which should be read must have <strong>4 header lines</strong> as shown in the image below. CD data to be read
@@ -2793,7 +2799,7 @@ must start in line 5 (separated in 2 columns: <em>Wavelength</em> and <em>Signal
 <p>Recognized solvents are <strong>W</strong> for water and <strong>T</strong> for TFE.</p>
 <dl class="method">
 <dt id="modlamp.wetlab.CD.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>wmin</em>, <em>wmax</em>, <em>amide=True</em>, <em>pathlen=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>wmin</em>, <em>wmax</em>, <em>amide=True</em>, <em>pathlen=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Init method for class CD.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2804,7 +2810,7 @@ must start in line 5 (separated in 2 columns: <em>Wavelength</em> and <em>Signal
 <li><strong>wmin</strong> &#8211; {int} smalles wavelength measured</li>
 <li><strong>wmax</strong> &#8211; {int} highest wavelength measured</li>
 <li><strong>amide</strong> &#8211; {bool} specifies whether the sequences have amidated C-termini</li>
-<li><strong>pathlen</strong> &#8211; {float} cuvette path length in cm</li>
+<li><strong>pathlen</strong> &#8211; {float} cuvette path length in mm</li>
 </ul>
 </td>
 </tr>
@@ -2831,7 +2837,7 @@ must start in line 5 (separated in 2 columns: <em>Wavelength</em> and <em>Signal
 <dd><p>Method to calculate the molar ellipticity for all loaded data in <code class="xref py py-attr docutils literal"><span class="pre">circular_dichroism</span></code> according
 to the following formula:</p>
 <div class="math">
-<p><img src="_images/math/5f2a4eea44f400fea6c5bcc1eadf9e87cdd70f20.png" alt="[\Theta] = (\Theta * MW * 100) / (c * l)"/></p>
+<p><img src="_images/math/2350e1f513e3e0a3fe6c61c171e89e1e0c9c7d1c.png" alt="[\Theta] = (\Theta * MW) / (c * l)"/></p>
 </div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2844,9 +2850,9 @@ to the following formula:</p>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_molar_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">molar_ellipticity</span>
-<span class="go">array([[  260.,  -1.40893636e+07],</span>
-<span class="go">       [  259.,  -1.00558182e+07],</span>
-<span class="go">       [  258.,  -1.25173636e+07], ...</span>
+<span class="go">array([[  260.,  -1.40893636e+04],</span>
+<span class="go">       [  259.,  -1.00558182e+04],</span>
+<span class="go">       [  258.,  -1.25173636e+04], ...</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2857,11 +2863,11 @@ to the following formula:</p>
 <dd><p>Method to calculate the mean residue ellipticity for all loaded data in <code class="xref py py-attr docutils literal"><span class="pre">circular_dichroism</span></code>
 according to the following formula:</p>
 <div class="math">
-<p><img src="_images/math/ada367cd767bc6e630d3949ac0e89f279436a09e.png" alt="[\Theta] = (\Theta * MRW) / (10 * c * l)
+<p><img src="_images/math/01fcf29dfbc1cdae1ba8e4420c11e748be631ea9.png" alt="(\Theta * MRW) / (c * l) = [\Theta]
 
 MRW = MW / (n - 1)"/></p>
-</div><p>With <em>MRW</em> = mean residue weight, <em>n</em> = number of residues in the peptide, <em>c</em> = concentration and <em>l</em> =
-cuvette path length.</p>
+</div><p>With <em>MRW</em> = mean residue weight (g/mol), <em>n</em> = number of residues in the peptide, <em>c</em> = concentration (mg/mL)
+and <em>l</em> = cuvette path length (mm).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2874,16 +2880,16 @@ cuvette path length.</p>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">meanres_ellipticity</span>
-<span class="go">array([[   260.        ,   -266.95804196],</span>
-<span class="go">       [   259.        ,   -338.13286713],</span>
-<span class="go">       [   258.        ,   -387.25174825], ...</span>
+<span class="go">array([[   260.        ,   -2669.5804196],</span>
+<span class="go">       [   259.        ,   -3381.3286713],</span>
+<span class="go">       [   258.        ,   -3872.5174825], ...</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="modlamp.wetlab.CD.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>data='mean residue ellipticity'</em>, <em>combine=True</em>, <em>ylim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.plot" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plot</code><span class="sig-paren">(</span><em>data='mean residue ellipticity'</em>, <em>combine='solvent'</em>, <em>ylim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/wetlab.html#CD.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.wetlab.CD.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to generate CD plots for all read data in the initial directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2894,7 +2900,7 @@ cuvette path length.</p>
 <code class="docutils literal"><span class="pre">circular</span> <span class="pre">dichroism</span></code>)</li>
 <li><strong>combine</strong> &#8211; {str} if <code class="docutils literal"><span class="pre">solvent</span></code>, overlays of different solvents will be created for the same molecule.
 The amino acid sequence in the header is used to find corresponding data.
-if <code class="docutils literal"><span class="pre">all</span></code>, all data is combined in one single plot</li>
+if <code class="docutils literal"><span class="pre">all</span></code>, all data is combined in one single plot. To ignore combination, pass an empty string.</li>
 <li><strong>ylim</strong> &#8211; {tuple} If not none, this tuple of values is taken as the minimum and maximum of the y axis</li>
 </ul>
 </td>
@@ -2906,7 +2912,7 @@ if <code class="docutils literal"><span class="pre">all</span></code>, all data 
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">calc_meanres_ellipticity</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;mean residue ellipticity&#39;</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;solvent&#39;</span><span class="p">)</span>
 </pre></div>
@@ -4162,12 +4168,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Apr 13esc, 2017.
+      Last updated on May 04esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

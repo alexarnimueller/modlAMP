@@ -201,10 +201,10 @@ For AMP QSAR models, different options exist of choosing negative / inactive pep
 datasets for classification tasks, that can be read by the ``modlamp.datasets`` module. The available datasets can
 be found in the documentation of the ``modlamp.datasets`` module.
 
-:Example: **Helical AMPs vs. random all helical peptides**
+:Example: **AMPs vs. transmembrane regions of proteins**
 
->>> from modlamp.datasets import load_helicalAMPset
->>> data = load_helicalAMPset()
+>>> from modlamp.datasets import load_AMPvsTM
+>>> data = load_AMPvsTM()
 >>> data.keys()
 ['target_names', 'target', 'feature_names', 'sequences']
 
@@ -216,9 +216,10 @@ target class vector), ``feature_names`` (the name of the data features, here: 'S
 :Example:
 
 >>> data.target_names  # class names
-array(['HEL', 'AMP'], dtype='|S3')
+array(['TM', 'AMP'], dtype='|S3')
 >>> data.sequences[:5]  # sequences
-['FDQAQTEIQATMEEN', 'DVDAALHYLARLVEAG', 'RCPLVIDYLIDLATRS', 'NPATLMMFFK', 'NLEDSIQILRTD']
+[array(['AAGAATVLLVIVLLAGSYLAVLA', 'LWIVIACLACVGSAAALTLRA', 'FYRFYMLREGTAVPAVWFSIELIFGLFA', 'GTLELGVDYGRAN',
+       'KLFWRAVVAEFLATTLFVFISIGSALGFK'],  dtype='|S100')
 >>> data.target  # corresponding target classes
 array([0, 0, 0, 0, 0 .... 1, 1, 1, 1])
 
@@ -226,7 +227,7 @@ array([0, 0, 0, 0, 0 .... 1, 1, 1, 1])
 Analysing Wetlab Circular Dichroism Data
 ----------------------------------------
 
-The modlule ``modlamp.wetlab` includes the class ``modlamp.wetlab.CD`` to analyse raw circular dichroism
+The modlule ``modlamp.wetlab`` includes the class ``modlamp.wetlab.CD`` to analyse raw circular dichroism
 data from wetlab experiments. The following example shows how to load a raw datafile and calculate secondary
 structure contents:
 
@@ -240,11 +241,11 @@ array([[   260.        ,   -266.95804196],
        [   258.        ,   -387.25174825], ...])
 >>> cd.helicity(temperature=24., k=3.492185008, induction=True)  # calculate helical content
 >>> cd.helicity_values
-               Name     Solvent  Helicity  Induction
-            0  Aurein       T    100.0     3.823
-            1  Aurein       W    26.16     0.000
-            2  Klak         T    76.38     3.048
-            3  Klak         W    25.06     0.000 ...
+            Name     Solvent  Helicity  Induction
+            Peptide1     T    100.0     3.823
+            Peptide1     W    26.16     0.000
+            Peptide2     T    76.38     3.048
+            Peptide2     W    25.06     0.000 ...
 
 The read and calculated values can finally be plotted as follows:
 
@@ -288,4 +289,5 @@ Citing modlAMP
 
 If you are using **modlAMP** for a scientific publication, please cite the following paper:
 
-Müller A. T. et al. 2017
+Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics*, DOI:
+`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.

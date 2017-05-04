@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1. README &#8212; modlAMP v3.0.1 documentation</title>
+    <title>1. README &#8212; modlAMP v3.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v3.0.1',
+        VERSION:     'v3.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v3.0.1 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v3.1.0 documentation" href="index.html" />
     <link rel="next" title="2. Package Documentation" href="modlamp.html" />
     <link rel="prev" title="Welcome to modlAMP’s documentation!" href="index.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to modlAMP’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -246,12 +246,12 @@ be found in the documentation of the <code class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><strong>Helical AMPs vs. random all helical peptides</strong></td>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><strong>AMPs vs. transmembrane regions of proteins</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_helicalAMPset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_helicalAMPset</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modlamp.datasets</span> <span class="k">import</span> <span class="n">load_AMPvsTM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_AMPvsTM</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="go">[&#39;target_names&#39;, &#39;target&#39;, &#39;feature_names&#39;, &#39;sequences&#39;]</span>
 </pre></div>
@@ -269,9 +269,10 @@ target class vector), <code class="docutils literal"><span class="pre">feature_n
 </tbody>
 </table>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span>  <span class="c1"># class names</span>
-<span class="go">array([&#39;HEL&#39;, &#39;AMP&#39;], dtype=&#39;|S3&#39;)</span>
+<span class="go">array([&#39;TM&#39;, &#39;AMP&#39;], dtype=&#39;|S3&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># sequences</span>
-<span class="go">[&#39;FDQAQTEIQATMEEN&#39;, &#39;DVDAALHYLARLVEAG&#39;, &#39;RCPLVIDYLIDLATRS&#39;, &#39;NPATLMMFFK&#39;, &#39;NLEDSIQILRTD&#39;]</span>
+<span class="go">[array([&#39;AAGAATVLLVIVLLAGSYLAVLA&#39;, &#39;LWIVIACLACVGSAAALTLRA&#39;, &#39;FYRFYMLREGTAVPAVWFSIELIFGLFA&#39;, &#39;GTLELGVDYGRAN&#39;,</span>
+<span class="go">       &#39;KLFWRAVVAEFLATTLFVFISIGSALGFK&#39;],  dtype=&#39;|S100&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">target</span>  <span class="c1"># corresponding target classes</span>
 <span class="go">array([0, 0, 0, 0, 0 .... 1, 1, 1, 1])</span>
 </pre></div>
@@ -279,7 +280,7 @@ target class vector), <code class="docutils literal"><span class="pre">feature_n
 </div>
 <div class="section" id="analysing-wetlab-circular-dichroism-data">
 <h3>1.2.7. Analysing Wetlab Circular Dichroism Data<a class="headerlink" href="#analysing-wetlab-circular-dichroism-data" title="Permalink to this headline">¶</a></h3>
-<p>The modlule <code class="docutils literal"><span class="pre">modlamp.wetlab`</span> <span class="pre">includes</span> <span class="pre">the</span> <span class="pre">class</span> <span class="pre">``modlamp.wetlab.CD</span></code> to analyse raw circular dichroism
+<p>The modlule <code class="docutils literal"><span class="pre">modlamp.wetlab</span></code> includes the class <code class="docutils literal"><span class="pre">modlamp.wetlab.CD</span></code> to analyse raw circular dichroism
 data from wetlab experiments. The following example shows how to load a raw datafile and calculate secondary
 structure contents:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="o">=</span> <span class="n">CD</span><span class="p">(</span><span class="s1">&#39;/path/to/your/folder&#39;</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">260</span><span class="p">)</span>  <span class="c1"># load all files in a specified folder</span>
@@ -292,11 +293,11 @@ structure contents:</p>
 <span class="go">       [   258.        ,   -387.25174825], ...])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">24.</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">3.492185008</span><span class="p">,</span> <span class="n">induction</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># calculate helical content</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span><span class="o">.</span><span class="n">helicity_values</span>
-<span class="go">               Name     Solvent  Helicity  Induction</span>
-<span class="go">            0  Aurein       T    100.0     3.823</span>
-<span class="go">            1  Aurein       W    26.16     0.000</span>
-<span class="go">            2  Klak         T    76.38     3.048</span>
-<span class="go">            3  Klak         W    25.06     0.000 ...</span>
+<span class="go">            Name     Solvent  Helicity  Induction</span>
+<span class="go">            Peptide1     T    100.0     3.823</span>
+<span class="go">            Peptide1     W    26.16     0.000</span>
+<span class="go">            Peptide2     T    76.38     3.048</span>
+<span class="go">            Peptide2     W    25.06     0.000 ...</span>
 </pre></div>
 </div>
 <p>The read and calculated values can finally be plotted as follows:</p>
@@ -330,7 +331,8 @@ different sequence libraries. Learn how to use it with the following example:</p
 <div class="section" id="citing-modlamp">
 <h3>1.2.10. Citing modlAMP<a class="headerlink" href="#citing-modlamp" title="Permalink to this headline">¶</a></h3>
 <p>If you are using <strong>modlAMP</strong> for a scientific publication, please cite the following paper:</p>
-<p>Müller A. T. et al. 2017</p>
+<p>Müller A. T. <em>et al.</em> (2017) modlAMP: Python for anitmicrobial peptides, <em>Bioinformatics</em>, DOI:
+<a class="reference external" href="https://doi.org/10.1093/bioinformatics/btx285">10.1093/bioinformatics/btx285</a>.</p>
 </div>
 </div>
 </div>
@@ -411,12 +413,12 @@ different sequence libraries. Learn how to use it with the following example:</p
         <li class="right" >
           <a href="index.html" title="Welcome to modlAMP’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Apr 13esc, 2017.
+      Last updated on May 04esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>

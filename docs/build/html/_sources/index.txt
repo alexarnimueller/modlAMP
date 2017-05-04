@@ -25,6 +25,11 @@ basic instructions on how to use the package, check the `README <readme.html>`_ 
    license
    todo
 
+**If you use modlAMP in a scientific publication, we would appreciate citations to the following paper:**
+
+Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics*, DOI:
+`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.
+
 Indices and tables
 ==================
 

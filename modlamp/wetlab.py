@@ -30,10 +30,12 @@ __docformat__ = "restructuredtext en"
 class CD:
     """
     Class to handle circular dichroism data files and calculate several ellipticity and helicity values.
-    The class can only handle data files of the *Applied Photophysics* type.
+    The class can handle data files of the *Applied Photophysics* type.
     
     For explanations of different units used in CD spectroscopy,
-    visit https://www.photophysics.com/resources/7-cd-units-conversions.
+    visit https://www.photophysics.com/resources/7-cd-units-conversions and read the following publication:
+    
+    N. J. Greenfield, *Nat. Protoc.* **2006**, 1, 2876–2890.
     
     .. note::
         All files which should be read must have **4 header lines** as shown in the image below. CD data to be read
@@ -52,14 +54,14 @@ class CD:
     Recognized solvents are **W** for water and **T** for TFE.
     """
     
-    def __init__(self, directory, wmin, wmax, amide=True, pathlen=0.1):
+    def __init__(self, directory, wmin, wmax, amide=True, pathlen=1):
         """Init method for class CD.
         
         :param directory: {str} directory containing all data files to be read. Files need a **.csv** ending
         :param wmin: {int} smalles wavelength measured
         :param wmax: {int} highest wavelength measured
         :param amide: {bool} specifies whether the sequences have amidated C-termini
-        :param pathlen: {float} cuvette path length in cm
+        :param pathlen: {float} cuvette path length in mm
         :Example:
         
         >>> cd = CD('/path/to/your/folder', 185, 260)
@@ -96,7 +98,7 @@ class CD:
         self.pathlen = pathlen
         
         self._read_header()  # call the _read_header function to fill up all attributes
-        
+    
     def _read_header(self):
         """Priveat method called by ``__init__`` to read all file headers into the class attributes and calculate
         sequence dependant values.
@@ -111,7 +113,7 @@ class CD:
             with open(join(self.directory, file)) as f:  # read first 4 lines as header, rest as data
                 head = [next(f) for _ in range(4)]
                 data = [next(f) for _ in range(4, (self.wmax - self.wmin) + 5)]
-
+            
             # read headers into class attributes
             name = head[0].split('\r\n')[0]
             self.names.append(name)
@@ -130,59 +132,60 @@ class CD:
             d.sequences = [sequence]
             d.calculate_MW(amide=self.amide)
             self.mw.append(d.descriptor[0][0])
-            self.conc_mgml.append(self.mw[i] * umol / 10**6)
+            self.conc_mgml.append(self.mw[i] * umol / 10 ** 6)
             self.meanres_mw.append(self.mw[i] / (len(sequence) - 1))  # mean residue molecular weight (MW / n-1)
-            
+    
     def calc_molar_ellipticity(self):
         """Method to calculate the molar ellipticity for all loaded data in :py:attr:`circular_dichroism` according
         to the following formula:
         
         .. math::
-            [\Theta] = (\Theta * MW * 100) / (c * l)
+            
+            [\Theta] = (\Theta * MW) / (c * l)
 
         :return: {numpy array} molar ellipticity in :py:attr:`molar_ellipticity`
         :Example:
         
         >>> cd.calc_molar_ellipticity()
         >>> cd.molar_ellipticity
-        array([[  260.,  -1.40893636e+07],
-               [  259.,  -1.00558182e+07],
-               [  258.,  -1.25173636e+07], ...
+        array([[  260.,  -1.40893636e+04],
+               [  259.,  -1.00558182e+04],
+               [  258.,  -1.25173636e+04], ...
         """
-
+        
         for i, data in enumerate(self.circular_dichroism):
-            # calculate molar ellipticity: (theta * MW * 100) / (conc * pathlength); and concat. with wavelengths
-            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.mw[i] * 100) / (self.conc_mgml[i] * self.pathlen)))
+            # calculate molar ellipticity: (theta * MW) / (conc * pathlength); and concat. with wavelengths
+            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.mw[i]) / (self.conc_mgml[i] * self.pathlen)))
             self.molar_ellipticity.append(mol_ellipt)
-
+    
     def calc_meanres_ellipticity(self):
         """Method to calculate the mean residue ellipticity for all loaded data in :py:attr:`circular_dichroism`
         according to the following formula:
         
         .. math::
-            [\Theta] = (\Theta * MRW) / (10 * c * l)
-        
+            
+            (\Theta * MRW) / (c * l) = [\Theta]
+            
             MRW = MW / (n - 1)
         
-        With *MRW* = mean residue weight, *n* = number of residues in the peptide, *c* = concentration and *l* =
-        cuvette path length.
+        With *MRW* = mean residue weight (g/mol), *n* = number of residues in the peptide, *c* = concentration (mg/mL)
+        and *l* = cuvette path length (mm).
         
         :return: {numpy array} molar ellipticity in :py:attr:`meanres_ellipticity`
         :Example:
         
         >>> cd.calc_meanres_ellipticity()
         >>> cd.meanres_ellipticity
-        array([[   260.        ,   -266.95804196],
-               [   259.        ,   -338.13286713],
-               [   258.        ,   -387.25174825], ...
+        array([[   260.        ,   -2669.5804196],
+               [   259.        ,   -3381.3286713],
+               [   258.        ,   -3872.5174825], ...
         """
         
         for i, data in enumerate(self.circular_dichroism):
-            # calculate molar ellipticity: (theta * mrw) / (10 * conc * pathlength); and concat. with wavelengths
-            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.meanres_mw[i] / (10 * self.conc_mgml[i] *
-                                                                                      self.pathlen))))
+            # calculate molar ellipticity: (theta * mrw) / (conc * pathlength); and concat. with wavelengths
+            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.meanres_mw[i] / (self.conc_mgml[i] * self.pathlen))))
             self.meanres_ellipticity.append(mol_ellipt)
-
+    
     def _plot_single(self, w, d, col, y_label, title, filename, y_min, y_max):
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting single CD plots"""
         
@@ -207,7 +210,7 @@ class CD:
         fig, ax = plt.subplots()
         line1 = ax.plot(w, dt / 1000.)
         line2 = ax.plot(w, dw / 1000.)
-        plt.setp(line1, color='b', linewidth=2.0, label='TFE', linestyle='--')
+        plt.setp(line1, color='r', linewidth=2.0, label='TFE', linestyle='--')
         plt.setp(line2, color='b', linewidth=2.0, label='Water')
         plt.title(title, fontsize=18, fontweight='bold')
         ax.set_xlabel('Wavelength [nm]', fontsize=16)
@@ -221,13 +224,13 @@ class CD:
         plt.legend(loc=1)
         img_name = splitext(filename)[0] + '_M.pdf'
         plt.savefig(join(self.directory, 'PDF', img_name), dpi=150)
-
+    
     def _plot_all(self, data, w, y_lim):
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting combined CD plots"""
-    
+        
         colors = ['#53777A', '#542437', '#C02942', '#D95B43', '#ECD078', '#CFF09E', '#A8DBA8', '#79BD9A', '#3B8686',
                   '#0B486B', '#2790B0', '#94BA65', '#353432', '#4E4D4A', '##808080', '#CCCCCC']
-    
+        
         fig, ax = plt.subplots()
         y_label = ''  # assign empty
         y_min, y_max = (0, 1)  # assign empty
@@ -238,7 +241,7 @@ class CD:
             if y_lim:
                 y_min = 1000 * y_lim[0]  # * 1000 because axis are usually shown as 10^3
                 y_max = 1000 * y_lim[1]
-        
+            
             vars()['line' + str(i)] = ax.plot(w, d / 1000.)  # mark the line plots with the iterator, for labelling
             
             try:
@@ -259,11 +262,11 @@ class CD:
         plt.ylim((y_min / 1000., y_max / 1000.))
         plt.legend(loc=1)
         plt.savefig(join(self.directory, 'PDF', 'all.pdf'), dpi=150)
-
+    
     def _check_datatype(self, data, i, comb_flag):
         """Private function to check data type; used by :py:func`modlamp.wetlab.CD.plot` and
         :py:func`modlamp.wetlab.CD.dichroweb`"""
-    
+        
         d2 = []
         if data == 'mean residue ellipticity':
             d = self.meanres_ellipticity[i][:, 1]
@@ -286,22 +289,22 @@ class CD:
             y_label = r"$\Delta A \ast 32.986 \ast 10^{-3}$"
             y_min = np.min(d) * 1.1
             y_max = np.max(d) * 1.1
-    
+        
         return d, d2, y_label, y_min, y_max
-
-    def plot(self, data='mean residue ellipticity', combine=True, ylim=None):
+    
+    def plot(self, data='mean residue ellipticity', combine='solvent', ylim=None):
         """Method to generate CD plots for all read data in the initial directory.
         
         :param data: {str} which data should be plotted (``mean residue ellipticity``, ``molar ellipticity`` or
             ``circular dichroism``)
         :param combine: {str} if ``solvent``, overlays of different solvents will be created for the same molecule.
             The amino acid sequence in the header is used to find corresponding data.
-            if ``all``, all data is combined in one single plot
+            if ``all``, all data is combined in one single plot. To ignore combination, pass an empty string.
         :param ylim: {tuple} If not none, this tuple of values is taken as the minimum and maximum of the y axis
         :return: .pdf plots saved to the directory containing the read files.
         :Example:
         
-        >>> cd = CD('/path/to/your/folder', 180, 260)
+        >>> cd = CD('/path/to/your/folder', 185, 260)
         >>> cd.calc_meanres_ellipticity()
         >>> cd.plot(data='mean residue ellipticity', combine='solvent')
         
@@ -321,7 +324,7 @@ class CD:
             # check if output folder exists already, else create one
             if not exists(join(self.directory, 'PDF')):
                 makedirs(join(self.directory, 'PDF'))
-    
+            
             w = range(self.wmax, self.wmin - 1, -1)  # wavelengths
             
             # check input data option
@@ -349,11 +352,11 @@ class CD:
                 
                 if combine == 'all':
                     self._plot_all(data, w, ylim)
-                    
+            
             else:
                 print("ERROR\nWrong data option given!\nAvailable:")
                 print("['mean residue ellipticity', 'molar ellipticity', 'circular dichroism']")
-                
+        
         except IndexError:  # if data arrays are empty, no data was calculated
             print("ERROR\nSpecified data array empty, call the calculate functions first!")
             print("e.g. self.calc_molar_ellipticity()")
@@ -361,7 +364,7 @@ class CD:
         except ValueError:
             print("ERROR\nSolvent pairs not even / missing.")
             print("Check if all measurements were performed in both TFE and water")
-
+    
     def dichroweb(self, data='mean residue ellipticity'):
         """Method to save the calculated CD data into DichroWeb readable format (semi-colon separated). The produced
         files can then directly be uploaded to the `DichroWeb <http://dichroweb.cryst.bbk.ac.uk>`_ analysis tool.
@@ -383,7 +386,7 @@ class CD:
                 dichro = pd.DataFrame(data=zip(w, d), columns=["V1", "V2"], dtype='float')
                 fname = splitext(f)[0] + '.csv'
                 dichro.to_csv(join(self.directory, 'Dichro', fname), sep=';', index=False)
-
+    
     def helicity(self, temperature=24., k=3.5, induction=True, filename=None):
         """Method to calculate the percentage of helicity out of the mean residue ellipticity data.
         The calculation is based on the fromula by Fairlie and co-workers:
@@ -415,7 +418,7 @@ class CD:
             2       Klak14       T    76.38     3.048
             3       Klak14       W    25.06     0.000
         """
-
+        
         values = self.meanres_ellipticity
         if values:
             hel = []
@@ -423,28 +426,30 @@ class CD:
                 indx = np.where(v[:, 0] == 222.)[0][0]  # get index of wavelength 222 nm
                 hel_100 = (-44000. + 250. * temperature) * (1. - (float(k) / len(self.sequences[i])))  # inf hel 222
                 hel.append(round((v[indx, 1] / hel_100) * 100., 2))
-
+            
             self.helicity_values = pd.DataFrame(np.array([self.names, self.solvent, hel]).T, columns=['Name', 'Solvent',
-                                                                                              'Helicity'])
+                                                                                                      'Helicity'])
             if induction:
                 induct = []
                 try:
                     for i in self.helicity_values.index:
-                        if self.helicity_values.iloc[i]['Name'] == self.helicity_values.iloc[i+1]['Name'] and \
-                                self.helicity_values.iloc[i]['Solvent'] != self.helicity_values.iloc[i+1]['Solvent']:
+                        if self.helicity_values.iloc[i]['Name'] == self.helicity_values.iloc[i + 1]['Name'] and \
+                                        self.helicity_values.iloc[i]['Solvent'] != self.helicity_values.iloc[i + 1][
+                                    'Solvent']:
                             induct.append(round(float(self.helicity_values.iloc[i]['Helicity']) / float(
-                                self.helicity_values.iloc[i+1]['Helicity']), 3))  # if following entry is same molecule
+                                    self.helicity_values.iloc[i + 1]['Helicity']),
+                                                3))  # if following entry is same molecule
                             # but not same solvent, calculate the helical induction and round to .3f
                         else:  # else just append 0
                             induct.append(0.)
-                            
+                
                 except IndexError:  # at the end of the DataFrame, an index error will be raised because of i+1
                     induct.append(0.)
                     self.helicity_values['Induction'] = induct
-                    
+            
             if filename:
                 self.helicity_values.to_csv(filename, index=False)
-                
+        
         else:
             print("ERROR\nmeanres_ellipticity data array empty, call the calculate function first:")
             print("calc_meanres_ellipticity()")

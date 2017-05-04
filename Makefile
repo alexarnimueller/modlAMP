@@ -6,4 +6,4 @@ install:
 	python setup.py install
 
 doc:
-	open docs/build/html/readme.html
+	open docs/build/html/index.html
