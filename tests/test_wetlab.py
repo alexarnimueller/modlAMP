@@ -20,7 +20,7 @@ class TestCD(unittest.TestCase):
     
     def test_molar_ellipticity(self):
         self.cd.calc_molar_ellipticity()
-        self.assertAlmostEqual(self.cd.molar_ellipticity[0][0, 1], -1172778.7878787878, 5)
+        self.assertAlmostEqual(self.cd.molar_ellipticity[0][0, 1], -1172.7787878787878, 5)
     
     def test_meanres_ellipticity(self):
         self.cd.calc_meanres_ellipticity()
