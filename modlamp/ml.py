@@ -449,7 +449,7 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
         scores = []
         if sample_weights is not None:
             weightcv_train, weightcv_test = sample_weights[fold_train_index], sample_weights[fold_test_index]
-            clf.fit(Xcv_train, ycv_train, **{'clf__sample_weight': weightcv_train})
+            clf.fit(Xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test),
                                                sample_weight=weightcv_test))
