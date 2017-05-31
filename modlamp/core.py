@@ -227,9 +227,13 @@ class BaseDescriptor(object):
             elif seqs.endswith('.csv'):  # read .csv file with sequences every line
                 with open(seqs) as f:
                     self.sequences = list()
+                    cntr = 0
+                    self.names = []
                     for line in f:
                         if line.isupper():
                             self.sequences.append(line.strip())
+                            self.names.append('seq_' + str(cntr))
+                            cntr += 1
             else:
                 print "Sorry, currently only .fasta or .csv files can be read!"
         else:
