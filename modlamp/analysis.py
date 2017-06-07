@@ -6,8 +6,8 @@
 
 This module can be used for diverse analysis of given peptide libraries.
 """
-import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
@@ -35,6 +35,12 @@ class GlobalAnalysis(object):
         
         >>> g = GlobalAnalysis(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...], names=['Library1'])
         """
+        self.shapes = list()  # find out about library structure and check if libraries are of different sizes
+        if isinstance(library[0], list):
+            for i, l in enumerate(library):
+                self.shapes.append(len(l))
+                library[i] = np.array(l)
+        
         if type(library) == np.ndarray:
             self.library = library
         elif type(library) == pd.core.frame.DataFrame:
@@ -46,23 +52,40 @@ class GlobalAnalysis(object):
                 self.library = library.values
                 if not names:
                     self.libnames = library.index.values.tolist()  # take library names from row headers
-        else:
+        else:  # solve the problem of list of lists with different library sizes
+            # if isinstance(library[0], list):
+            #     lenmax = 0
+            #     for l in library:
+            #         while lenmax < len(l):
+            #             lenmax = len(l)
+            #     for i, l in enumerate(library):
+            #         diff = lenmax - len(l)
+            #         if diff:
+            #             library[i] = np.hstack((l, np.full(diff, np.nan)))
             self.library = np.array(library)
-            
-        # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1:
-            self.library = self.library.reshape((1, -1))
-            if not names:
-                self.libnames = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
         
         if names:
             self.libnames = names
-            
+        
+        # reshape library to 2D array if without sub-libraries
+        if len(self.library.shape) == 1 and self.library.shape[0] == 1:
+            self.library = self.library.reshape((1, -1))
+            if not names:
+                names = ['Lib1']
+        
+        if not names:
+            self.libnames = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
+        
         self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
-        self.H = np.zeros(self.library.shape, dtype='float64')
-        self.uH = np.zeros(self.library.shape, dtype='float64')
-        self.charge = np.zeros(self.library.shape, dtype='float64')
-        self.len = np.zeros(self.library.shape, dtype='float64')
+        self.H = list()
+        self.uH = list()
+        self.charge = list()
+        self.len = list()
+    
+    #        self.H = np.zeros(self.library.shape, dtype='float64')
+    #        self.uH = np.zeros(self.library.shape, dtype='float64')
+    #        self.charge = np.zeros(self.library.shape, dtype='float64')
+    #        self.len = np.zeros(self.library.shape[0], dtype='float64')
     
     def calc_aa_freq(self, plot=True):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
@@ -121,7 +144,7 @@ class GlobalAnalysis(object):
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), scale)
             d.calculate_global()
-            self.H[l] = d.descriptor[:, 0]
+            self.H.append(d.descriptor[:, 0])
     
     def calc_uH(self, window=1000, angle=100, modality='max'):
         """Method for calculating hydrophobic moments (Eisenberg scale) for all sequences in the library.
@@ -139,7 +162,7 @@ class GlobalAnalysis(object):
         for l in range(self.library.shape[0]):
             d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
             d.calculate_moment(window=window, angle=angle, modality=modality)
-            self.uH[l] = d.descriptor[:, 0]
+            self.uH.append(d.descriptor[:, 0])
     
     def calc_charge(self, ph=7.0, amide=True):
         """Method to calculate the total molecular charge at a given pH for all sequences in the library.
@@ -151,7 +174,7 @@ class GlobalAnalysis(object):
         for l in range(self.library.shape[0]):
             d = GlobalDescriptor(self.library[l].tolist())
             d.calculate_charge(ph=ph, amide=amide)
-            self.charge[l] = d.descriptor[:, 0]
+            self.charge.append(d.descriptor[:, 0])
     
     def calc_len(self):
         """Method to get the sequence length of all sequences in the library.
@@ -161,7 +184,7 @@ class GlobalAnalysis(object):
         for l in range(self.library.shape[0]):
             d = GlobalDescriptor(self.library[l].tolist())
             d.length()
-            self.len[l] = d.descriptor[:, 0]
+            self.len.append(d.descriptor[:, 0])
     
     def plot_summary(self, filename=None, colors=None):
         """Method to generate a visual summary of different characteristics of the given library. The class methods
@@ -172,7 +195,7 @@ class GlobalAnalysis(object):
         :return: visual summary (plot) of the library characteristics.
         :Example:
         
-        >>> g = GlobalAnalysis(np.array([seqs1, seqs2, seqs3])  # seqs being lists / arrays of sequences
+        >>> g = GlobalAnalysis([seqs1, seqs2, seqs3])  # seqs being lists / arrays of sequences
         >>> g.plot_summary()
         
         .. image:: ../docs/static/summary.png
@@ -193,7 +216,7 @@ class GlobalAnalysis(object):
         if not colors:
             colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
         num = len(labels)
-
+        
         for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
             # only left and bottom axes, no box
             a.spines['right'].set_visible(False)
@@ -201,10 +224,8 @@ class GlobalAnalysis(object):
             a.xaxis.set_ticks_position('bottom')
             a.yaxis.set_ticks_position('left')
         
-        # 1 length box plot / histogram
-        # ax1.hist(self.len.T, len(range(int(np.max(self.len) - np.min(self.len)))),
-        #          normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
-        box = ax1.boxplot(self.len.T, notch=1, vert=1, patch_artist=True)
+        # 1 length box plot
+        box = ax1.boxplot(self.len, notch=1, vert=1, patch_artist=True)
         plt.setp(box['whiskers'], color='black')
         plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
         for p, patch in enumerate(box['boxes']):
@@ -212,9 +233,6 @@ class GlobalAnalysis(object):
         ax1.set_ylabel('Sequence Length', fontweight='bold', fontsize=14.)
         ax1.set_xticks([x + 1 for x in range(len(labels))])
         ax1.set_xticklabels(labels, fontweight='bold')
-        # ax1.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        # ax1.set_xlim(np.min(self.len) - 1.5, np.max(self.len) + .5)
-        # ax1.legend()
         
         # 2 aa bar plot
         d_aa = count_aa('')
@@ -226,7 +244,7 @@ class GlobalAnalysis(object):
             for a in range(20):
                 ax2.bar(a - offsets[i] - (0.5 * w / num), l[a], w / num, color=colors[i], alpha=0.7)
         ax2.set_xlim([-0.75, 19.75])
-        ax2.set_ylim([0, max(self.aafreq[0, :]) + 0.05])
+        ax2.set_ylim([0, np.max(self.aafreq) + 0.05])
         ax2.set_xticks(range(20))
         ax2.set_xticklabels(d_aa.keys(), fontweight='bold')
         ax2.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
@@ -272,11 +290,20 @@ class GlobalAnalysis(object):
         ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
         
         # 5 charge histogram
-        ax5.hist(self.charge.T, len(range(int(np.max(self.charge) - np.min(self.charge)))),
-                 normed=1, alpha=0.7, align='left', rwidth=0.9, histtype='bar', label=labels, color=colors[:num])
+        if self.shapes:
+            data = [item for sublist in self.charge for item in sublist]  # flatten charge data into one list
+            bins = len(range(int(np.max(data) - np.min(data))))
+            alignments = ['left', 'right', 'mid']
+            for i, c in enumerate(self.charge):
+                ax5.hist(c, bins, alpha=0.7, align=alignments[i], rwidth=1. / len(self.shapes), histtype='bar',
+                         normed=1, label=labels, color=colors[i])
+        else:
+            data = self.charge
+            ax5.hist(data, len(range(int(np.max(data) - np.min(data)))), normed=1,
+                     alpha=0.7, align='left', rwidth=0.95, histtype='bar', label=labels, color=colors[:num])
         ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
         ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax5.set_xlim(np.min(self.charge) - 1., np.max(self.charge) + 1.)
+        ax5.set_xlim(np.min(data) - 1., np.max(data) + 1.)
         ax5.text(0.5, 0.95, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
                  transform=ax5.transAxes, fontsize=15)
         ax5.text(0.7, 0.95, b'pH: $7.4$', verticalalignment='center', horizontalalignment='right',
@@ -289,18 +316,20 @@ class GlobalAnalysis(object):
         ax6.set_xticks([])
         ax6.set_yticks([])
         ax6 = fig.add_subplot(2, 3, 6, projection='3d')
-        for l in range(num):
+        for i, l in enumerate(range(num)):
             xt = self.H[l]  # find all values in x for the given target
             yt = self.charge[l]  # find all values in y for the given target
             zt = self.uH[l]  # find all values in y for the given target
-            ax6.scatter(xt, yt, zt, c=colors[l], alpha=1., s=25, label='Lib ' + str(l + 1))
+            ax6.scatter(xt, yt, zt, c=colors[l], alpha=1., s=25, label=labels[i])
         
         ax6.set_xlabel('H', fontweight='bold', fontsize=14.)
         ax6.set_ylabel('Charge', fontweight='bold', fontsize=14.)
         ax6.set_zlabel('uH', fontweight='bold', fontsize=14.)
-        ax6.set_xlim([np.min(self.H), np.max(self.H)])
-        ax6.set_ylim([np.min(self.charge), np.max(self.charge)])
-        ax6.set_zlim([np.min(self.uH), np.max(self.uH)])
+        data_H = [item for sublist in self.H for item in sublist]  # flatten H data into one list
+        data_uH = [item for sublist in self.uH for item in sublist]  # flatten uH data into one list
+        ax6.set_xlim([np.min(data_H), np.max(data_H)])
+        ax6.set_ylim([np.min(data), np.max(data)])
+        ax6.set_zlim([np.min(data_uH), np.max(data_uH)])
         ax6.legend(loc='best')
         
         if filename:
