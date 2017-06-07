@@ -163,11 +163,12 @@ class GlobalAnalysis(object):
             d.length()
             self.len[l] = d.descriptor[:, 0]
     
-    def plot_summary(self, filename=None):
+    def plot_summary(self, filename=None, colors=None):
         """Method to generate a visual summary of different characteristics of the given library. The class methods
         are used with their standard options.
     
         :param filename: {str} path to save the generated plot to.
+        :param colors: {str / list} color or list of colors to use for plotting. e.g. '#4E395D', 'red', 'k'
         :return: visual summary (plot) of the library characteristics.
         :Example:
         
@@ -189,7 +190,8 @@ class GlobalAnalysis(object):
         ((ax2, ax5, ax1), (ax3, ax4, ax6)) = axes
         plt.suptitle('Summary', fontweight='bold', fontsize=16.)
         labels = self.libnames
-        colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
+        if not colors:
+            colors = ['#4E395D', '#8EBE94', '#DC5B3E', '#827085', '#CCFC8E', '#9CC4E4']
         num = len(labels)
 
         for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
