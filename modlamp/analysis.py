@@ -39,30 +39,21 @@ class GlobalAnalysis(object):
         if isinstance(library[0], list):
             for i, l in enumerate(library):
                 self.shapes.append(len(l))
-                library[i] = np.array(l)
-        
-        if type(library) == np.ndarray:
-            self.library = library
-        elif type(library) == pd.core.frame.DataFrame:
-            if library.shape[0] > library.shape[1]:  # if each library is a column
-                self.library = library.values.T
-                if not names:
-                    self.libnames = library.columns.values.tolist()  # take library names from column headers
-            else:  # if each library is a row
-                self.library = library.values
-                if not names:
-                    self.libnames = library.index.values.tolist()  # take library names from row headers
-        else:  # solve the problem of list of lists with different library sizes
-            # if isinstance(library[0], list):
-            #     lenmax = 0
-            #     for l in library:
-            #         while lenmax < len(l):
-            #             lenmax = len(l)
-            #     for i, l in enumerate(library):
-            #         diff = lenmax - len(l)
-            #         if diff:
-            #             library[i] = np.hstack((l, np.full(diff, np.nan)))
-            self.library = np.array(library)
+                self.library = np.array(library)
+        else:
+            if type(library) == np.ndarray:
+                self.library = library
+            elif type(library) == pd.core.frame.DataFrame:
+                if library.shape[0] > library.shape[1]:  # if each library is a column
+                    self.library = library.values.T
+                    if not names:
+                        self.libnames = library.columns.values.tolist()  # take library names from column headers
+                else:  # if each library is a row
+                    self.library = library.values
+                    if not names:
+                        self.libnames = library.index.values.tolist()  # take library names from row headers
+            else:
+                self.library = np.array(library)
         
         if names:
             self.libnames = names
@@ -142,7 +133,7 @@ class GlobalAnalysis(object):
         .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_global()`
         """
         for l in range(self.library.shape[0]):
-            d = PeptideDescriptor(self.library[l].tolist(), scale)
+            d = PeptideDescriptor(self.library[l], scale)
             d.calculate_global()
             self.H.append(d.descriptor[:, 0])
     
@@ -160,7 +151,7 @@ class GlobalAnalysis(object):
         .. seealso:: :func:`modlamp.descriptors.PeptideDescriptor.calculate_moment()`
         """
         for l in range(self.library.shape[0]):
-            d = PeptideDescriptor(self.library[l].tolist(), 'eisenberg')
+            d = PeptideDescriptor(self.library[l], 'eisenberg')
             d.calculate_moment(window=window, angle=angle, modality=modality)
             self.uH.append(d.descriptor[:, 0])
     
@@ -172,7 +163,7 @@ class GlobalAnalysis(object):
         :return: {numpy.ndarray} calculated charges in the attribute :py:attr:`charge`.
         """
         for l in range(self.library.shape[0]):
-            d = GlobalDescriptor(self.library[l].tolist())
+            d = GlobalDescriptor(self.library[l])
             d.calculate_charge(ph=ph, amide=amide)
             self.charge.append(d.descriptor[:, 0])
     
@@ -182,7 +173,7 @@ class GlobalAnalysis(object):
         :return: {numpy.ndarray} sequence lengths in the attribute :py:attr:`len`.
         """
         for l in range(self.library.shape[0]):
-            d = GlobalDescriptor(self.library[l].tolist())
+            d = GlobalDescriptor(self.library[l])
             d.length()
             self.len.append(d.descriptor[:, 0])
     
@@ -238,7 +229,7 @@ class GlobalAnalysis(object):
         d_aa = count_aa('')
         hands = [mpatches.Patch(label=labels[i], linewidth=1, edgecolor='black', facecolor=colors[i], alpha=0.8)
                  for i in range(len(labels))]
-        w = 0.9  # bar width
+        w = 1.  # bar width
         offsets = np.arange(start=-(w / 2), step=(w / num), stop=(w / 2))  # bar offsets if many libraries
         for i, l in enumerate(self.aafreq):
             for a in range(20):

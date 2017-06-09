@@ -27,8 +27,8 @@ import numpy as np
 from scipy.stats.kde import gaussian_kde
 from mpl_toolkits.mplot3d import Axes3D
 
-from modlamp.descriptors import PeptideDescriptor
 from modlamp.core import count_aa, load_scale
+from modlamp.descriptors import PeptideDescriptor
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -254,13 +254,13 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
         while (i + window) < len(sequence):
             seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
             i += 1
-
+        
         # plot
         fig, ax = plt.subplots()
         x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
         line = ax.plot(x_range, seq_profile)
         plt.setp(line, color=color, linewidth=2.0)
-
+        
         # axis labes and title
         ax.set_xlabel('sequence position', fontweight='bold')
         ax.set_ylabel(scalename + ' value', fontweight='bold')
@@ -272,13 +272,13 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
             ax.set_ylim(ylim)
         else:
             ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
-
+        
         # only left and bottom axes, no box
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.xaxis.set_ticks_position('bottom')
         ax.yaxis.set_ticks_position('left')
-
+        
         # show or save plot
         if filename:
             plt.savefig(filename, dpi=150)
@@ -297,7 +297,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
 
     :param sequence: {str} the peptide sequence for which the helical wheel should be drawn
-    :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *no*
+    :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *polar*, *none*
     :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
     :param seq: {bool} whether the amino acid sequence should be plotted as a title
@@ -329,9 +329,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     f_charge = ['#000000', '#000000', '#ff4d94', '#ff4d94', '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff',
                 '#000000', '#000000', '#000000', '#000000', '#000000', '#80d4ff', '#000000', '#000000', '#000000',
                 '#000000', '#000000']
+    f_polar = ['#000000', '#000000', '#80d4ff', '#80d4ff', '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff',
+               '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff', '#80d4ff', '#80d4ff', '#80d4ff', '#000000',
+               '#000000', '#000000']
     f_none = ['#ffffff'] * 20
     t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
     t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
+    t_polar = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'k', 'k', 'w', 'w', 'w']
     t_none = ['k'] * 20
     d_eisberg = load_scale('eisenberg')[1]  # eisenberg hydrophobicity values for HM
     
@@ -348,6 +352,9 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     elif colorcoding == 'charge':
         df = dict(zip(aa, f_charge))
         dt = dict(zip(aa, t_charge))
+    elif colorcoding == 'polar':
+        df = dict(zip(aa, f_polar))
+        dt = dict(zip(aa, t_polar))
     elif colorcoding == 'none':
         df = dict(zip(aa, f_none))
         dt = dict(zip(aa, t_none))
@@ -403,13 +410,13 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         # check if N- or C-terminus and add subscript, then plot AA letter
         if i == 0:
             ax.text(new[0], new[1], sequence[i] + b'$_N$', va='center', ha='center', transform=ax.transData,
-                    size=20, color=dt[sequence[i]], fontweight='bold')
+                    size=32, color=dt[sequence[i]], fontweight='bold')
         elif i == len(sequence) - 1:
             ax.text(new[0], new[1], sequence[i] + b'$_C$', va='center', ha='center', transform=ax.transData,
-                    size=20, color=dt[sequence[i]], fontweight='bold')
+                    size=32, color=dt[sequence[i]], fontweight='bold')
         else:
             ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
-                    size=20, color=dt[sequence[i]], fontweight='bold')
+                    size=36, color=dt[sequence[i]], fontweight='bold')
         
         eb = d_eisberg[sequence[i]][0]  # eisenberg value for this AA
         hm.append([eb * new[0], eb * new[1]])  # save eisenberg hydrophobicity vector value to later calculate HM
