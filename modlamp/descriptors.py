@@ -566,34 +566,34 @@ class GlobalDescriptor(BaseDescriptor):
         fn = []
         self.length()  # sequence length
         l = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.calculate_MW(amide=amide)  # molecular weight
         mw = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.calculate_charge(ph=ph, amide=amide)  # net charge
         c = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.charge_density(ph=ph, amide=amide)  # charge density
         cd = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.isoelectric_point(amide=amide)  # pI
         pi = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.instability_index()  # instability index
         si = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.aromaticity()  # global aromaticity
         ar = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.aliphatic_index()  # aliphatic index
         ai = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.boman_index()  # Boman index
         bi = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         self.hydrophobic_ratio()  # Hydrophobic ratio
         hr = self.descriptor
-        fn.append(self.featurenames)
+        fn.extend(self.featurenames)
         
         self.descriptor = np.concatenate((l, mw, c, cd, pi, si, ar, ai, bi, hr), axis=1)
         self.featurenames = fn
