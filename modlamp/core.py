@@ -289,6 +289,8 @@ class BaseDescriptor(object):
             d = {a: (float(seq.count(a)) / scl) for a in count_aa(seq)}
             od = collections.OrderedDict(sorted(d.items()))
             desc.append(od.values())
+        for k in od.keys():
+            self.featurenames.append(k)
         
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
