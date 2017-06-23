@@ -39,7 +39,7 @@ class GlobalAnalysis(object):
         if isinstance(library[0], list):
             for i, l in enumerate(library):
                 self.shapes.append(len(l))
-                self.library = np.array(library)
+                self.library = np.array(library, dtype='object')
         else:
             if type(library) == np.ndarray:
                 self.library = library
@@ -72,17 +72,14 @@ class GlobalAnalysis(object):
         self.uH = list()
         self.charge = list()
         self.len = list()
+        self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     
-    #        self.H = np.zeros(self.library.shape, dtype='float64')
-    #        self.uH = np.zeros(self.library.shape, dtype='float64')
-    #        self.charge = np.zeros(self.library.shape, dtype='float64')
-    #        self.len = np.zeros(self.library.shape[0], dtype='float64')
-    
-    def calc_aa_freq(self, plot=True):
+    def calc_aa_freq(self, plot=True, color='#83AF9B'):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
         the frequencies of these are calculated independently.
         
         :param plot: {bool} whether the amino acid frequencies should be plotted in a histogram.
+        :param color: {str} color of the plot
         :return: {numpy.ndarray} amino acid frequencies in the attribute :py:attr:`aafreq`. The values are oredered
             alphabetically.
         :Example:
@@ -101,13 +98,12 @@ class GlobalAnalysis(object):
         for l in range(self.library.shape[0]):
             concatseq = ''.join(self.library[l])
             d_aa = count_aas(concatseq)
-            self.aafreq[l] = np.array([v / float(len(concatseq)) for v in d_aa.values()])
-            
+            self.aafreq[l] = [d_aa[a] for a in self.AAs]
             if plot:
                 fig, ax = plt.subplots()
                 
                 for a in range(20):
-                    plt.bar(a - 0.45, self.aafreq[l, a], 0.9, color='#83AF9B')
+                    plt.bar(a, self.aafreq[l, a], 0.9, color=color)
                 
                 plt.xlim([-0.75, 19.75])
                 plt.ylim([0, max(self.aafreq[l, :]) + 0.05])
@@ -177,13 +173,14 @@ class GlobalAnalysis(object):
             d.length()
             self.len.append(d.descriptor[:, 0])
     
-    def plot_summary(self, filename=None, colors=None):
+    def plot_summary(self, filename=None, colors=None, plot=True):
         """Method to generate a visual summary of different characteristics of the given library. The class methods
         are used with their standard options.
     
         :param filename: {str} path to save the generated plot to.
         :param colors: {str / list} color or list of colors to use for plotting. e.g. '#4E395D', 'red', 'k'
-        :return: visual summary (plot) of the library characteristics.
+        :param plot: {boolean} whether the plot should be created or just the features are calculated
+        :return: visual summary (plot) of the library characteristics (if ``plot=True``).
         :Example:
         
         >>> g = GlobalAnalysis([seqs1, seqs2, seqs3])  # seqs being lists / arrays of sequences
@@ -199,132 +196,134 @@ class GlobalAnalysis(object):
         self.calc_H()
         self.calc_uH()
         
-        # plot settings
-        fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(25, 15))
-        ((ax2, ax5, ax1), (ax3, ax4, ax6)) = axes
-        plt.suptitle('Summary', fontweight='bold', fontsize=16.)
-        labels = self.libnames
-        if not colors:
-            colors = ['#FA6900', '#69D2E7', '#542437', '#53777A', '#CCFC8E', '#9CC4E4']
-        num = len(labels)
-        
-        for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
-            # only left and bottom axes, no box
-            a.spines['right'].set_visible(False)
-            a.spines['top'].set_visible(False)
-            a.xaxis.set_ticks_position('bottom')
-            a.yaxis.set_ticks_position('left')
-        
-        # 1 length box plot
-        box = ax1.boxplot(self.len, notch=1, vert=1, patch_artist=True)
-        plt.setp(box['whiskers'], color='black')
-        plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
-        for p, patch in enumerate(box['boxes']):
-            patch.set(facecolor=colors[p], edgecolor='black', alpha=0.8)
-        ax1.set_ylabel('Sequence Length', fontweight='bold', fontsize=14.)
-        ax1.set_xticks([x + 1 for x in range(len(labels))])
-        ax1.set_xticklabels(labels, fontweight='bold')
-        
-        # 2 AA bar plot
-        d_aa = count_aas('')
-        hands = [mpatches.Patch(label=labels[i], facecolor=colors[i], alpha=0.8) for i in range(len(labels))]
-        w = 1.  # bar width
-        offsets = np.arange(start=-(w / 2.) * 0.95, step=(w / num), stop=(w / 2.) * 0.95)  # bar offsets if many libs
-        for i, l in enumerate(self.aafreq):
-            for a in range(20):
-                ax2.bar(a - offsets[i] - (0.5 * w / num), l[a], w / num, color=colors[i], alpha=0.8)
-        ax2.set_xlim([-1., 20.])
-        ax2.set_ylim([0, np.max(self.aafreq) + 0.05])
-        ax2.set_xticks(range(20))
-        ax2.set_xticklabels(d_aa.keys(), fontweight='bold')
-        ax2.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax2.set_xlabel('Amino Acids', fontweight='bold', fontsize=14.)
-        ax2.legend(handles=hands, labels=labels)
-        
-        # 3 hydophobicity violin plot
-        for i, l in enumerate(self.H):
-            vplot = ax3.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
-            # crappy adaptions of violin dictionary elements
-            vplot['cbars'].set_edgecolor('black')
-            vplot['cmins'].set_edgecolor('black')
-            vplot['cmeans'].set_edgecolor('black')
-            vplot['cmaxes'].set_edgecolor('black')
-            vplot['cmeans'].set_linestyle('--')
-            for pc in vplot['bodies']:
-                pc.set_facecolor(colors[i])
-                pc.set_alpha(0.8)
-                pc.set_edgecolor('black')
-                pc.set_linewidth(1.5)
-                pc.set_alpha(0.7)
-                pc.set_label(labels[i])
-        ax3.set_xticks([x + 1 for x in range(len(labels))])
-        ax3.set_xticklabels(labels, fontweight='bold')
-        ax3.set_ylabel('Global Hydrophobicity', fontweight='bold', fontsize=14.)
-        
-        # 4 hydrophobic moment violin plot
-        for i, l in enumerate(self.uH):
-            vplot = ax4.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
-            # crappy adaptions of violin dictionary elements
-            vplot['cbars'].set_edgecolor('black')
-            vplot['cmins'].set_edgecolor('black')
-            vplot['cmeans'].set_edgecolor('black')
-            vplot['cmaxes'].set_edgecolor('black')
-            vplot['cmeans'].set_linestyle('--')
-            for pc in vplot['bodies']:
-                pc.set_facecolor(colors[i])
-                pc.set_alpha(0.8)
-                pc.set_edgecolor('black')
-                pc.set_linewidth(1.5)
-                pc.set_alpha(0.7)
-                pc.set_label(labels[i])
-        ax4.set_xticks([x + 1 for x in range(len(labels))])
-        ax4.set_xticklabels(labels, fontweight='bold')
-        ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
-        
-        # 5 charge histogram
-        if self.shapes:  # if the library consists of different sized sub libraries
-            bwidth = 1. / len(self.shapes)
-            for i, c in enumerate(self.charge):
-                counts, bins = np.histogram(c, range=[-5, 20], bins=25, normed=True)
-                ax5.bar(bins[1:] + i * bwidth, counts, bwidth, color=colors[i], label=labels[i], alpha=0.8)
-                # ax5.hist(c, bins, alpha=0.7, align=alignments[i], rwidth=0.95 / len(self.shapes), histtype='bar',
-                #         normed=1, label=labels[i], color=colors[i])
-        else:
-            ax5.hist(self.charge, 25, normed=1, alpha=0.8, align='left', rwidth=0.95, histtype='bar', label=labels,
-                     color=colors[:num])
-        ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
-        ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-        ax5.set_xlim(-6, 21)
-        ax5.text(0.95, 0.8, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
-                 transform=ax5.transAxes, fontsize=15)
-        ax5.text(0.95, 0.75, b'pH:  $7.4$', verticalalignment='center', horizontalalignment='right',
-                 transform=ax5.transAxes, fontsize=15)
-        ax5.legend()
-        
-        # 6 3D plot
-        ax6.spines['left'].set_visible(False)
-        ax6.spines['bottom'].set_visible(False)
-        ax6.set_xticks([])
-        ax6.set_yticks([])
-        ax6 = fig.add_subplot(2, 3, 6, projection='3d')
-        for i, l in enumerate(range(num)):
-            xt = self.H[l]  # find all values in x for the given target
-            yt = self.charge[l]  # find all values in y for the given target
-            zt = self.uH[l]  # find all values in y for the given target
-            ax6.scatter(xt, yt, zt, c=colors[l], alpha=.8, s=25, label=labels[i])
-        
-        ax6.set_xlabel('H', fontweight='bold', fontsize=14.)
-        ax6.set_ylabel('Charge', fontweight='bold', fontsize=14.)
-        ax6.set_zlabel('uH', fontweight='bold', fontsize=14.)
-        data_c = [item for sublist in self.charge for item in sublist]  # flatten charge data into one list
-        data_H = [item for sublist in self.H for item in sublist]  # flatten H data into one list
-        data_uH = [item for sublist in self.uH for item in sublist]  # flatten uH data into one list
-        ax6.set_xlim([np.min(data_H), np.max(data_H)])
-        ax6.set_ylim([np.min(data_c), np.max(data_c)])
-        ax6.set_zlim([np.min(data_uH), np.max(data_uH)])
-        ax6.legend(loc='best')
-        
-        if filename:
-            plt.savefig(filename, dpi=200)
-        else:
-            plt.show()
+        if plot:
+            
+            # plot settings
+            fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(25, 15))
+            ((ax2, ax5, ax1), (ax3, ax4, ax6)) = axes
+            plt.suptitle('Summary', fontweight='bold', fontsize=16.)
+            labels = self.libnames
+            if not colors:
+                colors = ['#FA6900', '#69D2E7', '#542437', '#53777A', '#CCFC8E', '#9CC4E4']
+            num = len(labels)
+            
+            for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
+                # only left and bottom axes, no box
+                a.spines['right'].set_visible(False)
+                a.spines['top'].set_visible(False)
+                a.xaxis.set_ticks_position('bottom')
+                a.yaxis.set_ticks_position('left')
+            
+            # 1 length box plot
+            box = ax1.boxplot(self.len, notch=1, vert=1, patch_artist=True)
+            plt.setp(box['whiskers'], color='black')
+            plt.setp(box['medians'], linestyle='-', linewidth=1.5, color='black')
+            for p, patch in enumerate(box['boxes']):
+                patch.set(facecolor=colors[p], edgecolor='black', alpha=0.8)
+            ax1.set_ylabel('Sequence Length', fontweight='bold', fontsize=14.)
+            ax1.set_xticks([x + 1 for x in range(len(labels))])
+            ax1.set_xticklabels(labels, fontweight='bold')
+            
+            # 2 AA bar plot
+            d_aa = count_aas('')
+            hands = [mpatches.Patch(label=labels[i], facecolor=colors[i], alpha=0.8) for i in range(len(labels))]
+            w = .9 / num  # bar width
+            offsets = np.arange(start=-w, step=w, stop=num * w)  # bar offsets if many libs
+            for i, l in enumerate(self.aafreq):
+                for a in range(20):
+                    ax2.bar(a - offsets[i], l[a], w, color=colors[i], alpha=0.8)
+            ax2.set_xlim([-1., 20.])
+            ax2.set_ylim([0, 1.05 * np.max(self.aafreq)])
+            ax2.set_xticks(range(20))
+            ax2.set_xticklabels(d_aa.keys(), fontweight='bold')
+            ax2.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+            ax2.set_xlabel('Amino Acids', fontweight='bold', fontsize=14.)
+            ax2.legend(handles=hands, labels=labels)
+            
+            # 3 hydophobicity violin plot
+            for i, l in enumerate(self.H):
+                vplot = ax3.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+                # crappy adaptions of violin dictionary elements
+                vplot['cbars'].set_edgecolor('black')
+                vplot['cmins'].set_edgecolor('black')
+                vplot['cmeans'].set_edgecolor('black')
+                vplot['cmaxes'].set_edgecolor('black')
+                vplot['cmeans'].set_linestyle('--')
+                for pc in vplot['bodies']:
+                    pc.set_facecolor(colors[i])
+                    pc.set_alpha(0.8)
+                    pc.set_edgecolor('black')
+                    pc.set_linewidth(1.5)
+                    pc.set_alpha(0.7)
+                    pc.set_label(labels[i])
+            ax3.set_xticks([x + 1 for x in range(len(labels))])
+            ax3.set_xticklabels(labels, fontweight='bold')
+            ax3.set_ylabel('Global Hydrophobicity', fontweight='bold', fontsize=14.)
+            
+            # 4 hydrophobic moment violin plot
+            for i, l in enumerate(self.uH):
+                vplot = ax4.violinplot(l, positions=[i + 1], widths=0.5, showmeans=True, showmedians=False)
+                # crappy adaptions of violin dictionary elements
+                vplot['cbars'].set_edgecolor('black')
+                vplot['cmins'].set_edgecolor('black')
+                vplot['cmeans'].set_edgecolor('black')
+                vplot['cmaxes'].set_edgecolor('black')
+                vplot['cmeans'].set_linestyle('--')
+                for pc in vplot['bodies']:
+                    pc.set_facecolor(colors[i])
+                    pc.set_alpha(0.8)
+                    pc.set_edgecolor('black')
+                    pc.set_linewidth(1.5)
+                    pc.set_alpha(0.7)
+                    pc.set_label(labels[i])
+            ax4.set_xticks([x + 1 for x in range(len(labels))])
+            ax4.set_xticklabels(labels, fontweight='bold')
+            ax4.set_ylabel('Global Hydrophobic Moment', fontweight='bold', fontsize=14.)
+            
+            # 5 charge histogram
+            if self.shapes:  # if the library consists of different sized sub libraries
+                bwidth = 1. / len(self.shapes)
+                for i, c in enumerate(self.charge):
+                    counts, bins = np.histogram(c, range=[-5, 20], bins=25, normed=True)
+                    ax5.bar(bins[1:] + i * bwidth, counts, bwidth, color=colors[i], label=labels[i], alpha=0.8)
+                    # ax5.hist(c, bins, alpha=0.7, align=alignments[i], rwidth=0.95 / len(self.shapes), histtype='bar',
+                    #         normed=1, label=labels[i], color=colors[i])
+            else:
+                ax5.hist(self.charge, 25, normed=1, alpha=0.8, align='left', rwidth=0.95, histtype='bar', label=labels,
+                         color=colors[:num])
+            ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
+            ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
+            ax5.set_xlim(-6, 21)
+            ax5.text(0.95, 0.8, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
+                     transform=ax5.transAxes, fontsize=15)
+            ax5.text(0.95, 0.75, b'pH:  $7.4$', verticalalignment='center', horizontalalignment='right',
+                     transform=ax5.transAxes, fontsize=15)
+            ax5.legend()
+            
+            # 6 3D plot
+            ax6.spines['left'].set_visible(False)
+            ax6.spines['bottom'].set_visible(False)
+            ax6.set_xticks([])
+            ax6.set_yticks([])
+            ax6 = fig.add_subplot(2, 3, 6, projection='3d')
+            for i, l in enumerate(range(num)):
+                xt = self.H[l]  # find all values in x for the given target
+                yt = self.charge[l]  # find all values in y for the given target
+                zt = self.uH[l]  # find all values in y for the given target
+                ax6.scatter(xt, yt, zt, c=colors[l], alpha=.8, s=25, label=labels[i])
+            
+            ax6.set_xlabel('H', fontweight='bold', fontsize=14.)
+            ax6.set_ylabel('Charge', fontweight='bold', fontsize=14.)
+            ax6.set_zlabel('uH', fontweight='bold', fontsize=14.)
+            data_c = [item for sublist in self.charge for item in sublist]  # flatten charge data into one list
+            data_H = [item for sublist in self.H for item in sublist]  # flatten H data into one list
+            data_uH = [item for sublist in self.uH for item in sublist]  # flatten uH data into one list
+            ax6.set_xlim([np.min(data_H), np.max(data_H)])
+            ax6.set_ylim([np.min(data_c), np.max(data_c)])
+            ax6.set_zlim([np.min(data_uH), np.max(data_uH)])
+            ax6.legend(loc='best')
+            
+            if filename:
+                plt.savefig(filename, dpi=200)
+            else:
+                plt.show()

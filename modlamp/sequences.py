@@ -85,7 +85,8 @@ class Random(BaseSequence):
     def generate_sequences(self, proba='rand'):
         """Method to actually generate the sequences.
 
-        :param proba: AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM
+        :param proba: {str or list} AA probability to be used to generate sequences. Available from str: AMP, AMPnoCM, 
+        rand, randnoCM. You can also provide your own list of porbabilities as a list (in AA order, length 20, sum to 1)
         :return: A list of random AMP sequences with defined AA probabilities
         :Example:
 
@@ -103,13 +104,12 @@ class Random(BaseSequence):
             self.prob = self.prob_randnoCM
         elif isinstance(proba, list) and len(proba) == 20:
             self.prob = proba
-        else:
-            self.prob = self.prob_rand  # default probability = rand
-        
+        # else just keep self.prob which is defined as equal probabilities for all AA
+
         for s in range(self.seqnum):
             seq = []
             for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                seq.append(np.random.choice(self.AAs, p=self.prob))  # weighed random selection of AA with probab.=prob
+                seq.append(np.random.choice(self.AAs, replace=True, p=self.prob))  # weighed random selection of AA
             self.sequences.append(''.join(seq))
 
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Package Documentation &#8212; modlAMP v3.1.2 documentation</title>
+    <title>2. Package Documentation &#8212; modlAMP v3.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'v3.1.2',
+        VERSION:     'v3.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/modlamp.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="modlAMP v3.1.2 documentation" href="index.html" />
+    <link rel="top" title="modlAMP v3.2.0 documentation" href="index.html" />
     <link rel="next" title="3. Example scripts" href="examplescript.html" />
     <link rel="prev" title="1. README" href="readme.html" /> 
   </head>
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="readme.html" title="1. README"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -1002,7 +1002,8 @@ The amino acid probabilities can be chosen from different probabilities:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>proba</strong> &#8211; AA probability to be used to generate sequences. Available: AMP, AMPnoCM, rand, randnoCM</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>proba</strong> &#8211; {str or list} AA probability to be used to generate sequences. Available from str: AMP, AMPnoCM, 
+rand, randnoCM. You can also provide your own list of porbabilities as a list (in AA order, length 20, sum to 1)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of random AMP sequences with defined AA probabilities</td>
 </tr>
@@ -2156,7 +2157,7 @@ properties of alpha-helices, like positioning of charged and hydrophobic residue
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>sequence</strong> &#8211; {str} the peptide sequence for which the helical wheel should be drawn</li>
-<li><strong>colorcoding</strong> &#8211; {str} the color coding to be used, available: <em>rainbow</em>, <em>charge</em>, <em>no</em></li>
+<li><strong>colorcoding</strong> &#8211; {str} the color coding to be used, available: <em>rainbow</em>, <em>charge</em>, <em>polar</em>, <em>none</em></li>
 <li><strong>lineweights</strong> &#8211; {boolean} defines whether connection lines decrease in thickness along the sequence</li>
 <li><strong>filename</strong> &#8211; {str} filename  where to safe the plot. <em>default = None</em> &#8211;&gt; show the plot</li>
 <li><strong>seq</strong> &#8211; {bool} whether the amino acid sequence should be plotted as a title</li>
@@ -3024,17 +3025,22 @@ sub-libraries.</li>
 
 <dl class="method">
 <dt id="modlamp.analysis.GlobalAnalysis.calc_aa_freq">
-<code class="descname">calc_aa_freq</code><span class="sig-paren">(</span><em>plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_aa_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_aa_freq" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calc_aa_freq</code><span class="sig-paren">(</span><em>plot=True</em>, <em>color='#83AF9B'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.calc_aa_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.calc_aa_freq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
 the frequencies of these are calculated independently.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> &#8211; {bool} whether the amino acid frequencies should be plotted in a histogram.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plot</strong> &#8211; {bool} whether the amino acid frequencies should be plotted in a histogram.</li>
+<li><strong>color</strong> &#8211; {str} color of the plot</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">{numpy.ndarray} amino acid frequencies in the attribute <code class="xref py py-attr docutils literal"><span class="pre">aafreq</span></code>. The values are oredered
-alphabetically.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">{numpy.ndarray} amino acid frequencies in the attribute <code class="xref py py-attr docutils literal"><span class="pre">aafreq</span></code>. The values are oredered
+alphabetically.</p>
+</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -3139,7 +3145,7 @@ hydrophiobic moment for the chosen window size found in the sequence will be ret
 
 <dl class="method">
 <dt id="modlamp.analysis.GlobalAnalysis.plot_summary">
-<code class="descname">plot_summary</code><span class="sig-paren">(</span><em>filename=None</em>, <em>colors=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plot_summary</code><span class="sig-paren">(</span><em>filename=None</em>, <em>colors=None</em>, <em>plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/analysis.html#GlobalAnalysis.plot_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.analysis.GlobalAnalysis.plot_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to generate a visual summary of different characteristics of the given library. The class methods
 are used with their standard options.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3149,17 +3155,18 @@ are used with their standard options.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>filename</strong> &#8211; {str} path to save the generated plot to.</li>
 <li><strong>colors</strong> &#8211; {str / list} color or list of colors to use for plotting. e.g. &#8216;#4E395D&#8217;, &#8216;red&#8217;, &#8216;k&#8217;</li>
+<li><strong>plot</strong> &#8211; {boolean} whether the plot should be created or just the features are calculated</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">visual summary (plot) of the library characteristics.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">visual summary (plot) of the library characteristics (if <code class="docutils literal"><span class="pre">plot=True</span></code>).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists / arrays of sequences</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">GlobalAnalysis</span><span class="p">([</span><span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">,</span> <span class="n">seqs3</span><span class="p">])</span>  <span class="c1"># seqs being lists / arrays of sequences</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">plot_summary</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -3194,7 +3201,149 @@ are used with their standard options.</p>
 <dl class="class">
 <dt id="modlamp.core.BaseSequence">
 <em class="property">class </em><code class="descclassname">modlamp.core.</code><code class="descname">BaseSequence</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class for sequence classes in the module <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a>.</p>
+<dd><p>Base class for sequence classes in the module <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a>.
+It contains amino acid probabilities for different sequence generation classes.</p>
+<p>The following amino acid probabilities are used: (extracted from the
+<a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="13%" />
+<col width="19%" />
+<col width="28%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AA</th>
+<th class="head">rand</th>
+<th class="head">AMP</th>
+<th class="head">AMPnoCM</th>
+<th class="head">randnoCM</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>0.05</td>
+<td>0.0766</td>
+<td>0.0812275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>C</td>
+<td>0.05</td>
+<td>0.071</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>0.05</td>
+<td>0.026</td>
+<td>0.0306275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>0.05</td>
+<td>0.0264</td>
+<td>0.0310275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>F</td>
+<td>0.05</td>
+<td>0.0405</td>
+<td>0.0451275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>0.05</td>
+<td>0.1172</td>
+<td>0.1218275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>H</td>
+<td>0.05</td>
+<td>0.021</td>
+<td>0.0256275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>0.05</td>
+<td>0.061</td>
+<td>0.0656275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>K</td>
+<td>0.05</td>
+<td>0.0958</td>
+<td>0.1004275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>L</td>
+<td>0.05</td>
+<td>0.0838</td>
+<td>0.0884275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>0.05</td>
+<td>0.0123</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>0.05</td>
+<td>0.0386</td>
+<td>0.0432275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>0.05</td>
+<td>0.0463</td>
+<td>0.0509275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>0.05</td>
+<td>0.0251</td>
+<td>0.0297275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>R</td>
+<td>0.05</td>
+<td>0.0545</td>
+<td>0.0591275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>0.05</td>
+<td>0.0613</td>
+<td>0.0659275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>T</td>
+<td>0.05</td>
+<td>0.0455</td>
+<td>0.0501275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>0.05</td>
+<td>0.0572</td>
+<td>0.0618275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>0.05</td>
+<td>0.0155</td>
+<td>0.0201275</td>
+<td>0.05555555</td>
+</tr>
+<tr class="row-odd"><td>Y</td>
+<td>0.05</td>
+<td>0.0244</td>
+<td>0.0290275</td>
+<td>0.05555555</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="modlamp.core.BaseSequence.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>seqnum</em>, <em>lenmin=7</em>, <em>lenmax=28</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseSequence.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseSequence.__init__" title="Permalink to this definition">¶</a></dt>
@@ -3452,7 +3601,7 @@ calculate the descriptor values for.</td>
 
 <dl class="method">
 <dt id="modlamp.core.BaseDescriptor.count_aa">
-<code class="descname">count_aa</code><span class="sig-paren">(</span><em>scale='relative'</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.count_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.count_aa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count_aa</code><span class="sig-paren">(</span><em>scale='relative'</em>, <em>average=False</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#BaseDescriptor.count_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.BaseDescriptor.count_aa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for producing the amino acid distribution for the given sequences as a descriptor</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3460,6 +3609,7 @@ calculate the descriptor values for.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>scale</strong> &#8211; {&#8216;absolute&#8217; or &#8216;relative&#8217;} defines whether counts or frequencies are given for each AA</li>
+<li><strong>average</strong> &#8211; {boolean} whether the averaged amino acid counts for all sequences should be returned</li>
 <li><strong>append</strong> &#8211; {boolean} whether the produced descriptor values should be appended to the existing ones in the
 attribute <code class="xref py py-attr docutils literal"><span class="pre">descriptor</span></code>.</li>
 </ul>
@@ -3482,7 +3632,7 @@ attribute <code class="xref py py-attr docutils literal"><span class="pre">descr
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#modlamp.core.count_aa" title="modlamp.core.count_aa"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.count_aa()</span></code></a></p>
+<p class="last"><code class="xref py py-func docutils literal"><span class="pre">modlamp.core.count_aa()</span></code></p>
 </div>
 </dd></dl>
 
@@ -3894,16 +4044,21 @@ This method is used by the base class <a class="reference internal" href="#modla
 </dd></dl>
 
 <dl class="function">
-<dt id="modlamp.core.count_aa">
-<code class="descclassname">modlamp.core.</code><code class="descname">count_aa</code><span class="sig-paren">(</span><em>seq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#count_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.count_aa" title="Permalink to this definition">¶</a></dt>
+<dt id="modlamp.core.count_aas">
+<code class="descclassname">modlamp.core.</code><code class="descname">count_aas</code><span class="sig-paren">(</span><em>seq</em>, <em>scale='relative'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#count_aas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.count_aas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to count the amino acids occuring in a given sequence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seq</strong> &#8211; {str} amino acid sequence</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seq</strong> &#8211; {str} amino acid sequence</li>
+<li><strong>scale</strong> &#8211; {&#8216;absolute&#8217; or &#8216;relative&#8217;} defines whether counts or frequencies are given for each AA</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">{dict} dictionary with amino acids as keys and their counts in the sequence as values.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">{dict} dictionary with amino acids as keys and their counts in the sequence as values.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -3919,161 +4074,6 @@ H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, <em>FEBS Lett</e
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary with amino acid letters and corresponding energies.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="modlamp.core.aminoacids">
-<code class="descclassname">modlamp.core.</code><code class="descname">aminoacids</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modlamp/core.html#aminoacids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modlamp.core.aminoacids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method used by all classes in <a class="reference internal" href="#module-modlamp.sequences" title="modlamp.sequences"><code class="xref py py-mod docutils literal"><span class="pre">modlamp.sequences</span></code></a> to generate templates for all needed instances.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">all needed instances of the classes in this package</td>
-</tr>
-</tbody>
-</table>
-<p>The following amino acid probabilities are used by modlAMP: (extracted from the
-<a class="reference external" href="http://aps.unmc.edu/AP/statistic/statistic.php">APD3</a>, March 17, 2016)</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="9%" />
-<col width="13%" />
-<col width="19%" />
-<col width="28%" />
-<col width="31%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">AA</th>
-<th class="head">rand</th>
-<th class="head">AMP</th>
-<th class="head">AMPnoCM</th>
-<th class="head">randnoCM</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>0.05</td>
-<td>0.0766</td>
-<td>0.0812275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>C</td>
-<td>0.05</td>
-<td>0.071</td>
-<td>0.0</td>
-<td>0.0</td>
-</tr>
-<tr class="row-even"><td>D</td>
-<td>0.05</td>
-<td>0.026</td>
-<td>0.0306275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>E</td>
-<td>0.05</td>
-<td>0.0264</td>
-<td>0.0310275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>F</td>
-<td>0.05</td>
-<td>0.0405</td>
-<td>0.0451275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>G</td>
-<td>0.05</td>
-<td>0.1172</td>
-<td>0.1218275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>H</td>
-<td>0.05</td>
-<td>0.021</td>
-<td>0.0256275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>I</td>
-<td>0.05</td>
-<td>0.061</td>
-<td>0.0656275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>K</td>
-<td>0.05</td>
-<td>0.0958</td>
-<td>0.1004275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>L</td>
-<td>0.05</td>
-<td>0.0838</td>
-<td>0.0884275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>M</td>
-<td>0.05</td>
-<td>0.0123</td>
-<td>0.0</td>
-<td>0.0</td>
-</tr>
-<tr class="row-odd"><td>N</td>
-<td>0.05</td>
-<td>0.0386</td>
-<td>0.0432275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>P</td>
-<td>0.05</td>
-<td>0.0463</td>
-<td>0.0509275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>Q</td>
-<td>0.05</td>
-<td>0.0251</td>
-<td>0.0297275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>R</td>
-<td>0.05</td>
-<td>0.0545</td>
-<td>0.0591275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>S</td>
-<td>0.05</td>
-<td>0.0613</td>
-<td>0.0659275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>T</td>
-<td>0.05</td>
-<td>0.0455</td>
-<td>0.0501275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>V</td>
-<td>0.05</td>
-<td>0.0572</td>
-<td>0.0618275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-even"><td>W</td>
-<td>0.05</td>
-<td>0.0155</td>
-<td>0.0201275</td>
-<td>0.05555555</td>
-</tr>
-<tr class="row-odd"><td>Y</td>
-<td>0.05</td>
-<td>0.0244</td>
-<td>0.0290275</td>
-<td>0.05555555</td>
 </tr>
 </tbody>
 </table>
@@ -4173,12 +4173,12 @@ spaces were removed.</p>
         <li class="right" >
           <a href="readme.html" title="1. README"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">modlAMP v3.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Jun 07esc, 2017.
+      Last updated on Jun 23esc, 2017.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
