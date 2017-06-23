@@ -27,7 +27,7 @@ import numpy as np
 from scipy.stats.kde import gaussian_kde
 from mpl_toolkits.mplot3d import Axes3D
 
-from modlamp.core import count_aa, load_scale
+from modlamp.core import count_aas, load_scale
 from modlamp.descriptors import PeptideDescriptor
 
 __author__ = "Alex Müller, Gisela Gabernet"
@@ -660,9 +660,9 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
     .. versionadded:: v2.2.5
     """
-    aa = count_aa('')
+    aa = count_aas('')
     d = PeptideDescriptor(sequences, 'eisenberg')
-    d.count_aa(scale='relative')
+    d.count_aas(scale='relative')
     perc = np.mean(d.descriptor, axis=0)
     
     fig, ax = plt.subplots()

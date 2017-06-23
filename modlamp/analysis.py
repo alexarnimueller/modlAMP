@@ -12,7 +12,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
 
-from modlamp.core import count_aa
+from modlamp.core import count_aas
 from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 
 __author__ = "Alex Müller, Gisela Gabernet"
@@ -100,8 +100,8 @@ class GlobalAnalysis(object):
         """
         for l in range(self.library.shape[0]):
             concatseq = ''.join(self.library[l])
-            d_aa = count_aa(concatseq)
-            self.aafreq[l] = [v / float(len(concatseq)) for v in d_aa.values()]
+            d_aa = count_aas(concatseq)
+            self.aafreq[l] = np.array([v / float(len(concatseq)) for v in d_aa.values()])
             
             if plot:
                 fig, ax = plt.subplots()
@@ -225,16 +225,15 @@ class GlobalAnalysis(object):
         ax1.set_xticks([x + 1 for x in range(len(labels))])
         ax1.set_xticklabels(labels, fontweight='bold')
         
-        # 2 aa bar plot
-        d_aa = count_aa('')
-        hands = [mpatches.Patch(label=labels[i], linewidth=1, edgecolor='black', facecolor=colors[i], alpha=0.8)
-                 for i in range(len(labels))]
+        # 2 AA bar plot
+        d_aa = count_aas('')
+        hands = [mpatches.Patch(label=labels[i], facecolor=colors[i], alpha=0.8) for i in range(len(labels))]
         w = 1.  # bar width
-        offsets = np.arange(start=-(w / 2), step=(w / num), stop=(w / 2))  # bar offsets if many libraries
+        offsets = np.arange(start=-(w / 2.) * 0.95, step=(w / num), stop=(w / 2.) * 0.95)  # bar offsets if many libs
         for i, l in enumerate(self.aafreq):
             for a in range(20):
                 ax2.bar(a - offsets[i] - (0.5 * w / num), l[a], w / num, color=colors[i], alpha=0.8)
-        ax2.set_xlim([-0.75, 19.75])
+        ax2.set_xlim([-1., 20.])
         ax2.set_ylim([0, np.max(self.aafreq) + 0.05])
         ax2.set_xticks(range(20))
         ax2.set_xticklabels(d_aa.keys(), fontweight='bold')

@@ -22,7 +22,7 @@ import numpy as np
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
 
-from core import BaseDescriptor, load_scale, count_aa, aa_weights, aa_energies, aa_formulas
+from core import BaseDescriptor, load_scale, count_aas, aa_weights, aa_energies, aa_formulas
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -109,7 +109,7 @@ def _charge(seq, ph=7.0, amide=False):
         pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
         neg_pks = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
     
-    aa_content = count_aa(seq)
+    aa_content = count_aas(seq)
     aa_content['Nterm'] = 1.0
     aa_content['Cterm'] = 1.0
     pos_charge = 0.0

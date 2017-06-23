@@ -101,15 +101,16 @@ class Random(BaseSequence):
             self.prob = self.prob_AMP
         elif proba == 'randnoCM':
             self.prob = self.prob_randnoCM
+        elif isinstance(proba, list) and len(proba) == 20:
+            self.prob = proba
         else:
             self.prob = self.prob_rand  # default probability = rand
         
         for s in range(self.seqnum):
-            self.seq = []
+            seq = []
             for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                self.seq.append(np.random.choice(self.AAs, p=self.prob))  # weighed random selection of amino acid,
-                # probabilities = prob
-            self.sequences.append(''.join(self.seq))
+                seq.append(np.random.choice(self.AAs, p=self.prob))  # weighed random selection of AA with probab.=prob
+            self.sequences.append(''.join(seq))
 
 
 class Helices(BaseSequence):
@@ -282,7 +283,7 @@ class Centrosymmetric(BaseSequence):
                         seq[2] = random.choice(self.AA_hyd)
                         seq[4] = seq[2]
                     elif a == 3:
-                        seq[3] = random.choice(self.AA_anchor)
+                        seq[3] = random.choice(self.AA_aroma)
                     else:
                         continue
                 self.sequences.append(''.join(seq) * n)
@@ -305,7 +306,7 @@ class Centrosymmetric(BaseSequence):
                             seq[2] = random.choice(self.AA_hyd)
                             seq[4] = seq[2]
                         elif a == 3:
-                            seq[3] = random.choice(self.AA_anchor)
+                            seq[3] = random.choice(self.AA_aroma)
                         else:
                             continue
                     blocks.append(''.join(seq))
