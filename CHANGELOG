@@ -45,3 +45,4 @@ v3.0.1  13.04.2017 -- New unittests for the modlamp.ml module.
 v3.1.0  04.05.2017 -- Publication referenced. Adaptions in CD descriptions and README
 v3.1.1  15.05.2017 -- Bugfix in cv function and wetlab test case
 v3.1.2  07.06.2017 -- Color option added in analysis plot, bugfix in .csv file reading
+v3.2.0  23.06.2017 -- Bugfixes when plotting GlobalAnalysis summary, reorganization of AA probabilities in core module

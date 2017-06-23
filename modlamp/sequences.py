@@ -86,7 +86,7 @@ class Random(BaseSequence):
         """Method to actually generate the sequences.
 
         :param proba: {str or list} AA probability to be used to generate sequences. Available from str: AMP, AMPnoCM, 
-        rand, randnoCM. You can also provide your own list of porbabilities as a list (in AA order, length 20, sum to 1)
+            rand, randnoCM. You can also provide your own list of porbabilities as a list (in AA order, length 20, sum to 1)
         :return: A list of random AMP sequences with defined AA probabilities
         :Example:
 
