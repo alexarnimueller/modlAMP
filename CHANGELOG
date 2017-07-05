@@ -46,3 +46,4 @@ v3.1.0  04.05.2017 -- Publication referenced. Adaptions in CD descriptions and R
 v3.1.1  15.05.2017 -- Bugfix in cv function and wetlab test case
 v3.1.2  07.06.2017 -- Color option added in analysis plot, bugfix in .csv file reading
 v3.2.0  23.06.2017 -- Bugfixes when plotting GlobalAnalysis summary, reorganization of AA probabilities in core module
+v3.2.1  05.07.2017 -- Move to pypi.org
