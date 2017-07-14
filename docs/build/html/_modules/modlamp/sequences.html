@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>modlamp.sequences &#8212; modlAMP v3.2.0 documentation</title>
+    <title>modlamp.sequences &#8212; modlAMP v3.2.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,10 +15,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'v3.2.0',
+        VERSION:     'v3.2.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
@@ -26,9 +27,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/modlamp.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="modlAMP v3.2.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -40,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v3.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v3.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -147,7 +146,6 @@
 <span class="sd">        &gt;&gt;&gt; b.generate_sequences(proba=&#39;AMP&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; b.sequences</span>
 <span class="sd">        [&#39;CYGALWHIFV&#39;,&#39;NIVRHHAPSTVIK&#39;,&#39;LCPNPILGIV&#39;,&#39;TAVVRGKESLTP&#39;,&#39;GTGSVCKNSCRGRFGIIAF&#39;,&#39;VIIGPSYGDAEYA&#39;]</span>
-<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">proba</span> <span class="o">==</span> <span class="s1">&#39;AMPnoCM&#39;</span><span class="p">:</span>
@@ -541,7 +539,7 @@
 <span class="sd">            probable that you will not get the exact size of library that you entered as the parameter **number**. If you</span>
 <span class="sd">            generate a small library, it can also happen that the size is bigger than expected, because ratios are rounded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MixedLibrary</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span>  <span class="c1"># inherit methods and some attributes from BaseSequence</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MixedLibrary</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span>  <span class="c1"># inherit methods and some attributes from BaseSequence</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">libsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">centrosymmetric</span><span class="p">,</span> <span class="n">centroasymmetric</span><span class="p">,</span> <span class="n">helix</span><span class="p">,</span> <span class="n">kinked</span><span class="p">,</span> <span class="n">oblique</span><span class="p">,</span> <span class="n">rand</span><span class="p">,</span> <span class="n">randAMP</span><span class="p">,</span> <span class="n">randAMPnoCM</span><span class="p">)))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ratios</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sym&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">centrosymmetric</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;asy&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">centroasymmetric</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span>
@@ -708,7 +706,7 @@
 <span class="sd">        &gt;&gt;&gt; s.ngrams</span>
 <span class="sd">        array([&#39;AGK&#39;, &#39;CKI&#39;, &#39;RR&#39;, &#39;YGGG&#39;, &#39;LSGL&#39;, &#39;RG&#39;, &#39;YGGY&#39;, &#39;PRP&#39;, &#39;LGGG&#39;, ...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">AMPngrams</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span>  <span class="c1"># inherit from BaseSequences and combine with n_min &amp; n_max</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AMPngrams</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seqnum</span><span class="p">)</span>  <span class="c1"># inherit from BaseSequences and combine with n_min &amp; n_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ngrams</span> <span class="o">=</span> <span class="n">ngrams_apd</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_min</span> <span class="o">=</span> <span class="n">n_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="n">n_max</span></div>
@@ -756,14 +754,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v3.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">modlAMP v3.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider..
-      Last updated on Jun 23esc, 2017.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+      Last updated on Jul 14esc, 2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
     </div>
   </body>
 </html>
