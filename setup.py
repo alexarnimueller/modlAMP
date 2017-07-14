@@ -14,12 +14,12 @@ with open('LICENSE') as f:
     lic = f.read()
 
 setup(name='modlamp',
-      version='3.2.1',
+      version='3.2.2',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
       author_email='alex.mueller@pharma.ethz.ch',
-      url='https://doi.org/10.1093/bioinformatics/btx285',
+      url='http://modlamp.org',
       license=lic,
       keywords="antimicrobial anticancer peptide descriptor sequences QSAR machine learning design",
       packages=['modlamp'],
