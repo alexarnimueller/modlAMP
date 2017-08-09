@@ -333,10 +333,14 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
                '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff', '#80d4ff', '#80d4ff', '#80d4ff', '#000000',
                '#000000', '#000000']
     f_none = ['#ffffff'] * 20
+    f_vespa = ['#ffffff', '#29a329', '#b30047', '#b30047', '#f79318', '#ffffff', '#0047b3', '#ffcc33', '#0047b3',
+               '#ffcc33', '#29a329', '#80d4ff', '#29a329', '#80d4ff', '#0047b3', '#80d4ff', '#80d4ff', '#ffcc33',
+               '#f79318', '#f79318']
     t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
     t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
     t_polar = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'k', 'k', 'w', 'w', 'w']
     t_none = ['k'] * 20
+    t_vespa = ['k', 'k', 'w', 'w', 'w', 'k', 'w', 'k', 'w', 'k', 'w', 'k', 'w', 'k', 'w', 'k', 'k', 'k', 'w', 'w']
     d_eisberg = load_scale('eisenberg')[1]  # eisenberg hydrophobicity values for HM
     
     if lineweights:
@@ -358,6 +362,9 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     elif colorcoding == 'none':
         df = dict(zip(aa, f_none))
         dt = dict(zip(aa, t_none))
+    elif colorcoding == 'vespa':
+        df = dict(zip(aa, f_vespa))
+        dt = dict(zip(aa, t_vespa))
     else:
         print("Unknown color coding, 'rainbow' used instead")
         df = dict(zip(aa, f_rainbow))
