@@ -873,6 +873,7 @@ class PeptideDescriptor(BaseDescriptor):
         :param append:
         :return:
         """
+        #TODO: make warning for shorter sequences, make paralelization, finish documentation, make example
 
         desc = []
 
