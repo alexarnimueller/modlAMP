@@ -5,12 +5,12 @@ README
 
 This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
 amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
-generation (module ``sequences``). For basic instructions how to use the package, see Usage_ or the `documentation
-<https://pythonhosted.org/modlamp/>`_.
+generation (module ``sequences``). For basic instructions how to use the package, see Usage_ section of this README
+or the `documentation <http://modlamp.org>`_.
 
 .. note::
     You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
-    before installing **modlAMP**. It will take care of all necessary package requirements and versions.
+    before installing **modlAMP**. It will make handling of necessary package requirements and versions much easier.
 
 
 Installation
@@ -19,36 +19,22 @@ Installation
 For the installation to work properly, ``pip`` needs to be installed. If you're not sure whether you already have pip,
 type ``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
 
-With ``pip``
-------------
-
-You do not need to download the package manually. In your terminal, just type the following command::
+There is no need to download the package manually to install modlAMP. In your terminal, just type the following command::
 
     pip install modlamp
-
-From source
------------
-
-Download and unpack the package and run the following command when located in the **modlAMP** package directory::
-
-    make
-    sudo make install
-
-This will install the package and all requirements.
-
 
 Usage
 *****
 
 This section gives a quick overview of different capabilities of modlAMP. For a detailed description of all modules see
-the `module documentation <http://www.cadd.ethz.ch/software/modlamp.html>`_.
+the `module documentation <http://modlamp.org>`_.
 
 Importing modules
 -----------------
 
 After installation, you should be able to import and use the different modules like shown below:
 
->>> from modlamp.sequences import Centrosymmetric
+>>> from modlamp.sequences import Helices
 >>> from modlamp.descriptors import PeptideDescriptor
 >>> from modlamp.database import query_database
 
@@ -114,7 +100,7 @@ We can now plot the calculated values as a boxplot, for example the hydrophobic 
 >>> from modlamp.plot import plot_feature
 >>> plot_feature(P.descriptor,y_label='uH Eisenberg')
 
-.. image:: static/uH_Eisenberg.png
+.. image:: http://modlamp.org/_static/uH_Eisenberg.png
     :height: 300px
 
 We can additionally compare these descriptor values to known AMP sequences. For that, we import sequences from the
@@ -127,7 +113,7 @@ Now lets compare the values by plotting:
 
 >>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
-.. image:: static/uH_APD3.png
+.. image:: http://modlamp.org/_static/uH_APD3.png
     :height: 300px
 
 It is also possible to plot 2 or 3 different features in a scatter plot:
@@ -142,7 +128,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> target = [1] * (len(A.sequences) / 2) + [2] * (len(A.sequences) / 2)
 >>> plot_2_features(A.descriptor, B.descriptor, x_label='uH', y_label='pI', targets=target)
 
-.. image:: static/2D_scatter.png
+.. image:: http://modlamp.org/_static/2D_scatter.png
     :height: 300px
 
 :Example: **3D Scatter Plot**
@@ -152,7 +138,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> C.length()
 >>> plot_3_features(A.descriptor, B.descriptor, C.descriptor, x_label='uH', y_label='pI', z_label='length')
 
-.. image:: static/3D_scatter.png
+.. image:: http://modlamp.org/_static/3D_scatter.png
     :height: 300px
 
 Further plotting methods like **helical wheel plots** are available. See the documentation for the ``modlamp.plot``
@@ -251,11 +237,11 @@ The read and calculated values can finally be plotted as follows:
 
 >>> cd.plot(data='mean residue ellipticity', combine=True)
 
-.. image:: static/cd1.png
+.. image:: http://modlamp.org/_static/cd1.png
     :height: 300px
-.. image:: static/cd2.png
+.. image:: http://modlamp.org/_static/cd2.png
     :height: 300px
-.. image:: static/cd3.png
+.. image:: http://modlamp.org/_static/cd3.png
     :height: 300px
 
 
@@ -274,14 +260,14 @@ array([['ARVFVRAVRIYIRVLKAFAKL', 'IRVYVRIVRGFGRVVRAYARV', 'IRIFIRIARGFGRAIRVFVRI
 >>> glob_analysis = GlobalAnalysis(lib, names=['Lib 1', 'Lib 2', 'Lib 3'])
 >>> glob_analysis.plot_summary()
 
-.. image:: static/summary.png
+.. image:: http://modlamp.org/_static/summary.png
     :height: 600px
 
 
 Documentation
 -------------
 
-Detailed documentation of all modules is available from the `modlAMP documentation website <https://pythonhosted.org/modlamp/>`_.
+A detailed documentation of all modules is available from the `modlAMP documentation website <http://modlamp.org>`_.
 
 
 Citing modlAMP
