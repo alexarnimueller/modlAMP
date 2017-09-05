@@ -25,7 +25,6 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats.kde import gaussian_kde
-from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.core import count_aas, load_scale
 from modlamp.descriptors import PeptideDescriptor
@@ -332,6 +331,9 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     f_polar = ['#000000', '#000000', '#80d4ff', '#80d4ff', '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff',
                '#000000', '#000000', '#80d4ff', '#000000', '#80d4ff', '#80d4ff', '#80d4ff', '#80d4ff', '#000000',
                '#000000', '#000000']
+    f_simple = ['#ffcc33', '#ffcc33', '#0047b3', '#0047b3', '#ffcc33', '#7f7f7f', '#0047b3', '#ffcc33', '#0047b3',
+                '#ffcc33', '#ffcc33', '#0047b3', '#ffcc33', '#0047b3', '#0047b3', '#0047b3', '#0047b3', '#ffcc33',
+                '#ffcc33', '#ffcc33']
     f_none = ['#ffffff'] * 20
     f_amphi = ['#ffcc33', '#29a329', '#b30047', '#b30047', '#f79318', '#80d4ff', '#0047b3', '#ffcc33', '#0047b3',
                '#ffcc33', '#ffcc33', '#80d4ff', '#29a329', '#80d4ff', '#0047b3', '#80d4ff', '#80d4ff', '#ffcc33',
@@ -339,6 +341,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     t_rainbow = ['w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k', 'w', 'k', 'k', 'k', 'k', 'k']
     t_charge = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'w', 'w', 'w', 'k', 'w', 'w', 'w', 'w', 'w']
     t_polar = ['w', 'w', 'k', 'k', 'w', 'w', 'k', 'w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'k', 'k', 'w', 'w', 'w']
+    t_simple = ['k', 'k', 'w', 'w', 'k', 'w', 'w', 'k', 'w', 'k', 'k', 'k', 'k', 'w', 'w', 'w', 'w', 'k', 'k', 'k']
     t_none = ['k'] * 20
     t_amphi = ['k', 'k', 'w', 'w', 'w', 'k', 'w', 'k', 'w', 'k', 'k', 'k', 'w', 'k', 'w', 'k', 'k', 'k', 'w', 'w']
     d_eisberg = load_scale('eisenberg')[1]  # eisenberg hydrophobicity values for HM
@@ -359,6 +362,9 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     elif colorcoding == 'polar':
         df = dict(zip(aa, f_polar))
         dt = dict(zip(aa, t_polar))
+    elif colorcoding == 'simple':
+        df = dict(zip(aa, f_simple))
+        dt = dict(zip(aa, t_simple))
     elif colorcoding == 'none':
         df = dict(zip(aa, f_none))
         dt = dict(zip(aa, t_none))
