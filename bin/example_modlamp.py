@@ -8,7 +8,7 @@ python example_modlamp.py 1000
 
 import sys
 from collections import OrderedDict
-from modlamp.datasets import load_helicalAMPset
+from modlamp.datasets import load_AMPvsUniProt
 from modlamp.descriptors import PeptideDescriptor
 from sklearn.ensemble import RandomForestClassifier
 from modlamp.sequences import MixedLibrary
@@ -16,7 +16,7 @@ from modlamp.sequences import MixedLibrary
 
 def main(libsize=1000):
     # load training sequences
-    data = load_helicalAMPset()
+    data = load_AMPvsUniProt()
     
     # describe sequences with PEPCATS descriptor
     X = PeptideDescriptor(data.sequences, 'pepcats')
@@ -33,7 +33,7 @@ def main(libsize=1000):
     
     # generate a virtual peptide library of `size` sequences to screen
     Lib = MixedLibrary(libsize)
-    Lib.generate_library()
+    Lib.generate_sequences()
     print("Actual lirutal library size (without duplicates): %i" % len(Lib.sequences))
     
     # describe library with PEPCATS descriptor

@@ -17,7 +17,7 @@ Installation
 ************
 
 For the installation to work properly, ``pip`` needs to be installed. If you're not sure whether you already have pip,
-type ``pip --version``. If you don't have pip installed, install it via ``sudo easy_install pip``.
+type ``pip --version`` in your terminal. If you don't have pip installed, install it via ``sudo easy_install pip``.
 
 There is no need to download the package manually to install modlAMP. In your terminal, just type the following command::
 
@@ -32,7 +32,8 @@ the `module documentation <http://modlamp.org>`_.
 Importing modules
 -----------------
 
-After installation, you should be able to import and use the different modules like shown below:
+After installation, you should be able to import and use the different modules like shown below. Type python or
+ipython in your terminal to begin, then the following import statements:
 
 >>> from modlamp.sequences import Helices
 >>> from modlamp.descriptors import PeptideDescriptor
@@ -46,7 +47,7 @@ The following example shows how to generate a library of 1000 sequences out of a
 
 >>> from modlamp.sequences import MixedLibrary
 >>> lib = MixedLibrary(1000)
->>> lib.generate_library()
+>>> lib.generate_sequences()
 >>> lib.sequences[:10]
 ['VIVRVLKIAA','VGAKALRGIGPVVK','QTGKAKIKLVKLRAGPYANGKLF','RLIKGALKLVRIVGPGLRVIVRGAR','DGQTNRFCGI','ILRVGKLAAKV',...]
 
@@ -98,7 +99,7 @@ Plotting Features
 We can now plot the calculated values as a boxplot, for example the hydrophobic moment:
 
 >>> from modlamp.plot import plot_feature
->>> plot_feature(P.descriptor,y_label='uH Eisenberg')
+>>> plot_feature(desc.descriptor,y_label='uH Eisenberg')
 
 .. image:: http://modlamp.org/_static/uH_Eisenberg.png
     :height: 300px
@@ -111,7 +112,7 @@ APD3, which are stored in the FASTA formatted file ``APD3.fasta``:
 
 Now lets compare the values by plotting:
 
->>> plot_feature((P.descriptor, APD.descriptor), y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
+>>> plot_feature([desc.descriptor, APD.descriptor], y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
 .. image:: http://modlamp.org/_static/uH_APD3.png
     :height: 300px
@@ -125,7 +126,7 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 >>> A.calculate_moment()
 >>> B = GlobalDescriptor('/Path/to/file/class1&2.fasta')
 >>> B.isoelectric_point()
->>> target = [1] * (len(A.sequences) / 2) + [2] * (len(A.sequences) / 2)
+>>> target = [1] * (len(A.sequences) / 2) + [0] * (len(A.sequences) / 2)
 >>> plot_2_features(A.descriptor, B.descriptor, x_label='uH', y_label='pI', targets=target)
 
 .. image:: http://modlamp.org/_static/2D_scatter.png
@@ -134,9 +135,10 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 :Example: **3D Scatter Plot**
 
 >>> from modlamp.plot import plot_3_features
->>> C = GlobalDescriptor('/Path/to/file/APD3.fasta')
->>> C.length()
->>> plot_3_features(A.descriptor, B.descriptor, C.descriptor, x_label='uH', y_label='pI', z_label='length')
+>>> B = GlobalDescriptor(APD.sequences)
+>>> B.isoelectric_point()
+>>> B.length(append=True)  # append descriptor values to afore calculated
+>>> plot_3_features(APD.descriptor, B.descriptor[:, 0], B.descriptor[:, 1], x_label='uH', y_label='pI', z_label='len')
 
 .. image:: http://modlamp.org/_static/3D_scatter.png
     :height: 300px
@@ -257,8 +259,9 @@ array([['ARVFVRAVRIYIRVLKAFAKL', 'IRVYVRIVRGFGRVVRAYARV', 'IRIFIRIARGFGRAIRVFVRI
        ['GVHLKFKPAVSRKGVKGIT', 'RILRIGARVGKVLIK', 'MKGIIGHTWKLKPTIPSGKSAKC', ..., 'GRIIRLAIKAGL']], dtype='|S28')
 >>> lib.shape
 (3, 2000)
->>> glob_analysis = GlobalAnalysis(lib, names=['Lib 1', 'Lib 2', 'Lib 3'])
->>> glob_analysis.plot_summary()
+>>> from modlamp.analysis import GlobalAnalysis
+>>> analysis = GlobalAnalysis(lib, names=['Lib 1', 'Lib 2', 'Lib 3'])
+>>> analysis.plot_summary()
 
 .. image:: http://modlamp.org/_static/summary.png
     :height: 600px

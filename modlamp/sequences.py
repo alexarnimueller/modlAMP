@@ -529,9 +529,9 @@ class MixedLibrary(BaseSequence):
         'sym': 1163}
         """
         Cs = Centrosymmetric(self.nums['sym'])
-        Cs.generate_symmetric()
+        Cs.generate_sequences(symmetry='symmetric')
         Ca = Centrosymmetric(self.nums['asy'])
-        Ca.generate_asymmetric()
+        Ca.generate_sequences(symmetry='asymmetric')
         H = Helices(7, 28, self.nums['hel'])
         H.generate_sequences()
         K = Kinked(7, 28, self.nums['knk'])

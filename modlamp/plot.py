@@ -23,11 +23,12 @@ Function                            Characteristics
 import matplotlib.lines as lines
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from scipy.stats.kde import gaussian_kde
 
 from modlamp.core import count_aas, load_scale
-from modlamp.descriptors import PeptideDescriptor
+from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -128,7 +129,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
         :height: 300px
     """
     if not colors:
-        colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
+        colors = ['#69D2E7', '#FA6900', '#B5B8AB', '#542437', '#53777A', 'black', '#C02942', '#031634']
     
     fig, ax = plt.subplots()
     
@@ -296,7 +297,8 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
     properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
 
     :param sequence: {str} the peptide sequence for which the helical wheel should be drawn
-    :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *polar*, *none*
+    :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *polar*, *simple*,
+    *amphipathic*, *none*
     :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
     :param seq: {bool} whether the amino acid sequence should be plotted as a title
@@ -578,7 +580,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
     :Example:
 
     >>> data = np.random.normal(size=[5, 100])
-    >>> plot_violin(data, colors=['green', 'green', 'green', 'red', 'red'], bp=True)
+    >>> plot_violin(data, colors=['#0B486B', '#0B486B', '#0B486B', '#CFF09E', '#CFF09E'], bp=True, y_min=-3, y_max=3)
 
     .. image:: ../docs/static/violins.png
         :height: 300px
@@ -673,18 +675,16 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
 
     .. versionadded:: v2.2.5
     """
-    aa = count_aas('')
-    d = PeptideDescriptor(sequences, 'eisenberg')
-    d.count_aas(scale='relative')
-    perc = np.mean(d.descriptor, axis=0)
+    concatseq = ''.join(sequences)
+    aa = count_aas(concatseq, scale='relative')
     
     fig, ax = plt.subplots()
     
     for a in range(20):
-        plt.bar(a - 0.45, perc[a], 0.9, color=color)
+        plt.bar(a, aa.values()[a], 0.9, color=color)
     
     plt.xlim([-0.75, 19.75])
-    plt.ylim([0, max(perc) + 0.05])
+    plt.ylim([0, max(aa.values()) + 0.05])
     plt.xticks(range(20), aa.keys(), fontweight='bold')
     plt.ylabel('Amino Acid Frequency', fontweight='bold')
     plt.title('Amino Acid Distribution', fontsize=16, fontweight='bold')
@@ -696,6 +696,6 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     ax.yaxis.set_ticks_position('left')
     
     if filename:
-        plt.savefig(filename, dpi=150)
+        plt.savefig(filename, dpi=300)
     else:
         plt.show()

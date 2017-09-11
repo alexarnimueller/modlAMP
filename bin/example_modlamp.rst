@@ -9,7 +9,7 @@ A modlamp example script for peptide classification with a Random Forest classif
 .. code-block:: python
 
     import pandas as pd
-    from modlamp.datasets import load_helicalAMPset
+    from modlamp.datasets import load_AMPvsUniProt
     from modlamp.descriptors import PeptideDescriptor
     from modlamp.ml import train_best_model
     from modlamp.descriptors import PeptideDescriptor
@@ -20,7 +20,7 @@ A modlamp example script for peptide classification with a Random Forest classif
     print("Chosen library size is %i" % libsize)
 
     # load training sequences
-    data = load_helicalAMPset()
+    data = load_AMPvsUniProt()
 
     # describe sequences with PepCATS descriptor
     descr = PeptideDescriptor(data.sequences, 'pepcats')
@@ -34,7 +34,7 @@ A modlamp example script for peptide classification with a Random Forest classif
 
     # generate a virtual peptide library of `libsize` sequences to screen
     lib = MixedLibrary(libsize)
-    lib.generate_library()
+    lib.generate_sequences()
     print("Actual lirutal library size (without duplicates): %i" % len(lib.sequences))
 
     # describe library with PEPCATS descriptor
@@ -63,10 +63,10 @@ descriptors and save the values back to a ``.csv`` file.
     from modlamp.descriptors import PeptideDescriptor
 
     # load sequences from FASTA file and calculate the pepcats cross-correlated descriptor
-    x = PeptideDescriptor('Location/of/your/file.fasta', 'pepcats')
+    x = PeptideDescriptor('location/of/your/file.fasta', 'pepcats')
     x.calculate_crosscorr(window=7)
     # save calculated descriptor to a .csv file
-    x.save_descriptor('Location/of/your/outputfile.csv', delimiter=',')
+    x.save_descriptor('location/of/your/outputfile.csv', delimiter=',')
 
 
 Combining different descriptors & saving to ``csv``

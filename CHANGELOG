@@ -48,3 +48,4 @@ v3.1.2  07.06.2017 -- Color option added in analysis plot, bugfix in .csv file r
 v3.2.0  23.06.2017 -- Bugfixes when plotting GlobalAnalysis summary, reorganization of AA probabilities in core module
 v3.2.1  05.07.2017 -- Move to pypi.org
 v3.2.2  14.07.2017 -- Change references to documentation and move it to http://modlamp.org
+v3.2.3  11.09.2017 -- Improve Python3 compatibility, change bugs in bin scripts, optimize save_fasta method

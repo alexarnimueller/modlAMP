@@ -8,7 +8,7 @@ Script to calculate different peptide descriptors for a given sequences.fasta fi
 from modlamp.descriptors import PeptideDescriptor, GlobalDescriptor
 
 # Load sequence file into descriptor object
-pepdesc = PeptideDescriptor('/path/to/sequences.fasta', 'eisenberg')  # use Eisenberg consensus scale
+pepdesc = PeptideDescriptor('/path/to/sequences.fasta', 'Eisenberg')  # use Eisenberg consensus scale
 globdesc = GlobalDescriptor('/path/to/sequences.fasta')
 
 # --------------- Peptide Descriptor (AA scales) Calculations ---------------
