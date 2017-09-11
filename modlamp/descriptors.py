@@ -736,7 +736,7 @@ class PeptideDescriptor(BaseDescriptor):
         array([[ 0.48790226]])
         """
         if self.scale['A'] == list:
-            print '\n Descriptor moment calculation is only possible for one dimensional descriptors.\n'
+            print('\n Descriptor moment calculation is only possible for one dimensional descriptors.\n')
     
         else:
             desc = []
@@ -762,7 +762,7 @@ class PeptideDescriptor(BaseDescriptor):
                 elif modality == 'mean':  # take average value over all windows
                     moment = np.mean(moms)
                 else:
-                    print '\nERROR!\nModality parameter is wrong, please choose between "max" and "mean".\n'
+                    print('\nERROR!\nModality parameter is wrong, please choose between "max" and "mean".\n')
                     return
                 desc.append(moment)
                 self.all_moms.append(moms)
@@ -813,7 +813,7 @@ class PeptideDescriptor(BaseDescriptor):
                 elif modality == 'mean':
                     outglob = np.mean(glob)  # returned moment will be the mean of all windows
                 else:
-                    print 'Modality parameter is wrong, please choose between "max" and "mean"\n.'
+                    print('Modality parameter is wrong, please choose between "max" and "mean"\n.')
                     return
             desc.append(outglob)
             self.all_globs.append(glob)
@@ -848,7 +848,7 @@ class PeptideDescriptor(BaseDescriptor):
             self.calculate_global(window=window)
             y_vals = self.all_globs
         else:
-            print 'prof_type parameter is unknown, choose "uH" for hydrophobic moment or "H" for hydrophobicity\n.'
+            print('prof_type parameter is unknown, choose "uH" for hydrophobic moment or "H" for hydrophobicity\n.')
             sys.exit()
 
         desc = list()

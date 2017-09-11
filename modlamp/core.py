@@ -176,7 +176,7 @@ class BaseSequence(object):
 
         :param filename: output filename in which the sequences from :py:attr:`sequences` are safed in fasta format.
         :param names: {bool} whether sequence names from :py:attr:`names` should be saved as sequence identifiers
-        :return: a fasta file containing the generated sequences
+        :return: a FASTA formatted file containing the generated sequences
         :Example:
         
         >>> b = BaseSequence(2)
@@ -184,16 +184,10 @@ class BaseSequence(object):
         >>> b.names = ['Sequence1', 'Sequence2']
         >>> b.save_fasta('/location/of/fasta/file.fasta', names=True)
         """
-        if os.path.exists(filename):
-            os.remove(filename)  # remove outputfile, it it exists
-        
-        with open(filename, 'w') as o:
-            for n, seq in enumerate(self.sequences):
-                if names:
-                    print >> o, '>' + str(self.names[n])
-                else:
-                    print >> o, '>Seq_' + str(n)
-                print >> o, seq
+        if names:
+            save_fasta(filename, self.sequences, self.names)
+        else:
+            save_fasta(filename, self.sequences)
     
     def mutate_AA(self, nr, prob):
         """Method to mutate with **prob** probability a **nr** of positions per sequence randomly.
@@ -350,9 +344,9 @@ class BaseDescriptor(object):
                             self.names.append('seq_' + str(cntr))
                             cntr += 1
             else:
-                print "Sorry, currently only .fasta or .csv files can be read!"
+                print("Sorry, currently only .fasta or .csv files can be read!")
         else:
-            print "'inputfile' does not exist, is not a valid list of AA sequences or is not a valid sequence string"
+            print("%s does not exist, is not a valid list of AA sequences or is not a valid sequence string" % seqs)
         
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype='int')
@@ -369,14 +363,17 @@ class BaseDescriptor(object):
         """
         self.sequences, self.names = read_fasta(filename)
     
-    def save_fasta(self, outputfile, names=False):
+    def save_fasta(self, filename, names=False):
         """Method for saving sequences from :py:attr:`sequences` to a ``.FASTA`` formatted file.
 
-        :param outputfile: {str} filename of the output ``.FASTA`` file
+        :param filename: {str} filename of the output ``.FASTA`` file
         :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
-        :return: {list} sequences in the attribute :py:attr:`sequences` with corresponding sequence names in
-            :py:attr:`names`.        """
-        save_fasta(self, outputfile, names=names)
+        :return: a FASTA formatted file containing the generated sequences
+        """
+        if names:
+            save_fasta(filename, self.sequences, self.names)
+        else:
+            save_fasta(filename, self.sequences)
     
     def count_aa(self, scale='relative', average=False, append=False):
         """Method for producing the amino acid distribution for the given sequences as a descriptor
@@ -437,7 +434,7 @@ class BaseDescriptor(object):
             else:
                 self.descriptor = self.scaler.transform(self.descriptor)
         else:
-            print "Unknown scaler type!\nAvailable: 'standard', 'minmax'"
+            print("Unknown scaler type!\nAvailable: 'standard', 'minmax'")
     
     def feature_shuffle(self):
         """Method for shuffling feature columns randomly.
@@ -1036,23 +1033,24 @@ def read_fasta(inputfile):
     return sequences, names
 
 
-def save_fasta(self, filename, names=False):
+def save_fasta(filename, sequences, names=None):
     """Method for saving sequences in the instance :py:attr:`sequences` to a file in FASTA format.
 
-    :param filename: output filename (ending .fasta)
-    :param names: {bool} whether sequence names from self.names should be saved as sequence identifiers
+    :param filename: {str} output filename (ending .fasta)
+    :param sequences: {list} sequences to be saved to file
+    :param names: {list} whether sequence names from self.names should be saved as sequence identifiers
     :return: a FASTA formatted file containing the generated sequences
     """
     if os.path.exists(filename):
         os.remove(filename)  # remove outputfile, it it exists
     
     with open(filename, 'w') as o:
-        for n, seq in enumerate(self.sequences):
+        for n, seq in enumerate(sequences):
             if names:
-                print >> o, '>' + str(self.names[n])
+                o.write('>' + str(names[n]) + '\n')
             else:
-                print >> o, '>Seq_' + str(n)
-            print >> o, seq
+                o.write('>Seq_' + str(n) + '\n')
+            o.write(seq + '\n')
 
 
 def aa_weights():

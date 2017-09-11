@@ -212,7 +212,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           n_jobs=n_jobs)
         
         gs.fit(x_train, y_train)
-        print "Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv)
+        print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)
         
@@ -221,7 +221,7 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
         return best_classifier.fit(x_train, y_train)
     
     else:
-        print "Model not supported, please choose between 'svm' and 'rf'."
+        print("Model not supported, please choose between 'svm' and 'rf'.")
 
 
 def plot_validation_curve(classifier, x_train, y_train, param_name, param_range, cv=10, score=make_scorer(
