@@ -92,7 +92,7 @@ class GlobalAnalysis(object):
                      0.09192121,  0.03111619,  0.01712818,  0.04852983,  0.05937768,
                      0.07079646,  0.04396232,  0.0225521 ,  0.05994862,  0.01855552]])
         
-        .. image:: ../docs/static/aa_anal.png
+        .. image:: ../docs/static/AA_dist.png
             :height: 300px
         """
         for l in range(self.library.shape[0]):

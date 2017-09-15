@@ -22,7 +22,7 @@ import numpy as np
 from scipy import stats
 from sklearn.externals.joblib import Parallel, delayed
 
-from core import BaseDescriptor, load_scale, count_aas, aa_weights, aa_energies, aa_formulas
+from modlamp.core import BaseDescriptor, load_scale, count_aas, aa_weights, aa_energies, aa_formulas
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
