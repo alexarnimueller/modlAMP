@@ -42,14 +42,14 @@ A modlamp example script for peptide classification with a Random Forest classif
     lib_desc.calculate_crosscorr(7)
 
     # predict class probabilities for sequences in Library
-    proba = best_RF.df_predict(lib_desc.descriptor)
+    proba = best_RF.predict_proba(lib_desc.descriptor)
 
     # create ordered dictionary with sequences and prediction values and order it according to AMP predictions
     d = pd.DataFrame({'sequence': lib.sequences, 'prediction': proba[:, 1]})
     d50 = d.sort_values('prediction', ascending=False)[:50]  # 50 top AMP predictions
 
     # print the 50 top ranked predictions with their predicted probabilities
-    print d50
+    print(d50)
 
 
 Loading sequences from a ``FASTA`` file
