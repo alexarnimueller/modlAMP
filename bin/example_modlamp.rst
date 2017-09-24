@@ -24,7 +24,7 @@ A modlamp example script for peptide classification with a Random Forest classif
 
     # describe sequences with PepCATS descriptor
     descr = PeptideDescriptor(data.sequences, 'pepcats')
-    desc.calculate_crosscorr(7)
+    descr.calculate_crosscorr(7)
 
     # find best Random Forest classifier based on the PEPCATS data
     best_RF = train_best_model('RF', descr.descriptor, data.target)  # might take a while
