@@ -11,7 +11,7 @@ A modlamp example script for peptide classification with a Random Forest classif
     import pandas as pd
     from modlamp.datasets import load_AMPvsUniProt
     from modlamp.descriptors import PeptideDescriptor
-    from modlamp.ml import train_best_model
+    from modlamp.ml import train_best_model, score_cv
     from modlamp.descriptors import PeptideDescriptor
     from modlamp.sequences import MixedLibrary
 
@@ -30,7 +30,7 @@ A modlamp example script for peptide classification with a Random Forest classif
     best_RF = train_best_model('RF', descr.descriptor, data.target)  # might take a while
 
     # evaluate performance of best model in 10-fold cross validation
-    cv_scores(best_RF, descr.descriptor, data.target, cv=10)
+    score_cv(best_RF, descr.descriptor, data.target, cv=10)
 
     # generate a virtual peptide library of `libsize` sequences to screen
     lib = MixedLibrary(libsize)
