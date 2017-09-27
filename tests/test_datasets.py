@@ -49,7 +49,7 @@ class TestAMPUniport(unittest.TestCase):
         self.assertEqual('GNNRPVYIPQPRPPHPRI', self.data.sequences[5])
 
     def test_targets(self):
-        self.assertEqual([1, 1, 0, 0], [int(self.data.target[i]) for i in [0, 2645, 2646, 5291]])
+        self.assertEqual([1, 1, 0, 0], [int(self.data.target[i]) for i in [0, 2599, 2600, 5199]])
 
 if __name__ == '__main__':
     unittest.main()
