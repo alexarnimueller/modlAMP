@@ -36,7 +36,7 @@ from itertools import cycle
 
 import numpy as np
 
-from core import BaseSequence, ngrams_apd
+from modlamp.core import BaseSequence, ngrams_apd
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
