@@ -121,15 +121,15 @@ def load_AMPvsUniProt():
     """Function to load a dataset consisting of the whole **APD3** versus the same number of sequences randomly
     extracted from the **UniProt** database, to be used for classification.
 
-    The AMP class consists of 2646 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_ (extracted Jan. 2016).
-    The UniProt class consists of 2646 randomly extracted protein sequences from the `UniProt Database
+    The AMP class consists of 2600 AMP sequences from the `APD3 <http://aps.unmc.edu/AP/>`_ (extracted Jan. 2016).
+    The UniProt class consists of 2600 randomly extracted protein sequences from the `UniProt Database
     <http://uniprot.org/>`_ with the search query *length 10 TO 50* filtered for unnatural amino acids.
 
     =================    =====
     Classes                 2
-    AMP Samples          2646
-    UniProt Samples      2646
-    Samples total        5292
+    AMP Samples          2600
+    UniProt Samples      2600
+    Samples total        5200
     Dimensionality          1
     =================    =====
 
@@ -145,7 +145,7 @@ def load_AMPvsUniProt():
     >>> list(data.target_names)
     ['AMP', 'UniProt']
     >>> len(data.sequences)
-    5292
+    5200
     >>> data.target[:10]
     array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
     """

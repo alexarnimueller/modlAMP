@@ -17,7 +17,7 @@ from modlamp.sequences import MixedLibrary
 def main(libsize=1000):
     # load training sequences
     data = load_AMPvsUniProt()
-    
+
     # describe sequences with PEPCATS descriptor
     X = PeptideDescriptor(data.sequences, 'pepcats')
     X.calculate_crosscorr(7)

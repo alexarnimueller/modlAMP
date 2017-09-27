@@ -11,7 +11,7 @@ A modlamp example script for peptide classification with a Random Forest classif
     import pandas as pd
     from modlamp.datasets import load_AMPvsUniProt
     from modlamp.descriptors import PeptideDescriptor
-    from modlamp.ml import train_best_model
+    from modlamp.ml import train_best_model, score_cv
     from modlamp.descriptors import PeptideDescriptor
     from modlamp.sequences import MixedLibrary
 
@@ -24,13 +24,13 @@ A modlamp example script for peptide classification with a Random Forest classif
 
     # describe sequences with PepCATS descriptor
     descr = PeptideDescriptor(data.sequences, 'pepcats')
-    desc.calculate_crosscorr(7)
+    descr.calculate_crosscorr(7)
 
     # find best Random Forest classifier based on the PEPCATS data
     best_RF = train_best_model('RF', descr.descriptor, data.target)  # might take a while
 
     # evaluate performance of best model in 10-fold cross validation
-    cv_scores(best_RF, descr.descriptor, data.target, cv=10)
+    score_cv(best_RF, descr.descriptor, data.target, cv=10)
 
     # generate a virtual peptide library of `libsize` sequences to screen
     lib = MixedLibrary(libsize)
@@ -42,14 +42,14 @@ A modlamp example script for peptide classification with a Random Forest classif
     lib_desc.calculate_crosscorr(7)
 
     # predict class probabilities for sequences in Library
-    proba = best_RF.df_predict(lib_desc.descriptor)
+    proba = best_RF.predict_proba(lib_desc.descriptor)
 
     # create ordered dictionary with sequences and prediction values and order it according to AMP predictions
     d = pd.DataFrame({'sequence': lib.sequences, 'prediction': proba[:, 1]})
     d50 = d.sort_values('prediction', ascending=False)[:50]  # 50 top AMP predictions
 
     # print the 50 top ranked predictions with their predicted probabilities
-    print d50
+    print(d50)
 
 
 Loading sequences from a ``FASTA`` file

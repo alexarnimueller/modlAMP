@@ -200,8 +200,8 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
         
         if param_grid is None:
             param_grid = [{'clf__n_estimators': [10, 100, 500],
-                           'clf__max_features': ['sqrt', 'log2', None],
-                           'clf__bootstrap': [True, False],
+                           'clf__max_features': ['sqrt', 'log2'],
+                           'clf__bootstrap': [True],
                            'clf__criterion': ["gini"]}]
         
         gs = GridSearchCV(estimator=pipe_rf,
@@ -451,8 +451,7 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
             weightcv_train, weightcv_test = sample_weights[fold_train_index], sample_weights[fold_test_index]
             clf.fit(Xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
-                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test),
-                                               sample_weight=weightcv_test))
+                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test), sample_weight=weightcv_test))
         else:
             clf.fit(Xcv_train, ycv_train)
             for f in funcs:
