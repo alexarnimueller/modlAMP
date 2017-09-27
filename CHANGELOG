@@ -50,3 +50,4 @@ v3.2.1  05.07.2017 -- Move to pypi.org
 v3.2.2  14.07.2017 -- Change references to documentation and move it to http://modlamp.org
 v3.2.3  11.09.2017 -- Improve Python3 compatibility, change bugs in bin scripts, optimize save_fasta method
 v3.2.4  15.09.2017 -- Import bug fix
+v3.3.0  27.09.2017 -- New descriptor pepArc, bugfix in AmphipathicArc, removed short sequences from AMPvsUniProt

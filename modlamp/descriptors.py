@@ -867,8 +867,8 @@ class PeptideDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
 
     def calculate_arc(self, modality="max", append=False):
-        """
-        Method for calculating property arcs as seen in the helical wheel plot. Use for binary amino acid scales only.
+        """ Method for calculating property arcs as seen in the helical wheel plot. Use for binary amino acid scales only.
+        
         :param modality: modality of the arc to calculate, to choose between "max" and "mean".
         :param append: if true, append to current descriptor stored in the descriptor attribute.
         :return: calculated descriptor as numpy.array in the descriptor attribute.

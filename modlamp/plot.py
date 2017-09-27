@@ -298,7 +298,7 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
 
     :param sequence: {str} the peptide sequence for which the helical wheel should be drawn
     :param colorcoding: {str} the color coding to be used, available: *rainbow*, *charge*, *polar*, *simple*,
-    *amphipathic*, *none*
+        *amphipathic*, *none*
     :param lineweights: {boolean} defines whether connection lines decrease in thickness along the sequence
     :param filename: {str} filename  where to safe the plot. *default = None* --> show the plot
     :param seq: {bool} whether the amino acid sequence should be plotted as a title
