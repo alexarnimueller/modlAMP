@@ -851,6 +851,11 @@ def load_scale(scalename):
                     'K': [1, 0, 0, 1, 1, 0], 'L': [1, 0, 0, 0, 0, 0], 'M': [1, 0, 1, 0, 0, 0], 'N': [0, 0, 1, 1, 0, 0],
                     'P': [1, 0, 0, 0, 0, 0], 'Q': [0, 0, 1, 1, 0, 0], 'R': [1, 0, 0, 1, 1, 0], 'S': [0, 0, 1, 1, 0, 0],
                     'T': [0, 0, 1, 1, 0, 0], 'V': [1, 0, 0, 0, 0, 0], 'W': [1, 1, 0, 1, 0, 0], 'Y': [1, 1, 1, 1, 0, 0]},
+        'peparc': {'A': [1, 0, 0, 0, 0], 'C': [0, 1, 0, 0, 0], 'D': [0, 1, 0, 1, 0], 'E': [0, 1, 0, 1, 0],
+                   'F': [1, 0, 0, 0, 0], 'G': [0, 0, 0, 0, 0], 'H': [0, 1, 1, 0, 0], 'I': [1, 0, 0, 0, 0],
+                   'K': [0, 1, 1, 0, 0], 'L': [1, 0, 0, 0, 0], 'M': [1, 0, 0, 0, 0], 'N': [0, 1, 0, 0, 0],
+                   'P': [0, 0, 0, 0, 1], 'Q': [0, 1, 0, 0, 0], 'R': [0, 1, 1, 0, 0], 'S': [0, 1, 0, 0, 0],
+                   'T': [0, 1, 0, 0, 0], 'V': [1, 0, 0, 0, 0], 'W': [1, 0, 0, 0, 0], 'Y': [1, 0, 0, 0, 0]},
         'polarity': {'A': [0.395], 'C': [0.074], 'D': [1.], 'E': [0.914], 'F': [0.037], 'G': [0.506], 'H': [0.679],
                      'I': [0.037], 'K': [0.79], 'L': [0.], 'M': [0.099], 'N': [0.827], 'P': [0.383], 'Q': [0.691],
                      'R': [0.691], 'S': [0.531], 'T': [0.457], 'V': [0.123], 'W': [0.062], 'Y': [0.16]},
@@ -947,7 +952,7 @@ def load_scale(scalename):
             for k, v in scales[scale].items():
                 d[k].extend(v)
         return 'all', d
-    
+
     elif scalename == 'instability':
         d = {
             "A": {"A": 1.0, "C": 44.94, "E": 1.0, "D": -7.49, "G": 1.0, "F": 1.0, "I": 1.0, "H": -7.49, "K": 1.0,
@@ -1011,7 +1016,7 @@ def load_scale(scalename):
                   "M": 44.94, "L": 1.0, "N": 1.0, "Q": 1.0, "P": 13.34, "S": 1.0, "R": -15.91, "T": -7.49, "W": -9.37,
                   "V": 1.0, "Y": 13.34}}
         return 'instability', d
-    
+
     else:
         return scalename, scales[scalename]
 
@@ -1043,7 +1048,7 @@ def save_fasta(filename, sequences, names=None):
     """
     if os.path.exists(filename):
         os.remove(filename)  # remove outputfile, it it exists
-    
+
     with open(filename, 'w') as o:
         for n, seq in enumerate(sequences):
             if names:
@@ -1055,9 +1060,9 @@ def save_fasta(filename, sequences, names=None):
 
 def aa_weights():
     """Function holding molecular weight data on all natural amino acids.
-    
+
     :return: dictionary with amino acid letters and corresponding weights
-    
+
     .. versionadded:: v2.4.1
     """
     weights = {'A': 89.093, 'C': 121.158, 'D': 133.103, 'E': 147.129, 'F': 165.189, 'G': 75.067,
@@ -1069,7 +1074,7 @@ def aa_weights():
 
 def count_aas(seq, scale='relative'):
     """Function to count the amino acids occuring in a given sequence.
-    
+
     :param seq: {str} amino acid sequence
     :param scale: {'absolute' or 'relative'} defines whether counts or frequencies are given for each AA
     :return: {dict} dictionary with amino acids as keys and their counts in the sequence as values.
@@ -1088,7 +1093,7 @@ def count_aas(seq, scale='relative'):
 def aa_energies():
     """Function holding free energies of transfer between cyclohexane and water for all natural amino acids.
     H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
-    
+
     :return: dictionary with amino acid letters and corresponding energies.
     """
     energies = {'L': -4.92, 'I': -4.92, 'V': -4.04, 'F': -2.98, 'M': -2.35, 'W': -2.33, 'A': -1.81, 'C': -1.28,
@@ -1103,7 +1108,7 @@ def ngrams_apd():
     For all 2, 3 and 4grams, all possible ngrams were generated from all sequences and the top 50 most frequent
     assembled into a list. Finally, leading and tailing spaces were striped and duplicates as well as ngrams containing
     spaces were removed.
-    
+
     :return: numpy.array containing most frequent ngrams
     """
     ngrams = np.array(['AGK', 'CKI', 'RR', 'YGGG', 'LSGL', 'RG', 'YGGY', 'PRP', 'LGGG',

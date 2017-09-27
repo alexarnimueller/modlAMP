@@ -4,7 +4,7 @@ from modlamp.sequences import AmphipathicArc
 
 class TestAmphipathicArc(unittest.TestCase):
     S = AmphipathicArc(10, 8, 27)
-    S.generate_sequences(arcsize=120)
+    S.generate_sequences(arcsize=100)
     
     def test_seq_num(self):
         self.assertEqual(len(self.S.sequences), 10)

@@ -353,13 +353,13 @@ class AmphipathicArc(BaseSequence):
         """Method to generate the possible amphipathic helices with defined hydrophobic arc sizes (option
         ``arcsize``), with mixed arc sizes (option ``arcsize=None``)
 
-        :param arcsize: {int} to choose among 80, 120, 160, 200, 240, or choose ``None`` to generate a mixture.
+        :param arcsize: {int} to choose among 80, 140, 160, 200, 240, or choose ``None`` to generate a mixture.
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
         >>> from modlamp.sequences import AmphipathicArc
         >>> amphi_hel = AmphipathicArc(4, 10, 25)
-        >>> amphi_hel.generate_sequences(80)
+        >>> amphi_hel.generate_sequences(100)
         >>> amphi_hel.sequences
         ['YLYANLRQE', 'GVKPRIK', 'RWKKKVKDSVKDFEKRFKDIEKRIQRKLA', 'KIKEQLRNSVSGWHRN']
         """
@@ -383,15 +383,15 @@ class AmphipathicArc(BaseSequence):
                 idx = idxcycle()
                 self.sequences.append(''.join(seq))
                 
-        elif arcsize == 80:
+        elif arcsize == 100:
             idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
-        elif arcsize == 120:
+        elif arcsize == 140:
             idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0]
-        elif arcsize == 160:
+        elif arcsize == 180:
             idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
-        elif arcsize == 200:
+        elif arcsize == 220:
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
-        elif arcsize == 240:
+        elif arcsize == 260:
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
         else:
             raise AttributeError("Arc size unknown, choose among: 80, 120, 160, 200, 240 or None (= mixed).")
