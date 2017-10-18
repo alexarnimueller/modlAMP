@@ -960,8 +960,9 @@ class PeptideDescriptor(BaseDescriptor):
                                             arc += 10
 
                     all_arcs.append(arc)
-                    arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
-                    all_arcs = [arc0] + all_arcs[1:]
+                    if not arc == 360:
+                        arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
+                        all_arcs = [arc0] + all_arcs[1:]
 
                     window_arc.append(np.max(all_arcs))  # append to window arcs the maximum arc of this PF
                 allwindows_arc.append(window_arc)  # append all PF arcs of this window
