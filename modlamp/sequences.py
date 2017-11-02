@@ -51,37 +51,38 @@ class Random(BaseSequence):
     - **rand**: equal probabilities for all amino acids
     - **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
     - **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
+    - **ACP**: amino acid probabilities taken from 339 linear peptides in CancerPPD database `CancerPPD  <http://http://crdd.osdd.net/raghava/cancerppd/>`
     - **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
     The probability values for all natural AA can be found in the following table:
 
-    ===  ====    ======    =========    ==========
-    AA   rand    AMP       AMPnoCM      randnoCM
-    ===  ====    ======    =========    ==========
-    A    0.05    0.0766    0.0812275    0.05555555
-    C    0.05    0.071     0.0          0.0
-    D    0.05    0.026     0.0306275    0.05555555
-    E    0.05    0.0264    0.0310275    0.05555555
-    F    0.05    0.0405    0.0451275    0.05555555
-    G    0.05    0.1172    0.1218275    0.05555555
-    H    0.05    0.021     0.0256275    0.05555555
-    I    0.05    0.061     0.0656275    0.05555555
-    K    0.05    0.0958    0.1004275    0.05555555
-    L    0.05    0.0838    0.0884275    0.05555555
-    M    0.05    0.0123    0.0          0.0
-    N    0.05    0.0386    0.0432275    0.05555555
-    P    0.05    0.0463    0.0509275    0.05555555
-    Q    0.05    0.0251    0.0297275    0.05555555
-    R    0.05    0.0545    0.0591275    0.05555555
-    S    0.05    0.0613    0.0659275    0.05555555
-    T    0.05    0.0455    0.0501275    0.05555555
-    V    0.05    0.0572    0.0618275    0.05555555
-    W    0.05    0.0155    0.0201275    0.05555555
-    Y    0.05    0.0244    0.0290275    0.05555555
-    ===  ====    ======    =========    ==========
+    ===  ====    ======    =========    ==========  ==========
+    AA   rand    AMP       AMPnoCM      randnoCM    ACP
+    ===  ====    ======    =========    ==========  ==========
+    A    0.05    0.0766    0.0812275    0.05555555  0.14526966
+    C    0.05    0.071     0.0          0.0         0.
+    D    0.05    0.026     0.0306275    0.05555555  0.00690031
+    E    0.05    0.0264    0.0310275    0.05555555  0.00780824
+    F    0.05    0.0405    0.0451275    0.05555555  0.06991102
+    G    0.05    0.1172    0.1218275    0.05555555  0.04957327
+    H    0.05    0.021     0.0256275    0.05555555  0.01725077
+    I    0.05    0.061     0.0656275    0.05555555  0.05647358
+    K    0.05    0.0958    0.1004275    0.05555555  0.27637552
+    L    0.05    0.0838    0.0884275    0.05555555  0.17759216
+    M    0.05    0.0123    0.0          0.0         0.00998729
+    N    0.05    0.0386    0.0432275    0.05555555  0.00798983
+    P    0.05    0.0463    0.0509275    0.05555555  0.01307427
+    Q    0.05    0.0251    0.0297275    0.05555555  0.00381333
+    R    0.05    0.0545    0.0591275    0.05555555  0.02941711
+    S    0.05    0.0613    0.0659275    0.05555555  0.02651171
+    T    0.05    0.0455    0.0501275    0.05555555  0.01543490
+    V    0.05    0.0572    0.0618275    0.05555555  0.04013074
+    W    0.05    0.0155    0.0201275    0.05555555  0.04067550
+    Y    0.05    0.0244    0.0290275    0.05555555  0.00581079
+    ===  ====    ======    =========    ==========  ==========
 
     """
-    
+
     def generate_sequences(self, proba='rand'):
         """Method to actually generate the sequences.
 
@@ -102,6 +103,8 @@ class Random(BaseSequence):
             self.prob = self.prob_AMP
         elif proba == 'randnoCM':
             self.prob = self.prob_randnoCM
+        elif proba == 'ACP':
+            self.prob = self.prob_ACP
         elif isinstance(proba, list) and len(proba) == 20:
             self.prob = proba
         # else just keep self.prob which is defined as equal probabilities for all AA
