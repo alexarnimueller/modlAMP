@@ -87,6 +87,106 @@ def _one_crosscorr(seq, window, scale):
     except ZeroDivisionError:
         print("ERROR!\nThe chosen correlation window % i is larger than the sequence %s !" % (window, seq))
 
+def _one_arc(seq, modality, scale):
+    """ Privat function used for calculating arc descriptors for one sequence and AA scale. This function is used by
+    :py:func:`calculate_arc` method method of :py:class:`PeptideDescriptor`.
+
+    :param seq: {str} amino acid sequence to calculate descriptor for
+    :param scale: {str} amino acid scale to be used to calculate descriptor
+    :return: {numpy.array} calculated descriptor data
+    """
+    desc_mat = []
+    for aa in seq:
+        desc_mat.append(scale[aa])
+    desc_mat = np.asarray(desc_mat)
+
+    # Check descriptor dimension
+    desc_dim = desc_mat.shape[1]
+
+    # list to store descriptor values for all windows
+    allwindows_arc = []
+
+    if len(seq) > 18:
+        window = 18
+        # calculates number of windows in sequence
+        num_windows = len(seq) - window
+    else:
+        window = len(seq)
+        num_windows = 1
+
+    # loop through all windows
+    for j in range(num_windows):
+        # slices descriptor matrix into current window
+        window_mat = desc_mat[j:j + window, :]
+
+        # defines order of amino acids in helical projection
+        order = [0, 11, 4, 15, 8, 1, 12, 5, 16, 9, 2, 13, 6, 17, 10, 3, 14, 7]
+
+        # orders window descriptor matrix into helical projection order
+        ordered = []
+        for pos in order:
+            try:
+                ordered.append(window_mat[pos, :])
+            except:
+                # for sequences of len < 18 adding dummy vector with 2s, length of descriptor dimensions
+                ordered.append([2] * desc_dim)
+        ordered = np.asarray(ordered)
+
+        window_arc = []
+
+        # loop through pharmacophoric features
+        for m in range(desc_dim):
+            all_arcs = []  # stores all arcs that can be found of a pharmacophoric feature
+            arc = 0
+
+            for n in range(18):  # for all positions in helix, regardless of sequence length
+                if ordered[n, m] == 0:  # if position does not contain pharmacophoric feature
+                    all_arcs.append(arc)  # append previous arc to all arcs list
+                    arc = 0  # arc is initialized
+                elif ordered[n, m] == 1:  # if position contains pharmacophoric feature(PF), elongate arc by 20°
+                    arc += 20
+                elif ordered[n, m] == 2:  # if position doesn't contain amino acid:
+                    if ordered[n - 1, m] == 1:  # if previous position contained PF add 10°
+                        arc += 10
+                    elif ordered[n - 1, m] == 0:  # if previous position didn't contain PF don't add anything
+                        arc += 0
+                    elif ordered[
+                                n - 2, m] == 1:  # if previous position is empty then check second previous for PF
+                        arc += 10
+                    if n == 17:  # if we are at the last position check for position n=0 instead of next position.
+                        if ordered[0, m] == 1:  # if it contains PF add 10° extra
+                            arc += 10
+                    else:  # if next position contains PF add 10° extra
+                        if ordered[n + 1, m] == 1:
+                            arc += 10
+                        elif ordered[n + 1, m] == 0:
+                            arc += 0
+                        else:  # if next position is empty check for 2nd next position
+                            if n == 16:
+                                if ordered[0, m] == 1:
+                                    arc += 10
+                            else:
+                                if ordered[n + 2, m] == 1:
+                                    arc += 10
+
+            all_arcs.append(arc)
+            if not arc == 360:
+                arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
+                all_arcs = [arc0] + all_arcs[1:]
+
+            window_arc.append(np.max(all_arcs))  # append to window arcs the maximum arc of this PF
+        allwindows_arc.append(window_arc)  # append all PF arcs of this window
+
+    allwindows_arc = np.asarray(allwindows_arc)
+
+    if modality == 'max':
+        final_arc = np.max(allwindows_arc, axis=0)  # calculate maximum / mean arc along all windows
+    elif modality == 'mean':
+        final_arc = np.mean(allwindows_arc, axis=0)
+    else:
+        print 'modality is unknown, please choose between "max" and "mean"\n.'
+        sys.exit()
+    return final_arc
 
 def _charge(seq, ph=7.0, amide=False):
     """Calculates charge of a single sequence. The method used is first described by Bjellqvist. In the case of
@@ -613,23 +713,24 @@ class PeptideDescriptor(BaseDescriptor):
     - **eisenberg**      (the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
     - **Ez**             (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)
     - **flexibility**    (amino acid side chain flexibilitiy scale, *[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.*)
-    - **gravy**          (GRAVY hydrophobicity amino acid scale, *[7] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **hopp-woods**     (Hopp-Woods amino acid hydrophobicity scale,*[8] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)
-    - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[9] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
-    - **janin**          (Janin hydrophobicity amino acid scale, [10] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
-    - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[11] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[12] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
-    - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[13] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
-    - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[14] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
+    - **grantham**       (amino acid side chain composition, polarity and molecular volume, *[8] Grantham, R. Science. 185, 862–864 (1974).*)
+    - **gravy**          (GRAVY hydrophobicity amino acid scale, *[9] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
+    - **hopp-woods**     (Hopp-Woods amino acid hydrophobicity scale,*[10] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)
+    - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[11] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
+    - **janin**          (Janin hydrophobicity amino acid scale, *[12] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
+    - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[13] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
+    - **levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[14] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
+    - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[15] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
+    - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[16] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
     - **pepArc**         (modlabs pharmacophoric feature scale, dimensions are: hydrophobicity, polarity, positive charge, negative charge, proline.)
-    - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **polarity**       (Amino acid polarity scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
-    - **PPCALI**         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[15] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **refractivity**   (Relative amino acid refractivity values, *[16] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
-    - **t_scale**        (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[17] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
-    - **TM_tend**        (Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[18] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
-    - **z3**             (The original three dimensional Z-scale, *[17] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
-    - **z5**             (The extended five dimensional Z-scale, *[18] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
+    - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[17] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **polarity**       (Amino acid polarity scale, *[18] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
+    - **PPCALI**         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[19] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **refractivity**   (Relative amino acid refractivity values, *[20] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
+    - **t_scale**        (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[21] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
+    - **TM_tend**        (Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[22] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
+    - **z3**             (The original three dimensional Z-scale, *[23] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
+    - **z5**             (The extended five dimensional Z-scale, *[24] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
     Further, amino acid scale independent methods can be calculated with help of the :class:`GlobalDescriptor` class.
 
@@ -880,104 +981,102 @@ class PeptideDescriptor(BaseDescriptor):
         >>> arc.descriptor
         array([[200, 160, 160,   0,   0]])
         """
-
-        desc = []
+        desc = Parallel(n_jobs=-1)(delayed(_one_arc)(seq, modality, self.scale) for seq in self.sequences)
 
         # Converts each of the amino acids to descriptor vector
         for seq in self.sequences:
-            desc_mat = []
-            for aa in seq:
-                desc_mat.append(self.scale[aa])
-            desc_mat = np.asarray(desc_mat)
 
-            # Check descriptor dimension
-            desc_dim = desc_mat.shape[1]
-
-            # list to store descriptor values for all windows
-            allwindows_arc = []
-
-            if len(seq) > 18:
-                window = 18
-                # calculates number of windows in sequence
-                num_windows = len(seq) - window
-            else:
-                window = len(seq)
-                num_windows = 1
-
-            # loop through all windows
-            for j in range(num_windows):
-                # slices descriptor matrix into current window
-                window_mat = desc_mat[j:j + window, :]
-
-                # defines order of amino acids in helical projection
-                order = [0, 11, 4, 15, 8, 1, 12, 5, 16, 9, 2, 13, 6, 17, 10, 3, 14, 7]
-
-                # orders window descriptor matrix into helical projection order
-                ordered = []
-                for pos in order:
-                    try:
-                        ordered.append(window_mat[pos, :])
-                    except:
-                        # for sequences of len < 18 adding dummy vector with 2s, length of descriptor dimensions
-                        ordered.append([2] * desc_dim)
-                ordered = np.asarray(ordered)
-
-                window_arc = []
-
-                # loop through pharmacophoric features
-                for m in range(desc_dim):
-                    all_arcs = []  # stores all arcs that can be found of a pharmacophoric feature
-                    arc = 0
-
-                    for n in range(18):  # for all positions in helix, regardless of sequence length
-                        if ordered[n, m] == 0:  # if position does not contain pharmacophoric feature
-                            all_arcs.append(arc)  # append previous arc to all arcs list
-                            arc = 0  # arc is initialized
-                        elif ordered[n, m] == 1:  # if position contains pharmacophoric feature(PF), elongate arc by 20°
-                            arc += 20
-                        elif ordered[n, m] == 2:  # if position doesn't contain amino acid:
-                            if ordered[n - 1, m] == 1:  # if previous position contained PF add 10°
-                                arc += 10
-                            elif ordered[n - 1, m] == 0:  # if previous position didn't contain PF don't add anything
-                                arc += 0
-                            elif ordered[
-                                        n - 2, m] == 1:  # if previous position is empty then check second previous for PF
-                                arc += 10
-                            if n == 17:  # if we are at the last position check for position n=0 instead of next position.
-                                if ordered[0, m] == 1:  # if it contains PF add 10° extra
-                                    arc += 10
-                            else:  # if next position contains PF add 10° extra
-                                if ordered[n + 1, m] == 1:
-                                    arc += 10
-                                elif ordered[n + 1, m] == 0:
-                                    arc += 0
-                                else:  # if next position is empty check for 2nd next position
-                                    if n == 16:
-                                        if ordered[0, m] == 1:
-                                            arc += 10
-                                    else:
-                                        if ordered[n + 2, m] == 1:
-                                            arc += 10
-
-                    all_arcs.append(arc)
-                    if not arc == 360:
-                        arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
-                        all_arcs = [arc0] + all_arcs[1:]
-
-                    window_arc.append(np.max(all_arcs))  # append to window arcs the maximum arc of this PF
-                allwindows_arc.append(window_arc)  # append all PF arcs of this window
-
-            allwindows_arc = np.asarray(allwindows_arc)
-
-            if modality == 'max':
-                final_arc = np.max(allwindows_arc, axis=0)  # calculate maximum / mean arc along all windows
-            elif modality == 'mean':
-                final_arc = np.mean(allwindows_arc, axis=0)
-            else:
-                print 'modality is unknown, please choose between "max" and "mean"\n.'
-                sys.exit()
-
-            desc.append(final_arc)
+            # desc_mat = []
+            # for aa in seq:
+            #     desc_mat.append(self.scale[aa])
+            # desc_mat = np.asarray(desc_mat)
+			#
+            # # Check descriptor dimension
+            # desc_dim = desc_mat.shape[1]
+			#
+            # # list to store descriptor values for all windows
+            # allwindows_arc = []
+			#
+            # if len(seq) > 18:
+            #     window = 18
+            #     # calculates number of windows in sequence
+            #     num_windows = len(seq) - window
+            # else:
+            #     window = len(seq)
+            #     num_windows = 1
+			#
+            # # loop through all windows
+            # for j in range(num_windows):
+            #     # slices descriptor matrix into current window
+            #     window_mat = desc_mat[j:j + window, :]
+			#
+            #     # defines order of amino acids in helical projection
+            #     order = [0, 11, 4, 15, 8, 1, 12, 5, 16, 9, 2, 13, 6, 17, 10, 3, 14, 7]
+			#
+            #     # orders window descriptor matrix into helical projection order
+            #     ordered = []
+            #     for pos in order:
+            #         try:
+            #             ordered.append(window_mat[pos, :])
+            #         except:
+            #             # for sequences of len < 18 adding dummy vector with 2s, length of descriptor dimensions
+            #             ordered.append([2] * desc_dim)
+            #     ordered = np.asarray(ordered)
+			#
+            #     window_arc = []
+			#
+            #     # loop through pharmacophoric features
+            #     for m in range(desc_dim):
+            #         all_arcs = []  # stores all arcs that can be found of a pharmacophoric feature
+            #         arc = 0
+			#
+            #         for n in range(18):  # for all positions in helix, regardless of sequence length
+            #             if ordered[n, m] == 0:  # if position does not contain pharmacophoric feature
+            #                 all_arcs.append(arc)  # append previous arc to all arcs list
+            #                 arc = 0  # arc is initialized
+            #             elif ordered[n, m] == 1:  # if position contains pharmacophoric feature(PF), elongate arc by 20°
+            #                 arc += 20
+            #             elif ordered[n, m] == 2:  # if position doesn't contain amino acid:
+            #                 if ordered[n - 1, m] == 1:  # if previous position contained PF add 10°
+            #                     arc += 10
+            #                 elif ordered[n - 1, m] == 0:  # if previous position didn't contain PF don't add anything
+            #                     arc += 0
+            #                 elif ordered[
+            #                             n - 2, m] == 1:  # if previous position is empty then check second previous for PF
+            #                     arc += 10
+            #                 if n == 17:  # if we are at the last position check for position n=0 instead of next position.
+            #                     if ordered[0, m] == 1:  # if it contains PF add 10° extra
+            #                         arc += 10
+            #                 else:  # if next position contains PF add 10° extra
+            #                     if ordered[n + 1, m] == 1:
+            #                         arc += 10
+            #                     elif ordered[n + 1, m] == 0:
+            #                         arc += 0
+            #                     else:  # if next position is empty check for 2nd next position
+            #                         if n == 16:
+            #                             if ordered[0, m] == 1:
+            #                                 arc += 10
+            #                         else:
+            #                             if ordered[n + 2, m] == 1:
+            #                                 arc += 10
+			#
+            #         all_arcs.append(arc)
+            #         if not arc == 360:
+            #             arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
+            #             all_arcs = [arc0] + all_arcs[1:]
+			#
+            #         window_arc.append(np.max(all_arcs))  # append to window arcs the maximum arc of this PF
+            #     allwindows_arc.append(window_arc)  # append all PF arcs of this window
+			#
+            # allwindows_arc = np.asarray(allwindows_arc)
+			#
+            # if modality == 'max':
+            #     final_arc = np.max(allwindows_arc, axis=0)  # calculate maximum / mean arc along all windows
+            # elif modality == 'mean':
+            #     final_arc = np.mean(allwindows_arc, axis=0)
+            # else:
+            #     print 'modality is unknown, please choose between "max" and "mean"\n.'
+            #     sys.exit()
 
             if append:
                 self.descriptor = np.hstack((self.descriptor, np.array(desc)))
