@@ -825,7 +825,8 @@ class PeptideDescriptor(BaseDescriptor):
             shorter than 1000, the **global** hydrophobic moment will be calculated. Otherwise, the maximal
             hydrophiobic moment for the chosen window size found in the sequence will be returned.
         :param angle: {int} angle in which to calculate the moment. **100** for alpha helices, **180** for beta sheets.
-        :param modality: {'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment.
+        :param modality: {'all', 'max' or 'mean'} Calculate respectively maximum or mean hydrophobic moment. If all,
+            moments for all windows are returned.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: Calculated descriptor as a numpy.array in the attribute :py:attr:`descriptor` and all possible global
@@ -863,8 +864,10 @@ class PeptideDescriptor(BaseDescriptor):
                     moment = np.max(moms)
                 elif modality == 'mean':  # take average value over all windows
                     moment = np.mean(moms)
+                elif modality == 'all':
+                    moment = moms
                 else:
-                    print('\nERROR!\nModality parameter is wrong, please choose between "max" and "mean".\n')
+                    print('\nERROR!\nModality parameter is wrong, please choose between "all", "max" and "mean".\n')
                     return
                 desc.append(moment)
                 self.all_moms.append(moms)
