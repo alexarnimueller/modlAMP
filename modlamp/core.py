@@ -118,7 +118,8 @@ class BaseSequence(object):
         # AA probabilities for perfect amphipathic helix of different arc sizes
         self.prob_amphihel = [[0.04545455, 0., 0.04545454, 0.04545455, 0., 0.04545455, 0.04545455, 0., 0.25, 0., 0.,
                                0.04545454, 0.04545455, 0.04545454, 0.25, 0.04545454, 0.04545454, 0., 0., 0.04545454],
-                              [0., 0., 0., 0., 0.2, 0., 0., 0.2, 0., 0.2, 0., 0., 0., 0., 0., 0., 0., 0.2, 0.2, 0.]]
+                              [0., 0., 0., 0., 0.1666666, 0., 0., 0.1666666, 0., 0.1666666, 0., 0., 0., 0., 0., 0., 0.,
+                               0.1666666, 0.1666666, 0.]]
 
         # helical ACP AA probabilities, depending on the position of the AA in the helix.
         self.prob_ACPhel = np.array([[0.0483871, 0., 0., 0.0483871, 0.01612903, 0.12903226, 0.03225807, 0.09677419,
