@@ -332,12 +332,12 @@ class AmphipathicArc(BaseSequence):
     C     0.00   0.00
     D     0.00   0.05
     E     0.00   0.05
-    F     0.20   0.00
+    F     0.16   0.00
     G     0.00   0.05
     H     0.00   0.05
-    I     0.20   0.00
+    I     0.16   0.00
     K     0.00   0.25
-    L     0.20   0.00
+    L     0.16   0.00
     M     0.00   0.00
     N     0.00   0.05
     P     0.00   0.05
@@ -345,18 +345,18 @@ class AmphipathicArc(BaseSequence):
     R     0.00   0.25
     S     0.00   0.05
     T     0.00   0.05
-    V     0.20   0.00
-    W     0.20   0.00
-    Y     0.00   0.05
+    V     0.16   0.00
+    W     0.16   0.00
+    Y     0.16   0.05
     ===   ====   =====
 
     """
     
-    def generate_sequences(self, arcsize=160):
+    def generate_sequences(self, arcsize=180):
         """Method to generate the possible amphipathic helices with defined hydrophobic arc sizes (option
         ``arcsize``), with mixed arc sizes (option ``arcsize=None``)
 
-        :param arcsize: {int} to choose among 80, 140, 160, 200, 240, or choose ``None`` to generate a mixture.
+        :param arcsize: {int} to choose among 100, 140, 180, 220, 260, or choose `mixed` to generate a mixture.
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
@@ -368,23 +368,12 @@ class AmphipathicArc(BaseSequence):
         """
         self.clean()
         
-        if not arcsize:  # generate mixed arc sizes
+        if arcsize == 'mixed':  # generate mixed arc sizes
             idx = [[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
                    [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
                    [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
                    [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
                    [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]]
-            idxcycle = cycle(idx).next
-            idx = idxcycle()
-            for s in range(self.seqnum):
-                seq = []
-                icycle = cycle(idx).next  # jumping from one probability to next one in idx array
-                i = icycle()
-                for n in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                    seq.append(random.choice(self.AAs, p=self.prob_amphihel[i]))
-                    i = icycle()
-                idx = idxcycle()
-                self.sequences.append(''.join(seq))
                 
         elif arcsize == 100:
             idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
@@ -398,7 +387,9 @@ class AmphipathicArc(BaseSequence):
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
         else:
             raise AttributeError("Arc size unknown, choose among: 80, 120, 160, 200, 240 or None (= mixed).")
-        
+
+        idxcycle = cycle(idx).next
+        idx = idxcycle()
         for s in range(self.seqnum):
             seq = []
             icycle = cycle(idx).next  # jumping from one probability to next one in idx array
