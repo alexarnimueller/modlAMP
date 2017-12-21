@@ -667,7 +667,6 @@ class AMPngrams(BaseSequence):
         
         :return: list of sequences in :py:attr:`sequences`
         """
-        self.clean()
         for _ in range(self.seqnum):
             size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
             # build sequence from a random selection of ngrams
