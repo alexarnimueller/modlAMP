@@ -5,7 +5,7 @@ Welcome to modlAMP's documentation!
 
 **Authors:** Alex Müller, Gisela Gabernet
 
-**Copyright:** (c) 2016 - 2017 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)
+**Copyright:** (c) 2016 - 2018 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)
 <http://www.cadd.ethz.ch>`_.
 
 This is a **Python package** (for Python 2.7) that was designed for working with peptides, proteins or any
@@ -27,8 +27,8 @@ basic instructions on how to use the package, check the `README <readme.html>`_ 
 
 **If you use modlAMP in a scientific publication, we would appreciate citations to the following paper:**
 
-Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics*, DOI:
-`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.
+Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics* **33**, (17), 2753-2755,
+DOI:`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.
 
 Indices and tables
 ==================
