@@ -278,5 +278,5 @@ Citing modlAMP
 
 If you are using **modlAMP** for a scientific publication, please cite the following paper:
 
-Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics*, DOI:
-`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.
+Müller A. T. *et al.* (2017) modlAMP: Python for anitmicrobial peptides, *Bioinformatics* **33**, (17), 2753-2755,
+DOI:`10.1093/bioinformatics/btx285 <https://doi.org/10.1093/bioinformatics/btx285>`_.
