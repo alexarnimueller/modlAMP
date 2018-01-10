@@ -51,37 +51,38 @@ class Random(BaseSequence):
     - **rand**: equal probabilities for all amino acids
     - **AMP**: amino acid probabilities taken from the antimicrobial peptide database `APD3 <http://aps.unmc.edu/AP/statistic/statistic.php>`_, March 17, 2016, containing 2674 sequences.
     - **AMPnoCM**: same amino acid probabilities as **AMP** but lacking Cys and Met (for synthesizability)
+    - **ACP**: amino acid probabilities taken from 339 linear peptides in CancerPPD database `CancerPPD  <http://http://crdd.osdd.net/raghava/cancerppd/>`
     - **randnoCM**: equal probabilities for all amino acids, except 0.0 for both Cys and Met (for synthesizability)
 
     The probability values for all natural AA can be found in the following table:
 
-    ===  ====    ======    =========    ==========
-    AA   rand    AMP       AMPnoCM      randnoCM
-    ===  ====    ======    =========    ==========
-    A    0.05    0.0766    0.0812275    0.05555555
-    C    0.05    0.071     0.0          0.0
-    D    0.05    0.026     0.0306275    0.05555555
-    E    0.05    0.0264    0.0310275    0.05555555
-    F    0.05    0.0405    0.0451275    0.05555555
-    G    0.05    0.1172    0.1218275    0.05555555
-    H    0.05    0.021     0.0256275    0.05555555
-    I    0.05    0.061     0.0656275    0.05555555
-    K    0.05    0.0958    0.1004275    0.05555555
-    L    0.05    0.0838    0.0884275    0.05555555
-    M    0.05    0.0123    0.0          0.0
-    N    0.05    0.0386    0.0432275    0.05555555
-    P    0.05    0.0463    0.0509275    0.05555555
-    Q    0.05    0.0251    0.0297275    0.05555555
-    R    0.05    0.0545    0.0591275    0.05555555
-    S    0.05    0.0613    0.0659275    0.05555555
-    T    0.05    0.0455    0.0501275    0.05555555
-    V    0.05    0.0572    0.0618275    0.05555555
-    W    0.05    0.0155    0.0201275    0.05555555
-    Y    0.05    0.0244    0.0290275    0.05555555
-    ===  ====    ======    =========    ==========
+    ===  ====    ======    =========    ==========  ==========
+    AA   rand    AMP       AMPnoCM      randnoCM    ACP
+    ===  ====    ======    =========    ==========  ==========
+    A    0.05    0.0766    0.0812275    0.05555555  0.14526966
+    C    0.05    0.071     0.0          0.0         0.
+    D    0.05    0.026     0.0306275    0.05555555  0.00690031
+    E    0.05    0.0264    0.0310275    0.05555555  0.00780824
+    F    0.05    0.0405    0.0451275    0.05555555  0.06991102
+    G    0.05    0.1172    0.1218275    0.05555555  0.04957327
+    H    0.05    0.021     0.0256275    0.05555555  0.01725077
+    I    0.05    0.061     0.0656275    0.05555555  0.05647358
+    K    0.05    0.0958    0.1004275    0.05555555  0.27637552
+    L    0.05    0.0838    0.0884275    0.05555555  0.17759216
+    M    0.05    0.0123    0.0          0.0         0.00998729
+    N    0.05    0.0386    0.0432275    0.05555555  0.00798983
+    P    0.05    0.0463    0.0509275    0.05555555  0.01307427
+    Q    0.05    0.0251    0.0297275    0.05555555  0.00381333
+    R    0.05    0.0545    0.0591275    0.05555555  0.02941711
+    S    0.05    0.0613    0.0659275    0.05555555  0.02651171
+    T    0.05    0.0455    0.0501275    0.05555555  0.01543490
+    V    0.05    0.0572    0.0618275    0.05555555  0.04013074
+    W    0.05    0.0155    0.0201275    0.05555555  0.04067550
+    Y    0.05    0.0244    0.0290275    0.05555555  0.00581079
+    ===  ====    ======    =========    ==========  ==========
 
     """
-    
+
     def generate_sequences(self, proba='rand'):
         """Method to actually generate the sequences.
 
@@ -102,6 +103,8 @@ class Random(BaseSequence):
             self.prob = self.prob_AMP
         elif proba == 'randnoCM':
             self.prob = self.prob_randnoCM
+        elif proba == 'ACP':
+            self.prob = self.prob_ACP
         elif isinstance(proba, list) and len(proba) == 20:
             self.prob = proba
         # else just keep self.prob which is defined as equal probabilities for all AA
@@ -329,12 +332,12 @@ class AmphipathicArc(BaseSequence):
     C     0.00   0.00
     D     0.00   0.05
     E     0.00   0.05
-    F     0.20   0.00
+    F     0.16   0.00
     G     0.00   0.05
     H     0.00   0.05
-    I     0.20   0.00
+    I     0.16   0.00
     K     0.00   0.25
-    L     0.20   0.00
+    L     0.16   0.00
     M     0.00   0.00
     N     0.00   0.05
     P     0.00   0.05
@@ -342,18 +345,18 @@ class AmphipathicArc(BaseSequence):
     R     0.00   0.25
     S     0.00   0.05
     T     0.00   0.05
-    V     0.20   0.00
-    W     0.20   0.00
-    Y     0.00   0.05
+    V     0.16   0.00
+    W     0.16   0.00
+    Y     0.16   0.05
     ===   ====   =====
 
     """
     
-    def generate_sequences(self, arcsize=160):
+    def generate_sequences(self, arcsize=180):
         """Method to generate the possible amphipathic helices with defined hydrophobic arc sizes (option
         ``arcsize``), with mixed arc sizes (option ``arcsize=None``)
 
-        :param arcsize: {int} to choose among 80, 140, 160, 200, 240, or choose ``None`` to generate a mixture.
+        :param arcsize: {int} to choose among 100, 140, 180, 220, 260, or choose `mixed` to generate a mixture.
         :return: A list of sequences in the attribute :py:attr:`sequences`.
         :Example:
 
@@ -365,23 +368,12 @@ class AmphipathicArc(BaseSequence):
         """
         self.clean()
         
-        if not arcsize:  # generate mixed arc sizes
+        if arcsize == 'mixed':  # generate mixed arc sizes
             idx = [[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
                    [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
                    [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
                    [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0],
                    [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]]
-            idxcycle = cycle(idx).next
-            idx = idxcycle()
-            for s in range(self.seqnum):
-                seq = []
-                icycle = cycle(idx).next  # jumping from one probability to next one in idx array
-                i = icycle()
-                for n in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                    seq.append(random.choice(self.AAs, p=self.prob_amphihel[i]))
-                    i = icycle()
-                idx = idxcycle()
-                self.sequences.append(''.join(seq))
                 
         elif arcsize == 100:
             idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
@@ -395,7 +387,9 @@ class AmphipathicArc(BaseSequence):
             idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
         else:
             raise AttributeError("Arc size unknown, choose among: 80, 120, 160, 200, 240 or None (= mixed).")
-        
+
+        idxcycle = cycle(idx).next
+        idx = idxcycle()
         for s in range(self.seqnum):
             seq = []
             icycle = cycle(idx).next  # jumping from one probability to next one in idx array
@@ -664,7 +658,6 @@ class AMPngrams(BaseSequence):
         
         :return: list of sequences in :py:attr:`sequences`
         """
-        self.clean()
         for _ in range(self.seqnum):
             size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
             # build sequence from a random selection of ngrams

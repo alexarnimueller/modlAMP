@@ -437,8 +437,10 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
 
     cv_scores = []
 
-    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
-    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score',
+             'confusion_matrix']
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc',
+               'TN', 'FP', 'FN', 'TP', 'FDR', 'sensitivity', 'specificity']
 
     kf = StratifiedKFold(n_splits=10, random_state=42, shuffle=shuffle)
     clf = clone(classifier)
@@ -452,10 +454,26 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
             clf.fit(Xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test), sample_weight=weightcv_test))
+            tn, fp, fn, tp = scores.pop().ravel()
+            scores = scores + [tn, fp, fn, tp]
+            fdr = float(fp) / (tp + fp)
+            scores.append(fdr)
+            sn = float(tp) / (tp + fn)
+            scores.append(sn)
+            sp = float(tn) / (tn + fp)
+            scores.append(sp)
         else:
             clf.fit(Xcv_train, ycv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test)))
+            tn, fp, fn, tp = scores.pop().ravel()
+            scores = scores + [tn, fp, fn, tp]
+            fdr = float(fp) / (tp + fp)
+            scores.append(fdr)
+            sn = float(tp) / (tp + fn)
+            scores.append(sn)
+            sp = float(tn) / (tn + fp)
+            scores.append(sp)
 
         cv_scores.append(scores)
 
@@ -468,7 +486,7 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
     df_scores['mean'] = df_scores.mean(axis=1)
     df_scores['std'] = df_scores.std(axis=1)
 
-    return df_scores.round(3)
+    return df_scores.round(2)
 
 
 def score_testset(classifier, x_test, y_test, sample_weights=None):
@@ -515,12 +533,22 @@ def score_testset(classifier, x_test, y_test, sample_weights=None):
        roc_auc  0.919
     """
     scores = []
-    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc']
-    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score']
+    metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc',
+               'TN', 'FP', 'FN', 'TP', 'FDR', 'sensitivity', 'specificity']
+    funcs = ['matthews_corrcoef', 'accuracy_score', 'precision_score', 'recall_score', 'f1_score', 'roc_auc_score',
+             'confusion_matrix']
     
     for f in funcs:
         scores.append(getattr(mets, f)(y_test, classifier.predict(x_test), sample_weight=sample_weights))  # fore every metric, calculate the scores
     
+    tn, fp, fn, tp = scores.pop().ravel()
+    scores = scores + [tn, fp, fn, tp]
+    fdr = float(fp) / (tp + fp)
+    scores.append(fdr)
+    sn = float(tp) / (tp + fn)
+    scores.append(sn)
+    sp = float(tn) / (tn + fp)
+    scores.append(sp)
     df_scores = pd.DataFrame({'Scores': scores}, index=metrics)
     
-    return df_scores.round(3)
+    return df_scores.round(2)
