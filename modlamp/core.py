@@ -21,7 +21,6 @@ import re
 import numpy as np
 import pandas as pd
 import collections
-from Bio.SeqIO.FastaIO import FastaIterator
 from scipy.spatial import distance
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
@@ -1043,11 +1042,21 @@ def read_fasta(inputfile):
     """
     names = list()  # list for storing names
     sequences = list()  # list for storing sequences
-    with open(inputfile) as handle:
-        for record in FastaIterator(handle):  # use biopythons SeqIO module
-            names.append(record.description)
-            sequences.append(str(record.seq))
-    return sequences, names
+    seq = str()
+    with open(inputfile) as f:
+        all = f.readlines()
+        last = all[-1]
+        for line in all:
+            if line.startswith('>'):
+                names.append(line.split(' ')[0][1:].strip())  # add FASTA name without description as molecule name
+                sequences.append(seq.strip())
+                seq = str()
+            elif line == last:
+                seq += line.strip()  # remove potential white space
+                sequences.append(seq.strip())
+            else:
+                seq += line.strip()  # remove potential white space
+    return sequences[1:], names
 
 
 def save_fasta(filename, sequences, names=None):
