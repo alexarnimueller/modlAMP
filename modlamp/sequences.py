@@ -407,7 +407,7 @@ class AmphipathicArc(BaseSequence):
         :Example:
 
         >>> amphi_grad = AmphipathicArc(10, 7, 30)
-        >>> amphi_grad.generate_mixed_arcs()
+        >>> amphi_grad.generate_sequences(180)
         >>> amphi_grad.make_H_gradient()
         >>> amphi_grad.sequences
         """
