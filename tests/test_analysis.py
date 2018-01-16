@@ -10,20 +10,25 @@ from os.path import dirname, join
 class TestAnalysis(unittest.TestCase):
     sequences, names = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
     a = GlobalAnalysis(sequences)
+    s1 = sequences[:10]
+    s2 = sequences[10:20]
+    b = GlobalAnalysis([s1, s2])
     sequences = np.array(sequences)
-    b = GlobalAnalysis(sequences)
-    sequences = pd.DataFrame(sequences)
     c = GlobalAnalysis(sequences)
+    sequences = pd.DataFrame(sequences)
+    d = GlobalAnalysis(sequences)
+    sequences = sequences.T
+    e = GlobalAnalysis(sequences, names=['Lib1'])
 
     def test_input(self):
         self.assertEqual(self.a.library[0, 4], 'ALHAHASF')
         self.assertEqual(self.b.library[0, 4], 'ALHAHASF')
         self.assertEqual(self.c.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.d.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.e.library[0, 4], 'ALHAHASF')
     
     def test_libshape(self):
         self.assertEqual(self.a.library.shape[1], 246)
-        self.assertEqual(self.b.library.shape[1], 246)
-        self.assertEqual(self.c.library.shape[1], 246)
         
     def test_aa_freq(self):
         self.a.calc_aa_freq(plot=False)
@@ -44,6 +49,9 @@ class TestAnalysis(unittest.TestCase):
     def test_len(self):
         self.a.calc_len()
         self.assertEqual(self.a.len[0][2], 24.)
+
+    def test_summary(self):
+        self.a.plot_summary(plot=False)
 
 
 if __name__ == '__main__':

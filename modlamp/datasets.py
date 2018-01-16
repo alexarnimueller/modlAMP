@@ -46,7 +46,6 @@ class Bunch(dict):
     >>> b['c']
     6
     """
-
     def __init__(self, **kwargs):
         dict.__init__(self, kwargs)
 
