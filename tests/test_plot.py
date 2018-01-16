@@ -12,7 +12,7 @@ class TestPlots(unittest.TestCase):
     fname = join(dirname(__file__), 'files/plots/testplot.png')
 
     def test_feature(self):
-        plot_feature(self.data[0], targets=self.targets, filename=self.fname)
+        plot_feature(self.data[0], x_tick_labels=['1', '0'], targets=self.targets, filename=self.fname)
 
     def test_violin(self):
         plot_violin(self.data[0], filename=self.fname)
@@ -28,8 +28,7 @@ class TestPlots(unittest.TestCase):
 
     def test_profile(self):
         plot_profile(self.sequences[1], filename=self.fname)
-        self.assertRaises(TypeError, plot_profile)
-        self.assertRaises(KeyError, plot_profile('GLFDIVKKVVLVLVLV', scalename='pepcats', filename=self.fname))
+        self.assertRaises(KeyError, plot_profile, 'GLFDIVKKVVLVLVLV', 5, 'pepcats', self.fname)
 
     def test_pde(self):
         plot_pde(self.data, filename=self.fname)

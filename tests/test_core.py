@@ -32,7 +32,7 @@ class TestCore(unittest.TestCase):
         self.assertNotIn('ABCDEFGHIJKLMNOPQRSTUVWXYZ', self.s.sequences)
 
     def test_mutate(self):
-        self.b.mutate_AA(1, 1.)
+        self.b.mutate_AA(2, 1.)
         self.assertNotEqual('GLFDIVKKVVGALG', self.b.sequences[0])
 
     def test_rand_selection(self):

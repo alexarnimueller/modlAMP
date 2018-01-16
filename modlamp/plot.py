@@ -247,52 +247,48 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
     .. versionadded:: v2.1.5
     """
     # check if given scale is defined in PeptideDescriptor
-    try:
-        d = PeptideDescriptor(sequence, scalename)
-        seq_data = list()
-        seq_profile = list()
-        for a in sequence:
-            seq_data.append(d.scale[a])  # describe sequence by given scale
-        i = 0  # AA index
-        while (i + window) < len(sequence):
-            seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
-            i += 1
-        
-        # plot
-        fig, ax = plt.subplots()
-        x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
-        line = ax.plot(x_range, seq_profile)
-        plt.setp(line, color=color, linewidth=2.0)
-        
-        # axis labes and title
-        ax.set_xlabel('sequence position', fontweight='bold')
-        ax.set_ylabel(scalename + ' value', fontweight='bold')
-        ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window),
-                fontsize=16, fontweight='bold')
-        if seq:
-            ax.set_title(sequence, fontsize=16, fontweight='bold', y=1.02)
-        if ylim:
-            ax.set_ylim(ylim)
-        else:
-            ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
-        
-        # only left and bottom axes, no box
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.xaxis.set_ticks_position('bottom')
-        ax.yaxis.set_ticks_position('left')
-        
-        # show or save plot
-        if filename:
-            plt.savefig(filename, dpi=150)
-        else:
-            plt.show()
-    
-    except TypeError:
-        print("\nError\nNo sequence given!")
-    except KeyError:
-        print("\nSorry\nThis function cannot calculate a profile for the given scale '%s'." % scalename)
-        print("Use the one dimensional scales given in the documentation for modlamp.descriptors.PeptideDescriptors")
+    d = PeptideDescriptor(sequence, scalename)
+    if len(d.scale['A']) > 1:
+        raise KeyError("\nSorry\nThis function can only calculate profiles for 1D scales. '%s' has more than one "
+                       "dimension" % scalename)
+    seq_data = list()
+    seq_profile = list()
+    for a in sequence:
+        seq_data.append(d.scale[a])  # describe sequence by given scale
+    i = 0  # AA index
+    while (i + window) < len(sequence):
+        seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
+        i += 1
+
+    # plot
+    fig, ax = plt.subplots()
+    x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
+    line = ax.plot(x_range, seq_profile)
+    plt.setp(line, color=color, linewidth=2.0)
+
+    # axis labes and title
+    ax.set_xlabel('sequence position', fontweight='bold')
+    ax.set_ylabel(scalename + ' value', fontweight='bold')
+    ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window),
+            fontsize=16, fontweight='bold')
+    if seq:
+        ax.set_title(sequence, fontsize=16, fontweight='bold', y=1.02)
+    if ylim:
+        ax.set_ylim(ylim)
+    else:
+        ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
+
+    # only left and bottom axes, no box
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+
+    # show or save plot
+    if filename:
+        plt.savefig(filename, dpi=150)
+    else:
+        plt.show()
 
 
 def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False, moment=False):
