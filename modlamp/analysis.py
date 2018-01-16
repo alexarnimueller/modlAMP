@@ -59,7 +59,7 @@ class GlobalAnalysis(object):
             self.libnames = names
         
         # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1 and self.library.shape[0] == 1:
+        if len(self.library.shape) == 1:
             self.library = self.library.reshape((1, -1))
             if not names:
                 names = ['Lib1']

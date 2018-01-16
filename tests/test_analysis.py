@@ -1,16 +1,29 @@
 import unittest
 
+import numpy as np
+import pandas as pd
 from modlamp.analysis import GlobalAnalysis
 from modlamp.core import read_fasta
 from os.path import dirname, join
 
 
 class TestAnalysis(unittest.TestCase):
-    sequences, _ = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
-    a = GlobalAnalysis([sequences])
+    sequences, names = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
+    a = GlobalAnalysis(sequences)
+    sequences = np.array(sequences)
+    b = GlobalAnalysis(sequences)
+    sequences = pd.DataFrame(sequences)
+    c = GlobalAnalysis(sequences)
+
+    def test_input(self):
+        self.assertEqual(self.a.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.b.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.c.library[0, 4], 'ALHAHASF')
     
     def test_libshape(self):
         self.assertEqual(self.a.library.shape[1], 246)
+        self.assertEqual(self.b.library.shape[1], 246)
+        self.assertEqual(self.c.library.shape[1], 246)
         
     def test_aa_freq(self):
         self.a.calc_aa_freq(plot=False)
@@ -31,6 +44,7 @@ class TestAnalysis(unittest.TestCase):
     def test_len(self):
         self.a.calc_len()
         self.assertEqual(self.a.len[0][2], 24.)
+
 
 if __name__ == '__main__':
     unittest.main()
