@@ -3,6 +3,15 @@ Welcome to modlAMP's documentation!
 
 **modlAMP**
 
+.. image:: https://img.shields.io/pypi/v/modlamp.svg
+   :target: https://pypi.org/project/modlamp/
+
+.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg?branch=master
+    :target: https://travis-ci.org/alexarnimueller/modlAMP
+
+.. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/alexarnimueller/modlAMP
+
 **Authors:** Alex Müller, Gisela Gabernet
 
 **Copyright:** (c) 2016 - 2018 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)
