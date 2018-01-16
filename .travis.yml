@@ -10,7 +10,6 @@ install:
   - "pip install ."
 
 script:
-  - "python -m unittest discover -s ./tests -t ./tests"
   - "coverage run --source ./ setup.py test"
 
 after_success:
