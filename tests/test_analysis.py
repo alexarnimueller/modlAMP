@@ -8,6 +8,7 @@ from os.path import dirname, join
 
 
 class TestAnalysis(unittest.TestCase):
+    fname = join(dirname(__file__), 'files/plots/testplot.png')
     sequences, names = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
     a = GlobalAnalysis(sequences)
     s1 = sequences[:10]
@@ -51,7 +52,7 @@ class TestAnalysis(unittest.TestCase):
         self.assertEqual(self.a.len[0][2], 24.)
 
     def test_summary(self):
-        self.a.plot_summary(plot=False)
+        self.e.plot_summary(plot=True, filename=self.fname)
 
 
 if __name__ == '__main__':
