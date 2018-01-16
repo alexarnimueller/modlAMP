@@ -5,6 +5,13 @@ python:
 
 install:
   - "pip install -r requirements.txt"
+  - "pip install codecov"
+  - "pip install coverage"
   - "pip install ."
 
-script: python -m unittest discover -s ./tests -t ./tests
+script:
+  - "python -m unittest discover -s ./tests -t ./tests"
+  - "coverage run --source ./ setup.py test"
+
+after_success:
+  - "codecov"

@@ -1,6 +1,15 @@
 README
 ======
 
+.. image:: https://img.shields.io/pypi/v/modlamp.svg
+   :target: https://pypi.org/project/modlamp/
+
+.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg?branch=master
+    :target: https://travis-ci.org/alexarnimueller/modlAMP
+
+.. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/alexarnimueller/modlAMP
+
 **modlAMP**
 
 This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
