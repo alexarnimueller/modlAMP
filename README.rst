@@ -12,7 +12,7 @@ README
 
 .. image:: https://img.shields.io/pypi/l/modlAMP.svg
     :target: https://github.com/alexarnimueller/modlAMP/blob/master/LICENSE
-    :alt: License
+
 
 **modlAMP**
 
