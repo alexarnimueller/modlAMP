@@ -1,3 +1,6 @@
+LICENSE
+=======
+
 BSD 3-Clause License
 
 Copyright (c) 2016 - 2018 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider.

@@ -10,7 +10,7 @@ README
 .. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/alexarnimueller/modlAMP
 
-.. image:: https://img.shields.io/pypi/l/modlAMP.svg
+.. image:: https://img.shields.io/badge/License-BSD--3-lightgrey.svg
     :target: https://github.com/alexarnimueller/modlAMP/blob/master/LICENSE
 
 

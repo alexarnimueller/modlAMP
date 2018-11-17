@@ -13,7 +13,7 @@ reqs = [str(ir.req) for ir in install_reqs][:-1]
 with open('README.rst') as f:
     readme = f.read()
 
-with open('LICENSE') as f:
+with open('LICENSE.rst') as f:
     lic = f.read()
 
 setup(name='modlamp',
