@@ -13,17 +13,14 @@ reqs = [str(ir.req) for ir in install_reqs][:-1]
 with open('README.rst') as f:
     readme = f.read()
 
-with open('LICENSE.rst') as f:
-    lic = f.read()
-
 setup(name='modlamp',
-      version='3.4.2',
+      version='3.4.3',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
       author_email='alexarnimueller@gmail.com',
       url='http://modlamp.org',
-      license=lic,
+      license='BSD-3',
       keywords="antimicrobial anticancer peptide descriptor sequences QSAR machine learning design",
       packages=['modlamp'],
       package_data={'modlamp': ['data/*.csv', 'data/*.fasta']},
