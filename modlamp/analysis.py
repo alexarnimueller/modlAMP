@@ -39,7 +39,7 @@ class GlobalAnalysis(object):
         if isinstance(library[0], list):
             for i, l in enumerate(library):
                 self.shapes.append(len(l))
-                self.library = np.array(library, dtype='object')
+            self.library = np.array(library, dtype='object')
         else:
             if type(library) == np.ndarray:
                 self.library = library
@@ -59,7 +59,7 @@ class GlobalAnalysis(object):
             self.libnames = names
         
         # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1:
+        if len(self.library.shape) == 1 and isinstance(self.library[0], str):
             self.library = self.library.reshape((1, -1))
             if not names:
                 names = ['Lib1']
