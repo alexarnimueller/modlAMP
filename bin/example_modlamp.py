@@ -6,7 +6,6 @@ Give the number sequences to be generated as sys.argv[1]
 python example_modlamp.py 1000
 """
 
-import sys
 from collections import OrderedDict
 from modlamp.datasets import load_AMPvsUniProt
 from modlamp.descriptors import PeptideDescriptor
@@ -50,8 +49,8 @@ def main(libsize=1000):
     # print the 50 top ranked predictions with their predicted probabilities
     print("Sequence,Predicted_AMP_Probability")
     for k in d50.keys():
-        print k + "," + str(d50[k])
+        print(k + "," + str(d50[k]))
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main()

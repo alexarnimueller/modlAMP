@@ -9,7 +9,7 @@ class TestCD(unittest.TestCase):
     
     def test_init(self):
         self.assertIsNotNone(self.cd.filenames)
-        self.assertIsInstance(self.cd.filenames[0], basestring)
+        self.assertIsInstance(self.cd.filenames[0], str)
     
     def test_read_header(self):
         self.assertEqual(self.cd.sequences[0], 'KLLKLLKKLVGALG')

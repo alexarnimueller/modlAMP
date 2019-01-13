@@ -16,14 +16,15 @@ class TestAmphipathicArc(unittest.TestCase):
     def test_seq_arc(self):
         for seq in self.S.sequences:
             self.assertTrue(any(s in seq[0] for s in ('A', 'D', 'E', 'G', 'H', 'K', 'N', 'P', 'Q', 'R', 'S', 'T', 'Y')))
-            self.assertTrue(any(s in seq[1] for s in ('F', 'I', 'L', 'V', 'W')))
-    
-    S.make_H_gradient()
+            self.assertTrue(any(s in seq[1] for s in ('F', 'I', 'L', 'V', 'W', 'Y')))
     
     def test_make_H(self):
-        for seq in self.S.sequences:
-            for a in range(1, len(seq) / 3 + 1):
-                self.assertTrue(seq[-a] in ('F', 'I', 'L', 'V', 'W'))
+        apa = AmphipathicArc(10, 8, 27)
+        apa.generate_sequences(arcsize=100)
+        apa.make_H_gradient()
+        for seq in apa.sequences:
+            for a in range(1, int(len(seq) / 3 + 1)):
+                self.assertTrue(seq[-a] in ('F', 'I', 'L', 'V', 'W', 'Y'))
 
 
 if __name__ == '__main__':

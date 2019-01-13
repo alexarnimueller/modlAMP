@@ -18,7 +18,7 @@ class TestAnalysis(unittest.TestCase):
     
     def test_H(self):
         self.a.calc_H()
-        self.assertAlmostEquals(self.a.H[0][1], 2.54615385e-01)
+        self.assertAlmostEqual(self.a.H[0][1], 2.54615385e-01)
     
     def test_uH(self):
         self.a.calc_uH()
@@ -31,6 +31,7 @@ class TestAnalysis(unittest.TestCase):
     def test_len(self):
         self.a.calc_len()
         self.assertEqual(self.a.len[0][2], 24.)
+
 
 if __name__ == '__main__':
     unittest.main()
