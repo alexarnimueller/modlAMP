@@ -52,8 +52,8 @@ A modlamp example script for peptide classification with a Random Forest classif
     print(d50)
 
 
-An alternative example for single peptide classification with a Random Forest classifier.
------------------------------------------------------------------------------------------
+An alternative example for single peptide classification with a RF classifier.
+------------------------------------------------------------------------------
 .. code-block:: python
 
     import pandas as pd
@@ -72,11 +72,13 @@ An alternative example for single peptide classification with a Random Forest cl
     descr = PeptideDescriptor(data.sequences, 'pepcats')
     descr.calculate_crosscorr(7)
 
-    # find best Random Forest classifier based on the PEPCATS data
-    best_RF = train_best_model('RF', descr.descriptor, data.target)  # might take a while
+    # train a Random Forest classifier with given parameters based on the PEPCATS data
+    best_RF = train_best_model('RF', descr.descriptor, data.target, cv=2,
+                                param_grid={'clf__bootstrap': [True], 'clf__criterion': ['gini'], 'clf__max_features':
+                                ['sqrt'], 'clf__n_estimators': [500]})
 
-    # evaluate performance of best model in 10-fold cross validation
-    score_cv(best_RF, descr.descriptor, data.target, cv=10)
+    # evaluate performance of the model in 5-fold cross validation
+    score_cv(best_RF, descr.descriptor, data.target, cv=5)
 
     # describe sequences to be predicted with PEPCATS descriptor
     lib_desc = PeptideDescriptor(to_predict, 'pepcats')
@@ -86,7 +88,7 @@ An alternative example for single peptide classification with a Random Forest cl
     proba = best_RF.predict_proba(lib_desc.descriptor)
 
     # create ordered dictionary with sequences and prediction values and order it according to AMP predictions
-    d = pd.DataFrame({'sequence': lib.sequences, 'prediction': proba[:, 1]})
+    d = pd.DataFrame({'sequence': to_predict, 'prediction': proba[:, 1]})
     d = d.sort_values('prediction', ascending=False)
     print(d)  # print the final predictions (sorted according to decreasing probabilities)
 

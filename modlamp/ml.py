@@ -91,13 +91,10 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
     SVM Model             param_grid = [{'clf__C': param_range, 'clf__kernel': ['linear']},
                           {'clf__C': param_range,    'clf__gamma': param_range, 'clf__kernel': ['rbf']}]
 
-    Random Forest         param_grid = [{'clf__n_estimators': [10, 50, 100, 500],
-                          'clf__max_depth': [3, None],
-                          'clf__max_features': [1, 2, 3, 5, 10],
-                          'clf__min_samples_split': [1, 3, 5, 10],
-                          'clf__min_samples_leaf': [1, 3, 5, 10],
-                          'clf__bootstrap': [True, False],
-                          'clf__criterion': ["gini", "entropy"]}]
+    Random Forest         param_grid = [{'clf__n_estimators': [10, 100, 500],
+                                        'clf__max_features': ['sqrt', 'log2'],
+                                        'clf__bootstrap': [True],
+                                        'clf__criterion': ["gini"]}]
     ==============        ==============================================================================
 
 
