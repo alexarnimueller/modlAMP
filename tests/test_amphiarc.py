@@ -1,3 +1,4 @@
+
 import unittest
 from modlamp.sequences import AmphipathicArc
 
