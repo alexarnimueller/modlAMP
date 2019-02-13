@@ -111,7 +111,7 @@ def load_AMPvsTM():
             sequences[i] = np.asarray(ir[0], dtype=np.str)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+    return Bunch(sequences=sequences.reshape(1, -1)[0].astype('str'), target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
 
@@ -163,7 +163,7 @@ def load_AMPvsUniProt():
             sequences[i] = np.asarray(ir[0], dtype=np.str)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+    return Bunch(sequences=sequences.reshape(1, -1)[0].astype('str'), target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
 
@@ -216,7 +216,7 @@ def load_ACPvsTM():
             sequences[i] = np.asarray(ir[0], dtype=np.str)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+    return Bunch(sequences=sequences.reshape(1, -1)[0].astype('str'), target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
 
@@ -269,7 +269,7 @@ def load_ACPvsRandom():
             sequences[i] = np.asarray(ir[0], dtype=np.str)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+    return Bunch(sequences=sequences.reshape(1, -1)[0].astype('str'), target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])
 
@@ -312,6 +312,6 @@ def load_custom(filename):
             sequences[i] = np.asarray(ir[0], dtype=np.str)
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
+    return Bunch(sequences=sequences.reshape(1, -1)[0].astype('str'), target=target,
                  target_names=target_names,
                  feature_names=['Sequence'])

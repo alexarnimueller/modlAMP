@@ -184,7 +184,7 @@ def _one_arc(seq, modality, scale):
     elif modality == 'mean':
         final_arc = np.mean(allwindows_arc, axis=0)
     else:
-        print 'modality is unknown, please choose between "max" and "mean"\n.'
+        print('modality is unknown, please choose between "max" and "mean"\n.')
         sys.exit()
     return final_arc
 
@@ -281,7 +281,7 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc = GlobalDescriptor(['KADSFLSADGHSADFSLDKKLKERL', 'ERTILSDFPQWWFASLDFLNC', 'ACDEFGHIKLMNPQRSTVWY'])
         >>> desc.formula(amide=True)
         >>> for v in desc.descriptor:
-        ...     print v[0]
+        ...     print(v[0])
         C122 H197 N35 O39
         C121 H168 N28 O33 S
         C106 H157 N29 O30 S2
@@ -909,7 +909,7 @@ class PeptideDescriptor(BaseDescriptor):
                 mwdw.append(sum(mtrx[i:i + wdw], []))  # list of all the values for the different windows
                 
             mwdw = np.asarray(mwdw)
-            glob = np.sum(mwdw, axis=1) / wdw
+            glob = np.sum(mwdw, axis=1) / float(wdw)
             outglob = float()
             
             if modality in ['max', 'mean']:
@@ -1078,7 +1078,7 @@ class PeptideDescriptor(BaseDescriptor):
             # elif modality == 'mean':
             #     final_arc = np.mean(allwindows_arc, axis=0)
             # else:
-            #     print 'modality is unknown, please choose between "max" and "mean"\n.'
+            #     print('modality is unknown, please choose between "max" and "mean"\n.')
             #     sys.exit()
 
             if append:

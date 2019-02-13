@@ -37,7 +37,7 @@ class TestAnalysis(unittest.TestCase):
     
     def test_H(self):
         self.a.calc_H()
-        self.assertAlmostEquals(self.a.H[0][1], 2.54615385e-01)
+        self.assertAlmostEqual(self.a.H[0][1], 2.54615385e-01)
     
     def test_uH(self):
         self.a.calc_uH()
