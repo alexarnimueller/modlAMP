@@ -57,3 +57,4 @@ v3.4.0  07.02.2018 -- New tests, removed biopython dependency, travis build and 
 v3.4.1  17.11.2018 -- Bugfix for installing via new pip versions
 v3.4.2  10.12.2018 -- Bugfix for GlobalAnalysis if library contains sublibraries
 v3.4.3  10.12.2018 -- Bugfix in installation
+v4.0.0  13.02.2019 -- Migrating modlAMP to Python3!

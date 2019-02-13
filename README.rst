@@ -19,18 +19,20 @@ README
 
 **modlAMP**
 
-This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
+This is a Python package that is designed for working with **peptides**, **proteins** or any **amino acid sequence** of natural
 amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
 generation (module ``sequences``). For basic instructions how to use the package, see Usage_ section of this README
 or the `documentation <http://modlamp.org>`_.
 
 .. note::
-    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
+    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 3.7
     before installing **modlAMP**. It will make handling of necessary package requirements and versions much easier.
 
 
 Installation
 ************
+
+*Quick note*: modlAMP supports Python 3 since version 4. Use with Python 2.7 is deprecated.
 
 For the installation to work properly, ``pip`` needs to be installed. If you're not sure whether you already have pip,
 type ``pip --version`` in your terminal. If you don't have pip installed, install it via ``sudo easy_install pip``.
