@@ -454,25 +454,23 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
             clf.fit(Xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test), sample_weight=weightcv_test))
-            tn, fp, fn, tp = scores.pop().ravel()
-            scores = scores + [tn, fp, fn, tp]
-            fdr = float(fp) / (tp + fp)
+            tn, fp, fn, tp = scores[-1].ravel()
+            fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
-            sn = float(tp) / (tp + fn)
+            sn = float(tp) / float(tp + fn)
             scores.append(sn)
-            sp = float(tn) / (tn + fp)
+            sp = float(tn) / float(tn + fp)
             scores.append(sp)
         else:
             clf.fit(Xcv_train, ycv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test)))
-            tn, fp, fn, tp = scores.pop().ravel()
-            scores = scores + [tn, fp, fn, tp]
-            fdr = float(fp) / (tp + fp)
+            tn, fp, fn, tp = scores[-1].ravel()
+            fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
-            sn = float(tp) / (tp + fn)
+            sn = float(tp) / float(tp + fn)
             scores.append(sn)
-            sp = float(tn) / (tn + fp)
+            sp = float(tn) / float(tn + fp)
             scores.append(sp)
 
         cv_scores.append(scores)
