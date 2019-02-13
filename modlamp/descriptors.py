@@ -909,7 +909,7 @@ class PeptideDescriptor(BaseDescriptor):
                 mwdw.append(sum(mtrx[i:i + wdw], []))  # list of all the values for the different windows
                 
             mwdw = np.asarray(mwdw)
-            glob = np.sum(mwdw, axis=1) / wdw
+            glob = np.sum(mwdw, axis=1) / float(wdw)
             outglob = float()
             
             if modality in ['max', 'mean']:
