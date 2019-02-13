@@ -319,7 +319,7 @@ class CD:
             # prepare combination of solvent plots
             if combine == 'solvent':
                 d = {s: self.sequences.count(s) for s in set(self.sequences)}  # create dict with seq counts for combine
-                if d.values().count(2) != len(d.values()):
+                if sum(d.values()) != 2 * len(d.values()):
                     raise ValueError
             # check if output folder exists already, else create one
             if not exists(join(self.directory, 'PDF')):
