@@ -32,7 +32,7 @@ setup(name='modlamp',
           'Topic :: Scientific/Engineering :: Chemistry',
           'Topic :: Scientific/Engineering :: Medical Science Apps.',
           'License :: OSI Approved :: BSD License',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7'],
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.6'],
       install_requires=reqs
       )
