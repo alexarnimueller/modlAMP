@@ -43,7 +43,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.model_selection import validation_curve
@@ -107,10 +106,10 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
     =================            =============================================================
     Method                       Description
     =================            =============================================================
-    fit(X, y)                    fit the model with the same parameters to new training data.
-    score(X, y)                  get the score of the model for test data.
-    predict(X)                   get predictions for new data.
-    predict_proba(X)             get probability predictions for [class0, class1]
+    fit(x, y)                    fit the model with the same parameters to new training data.
+    score(x, y)                  get the score of the model for test data.
+    predict(x)                   get predictions for new data.
+    predict_proba(x)             get probability predictions for [class0, class1]
     get_params()                 get parameters of the trained model
     =================            =============================================================
 
@@ -318,19 +317,19 @@ def plot_validation_curve(classifier, x_train, y_train, param_name, param_range,
         plt.show()
 
 
-def predict(classifier, X, seqs, names=None, y=None, filename=None):
+def predict(classifier, x, seqs, names=None, y=None, filename=None):
     """This function can be used to predict novel peptides with a trained classifier model. The function returns a
     ``pandas.DataFrame`` with predictions using the specified estimator and test data. If true class is provided,
     it returns the scoring value for the test data.
 
     :param classifier: {classifier instance} classifier used for predictions.
-    :param X: {array} descriptor values of the peptides to be predicted.
-    :param seqs: {list} sequences of the peptides in ``X``.
-    :param names: {list} (optional) names of the peptides in ``X``.
+    :param x: {array} descriptor values of the peptides to be predicted.
+    :param seqs: {list} sequences of the peptides in ``x``.
+    :param names: {list} (optional) names of the peptides in ``x``.
     :param y: {array} (optional) true (known) classes of the peptides.
     :param filename: {string} (optional) output filename to store the predictions to (``.csv`` format); if ``None``:
         not saved.
-    :return: ``pandas.DataFrame`` containing predictions for ``X``. ``P_class0`` and ``P_class1``
+    :return: ``pandas.DataFrame`` containing predictions for ``x``. ``P_class0`` and ``P_class1``
         are the predicted probability of the peptide belonging to class 0 and class 1, respectively.
 
     :Example:
@@ -360,7 +359,7 @@ def predict(classifier, X, seqs, names=None, y=None, filename=None):
     >>> descH = PeptideDescriptor(H.sequences, scalename='pepcats')
     >>> descH.calculate_autocorr(7)
 
-    >>> df = predict(best_svm_model, X=descH.descriptor, seqs=descH.sequences)
+    >>> df = predict(best_svm_model, x=descH.descriptor, seqs=descH.sequences)
     >>> df.head(3)  # all three shown sequences are predicted active (class 1)
                      Sequence       P_class0        P_class1
     IAGKLAKVGLKIGKIGGKLVKGVLK       0.009167        0.990833
@@ -368,7 +367,7 @@ def predict(classifier, X, seqs, names=None, y=None, filename=None):
                 VGIRLARGVGRIG       0.071436        0.928564
 
     """
-    preds = classifier.predict_proba(X)
+    preds = classifier.predict_proba(x)
     
     if not (y and names):
         d_pred = {'P_class0': preds[:, 0], 'P_class1': preds[:, 1]}
@@ -392,12 +391,12 @@ def predict(classifier, X, seqs, names=None, y=None, filename=None):
     return df_pred
 
 
-def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
+def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
     """This function can be used to evaluate the performance of selected classifier model. It returns the average
     **cross-validation scores** for the specified scoring metrics in a ``pandas.DataFrame``.
 
     :param classifier: {classifier instance} a classifier model to be evaluated.
-    :param X: {array} descriptor values for training data.
+    :param x: {array} descriptor values for training data.
     :param y: {array} class values for training data.
     :param sample_weights: {array} weights for training data.
     :param cv: {int} number of folds for cross-validation.
@@ -442,19 +441,20 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
     metrics = ['MCC', 'accuracy', 'precision', 'recall', 'f1', 'roc_auc',
                'TN', 'FP', 'FN', 'TP', 'FDR', 'sensitivity', 'specificity']
 
-    kf = StratifiedKFold(n_splits=10, random_state=42, shuffle=shuffle)
+    kf = StratifiedKFold(n_splits=cv, random_state=42, shuffle=shuffle)
     clf = clone(classifier)
 
-    for fold_train_index, fold_test_index in kf.split(X, y):
-        Xcv_train, Xcv_test = X[fold_train_index], X[fold_test_index]
+    for fold_train_index, fold_test_index in kf.split(x, y):
+        xcv_train, xcv_test = x[fold_train_index], x[fold_test_index]
         ycv_train, ycv_test = y[fold_train_index], y[fold_test_index]
         scores = []
         if sample_weights is not None:
             weightcv_train, weightcv_test = sample_weights[fold_train_index], sample_weights[fold_test_index]
-            clf.fit(Xcv_train, ycv_train, sample_weight=weightcv_train)
+            clf.fit(xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
-                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test), sample_weight=weightcv_test))
+                scores.append(getattr(mets, f)(ycv_test, clf.predict(xcv_test), sample_weight=weightcv_test))
             tn, fp, fn, tp = scores[-1].ravel()
+            scores = scores[:-1] + [tn, fp, fn, tp]
             fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
             sn = float(tp) / float(tp + fn)
@@ -462,17 +462,17 @@ def score_cv(classifier, X, y, sample_weights=None, cv=10, shuffle=True):
             sp = float(tn) / float(tn + fp)
             scores.append(sp)
         else:
-            clf.fit(Xcv_train, ycv_train)
+            clf.fit(xcv_train, ycv_train)
             for f in funcs:
-                scores.append(getattr(mets, f)(ycv_test, clf.predict(Xcv_test)))
+                scores.append(getattr(mets, f)(ycv_test, clf.predict(xcv_test)))
             tn, fp, fn, tp = scores[-1].ravel()
+            scores = scores[:-1] + [tn, fp, fn, tp]
             fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
             sn = float(tp) / float(tp + fn)
             scores.append(sn)
             sp = float(tn) / float(tn + fp)
             scores.append(sp)
-
         cv_scores.append(scores)
 
     dict_scores = dict()
@@ -537,7 +537,8 @@ def score_testset(classifier, x_test, y_test, sample_weights=None):
              'confusion_matrix']
     
     for f in funcs:
-        scores.append(getattr(mets, f)(y_test, classifier.predict(x_test), sample_weight=sample_weights))  # fore every metric, calculate the scores
+        # fore every metric, calculate the scores
+        scores.append(getattr(mets, f)(y_test, classifier.predict(x_test), sample_weight=sample_weights))
     
     tn, fp, fn, tp = scores.pop().ravel()
     scores = scores + [tn, fp, fn, tp]

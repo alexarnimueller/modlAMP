@@ -262,7 +262,7 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
 
     # plot
     fig, ax = plt.subplots()
-    x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
+    x_range = range(int(window / 2), int(len(sequence) - int(window) / 2))
     line = ax.plot(x_range, seq_profile)
     plt.setp(line, color=color, linewidth=2.0)
 
@@ -594,7 +594,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
     if not colors:
         colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
     
-    if isinstance(colors, basestring):
+    if isinstance(colors, str):
         colors = [colors] * len(x)
     
     # scaling for available space
@@ -678,9 +678,9 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     aa = count_aas(concatseq, scale='relative')
     
     fig, ax = plt.subplots()
-    
-    for a in range(20):
-        plt.bar(a, aa.values()[a], 0.9, color=color)
+
+    for i, v in enumerate([k for k, w in aa.items()]):
+        plt.bar(i, v, 0.9, color=color)
     
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(aa.values()) + 0.05])
