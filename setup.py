@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
-from pip.req import parse_requirements
+try:  # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError:  # for pip <= 9.0.3
+    from pip.req import parse_requirements
 
 # parse the requirements from the requirements file
 install_reqs = parse_requirements('requirements.txt', session='hack')
@@ -10,17 +13,14 @@ reqs = [str(ir.req) for ir in install_reqs][:-1]
 with open('README.rst') as f:
     readme = f.read()
 
-with open('LICENSE') as f:
-    lic = f.read()
-
 setup(name='modlamp',
-      version='3.3.2',
+      version='3.4.3',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
       author_email='alexarnimueller@gmail.com',
       url='http://modlamp.org',
-      license=lic,
+      license='BSD-3',
       keywords="antimicrobial anticancer peptide descriptor sequences QSAR machine learning design",
       packages=['modlamp'],
       package_data={'modlamp': ['data/*.csv', 'data/*.fasta']},

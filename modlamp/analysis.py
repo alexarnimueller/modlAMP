@@ -39,7 +39,7 @@ class GlobalAnalysis(object):
         if isinstance(library[0], list):
             for i, l in enumerate(library):
                 self.shapes.append(len(l))
-                self.library = np.array(library, dtype='object')
+            self.library = np.array(library, dtype='object')
         else:
             if type(library) == np.ndarray:
                 self.library = library
@@ -59,7 +59,7 @@ class GlobalAnalysis(object):
             self.libnames = names
         
         # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1 and self.library.shape[0] == 1:
+        if len(self.library.shape) == 1 and isinstance(self.library[0], str):
             self.library = self.library.reshape((1, -1))
             if not names:
                 names = ['Lib1']
@@ -74,12 +74,13 @@ class GlobalAnalysis(object):
         self.len = list()
         self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
     
-    def calc_aa_freq(self, plot=True, color='#83AF9B'):
+    def calc_aa_freq(self, plot=True, color='#83AF9B', filename=None):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
         the frequencies of these are calculated independently.
         
         :param plot: {bool} whether the amino acid frequencies should be plotted in a histogram.
         :param color: {str} color of the plot
+        :param filename: {str} filename to save the plot to, if None, the plot is shown
         :return: {numpy.ndarray} amino acid frequencies in the attribute :py:attr:`aafreq`. The values are oredered
             alphabetically.
         :Example:
@@ -116,8 +117,11 @@ class GlobalAnalysis(object):
                 ax.spines['top'].set_visible(False)
                 ax.xaxis.set_ticks_position('bottom')
                 ax.yaxis.set_ticks_position('left')
-                
-                plt.show()
+
+                if filename:
+                    plt.savefig(filename)
+                else:
+                    plt.show()
     
     def calc_H(self, scale='eisenberg'):
         """Method for calculating global hydrophobicity (Eisenberg scale) of all sequences in the library.

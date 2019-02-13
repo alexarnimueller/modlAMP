@@ -62,20 +62,22 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
     """
     if not colors:
         colors = ['#69D2E7', '#FA6900', '#E0E4CC', '#542437', '#53777A', 'black', '#C02942', '#031634']
-    
-    fig, ax = plt.subplots()
-    
-    if targets:
+
+    if type(y_values) == list:
+        y_values = np.array(y_values)
+
+    if len(targets) >= 1:
         data = []
         cntr = 0
-        for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
-            t = np.array([i for i, j in enumerate(targets) if j == n])
-            data.append([y_values[t]])
+        for n in set(targets):  # finding indices of the different targets in "targets" and plotting
+            data.append(y_values[np.where(targets == n)])
             cntr += 1
+
         if x_tick_labels:
             labels = x_tick_labels
         else:
-            labels = range(cntr)
+            labels = [str(i) for i in range(cntr)]
+
         colors = colors[:cntr]
     
     else:
@@ -84,7 +86,8 @@ def plot_feature(y_values, targets=None, y_label='feature values', x_tick_labels
         else:
             labels = ['all data']
         data = y_values
-    
+
+    fig, ax = plt.subplots()
     # coloring faces of boxes
     median_props = dict(linestyle='-', linewidth='1', color='black')
     box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, labels=labels)
@@ -133,7 +136,7 @@ def plot_2_features(x_values, y_values, targets=None, x_label='', y_label='', fi
     
     fig, ax = plt.subplots()
     
-    if targets:
+    if len(targets) >= 1:
         for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
             t = np.array([i for i, j in enumerate(targets) if j == n])
             xt = x_values[t]  # find all values in x for the given target
@@ -190,7 +193,7 @@ def plot_3_features(x_values, y_values, z_values, targets=None, x_label='', y_la
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    if targets:
+    if len(targets) >= 1:
         for n in list(set(targets)):  # finding indices of the different targets in "targets" and plotting
             t = np.array([i for i, j in enumerate(targets) if j == n])
             xt = x_values[t]  # find all values in x for the given target
@@ -244,52 +247,48 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
     .. versionadded:: v2.1.5
     """
     # check if given scale is defined in PeptideDescriptor
-    try:
-        d = PeptideDescriptor(sequence, scalename)
-        seq_data = list()
-        seq_profile = list()
-        for a in sequence:
-            seq_data.append(d.scale[a])  # describe sequence by given scale
-        i = 0  # AA index
-        while (i + window) < len(sequence):
-            seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
-            i += 1
-        
-        # plot
-        fig, ax = plt.subplots()
-        x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
-        line = ax.plot(x_range, seq_profile)
-        plt.setp(line, color=color, linewidth=2.0)
-        
-        # axis labes and title
-        ax.set_xlabel('sequence position', fontweight='bold')
-        ax.set_ylabel(scalename + ' value', fontweight='bold')
-        ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window),
-                fontsize=16, fontweight='bold')
-        if seq:
-            ax.set_title(sequence, fontsize=16, fontweight='bold', y=1.02)
-        if ylim:
-            ax.set_ylim(ylim)
-        else:
-            ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
-        
-        # only left and bottom axes, no box
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.xaxis.set_ticks_position('bottom')
-        ax.yaxis.set_ticks_position('left')
-        
-        # show or save plot
-        if filename:
-            plt.savefig(filename, dpi=150)
-        else:
-            plt.show()
-    
-    except TypeError:
-        print("\nError\nNo sequence given!")
-    except KeyError:
-        print("\nSorry\nThis function cannot calculate a profile for the given scale '%s'." % scalename)
-        print("Use the one dimensional scales given in the documentation for modlamp.descriptors.PeptideDescriptors")
+    d = PeptideDescriptor(sequence, scalename)
+    if len(d.scale['A']) > 1:
+        raise KeyError("\nSorry\nThis function can only calculate profiles for 1D scales. '%s' has more than one "
+                       "dimension" % scalename)
+    seq_data = list()
+    seq_profile = list()
+    for a in sequence:
+        seq_data.append(d.scale[a])  # describe sequence by given scale
+    i = 0  # AA index
+    while (i + window) < len(sequence):
+        seq_profile.append(np.mean(seq_data[i:(i + window + 1)]))  # append average value for given window
+        i += 1
+
+    # plot
+    fig, ax = plt.subplots()
+    x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
+    line = ax.plot(x_range, seq_profile)
+    plt.setp(line, color=color, linewidth=2.0)
+
+    # axis labes and title
+    ax.set_xlabel('sequence position', fontweight='bold')
+    ax.set_ylabel(scalename + ' value', fontweight='bold')
+    ax.text(max(x_range) / 2 + 1, 1.05 * max(seq_profile), 'window size: ' + str(window),
+            fontsize=16, fontweight='bold')
+    if seq:
+        ax.set_title(sequence, fontsize=16, fontweight='bold', y=1.02)
+    if ylim:
+        ax.set_ylim(ylim)
+    else:
+        ax.set_ylim(1.2 * max(seq_profile), 1.2 * min(seq_profile))
+
+    # only left and bottom axes, no box
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+
+    # show or save plot
+    if filename:
+        plt.savefig(filename, dpi=150)
+    else:
+        plt.show()
 
 
 def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=None, seq=False, moment=False):
@@ -494,7 +493,7 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
     :param alpha: {float} color alpha for filling pde curve
     :Example:
 
-    >>> data = np.random.random([3,100])
+    >>> data = np.random.random((3,100))
     >>> plot_pde(data)
 
     .. image:: ../docs/static/pde.png
