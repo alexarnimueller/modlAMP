@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from os.path import dirname, join
 
 from modlamp.descriptors import GlobalDescriptor
 
@@ -10,6 +11,13 @@ __author__ = 'modlab'
 class TestGlobalDescriptor(unittest.TestCase):
 
     G = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
+    G2 = GlobalDescriptor(join(dirname(__file__), 'files/lib.fasta'))
+    G3 = GlobalDescriptor(join(dirname(__file__), 'files/lib.csv'))
+
+    def test_load(self):
+        self.assertEqual('GLFDIVKKVVGALG', self.G.sequences[0])
+        self.assertEqual('LASKSTSGIGVFGRIRAGLKLKST', self.G2.sequences[2])
+        self.assertEqual('NPGKSTTRRI', self.G3.sequences[-1])
 
     def test_charge(self):
         self.G.calculate_charge()

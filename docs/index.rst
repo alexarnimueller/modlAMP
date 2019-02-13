@@ -3,6 +3,21 @@ Welcome to modlAMP's documentation!
 
 **modlAMP**
 
+.. image:: https://img.shields.io/pypi/v/modlamp.svg
+   :target: https://pypi.org/project/modlamp/
+
+.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg?branch=master
+    :target: https://travis-ci.org/alexarnimueller/modlAMP
+
+.. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/alexarnimueller/modlAMP
+
+.. image:: https://img.shields.io/badge/License-BSD--3-lightgrey.svg
+    :target: https://github.com/alexarnimueller/modlAMP/blob/master/LICENSE.rst
+
+.. image:: https://img.shields.io/badge/DOI-10.1093%2Fbioinformatics%2Fbtx285-ff69b4.svg
+    :target: https://doi.org/10.1093/bioinformatics/btx285
+
 **Authors:** Alex Müller, Gisela Gabernet
 
 **Copyright:** (c) 2016 - 2018 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)

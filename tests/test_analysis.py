@@ -1,13 +1,32 @@
 import unittest
 
+import numpy as np
+import pandas as pd
 from modlamp.analysis import GlobalAnalysis
 from modlamp.core import read_fasta
 from os.path import dirname, join
 
 
 class TestAnalysis(unittest.TestCase):
-    sequences, _ = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
-    a = GlobalAnalysis([sequences])
+    fname = join(dirname(__file__), 'files/plots/testplot.png')
+    sequences, names = read_fasta(join(dirname(__file__), 'files/lib.fasta'))
+    a = GlobalAnalysis(sequences)
+    s1 = sequences[:10]
+    s2 = sequences[10:20]
+    b = GlobalAnalysis([s1, s2])
+    sequences = np.array(sequences)
+    c = GlobalAnalysis(sequences)
+    sequences = pd.DataFrame(sequences)
+    d = GlobalAnalysis(sequences)
+    sequences = sequences.T
+    e = GlobalAnalysis(sequences, names=['Lib1'])
+
+    def test_input(self):
+        self.assertEqual(self.a.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.b.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.c.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.d.library[0, 4], 'ALHAHASF')
+        self.assertEqual(self.e.library[0, 4], 'ALHAHASF')
     
     def test_libshape(self):
         self.assertEqual(self.a.library.shape[1], 246)
@@ -31,6 +50,10 @@ class TestAnalysis(unittest.TestCase):
     def test_len(self):
         self.a.calc_len()
         self.assertEqual(self.a.len[0][2], 24.)
+
+    def test_summary(self):
+        self.e.plot_summary(plot=True, filename=self.fname)
+
 
 if __name__ == '__main__':
     unittest.main()
