@@ -958,7 +958,7 @@ class PeptideDescriptor(BaseDescriptor):
 
         desc = list()
         for n, seq in enumerate(self.sequences):
-            x_vals = range(len(seq))[((window - 1) / 2):-((window - 1) / 2)]
+            x_vals = range(len(seq))[int((window - 1) / 2):-int((window - 1) / 2)]
             if len(seq) <= window:
                 slope, intercept, r_value, p_value, std_err = [0, 0, 0, 0, 0]
             else:

@@ -9,6 +9,7 @@ __author__ = 'modlab'
 class TestPeptideDescriptor(unittest.TestCase):
     D = PeptideDescriptor('GLFDIVKKVVGALG', 'pepcats')
     A = PeptideDescriptor('GLFDIVKKVVGALG', 'peparc')
+    P = PeptideDescriptor('GLFDIVKKVVGALG', 'eisenberg')
     data_ac = np.array(
         [0.714285714286, 0.0714285714286, 0.0714285714286, 0.142857142857, 0.142857142857, 0.0714285714286,
          0.538461538462, 0.0, 0.0, 0.0769230769231, 0.0769230769231, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.636363636364,
@@ -66,6 +67,10 @@ class TestPeptideDescriptor(unittest.TestCase):
     def test_moment_value(self):
         self.E.calculate_moment()
         self.assertAlmostEqual(self.E.descriptor[0][0], 0.49723753135551985, places=8)
+
+    def test_profile(self):
+        self.P.calculate_profile()
+        self.assertAlmostEqual(self.P.descriptor[0, 1], 0.8665096381516001, places=8)
 
     def test_count_aa(self):
         self.D.count_aa()
