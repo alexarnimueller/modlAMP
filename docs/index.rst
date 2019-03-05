@@ -27,7 +27,7 @@ This is a **Python package** (for Python 3 since version 4.0.0) that was designe
 sequence of **natural amino acids**. It incorporates several modules, like sequence generation (module ``sequences``),
 sequence library analysis (module ``analysis``) or descriptor calculation (module ``descriptors``). For
 basic instructions on how to use the package, check the `README <readme.html>`_ or the `example script <examplescript
-.html>`_.
+.html>`_. The project's GitHub page can be found here: http://github.com/alexarnimueller/modlamp
 
 .. toctree::
    :caption: The package has the following contents:
