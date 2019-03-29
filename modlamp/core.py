@@ -21,6 +21,7 @@ import re
 import numpy as np
 import pandas as pd
 import collections
+import operator
 from scipy.spatial import distance
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
@@ -414,6 +415,30 @@ class BaseDescriptor(object):
             self.descriptor = np.mean(desc, axis=0)
         else:
             self.descriptor = desc
+
+    def count_ngrams(self, n):
+        """Method for producing n-grams of all sequences in self.sequences
+
+        :param n: {int or list of ints} defines whether counts or frequencies are given for each AA
+        :return: {dict} dictionary with n-grams as keys and their counts in the sequence as values in :py:attr:`descriptor`
+        :Example:
+
+        >>> D = PeptideDescriptor('GLLDFLSLAALSLDKLVKKGALS')
+        >>> D.count_ngrams([2, 3])
+        >>> D.descriptor
+        {'LS': 3, 'LD': 2, 'LSL': 2, 'AL': 2, ..., 'LVK': 1}
+
+        .. seealso:: :py:func:`modlamp.core.count_ngrams()`
+        """
+        ngrams = dict()
+        for seq in self.sequences:
+            d = count_ngrams(seq, n)
+            for k, v in d.items():
+                if k in ngrams.keys():
+                    ngrams[k] += v
+                else:
+                    ngrams[k] = v
+        self.descriptor = ngrams
 
     def feature_scaling(self, stype='standard', fit=True):
         """Method for feature scaling of the calculated descriptor matrix.
@@ -1111,6 +1136,25 @@ def count_aas(seq, scale='relative'):
     aa = {a: (float(seq.count(a)) / scl) for a in aas}
     aa = collections.OrderedDict(sorted(list(aa.items())))
     return aa
+
+
+def count_ngrams(seq, n):
+    """Function to count the n-grams of an amino acid sequence. N can be one integer or a list of integers
+
+    :param seq: {str} amino acid sequence
+    :param n: {int or list of ints} defines whether counts or frequencies are given for each AA
+    :return: {dict} dictionary with n-grams as keys and their counts in the sequence as values.
+    """
+    if seq == '':
+        seq = ' '
+    if isinstance(n, int):
+        n = [n]
+    ngrams = list()
+    for i in n:
+        ngrams.extend([seq[j:j+i] for j in range(len(seq) - (i-1))])
+    counts = {g: (seq.count(g)) for g in set(ngrams)}
+    counts = collections.OrderedDict(sorted(counts.items(), key=operator.itemgetter(1), reverse=True))
+    return counts
 
 
 def aa_energies():

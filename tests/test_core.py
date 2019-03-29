@@ -1,5 +1,5 @@
 import unittest
-from modlamp.core import BaseSequence
+from modlamp.core import BaseSequence, BaseDescriptor
 from modlamp.sequences import Random
 from modlamp.descriptors import PeptideDescriptor
 from os.path import dirname, join
@@ -9,6 +9,7 @@ class TestCore(unittest.TestCase):
     b = BaseSequence(1, 10, 20)
     b.sequences = ['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST',
                    'aggo']
+    n = BaseDescriptor('GLFDIVKKVVGALGSLGLFDIVKKVVGALGSL')
     b.names = ['1', '2', '3', '4', '5', '6']
     s = PeptideDescriptor(
         ['GLFDIVKKVVGALG', 'GLFDIVKKVVGALG', 'GLFDIVKKVVGALK', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AGGURST', 'aggorst'])
@@ -17,6 +18,10 @@ class TestCore(unittest.TestCase):
     l.generate_sequences()
     d = PeptideDescriptor(l.sequences, 'eisenberg')
     d.calculate_moment()
+
+    def test_ngrams(self):
+        self.n.count_ngrams([2, 3])
+        self.assertEqual(self.n.descriptor['ALG'], 2)
 
     def test_filter_aa(self):
         self.b.filter_aa(['C'])
