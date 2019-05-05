@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 from os.path import dirname, join
-from modlamp.plot import plot_violin, plot_2_features, plot_3_features, plot_aa_distr, plot_feature, plot_profile, plot_pde
+from modlamp.plot import plot_violin, plot_2_features, plot_3_features, plot_aa_distr, plot_feature, plot_profile, plot_pde, helical_wheel
 
 
 class TestPlots(unittest.TestCase):
@@ -13,9 +13,6 @@ class TestPlots(unittest.TestCase):
 
     def test_feature(self):
         plot_feature(self.data[0], x_tick_labels=['1', '0'], targets=self.targets, filename=self.fname)
-
-    def test_violin(self):
-        plot_violin(self.data[0], filename=self.fname)
 
     def test_2features(self):
         plot_2_features(self.data[0], self.data[1], targets=self.targets, filename=self.fname)
@@ -32,6 +29,12 @@ class TestPlots(unittest.TestCase):
 
     def test_pde(self):
         plot_pde(self.data, filename=self.fname)
+
+    def test_violin(self):
+        plot_violin(self.data[0], filename=self.fname)
+
+    def test_wheel(self):
+        helical_wheel(self.sequences[1], filename=self.fname)
 
 
 if __name__ == '__main__':

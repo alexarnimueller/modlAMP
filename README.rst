@@ -114,10 +114,12 @@ documentation for the ``modlamp.descriptors`` module.
 Plotting Features
 -----------------
 
-We can now plot the calculated values as a boxplot, for example the hydrophobic moment:
+We can also plot the calculated values as a boxplot, for example the hydrophobic moment:
 
 >>> from modlamp.plot import plot_feature
->>> plot_feature(desc.descriptor,y_label='uH Eisenberg')
+>>> D = PeptideDescriptor('sequence/file/to/be/loaded.fasta', 'eisenberg')  # Eisenberg hyrophobicity scale
+>>> D.calculate_moment()
+>>> plot_feature(D.descriptor,y_label='uH Eisenberg')
 
 .. image:: http://modlamp.org/_static/uH_Eisenberg.png
     :height: 300px
@@ -130,7 +132,7 @@ APD3, which are stored in the FASTA formatted file ``APD3.fasta``:
 
 Now lets compare the values by plotting:
 
->>> plot_feature([desc.descriptor, APD.descriptor], y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
+>>> plot_feature([D.descriptor, APD.descriptor], y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
 .. image:: http://modlamp.org/_static/uH_APD3.png
     :height: 300px

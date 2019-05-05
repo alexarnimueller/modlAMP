@@ -423,10 +423,10 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         
         # check if N- or C-terminus and add subscript, then plot AA letter
         if i == 0:
-            ax.text(new[0], new[1], sequence[i] + b'$_N$', va='center', ha='center', transform=ax.transData,
+            ax.text(new[0], new[1], sequence[i] + '$_N$', va='center', ha='center', transform=ax.transData,
                     size=32, color=dt[sequence[i]], fontweight='bold')
         elif i == len(sequence) - 1:
-            ax.text(new[0], new[1], sequence[i] + b'$_C$', va='center', ha='center', transform=ax.transData,
+            ax.text(new[0], new[1], sequence[i] + '$_C$', va='center', ha='center', transform=ax.transData,
                     size=32, color=dt[sequence[i]], fontweight='bold')
         else:
             ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
