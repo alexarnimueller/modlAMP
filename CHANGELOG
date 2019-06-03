@@ -61,3 +61,4 @@ v4.0.0  13.02.2019 -- Migrating modlAMP to Python3!
 v4.0.1  03.03.2019 -- Bugfix in calculate_profile
 v4.0.2  29.03.2019 -- n-gram calculation and new tests
 v4.0.3  05.05.2019 -- Bugfix in plot functions
+v4.0.4  03.06.2019 -- Python3 bug fix in HelicesACP
