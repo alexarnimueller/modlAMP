@@ -98,21 +98,16 @@ def load_AMPvsTM():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'AMPvsTMset.csv')) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
+    with open(join(module_path, 'data', 'AMPvsTMset.csv')) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+        sequences, target = list(), list()
+        for line in f:
+            tmp = line.strip().split(',')
+            sequences.append(tmp[0])
+            target.append(tmp[1])
 
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
+    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
+                 target_names=[target_name1, target_name2],
                  feature_names=['Sequence'])
 
 
@@ -150,21 +145,16 @@ def load_AMPvsUniProt():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
+    with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+        sequences, target = list(), list()
+        for line in f:
+            tmp = line.strip().split(',')
+            sequences.append(tmp[0])
+            target.append(tmp[1])
 
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
+    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
+                 target_names=[target_name1, target_name2],
                  feature_names=['Sequence'])
 
 
@@ -203,21 +193,16 @@ def load_ACPvsTM():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'ACP_CancPPD_vs_TM.csv')) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
+    with open(join(module_path, 'data', 'ACP_CancPPD_vs_TM.csv')) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+        sequences, target = list(), list()
+        for line in f:
+            tmp = line.strip().split(',')
+            sequences.append(tmp[0])
+            target.append(tmp[1])
 
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
+    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
+                 target_names=[target_name1, target_name2],
                  feature_names=['Sequence'])
 
 
@@ -256,21 +241,16 @@ def load_ACPvsRandom():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'ACP_CancPPD_vs_Random.csv')) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
+    with open(join(module_path, 'data', 'ACP_CancPPD_vs_Random.csv')) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+        sequences, target = list(), list()
+        for line in f:
+            tmp = line.strip().split(',')
+            sequences.append(tmp[0])
+            target.append(tmp[1])
 
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
+    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
+                 target_names=[target_name1, target_name2],
                  feature_names=['Sequence'])
 
 
@@ -299,19 +279,14 @@ def load_custom(filename):
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', filename)) as csv_file:
-        data_file = csv.reader(csv_file)
-        temp = next(data_file)
-        n_samples = int(temp[0])
-        n_features = int(temp[1])
-        target_names = np.array(temp[2:])
-        sequences = np.empty((n_samples, n_features), dtype='|S100')
-        target = np.empty((n_samples,), dtype=np.int)
+    with open(join(module_path, 'data', filename)) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+        sequences, target = list(), list()
+        for line in f:
+            tmp = line.strip().split(',')
+            sequences.append(tmp[0])
+            target.append(tmp[1])
 
-        for i, ir in enumerate(data_file):
-            sequences[i] = np.asarray(ir[0], dtype=np.str)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
-
-    return Bunch(sequences=sequences.reshape(1, -1)[0], target=target,
-                 target_names=target_names,
+    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
+                 target_names=[target_name1, target_name2],
                  feature_names=['Sequence'])

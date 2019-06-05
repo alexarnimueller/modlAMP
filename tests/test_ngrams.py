@@ -16,5 +16,6 @@ class TestNgram(unittest.TestCase):
         pos = randint(0, len(seq_str) - 2)
         self.assertTrue(seq_str[pos:pos+2] in ngram_str or seq_str[pos-1:pos+1] in ngram_str)
 
+
 if __name__ == '__main__':
     unittest.main()

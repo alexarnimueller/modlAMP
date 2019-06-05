@@ -43,7 +43,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.model_selection import validation_curve
@@ -180,12 +179,11 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
 
         gs = GridSearchCV(estimator=pipe_svc,
                           param_grid=param_grid,
-                          fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
                           n_jobs=n_jobs)
         
-        gs.fit(x_train, y_train)
+        gs.fit(x_train, y_train, {'clf__sample_weight': sample_weights})
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)
@@ -206,12 +204,11 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
         
         gs = GridSearchCV(estimator=pipe_rf,
                           param_grid=param_grid,
-                          fit_params={'clf__sample_weight': sample_weights},
                           scoring=score,
                           cv=cv,
                           n_jobs=n_jobs)
         
-        gs.fit(x_train, y_train)
+        gs.fit(x_train, y_train, {'clf__sample_weight': sample_weights})
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)

@@ -448,8 +448,8 @@ class HelicesACP(BaseSequence):
         for s in range(self.seqnum):
             seq = []
             for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
-                l = l - 18 * (l / 18)  # for helices >18aa, the probabilities start from the beginning again
-                seq.append(np.random.choice(self.AAs, p=self.prob_ACPhel[:, l]))
+                i = l % 18  # for helices >18aa, the probabilities start from the beginning again
+                seq.append(np.random.choice(self.AAs, p=self.prob_ACPhel.T[i]))
             self.sequences.append(''.join(seq))
 
 

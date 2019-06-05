@@ -328,13 +328,13 @@ class BaseDescriptor(object):
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
         if type(seqs) == list and seqs[0].isupper():
-            self.sequences = seqs
+            self.sequences = [s.strip() for s in seqs]
             self.names = []
         elif type(seqs) == np.ndarray and seqs[0].isupper():
-            self.sequences = seqs.tolist()
+            self.sequences = [s.strip() for s in seqs.tolist()]
             self.names = []
         elif type(seqs) == str and seqs.isupper():
-            self.sequences = [seqs]
+            self.sequences = [seqs.strip()]
             self.names = []
         elif os.path.isfile(seqs):
             if seqs.endswith('.fasta'):  # read .fasta file
@@ -1146,7 +1146,7 @@ def ngrams_apd():
                        'LG', 'LA', 'LL', 'LK', 'LS', 'LP', 'GCSC', 'TC', 'GAA', 'AA', 'VA',
                        'VC', 'AG', 'VG', 'AI', 'AK', 'VL', 'AL', 'TPGC', 'IK', 'IA', 'IG',
                        'YGG', 'LGK', 'CSCK', 'GYGG', 'LGG', 'KGA'],
-                      dtype='|S4')
+                      dtype='str')
     return ngrams
 
 

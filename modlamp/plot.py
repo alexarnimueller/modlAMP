@@ -594,7 +594,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
     if not colors:
         colors = ['#0B486B', '#3B8686', '#79BD9A', '#A8DBA8', '#CFF09E', '#0000ff', '#bf00ff', '#ff0040', '#009900']
     
-    if isinstance(colors, basestring):
+    if isinstance(colors, str):
         colors = [colors] * len(x)
     
     # scaling for available space
@@ -680,7 +680,7 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     fig, ax = plt.subplots()
     
     for a in range(20):
-        plt.bar(a, aa.values()[a], 0.9, color=color)
+        plt.bar(a, list(aa.values())[a], 0.9, color=color)
     
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(aa.values()) + 0.05])

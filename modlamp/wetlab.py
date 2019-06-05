@@ -117,7 +117,7 @@ class CD:
             # read headers into class attributes
             name = head[0].split('\r\n')[0]
             self.names.append(name)
-            sequence = head[1].split('\r\n')[0]
+            sequence = head[1].split('\r\n')[0].strip()
             self.sequences.append(sequence)
             umol = float(head[2].split('\r\n')[0])
             self.conc_umol.append(umol)

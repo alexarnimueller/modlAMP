@@ -87,6 +87,7 @@ def _one_crosscorr(seq, window, scale):
     except ZeroDivisionError:
         print("ERROR!\nThe chosen correlation window % i is larger than the sequence %s !" % (window, seq))
 
+
 def _one_arc(seq, modality, scale):
     """ Privat function used for calculating arc descriptors for one sequence and AA scale. This function is used by
     :py:func:`calculate_arc` method method of :py:class:`PeptideDescriptor`.
@@ -184,9 +185,10 @@ def _one_arc(seq, modality, scale):
     elif modality == 'mean':
         final_arc = np.mean(allwindows_arc, axis=0)
     else:
-        print 'modality is unknown, please choose between "max" and "mean"\n.'
+        print('modality is unknown, please choose between "max" and "mean"\n.')
         sys.exit()
     return final_arc
+
 
 def _charge(seq, ph=7.0, amide=False):
     """Calculates charge of a single sequence. The method used is first described by Bjellqvist. In the case of
@@ -440,7 +442,7 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc.descriptor
         array([[ 10.6796875]])
         """
-
+        ph, ph1, ph2 = float(), float(), float()
         desc = []
         for seq in self.sequences:
 
