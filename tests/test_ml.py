@@ -26,7 +26,7 @@ class TestTrainModel(unittest.TestCase):
     
     def test_score_cv(self):
         score = score_cv(self.best_svm_model, self.descriptor, self.target, cv=2)
-        self.assertAlmostEqual(score['mean'][1], 0.7, 3)
+        self.assertAlmostEqual(score['mean'][1], 0.65, 3)
     
     def test_score_testset(self):
         score = score_testset(self.best_rf_model, self.descriptor_test, self.target_test)
