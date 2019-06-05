@@ -446,10 +446,11 @@ class HelicesACP(BaseSequence):
         """
         self.clean()
         for s in range(self.seqnum):
-            seq = []
+            seq = str()
             for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
                 i = l % 18  # for helices >18aa, the probabilities start from the beginning again
-                seq.append(np.random.choice(self.AAs, p=self.prob_ACPhel.T[i]))
+                seq += np.random.choice(self.AAs, p=self.prob_ACPhel.T[i])
+            self.sequences.append(seq)
 
 
 class MixedLibrary(BaseSequence):

@@ -32,8 +32,8 @@ class TestCD(unittest.TestCase):
     #     self.cd.helicity()
     #     self.assertEqual(float(self.cd.helicity_values.iloc[0]['Helicity']), 79.68)
 
-    def test_plot(self):
-        self.cd.plot()
+    # def test_plot(self):
+    #     self.cd.plot()
 
 
 if __name__ == '__main__':

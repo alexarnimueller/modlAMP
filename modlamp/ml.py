@@ -179,8 +179,10 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           scoring=score,
                           cv=cv,
                           n_jobs=n_jobs)
-        
-        gs.fit(x_train, y_train, {'clf__sample_weight': sample_weights})
+        if sample_weights:
+            gs.fit(x_train, y_train, [{'clf__sample_weight': sample_weights}])
+        else:
+            gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)
@@ -204,8 +206,11 @@ def train_best_model(model, x_train, y_train, sample_weights=None, scaler=Standa
                           scoring=score,
                           cv=cv,
                           n_jobs=n_jobs)
-        
-        gs.fit(x_train, y_train, {'clf__sample_weight': sample_weights})
+
+        if sample_weights:
+            gs.fit(x_train, y_train, [{'clf__sample_weight': sample_weights}])
+        else:
+            gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
         print("MCC score:\t%.3f" % gs.best_score_)
         print("Parameters:\t%s" % gs.best_params_)

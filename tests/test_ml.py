@@ -13,9 +13,9 @@ class TestTrainModel(unittest.TestCase):
     target = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     target_test = np.array([1, 1, 1, 1, 0, 0, 0, 0])
     
-    best_svm_model = train_best_model('svm', descriptor, target, cv=2, n_jobs=1,
+    best_svm_model = train_best_model('svm', descriptor, target, cv=3, n_jobs=-1,
                                       param_grid=[{'clf__C': [1], 'clf__kernel': ['rbf']}])
-    best_rf_model = train_best_model('rf', descriptor, target, cv=2, n_jobs=1,
+    best_rf_model = train_best_model('rf', descriptor, target, cv=3, n_jobs=-1,
                                      param_grid=[{'clf__n_estimators': [100]}])
     
     def test_score_svm(self):
