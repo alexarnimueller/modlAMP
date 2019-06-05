@@ -126,7 +126,7 @@ class CD:
             # read CD data
             wlengths = [int(line.split(',')[0]) for line in data]  # get rid of s***** line ends
             ellipts = [float(line.split(',')[1].split('\r\n')[0]) for line in data]
-            self.circular_dichroism.append(np.array(zip(wlengths, ellipts)))
+            self.circular_dichroism.append(np.array(list(zip(wlengths, ellipts))))
             
             # calculate MW and transform concentration to mg/ml
             d.sequences = [sequence]
@@ -155,8 +155,8 @@ class CD:
         
         for i, data in enumerate(self.circular_dichroism):
             # calculate molar ellipticity: (theta * MW) / (conc * pathlength); and concat. with wavelengths
-            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.mw[i]) / (self.conc_mgml[i] * self.pathlen)))
-            self.molar_ellipticity.append(mol_ellipt)
+            mol_ellipt = (data[:, 1] * self.mw[i]) / (self.conc_mgml[i] * self.pathlen)
+            self.molar_ellipticity.append(np.array(list(zip(data[:, 0], mol_ellipt))))
     
     def calc_meanres_ellipticity(self):
         """Method to calculate the mean residue ellipticity for all loaded data in :py:attr:`circular_dichroism`
@@ -183,8 +183,8 @@ class CD:
         
         for i, data in enumerate(self.circular_dichroism):
             # calculate molar ellipticity: (theta * mrw) / (conc * pathlength); and concat. with wavelengths
-            mol_ellipt = np.array(zip(data[:, 0], (data[:, 1] * self.meanres_mw[i] / (self.conc_mgml[i] * self.pathlen))))
-            self.meanres_ellipticity.append(mol_ellipt)
+            mol_ellipt = (data[:, 1] * self.meanres_mw[i]) / (self.conc_mgml[i] * self.pathlen)
+            self.meanres_ellipticity.append(np.array(list(zip(data[:, 0], mol_ellipt))))
     
     def _plot_single(self, w, d, col, y_label, title, filename, y_min, y_max):
         """Private plot function used by :py:func:`modlamp.wetlab.CD.plot()` for plotting single CD plots"""
@@ -319,7 +319,7 @@ class CD:
             # prepare combination of solvent plots
             if combine == 'solvent':
                 d = {s: self.sequences.count(s) for s in set(self.sequences)}  # create dict with seq counts for combine
-                if d.values().count(2) != len(d.values()):
+                if sum(d.values()) != 2 * len(d.values()):
                     raise ValueError
             # check if output folder exists already, else create one
             if not exists(join(self.directory, 'PDF')):

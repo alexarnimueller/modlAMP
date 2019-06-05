@@ -31,7 +31,6 @@ automation or looping over different classes.
 .. seealso:: :class:`modlamp.core.BaseSequence` from which all classes in this module inherit.
 """
 
-from numpy import random
 from itertools import cycle
 
 import numpy as np
@@ -111,7 +110,7 @@ class Random(BaseSequence):
 
         for s in range(self.seqnum):
             seq = []
-            for l in range(random.choice(range(self.lenmin, self.lenmax + 1))):
+            for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
                 seq.append(np.random.choice(self.AAs, replace=True, p=self.prob))  # weighed random selection of AA
             self.sequences.append(''.join(seq))
 
@@ -136,20 +135,20 @@ class Helices(BaseSequence):
         """
         self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
-            seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
-            basepos = random.choice(range(4))  # select spot for first basic residue from 0 to 3
-            seq[basepos] = random.choice(self.AA_basic)  # place first basic residue
-            gap = cycle([3, 4]).next  # gap cycle of 3 & 4 --> 3,4,3,4,3,4...
-            g = gap()
-            while g + basepos < len(
-                    seq):  # place more basic residues 3-4 positions further (changing between distance 3 and 4)
+            seq = ['X'] * np.random.choice(range(self.lenmin, self.lenmax + 1))
+            basepos = np.random.choice(range(4))  # select spot for first basic residue from 0 to 3
+            seq[basepos] = np.random.choice(self.AA_basic)  # place first basic residue
+            it = cycle([3, 4])  # gap cycle of 3 & 4 --> 3,4,3,4,3,4...
+            g = next(it)
+            while g + basepos < len(seq):
+                # place more basic residues 3-4 positions further (changing between distance 3 and 4)
                 basepos += g
-                seq[basepos] = random.choice(self.AA_basic)  # place more basic residues
-                g = gap()  # next gap
+                seq[basepos] = np.random.choice(self.AA_basic)  # place more basic residues
+                g = next(it)  # next gap
             
             for p in range(len(seq)):
                 while seq[p] == 'X':  # fill up remaining spots with hydrophobic AAs
-                    seq[p] = random.choice(self.AA_hyd)
+                    seq[p] = np.random.choice(self.AA_hyd)
             
             self.sequences.append(''.join(seq))
 
@@ -177,25 +176,25 @@ class Kinked(BaseSequence):
         self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             poslist = []  # used to
-            seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
-            basepos = random.choice(range(4))  # select spot for first basic residue from 0 to 3
-            seq[basepos] = random.choice(self.AA_basic)  # place first basic residue
+            seq = ['X'] * np.random.choice(range(self.lenmin, self.lenmax + 1))
+            basepos = np.random.choice(range(4))  # select spot for first basic residue from 0 to 3
+            seq[basepos] = np.random.choice(self.AA_basic)  # place first basic residue
             poslist.append(basepos)
-            gap = cycle([3, 4]).next  # gap cycle of 3 & 4 --> 3,4,3,4,3,4...
-            g = gap()
-            while g + basepos < len(
-                    seq):  # place more basic residues 3-4 positions further (changing between distance 3 and 4)
+            it = cycle([3, 4])  # gap cycle of 3 & 4 --> 3,4,3,4,3,4...
+            g = next(it)
+            while g + basepos < len(seq):
+                # place more basic residues 3-4 positions further (changing between distance 3 and 4)
                 basepos += g
-                seq[basepos] = random.choice(self.AA_basic)  # place more basic residues
-                g = gap()  # next gap
+                seq[basepos] = np.random.choice(self.AA_basic)  # place more basic residues
+                g = next(it)  # next gap
                 poslist.append(basepos)
             
             for p in range(len(seq)):
                 while seq[p] == 'X':  # fill up remaining spots with hydrophobic AAs
-                    seq[p] = random.choice(self.AA_hyd)
+                    seq[p] = np.random.choice(self.AA_hyd)
             
             # place proline around the middle of the sequence
-            propos = poslist[len(poslist) / 2]
+            propos = poslist[int(len(poslist) / 2)]
             seq[propos] = 'P'
             
             self.sequences.append(''.join(seq))
@@ -222,24 +221,24 @@ class Oblique(BaseSequence):
         """
         self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
-            seq = ['X'] * random.choice(range(self.lenmin, self.lenmax + 1))
-            basepos = random.choice(range(4))  # select spot for first basic residue from 0 to 3
-            seq[basepos] = random.choice(self.AA_basic)  # place first basic residue
-            gap = cycle([3, 4]).next  # gap cycle of 3 & 4 --> 3,4,3,4,3,4...
-            g = gap()
-            while g + basepos < len(
-                    seq):  # place more basic residues 3-4 positions further (changing between distance 3 and 4)
+            seq = ['X'] * np.random.choice(range(self.lenmin, self.lenmax + 1))
+            basepos = np.random.choice(range(4))  # select spot for first basic residue from 0 to 3
+            seq[basepos] = np.random.choice(self.AA_basic)  # place first basic residue
+            it = cycle([3, 4])  # iterative cycle of 3 & 4 --> 3,4,3,4,3,4...
+            g = next(it)
+            while g + basepos < len(seq):
+                # place more basic residues 3-4 positions further (changing between distance 3 and 4)
                 basepos += g
-                seq[basepos] = random.choice(self.AA_basic)  # place more basic residues
-                g = gap()  # next gap
+                seq[basepos] = np.random.choice(self.AA_basic)  # place more basic residues
+                g = next(it)  # next gap
             
             for p in range(len(seq)):
                 while seq[p] == 'X':  # fill up remaining spots with hydrophobic AAs
-                    seq[p] = random.choice(self.AA_hyd)
+                    seq[p] = np.random.choice(self.AA_hyd)
             
-            for e in range(1, len(
-                    seq) / 3):  # transform last 3rd of sequence into hydrophobic ones --> hydrophobicity gradient = oblique
-                seq[-e] = random.choice(self.AA_hyd)
+            for e in range(1, int(len(seq) / 3)):
+                # transform last 3rd of sequence into hydrophobic ones --> hydrophobicity gradient = oblique
+                seq[-e] = np.random.choice(self.AA_hyd)
             
             self.sequences.append(''.join(seq))
 
@@ -273,20 +272,20 @@ class Centrosymmetric(BaseSequence):
         if symmetry == 'symmetric':
             self.clean()
             for s in range(self.seqnum):  # iterate over number of sequences to generate
-                n = random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
+                n = np.random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
                 seq = ['X'] * 7  # template sequence AA list with length 7
                 for a in range(7):  # generate symmetric sequence block of 7 AA with an anchor in the middle
                     if a == 0:
-                        seq[0] = random.choice(self.AA_hyd)
+                        seq[0] = np.random.choice(self.AA_hyd)
                         seq[6] = seq[0]
                     elif a == 1:
-                        seq[1] = random.choice(self.AA_basic)
+                        seq[1] = np.random.choice(self.AA_basic)
                         seq[5] = seq[1]
                     elif a == 2:
-                        seq[2] = random.choice(self.AA_hyd)
+                        seq[2] = np.random.choice(self.AA_hyd)
                         seq[4] = seq[2]
                     elif a == 3:
-                        seq[3] = random.choice(self.AA_aroma)
+                        seq[3] = np.random.choice(self.AA_aroma)
                     else:
                         continue
                 self.sequences.append(''.join(seq) * n)
@@ -294,22 +293,22 @@ class Centrosymmetric(BaseSequence):
         elif symmetry == 'asymmetric':
             self.clean()
             for s in range(self.seqnum):  # iterate over number of sequences to generate
-                n = random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
+                n = np.random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
                 seq = ['X'] * 7  # template sequence AA list with length 7
                 blocks = []
                 for c in range(n):
                     for a in range(7):  # generate symmetric sequence block of 7 AA with an anchor in the middle
                         if a == 0:
-                            seq[0] = random.choice(self.AA_hyd)
+                            seq[0] = np.random.choice(self.AA_hyd)
                             seq[6] = seq[0]
                         elif a == 1:
-                            seq[1] = random.choice(self.AA_basic)
+                            seq[1] = np.random.choice(self.AA_basic)
                             seq[5] = seq[1]
                         elif a == 2:
-                            seq[2] = random.choice(self.AA_hyd)
+                            seq[2] = np.random.choice(self.AA_hyd)
                             seq[4] = seq[2]
                         elif a == 3:
-                            seq[3] = random.choice(self.AA_aroma)
+                            seq[3] = np.random.choice(self.AA_aroma)
                         else:
                             continue
                     blocks.append(''.join(seq))
@@ -328,26 +327,26 @@ class AmphipathicArc(BaseSequence):
     ===   ====   =====
     AA    Hydr   Polar
     ===   ====   =====
-    A     0.00   0.05
+    A     0.00   0.045
     C     0.00   0.00
-    D     0.00   0.05
-    E     0.00   0.05
+    D     0.00   0.045
+    E     0.00   0.045
     F     0.16   0.00
-    G     0.00   0.05
-    H     0.00   0.05
+    G     0.00   0.045
+    H     0.00   0.045
     I     0.16   0.00
     K     0.00   0.25
     L     0.16   0.00
     M     0.00   0.00
     N     0.00   0.05
-    P     0.00   0.05
-    Q     0.00   0.05
+    P     0.00   0.045
+    Q     0.00   0.045
     R     0.00   0.25
-    S     0.00   0.05
-    T     0.00   0.05
+    S     0.00   0.045
+    T     0.00   0.045
     V     0.16   0.00
     W     0.16   0.00
-    Y     0.16   0.05
+    Y     0.16   0.045
     ===   ====   =====
 
     """
@@ -376,28 +375,29 @@ class AmphipathicArc(BaseSequence):
                    [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]]
                 
         elif arcsize == 100:
-            idx = [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]
+            idx = [[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]]
         elif arcsize == 140:
-            idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0]
+            idx = [[0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0]]
         elif arcsize == 180:
-            idx = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
+            idx = [[0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]]
         elif arcsize == 220:
-            idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]
+            idx = [[0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0]]
         elif arcsize == 260:
-            idx = [0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
+            idx = [[0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]]
         else:
-            raise AttributeError("Arc size unknown, choose among: 80, 120, 160, 200, 240 or None (= mixed).")
+            raise AttributeError("Arc size unknown, choose among: 100, 140, 180, 220, 260 or 'mixed'")
 
-        idxcycle = cycle(idx).next
-        idx = idxcycle()
+        idxcycle = cycle(idx)
+        idx = next(idxcycle)
         for s in range(self.seqnum):
             seq = []
-            icycle = cycle(idx).next  # jumping from one probability to next one in idx array
-            i = icycle()
-            for n in range(random.choice(range(self.lenmin, self.lenmax + 1))):
-                seq.append(random.choice(self.AAs, p=self.prob_amphihel[i]))
-                i = icycle()
+            icycle = cycle(idx)  # jumping from one probability to next one in idx array
+            i = next(icycle)
+            for n in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
+                seq.append(np.random.choice(self.AAs, p=self.prob_amphihel[i]))
+                i = next(icycle)
             self.sequences.append(''.join(seq))
+            idx = next(idxcycle)
     
     def make_H_gradient(self):
         """Method to mutate the generated sequences to have a hydrophobic gradient by substituting the last third of
@@ -413,8 +413,8 @@ class AmphipathicArc(BaseSequence):
         """
         for s in range(len(self.sequences)):
             seq = list(self.sequences[s])
-            for aa in range(1, len(seq) / 3 + 1):
-                seq[-aa] = random.choice(self.AAs, p=self.prob_amphihel[1])
+            for aa in range(1, int(len(seq) / 3 + 1)):
+                seq[-aa] = np.random.choice(self.AAs, p=self.prob_amphihel[1])
             self.sequences[s] = ''.join(seq)
 
 
@@ -450,7 +450,6 @@ class HelicesACP(BaseSequence):
             for l in range(np.random.choice(range(self.lenmin, self.lenmax + 1))):
                 i = l % 18  # for helices >18aa, the probabilities start from the beginning again
                 seq.append(np.random.choice(self.AAs, p=self.prob_ACPhel.T[i]))
-            self.sequences.append(''.join(seq))
 
 
 class MixedLibrary(BaseSequence):
@@ -598,21 +597,21 @@ class Hepahelices(BaseSequence):
         self.clean()
         for s in range(self.seqnum):  # for the number of sequences to generate
             # generate heparin binding domain with the from HBBBHPBH (H: hydrophobic, B: basic, P: polar)
-            hbd = [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + [random.choice(self.AA_basic)] + \
-                  [random.choice(self.AA_basic)] + [random.choice(self.AA_hyd)] + [random.choice(self.AA_polar)] + \
-                  [random.choice(self.AA_basic)] + [random.choice(self.AA_hyd)]
+            hbd = [np.random.choice(self.AA_hyd)] + [np.random.choice(self.AA_basic)] + [np.random.choice(self.AA_basic)] + \
+                  [np.random.choice(self.AA_basic)] + [np.random.choice(self.AA_hyd)] + [np.random.choice(self.AA_polar)] + \
+                  [np.random.choice(self.AA_basic)] + [np.random.choice(self.AA_hyd)]
             # generate amphipathic block to add in front of HBD
-            bef = [random.choice(self.AA_hyd)] + [random.choice(['A', 'G'])] + [random.choice(self.AA_basic)] + \
-                  [random.choice(self.AA_hyd)] + [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + \
-                  [random.choice(['A', 'G', 'S', 'T'])]
+            bef = [np.random.choice(self.AA_hyd)] + [np.random.choice(['A', 'G'])] + [np.random.choice(self.AA_basic)] + \
+                  [np.random.choice(self.AA_hyd)] + [np.random.choice(self.AA_hyd)] + [np.random.choice(self.AA_basic)] + \
+                  [np.random.choice(['A', 'G', 'S', 'T'])]
             # generate amphipathic block to add after HBD
-            aft = [random.choice(self.AA_hyd)] + [random.choice(self.AA_basic)] + \
-                  [random.choice(['A', 'G', 'S', 'T'])] + [random.choice(self.AA_hyd)] + \
-                  [random.choice(['A', 'G'])] + [random.choice(self.AA_basic)] + [random.choice(self.AA_hyd)]
-            l = random.choice(range(self.lenmin, self.lenmax + 1))  # total sequence length
+            aft = [np.random.choice(self.AA_hyd)] + [np.random.choice(self.AA_basic)] + \
+                  [np.random.choice(['A', 'G', 'S', 'T'])] + [np.random.choice(self.AA_hyd)] + \
+                  [np.random.choice(['A', 'G'])] + [np.random.choice(self.AA_basic)] + [np.random.choice(self.AA_hyd)]
+            l = np.random.choice(range(self.lenmin, self.lenmax + 1))  # total sequence length
             try:
                 r = l - 8  # remaining empty positions in sequence
-                b = random.choice(r)  # positions before HBD
+                b = np.random.choice(r)  # positions before HBD
                 a = r - b  # positions after HBD
                 seq = 3 * bef + hbd + 3 * aft
                 seq = seq[21 - b: 29 + a]
@@ -661,4 +660,4 @@ class AMPngrams(BaseSequence):
         for _ in range(self.seqnum):
             size = np.random.randint(self.n_min, self.n_max)  # number of ngrams to choose from list to build sequence
             # build sequence from a random selection of ngrams
-            self.sequences.append(''.join(self.ngrams[np.random.randint(0, self.ngrams.shape[0], size=size)]))
+            self.sequences.append(''.join(self.ngrams[np.random.randint(0, self.ngrams.shape[0], size=size)].tolist()))

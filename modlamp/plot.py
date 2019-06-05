@@ -262,7 +262,7 @@ def plot_profile(sequence, window=5, scalename='Eisenberg', filename=None, color
 
     # plot
     fig, ax = plt.subplots()
-    x_range = range(int(window) / 2 + 1, len(sequence) - int(window) / 2)
+    x_range = range(int(window / 2), int(len(sequence) - int(window) / 2))
     line = ax.plot(x_range, seq_profile)
     plt.setp(line, color=color, linewidth=2.0)
 
@@ -423,10 +423,10 @@ def helical_wheel(sequence, colorcoding='rainbow', lineweights=True, filename=No
         
         # check if N- or C-terminus and add subscript, then plot AA letter
         if i == 0:
-            ax.text(new[0], new[1], sequence[i] + b'$_N$', va='center', ha='center', transform=ax.transData,
+            ax.text(new[0], new[1], sequence[i] + '$_N$', va='center', ha='center', transform=ax.transData,
                     size=32, color=dt[sequence[i]], fontweight='bold')
         elif i == len(sequence) - 1:
-            ax.text(new[0], new[1], sequence[i] + b'$_C$', va='center', ha='center', transform=ax.transData,
+            ax.text(new[0], new[1], sequence[i] + '$_C$', va='center', ha='center', transform=ax.transData,
                     size=32, color=dt[sequence[i]], fontweight='bold')
         else:
             ax.text(new[0], new[1], sequence[i], va='center', ha='center', transform=ax.transData,
@@ -678,9 +678,8 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     aa = count_aas(concatseq, scale='relative')
     
     fig, ax = plt.subplots()
-    
-    for a in range(20):
-        plt.bar(a, list(aa.values())[a], 0.9, color=color)
+    for i, v in enumerate([k for k, w in aa.items()]):
+        plt.bar(i, v, 0.9, color=color)
     
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(aa.values()) + 0.05])

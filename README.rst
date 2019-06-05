@@ -19,18 +19,20 @@ README
 
 **modlAMP**
 
-This is a Python package that is designed for working with peptides, proteins or any amino acid sequence of natural
+This is a Python package that is designed for working with **peptides**, **proteins** or any **amino acid sequence** of natural
 amino acids. It incorporates several modules, like descriptor calculation (module ``descriptors``) or sequence
 generation (module ``sequences``). For basic instructions how to use the package, see Usage_ section of this README
 or the `documentation <http://modlamp.org>`_.
 
 .. note::
-    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 2.7
+    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 3.7
     before installing **modlAMP**. It will make handling of necessary package requirements and versions much easier.
 
 
 Installation
 ************
+
+*Quick note*: modlAMP supports Python 3 since version 4. Use with Python 2.7 is deprecated.
 
 For the installation to work properly, ``pip`` needs to be installed. If you're not sure whether you already have pip,
 type ``pip --version`` in your terminal. If you don't have pip installed, install it via ``sudo easy_install pip``.
@@ -112,10 +114,12 @@ documentation for the ``modlamp.descriptors`` module.
 Plotting Features
 -----------------
 
-We can now plot the calculated values as a boxplot, for example the hydrophobic moment:
+We can also plot the calculated values as a boxplot, for example the hydrophobic moment:
 
 >>> from modlamp.plot import plot_feature
->>> plot_feature(desc.descriptor,y_label='uH Eisenberg')
+>>> D = PeptideDescriptor('sequence/file/to/be/loaded.fasta', 'eisenberg')  # Eisenberg hyrophobicity scale
+>>> D.calculate_moment()
+>>> plot_feature(D.descriptor,y_label='uH Eisenberg')
 
 .. image:: http://modlamp.org/_static/uH_Eisenberg.png
     :height: 300px
@@ -128,7 +132,7 @@ APD3, which are stored in the FASTA formatted file ``APD3.fasta``:
 
 Now lets compare the values by plotting:
 
->>> plot_feature([desc.descriptor, APD.descriptor], y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
+>>> plot_feature([D.descriptor, APD.descriptor], y_label='uH Eisenberg', x_tick_labels=['Library', 'APD3'])
 
 .. image:: http://modlamp.org/_static/uH_APD3.png
     :height: 300px

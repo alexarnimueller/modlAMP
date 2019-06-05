@@ -9,6 +9,7 @@ __author__ = 'modlab'
 class TestPeptideDescriptor(unittest.TestCase):
     D = PeptideDescriptor('GLFDIVKKVVGALG', 'pepcats')
     A = PeptideDescriptor('GLFDIVKKVVGALG', 'peparc')
+    P = PeptideDescriptor('GLFDIVKKVVGALG', 'eisenberg')
     data_ac = np.array(
         [0.714285714286, 0.0714285714286, 0.0714285714286, 0.142857142857, 0.142857142857, 0.0714285714286,
          0.538461538462, 0.0, 0.0, 0.0769230769231, 0.0769230769231, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.636363636364,
@@ -55,17 +56,21 @@ class TestPeptideDescriptor(unittest.TestCase):
     def test_crosscorr_values(self):
         self.D.calculate_crosscorr(7)
         for n in range(len(self.D.descriptor[0])):
-            self.assertAlmostEqual(self.D.descriptor[0, n], self.data_cc[n], places=8)
+            self.assertAlmostEqual(self.D.descriptor[0][n], self.data_cc[n], places=8)
 
     def test_global_value(self):
         self.D.calculate_global()
-        self.assertAlmostEqual(self.D.descriptor[0, 0], 1.2142857142857142)
+        self.assertAlmostEqual(self.D.descriptor[0, 0], 1.21428571)
         self.E.calculate_global()
         self.assertAlmostEqual(self.E.descriptor[0, 0], 0.44714285714285723, places=8)
 
     def test_moment_value(self):
         self.E.calculate_moment()
         self.assertAlmostEqual(self.E.descriptor[0, 0], 0.49723753135551985, places=8)
+
+    def test_profile(self):
+        self.P.calculate_profile()
+        self.assertAlmostEqual(self.P.descriptor[0, 1], 0.8665096381516001, places=8)
 
     def test_count_aa(self):
         self.D.count_aa()

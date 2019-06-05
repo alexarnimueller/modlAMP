@@ -32,9 +32,9 @@ def _read_db_config(configfile):
     :return: a dictionary of read database parameters
     """
     if exists(configfile):
-        with open(configfile, 'r') as f:
-            db = json.load(f)
-        
+        with open(configfile, 'r') as cfg:
+            db = json.load(cfg)
+
         if not db['password']:
             db['password'] = getpass()
     

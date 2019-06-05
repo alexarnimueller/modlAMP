@@ -14,7 +14,7 @@ with open('README.rst') as f:
     readme = f.read()
 
 setup(name='modlamp',
-      version='3.4.3',
+      version='4.0.4',
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
@@ -32,7 +32,7 @@ setup(name='modlamp',
           'Topic :: Scientific/Engineering :: Chemistry',
           'Topic :: Scientific/Engineering :: Medical Science Apps.',
           'License :: OSI Approved :: BSD License',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7'],
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.6'],
       install_requires=reqs
       )

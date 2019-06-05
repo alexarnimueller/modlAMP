@@ -16,7 +16,7 @@ class TestOblique(unittest.TestCase):
     
     def test_gradient(self):
         for seq in self.S.sequences:
-            for a in range(1, len(seq) / 3):
+            for a in range(1, int(len(seq) / 3)):
                 self.assertIn(seq[-a], self.S.AA_hyd)
 
 
