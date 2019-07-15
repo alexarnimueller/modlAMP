@@ -163,7 +163,15 @@ It is also possible to plot 2 or 3 different features in a scatter plot:
 .. image:: http://modlamp.org/_static/3D_scatter.png
     :height: 300px
 
-Further plotting methods like **helical wheel plots** are available. See the documentation for the ``modlamp.plot``
+:Example: **Helical Wheel Plot**
+
+>>> from modlamp.plot import helical_wheel
+>>> helical_wheel('GLFDIVKKVVGALGSL', moment=True)
+
+.. image:: http://modlamp.org/_static/helical_wheel.png
+    :height: 300px
+
+Further plotting methods are available. See the documentation for the ``modlamp.plot``
 module.
 
 
