@@ -296,7 +296,7 @@ class GlobalDescriptor(BaseDescriptor):
         formulas = aa_formulas()
         for seq in self.sequences:
             f = {'C': 0, 'H': 0, 'N': 0, 'O': 0, 'S': 0}
-            for aa in seq:  # sum over aa weights
+            for aa in seq:  # loop over all AAs
                 for k in f.keys():
                     f[k] += formulas[aa][k]
             
