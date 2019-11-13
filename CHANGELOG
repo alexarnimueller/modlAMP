@@ -65,3 +65,4 @@ v4.0.4  03.06.2019 -- Python3 bug fix in HelicesACP
 v4.1.0  05.06.2019 -- Fully Python3 compatible
 v4.1.1  15.07.2019 -- Bugfix in AA formula
 v4.1.2  13.11.2019 -- Bugfix in GlobalAnalysis plot
+v4.1.3  13.11.2019 -- Another bugfix in GlobalAnalysis plot

@@ -37,45 +37,48 @@ class GlobalAnalysis(object):
         
         >>> g = GlobalAnalysis(['GLFDIVKKVVGALG', 'KLLKLLKKLLKLLK', ...], names=['Library1'])
         """
+        self.libnames = None
+        self.library = None
         self.shapes = list()  # find out about library structure and check if libraries are of different sizes
-        if isinstance(library[0], list):
-            for i, l in enumerate(library):
-                self.shapes.append(len(l))
-            self.library = np.array(library, dtype='object')
-        else:
-            if type(library) == np.ndarray:
-                self.library = library
-            elif type(library) == pd.core.frame.DataFrame:
-                if library.shape[0] > library.shape[1]:  # if each library is a column
-                    self.library = library.values.T
-                    if not names:
-                        self.libnames = library.columns.values.tolist()  # take library names from column headers
-                else:  # if each library is a row
-                    self.library = library.values
-                    if not names:
-                        self.libnames = library.index.values.tolist()  # take library names from row headers
-            else:
-                self.library = np.array(library)
-        
-        if names:
-            self.libnames = names
-        
-        # reshape library to 2D array if without sub-libraries
-        if len(self.library.shape) == 1 and isinstance(self.library[0], str):
-            self.library = self.library.reshape((1, -1))
-            if not names:
-                names = ['Lib1']
-        
-        if not names:
-            self.libnames = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
-        
-        self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')
         self.H = list()
         self.uH = list()
         self.charge = list()
         self.len = list()
         self.AAs = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
-    
+
+        if names:
+            self.libnames = names
+
+        if type(library) == np.ndarray:
+            self.library = library
+        elif type(library) == pd.core.frame.DataFrame:
+            if library.shape[0] > library.shape[1]:  # if each library is a column
+                self.library = library.values.T
+                if not self.libnames:
+                    self.libnames = library.columns.values.tolist()  # take library names from column headers
+            else:  # if each library is a row
+                self.library = library.values
+                if not self.libnames:
+                    self.libnames = library.index.values.tolist()  # take library names from row headers
+        elif type(library) == pd.core.series.Series:
+            self.library = library.values
+            self.libnames = [library.name]
+        elif isinstance(library[0], list):
+            for i, l in enumerate(library):
+                self.shapes.append(len(l))
+            self.library = np.array(library, dtype='object')
+        else:
+            self.library = np.array(library)
+        
+        # reshape library to 2D array if without sub-libraries
+        if len(self.library.shape) == 1 and isinstance(self.library[0], str):
+            self.library = self.library.reshape((1, -1))
+        
+        if not self.libnames:
+            self.libnames = ['Lib ' + str(x + 1) for x in range(self.library.shape[0])]
+
+        self.aafreq = np.zeros((self.library.shape[0], 20), dtype='float64')  # template for AA counts
+
     def calc_aa_freq(self, plot=True, color='#83AF9B', filename=None):
         """Method to get the frequency of every amino acid in the library. If the library consists of sub-libraries,
         the frequencies of these are calculated independently.
@@ -235,9 +238,13 @@ class GlobalAnalysis(object):
             hands = [mpatches.Patch(label=labels[i], facecolor=colors[i], alpha=0.8) for i in range(len(labels))]
             w = .9 / num  # bar width
             offsets = np.arange(start=-w, step=w, stop=num * w)  # bar offsets if many libs
-            for i, l in enumerate(self.aafreq):
+            if self.shapes:  # if the library consists of different sized sub libraries
+                for i, l in enumerate(self.aafreq):
+                    for a in range(20):
+                        ax2.bar(a - offsets[i], l[a], w, color=colors[i], alpha=0.8)
+            else:
                 for a in range(20):
-                    ax2.bar(a - offsets[i], l[a], w, color=colors[i], alpha=0.8)
+                    ax2.bar(a, self.aafreq[0][a], w, color=colors[0], alpha=0.8)
             ax2.set_xlim([-1., 20.])
             ax2.set_ylim([0, 1.05 * np.max(self.aafreq)])
             ax2.set_xticks(range(20))
