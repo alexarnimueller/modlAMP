@@ -8,6 +8,7 @@ This module can be used for diverse analysis of given peptide libraries.
 """
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
 
@@ -16,6 +17,8 @@ from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
+
+Axes3D = Axes3D  # hack for evading pycharm auto import
 
 
 class GlobalAnalysis(object):
@@ -289,19 +292,14 @@ class GlobalAnalysis(object):
                 for i, c in enumerate(self.charge):
                     counts, bins = np.histogram(c, range=[-5, 20], bins=25, normed=True)
                     ax5.bar(bins[1:] + i * bwidth, counts, bwidth, color=colors[i], label=labels[i], alpha=0.8)
-                    # ax5.hist(c, bins, alpha=0.7, align=alignments[i], rwidth=0.95 / len(self.shapes), histtype='bar',
-                    #         normed=1, label=labels[i], color=colors[i])
             else:
                 ax5.hist(self.charge, 25, normed=1, alpha=0.8, align='left', rwidth=0.95, histtype='bar', label=labels,
                          color=colors[:num])
             ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
             ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-            ax5.set_xlim(-6, 21)
-            ax5.text(0.95, 0.8, b'amide: $true$', verticalalignment='center', horizontalalignment='right',
-                     transform=ax5.transAxes, fontsize=15)
-            ax5.text(0.95, 0.75, b'pH:  $7.4$', verticalalignment='center', horizontalalignment='right',
-                     transform=ax5.transAxes, fontsize=15)
-            ax5.legend()
+            ax5.set_xlim(np.min(np.array(self.charge)) - 2, np.max(np.array(self.charge)) + 2)
+            ax5.title.set_text('pH: 7.4 ,  amide: true')
+            ax5.legend(loc='best')
             
             # 6 3D plot
             ax6.spines['left'].set_visible(False)

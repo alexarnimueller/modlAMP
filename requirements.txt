@@ -7,4 +7,4 @@ scikit-learn>=0.18.0
 pandas>=0.18.1
 requests>=2.11.1
 lxml>=3.6.4
-http://cdn.mysql.com/Downloads/Connector-Python/mysql-connector-python-2.0.4.zip
+mysql-connector>=2.2.9
