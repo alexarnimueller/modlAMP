@@ -13,11 +13,13 @@ reqs = [str(ir.req) for ir in install_reqs][:-1]
 with open('README.rst') as f:
     readme = f.read()
 
+exec(open('modlamp/version.py').read())
+
 setup(name='modlamp',
-      version='4.1.3',
+      version=__version__,
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
-      author='Alex Müller, Gisela Gabernet',
+      author=__author__,
       author_email='alexarnimueller@gmail.com',
       url='http://modlamp.org',
       license='BSD-3',
