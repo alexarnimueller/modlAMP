@@ -4,7 +4,7 @@ README
 .. image:: https://img.shields.io/pypi/v/modlamp.svg
    :target: https://pypi.org/project/modlamp/
 
-.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg?branch=master
+.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg
     :target: https://travis-ci.org/alexarnimueller/modlAMP
 
 .. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
