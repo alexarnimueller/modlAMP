@@ -16,10 +16,10 @@ with open('README.rst') as f:
 exec(open('modlamp/version.py').read())
 
 setup(name='modlamp',
-      version=__version__,
+      version='4.2.0',  # also change version in version.py
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
-      author=__author__,
+      author='Alex Müller, Gisela Gabernet',
       author_email='alexarnimueller@gmail.com',
       url='http://modlamp.org',
       license='BSD-3',
