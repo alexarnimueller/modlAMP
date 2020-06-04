@@ -20,7 +20,7 @@ import sys
 
 import numpy as np
 from scipy import stats
-from sklearn.externals.joblib import Parallel, delayed
+from joblib import Parallel, delayed
 
 from modlamp.core import BaseDescriptor, load_scale, count_aas, aa_weights, aa_energies, aa_formulas
 
