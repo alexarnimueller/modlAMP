@@ -52,7 +52,7 @@ class TestAnalysis(unittest.TestCase):
         self.assertEqual(self.a.len[0][2], 24.)
 
     def test_summary(self):
-        self.e.plot_summary(plot=True, filename=self.fname)
+        self.e.plot_summary(plot=False, filename=self.fname)
 
 
 if __name__ == '__main__':
