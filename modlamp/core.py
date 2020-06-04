@@ -239,8 +239,8 @@ class BaseSequence(object):
             self.names = ['Seq_' + str(i) for i in range(len(self.sequences))]
         df = pd.DataFrame(list(zip(self.sequences, self.names)), columns=['Sequences', 'Names'])
         df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
-        self.sequences = df['Sequences'].get_values().tolist()
-        self.names = df['Names'].get_values().tolist()
+        self.sequences = list(df['Sequences'])
+        self.names = list(df['Names'])
 
     def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
@@ -712,8 +712,8 @@ class BaseDescriptor(object):
         df = pd.DataFrame(np.array([self.sequences, self.names, self.descriptor, self.target]).T,
                           columns=['Sequences', 'Names', 'Descriptor', 'Target'])
         df = df.drop_duplicates('Sequences', 'first')  # keep first occurrence of duplicate
-        self.sequences = df['Sequences'].get_values().tolist()
-        self.names = df['Names'].get_values().tolist()
+        self.sequences = list(df['Sequences'])
+        self.names = list(df['Names'])
         self.descriptor = df['Descriptor'].get_values()
         self.target = df['Target'].get_values()
 
