@@ -41,6 +41,10 @@ There is no need to download the package manually to install modlAMP. In your te
 
     pip install modlamp
 
+To update modlamp to the latest version, run the following::
+
+    pip install --upgrade modlamp
+
 Usage
 *****
 
