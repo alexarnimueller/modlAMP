@@ -1,3 +1,3 @@
 __all__ = ['analysis', 'core', 'database', 'datasets', 'descriptors', 'ml', 'plot', 'sequences', 'wetlab']
 __author__ = 'Alex Müller, Gisela Gabernet'
-__version__ = '4.2.1'
+__version__ = '4.2.2'
