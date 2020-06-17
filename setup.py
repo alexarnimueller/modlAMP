@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
-try:  # for pip >= 10
-    from pip._internal.req import parse_requirements
-except ImportError:  # for pip <= 9.0.3
-    from pip.req import parse_requirements
 
-# parse the requirements from the requirements file
-install_reqs = parse_requirements('requirements.txt', session='hack')
-reqs = [str(ir.req) for ir in install_reqs][:-1]
 
-with open('README.rst') as f:
+with open('README.rst', 'r') as f:
     readme = f.read()
 
-exec(open('modlamp/version.py').read())
+with open('requirements.txt', 'r') as f:
+    reqs = f.read().split('\n')
 
 setup(name='modlamp',
       version='4.2.0',  # also change version in version.py
@@ -38,3 +32,4 @@ setup(name='modlamp',
           'Programming Language :: Python :: 3.6'],
       install_requires=reqs
       )
+
