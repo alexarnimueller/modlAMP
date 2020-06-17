@@ -678,8 +678,8 @@ def plot_aa_distr(sequences, color='#83AF9B', filename=None):
     aa = count_aas(concatseq, scale='relative')
     
     fig, ax = plt.subplots()
-    for i, v in enumerate([k for k, w in aa.items()]):
-        plt.bar(i, v, 0.9, color=color)
+    for a in range(20):
+        plt.bar(a, list(aa.values())[a], 0.9, color=color)
     
     plt.xlim([-0.75, 19.75])
     plt.ylim([0, max(aa.values()) + 0.05])

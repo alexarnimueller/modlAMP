@@ -68,3 +68,4 @@ v4.1.2  13.11.2019 -- Bugfix in GlobalAnalysis plot
 v4.1.3  13.11.2019 -- Another bugfix in GlobalAnalysis plot
 v4.1.4  29.04.2020 -- Added dunder info (all, author, version)
 v4.2.0  04.06.2020 -- Compatibility with newest scikit-learn version
+v4.2.1  12.06.2020 -- Bugfix in plot_aa_distr
