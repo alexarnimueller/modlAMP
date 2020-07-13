@@ -24,11 +24,6 @@ amino acids. It incorporates several modules, like descriptor calculation (modul
 generation (module ``sequences``). For basic instructions how to use the package, see Usage_ section of this README
 or the `documentation <http://modlamp.org>`_.
 
-.. note::
-    You are advised to install `Anaconda <https://www.continuum.io/downloads>`_ Python package manager with Python 3.7
-    before installing **modlAMP**. It will make handling of necessary package requirements and versions much easier.
-
-
 Installation
 ************
 
