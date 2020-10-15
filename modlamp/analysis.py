@@ -297,14 +297,13 @@ class GlobalAnalysis(object):
             if self.shapes:  # if the library consists of different sized sub libraries
                 bwidth = 1. / len(self.shapes)
                 for i, c in enumerate(self.charge):
-                    counts, bins = np.histogram(c, range=[-5, 20], bins=25, normed=True)
-                    ax5.bar(bins[1:] + i * bwidth, counts, bwidth, color=colors[i], label=labels[i], alpha=0.8)
+                    counts, bins = np.histogram(c, range=[-5, 20], bins=25)
+                    ax5.bar(bins[1:] + i * bwidth, counts / np.max(counts), bwidth, color=colors[i], label=labels[i], alpha=0.8)
             else:
-                ax5.hist(self.charge, 25, normed=1, alpha=0.8, align='left', rwidth=0.95, histtype='bar', label=labels,
+                ax5.hist(self.charge / np.max(self.charge), 25, alpha=0.8, align='left', rwidth=0.95, histtype='bar', label=labels,
                          color=colors[:num])
             ax5.set_xlabel('Global Charge', fontweight='bold', fontsize=14.)
             ax5.set_ylabel('Fraction', fontweight='bold', fontsize=14.)
-            ax5.set_xlim(np.min(np.array(self.charge)) - 2, np.max(np.array(self.charge)) + 2)
             ax5.title.set_text('pH: 7.4 ,  amide: true')
             ax5.legend(loc='best')
             
