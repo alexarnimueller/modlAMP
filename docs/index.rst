@@ -20,7 +20,7 @@ Welcome to modlAMP's documentation!
 
 **Authors:** Alex Müller, Gisela Gabernet
 
-**Copyright:** (c) 2016 - 2020 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)
+**Copyright:** (c) 2016 - 2021 ETH Zurich, Switzerland; Alex Müller, Gisela Gabernet, Gisbert Schneider `(modlab)
 <http://www.cadd.ethz.ch>`_.
 
 This is a **Python package** (for Python 3 since version 4.0.0) that was designed for working with **peptides**, **proteins** or any

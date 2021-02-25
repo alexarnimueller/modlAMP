@@ -648,17 +648,18 @@ class GlobalDescriptor(BaseDescriptor):
 
     def calculate_all(self, ph=7.4, amide=True):
         """Method combining all global descriptors and appending them into the feature matrix in the attribute
-        :py:attr:`descriptor`.
+        :py:attr:`descriptor` and corresponding feature names in :py:attr:`featurenames`.
         
         :param ph: {float} pH at which to calculate peptide charge
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
-        :return: array of descriptor values in the attribute :py:attr:`descriptor`
+        :return: array of descriptor values in the attribute :py:attr:`descriptor` and corresponding feature names in
+        :py:attr:`featurenames`
         :Example:
         
         >>> desc = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
         >>> desc.calculate_all(amide=True)
         >>> desc.featurenames
-        ['Length', 'MW', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydRatio']
+        ['Length', 'MW', 'Charge', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
         >>> desc.descriptor
         array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
         >>> desc.save_descriptor('/path/to/outputfile.csv')  # save the descriptor data (with feature names header)
