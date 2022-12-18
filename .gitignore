@@ -1,5 +1,6 @@
 *.pyc
 *.xml
+.vscode/
 .idea/
 .idea/workspace.xml
 *.iml

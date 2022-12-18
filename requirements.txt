@@ -8,4 +8,4 @@ pandas>=0.18.1
 requests>=2.11.1
 lxml>=3.6.4
 joblib>=0.15.1
-mysql-connector-python==8.0.17
+mysql-connector-python>=8.0
