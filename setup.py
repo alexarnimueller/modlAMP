@@ -10,11 +10,11 @@ with open('requirements.txt', 'r') as f:
     reqs = f.read().split('\n')
 
 setup(name='modlamp',
-      version='4.2.3',  # also change version in version.py
+      version='4.3.0',  # also change version in version.py
       description='python package for in silico peptide design and QSAR studies',
       long_description=readme,
       author='Alex Müller, Gisela Gabernet',
-      author_email='alexarnimueller@gmail.com',
+      author_email='alexarnimueller@protonmail.com',
       url='http://modlamp.org',
       license='BSD-3',
       keywords="antimicrobial anticancer peptide descriptor sequences QSAR machine learning design",
