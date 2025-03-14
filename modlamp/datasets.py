@@ -45,6 +45,7 @@ class Bunch(dict):
     >>> b['c']
     6
     """
+
     def __init__(self, **kwargs):
         dict.__init__(self, kwargs)
 
@@ -80,8 +81,8 @@ def load_AMPvsTM():
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of
+        the features.
     :Example:
 
     >>> from modlamp.datasets import load_AMPvsTM
@@ -97,17 +98,20 @@ def load_AMPvsTM():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'AMPvsTMset.csv')) as f:
-        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+    with open(join(module_path, "data", "AMPvsTMset.csv")) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(",")
         sequences, target = list(), list()
         for line in f:
-            tmp = line.strip().split(',')
+            tmp = line.strip().split(",")
             sequences.append(tmp[0])
             target.append(tmp[1])
 
-    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
-                 target_names=[target_name1, target_name2],
-                 feature_names=['Sequence'])
+    return Bunch(
+        sequences=np.array(sequences, dtype="str"),
+        target=np.array(target, dtype="int"),
+        target_names=[target_name1, target_name2],
+        feature_names=["Sequence"],
+    )
 
 
 def load_AMPvsUniProt():
@@ -127,8 +131,8 @@ def load_AMPvsUniProt():
     =================    =====
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of
+        the features.
     :Example:
 
     >>> from modlamp.datasets import load_AMPvsUniProt
@@ -144,17 +148,20 @@ def load_AMPvsUniProt():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'AMPvsUniProt.csv')) as f:
-        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+    with open(join(module_path, "data", "AMPvsUniProt.csv")) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(",")
         sequences, target = list(), list()
         for line in f:
-            tmp = line.strip().split(',')
+            tmp = line.strip().split(",")
             sequences.append(tmp[0])
             target.append(tmp[1])
 
-    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
-                 target_names=[target_name1, target_name2],
-                 feature_names=['Sequence'])
+    return Bunch(
+        sequences=np.array(sequences, dtype="str"),
+        target=np.array(target, dtype="int"),
+        target_names=[target_name1, target_name2],
+        feature_names=["Sequence"],
+    )
 
 
 def load_ACPvsTM():
@@ -177,8 +184,8 @@ def load_ACPvsTM():
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of
+        the features.
     :Example:
 
     >>> from modlamp.datasets import load_ACPvsTM
@@ -192,22 +199,25 @@ def load_ACPvsTM():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'ACP_CancPPD_vs_TM.csv')) as f:
-        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+    with open(join(module_path, "data", "ACP_CancPPD_vs_TM.csv")) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(",")
         sequences, target = list(), list()
         for line in f:
-            tmp = line.strip().split(',')
+            tmp = line.strip().split(",")
             sequences.append(tmp[0])
             target.append(tmp[1])
 
-    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
-                 target_names=[target_name1, target_name2],
-                 feature_names=['Sequence'])
+    return Bunch(
+        sequences=np.array(sequences, dtype="str"),
+        target=np.array(target, dtype="int"),
+        target_names=[target_name1, target_name2],
+        feature_names=["Sequence"],
+    )
 
 
 def load_ACPvsRandom():
-    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides generated
-     randomly with the amino acid composition of AMPs.
+    """Function to load a dataset consisting of ACP sequences from the CancerPPD database and negative peptides
+    generated randomly with the amino acid composition of AMPs.
 
     The ACP class consists of a collection of 413 ACPs from the `CancerPPD
     <http://crdd.osdd.net/raghava/cancerppd/index.php>`_ database with length between 7 and 30 aa and without cysteines
@@ -225,8 +235,8 @@ def load_ACPvsRandom():
     =================    ===
 
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of
+        the features.
     :Example:
 
     >>> from modlamp.datasets import load_ACPvsRandom
@@ -240,37 +250,40 @@ def load_ACPvsRandom():
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', 'ACP_CancPPD_vs_Random.csv')) as f:
-        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+    with open(join(module_path, "data", "ACP_CancPPD_vs_Random.csv")) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(",")
         sequences, target = list(), list()
         for line in f:
-            tmp = line.strip().split(',')
+            tmp = line.strip().split(",")
             sequences.append(tmp[0])
             target.append(tmp[1])
 
-    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
-                 target_names=[target_name1, target_name2],
-                 feature_names=['Sequence'])
+    return Bunch(
+        sequences=np.array(sequences, dtype="str"),
+        target=np.array(target, dtype="int"),
+        target_names=[target_name1, target_name2],
+        feature_names=["Sequence"],
+    )
 
 
 def load_custom(filename):
     """Function to load a custom dataset saved in ``modlamp/data/`` as a ``.csv`` file.
-    
+
     The following header needs to be included: *Nr. of sequences*, *Nr. of columns - 1*, *Class name for 0*,
     *Class name for 1*
-    
+
     Example ``.csv`` file structure::
-    
+
         4, 1, TM, AMP
         GTLEFDVTIGRAN, 0
         GSNVHLASNLLA, 0
         GLFDIVKKVVGALGSL, 0
         GLFDIIKKIAESF, 0
-    
+
     :param filename: {str} filename of the data file to be loaded; the file must be located in ``modlamp/data/``
     :return: Bunch, a dictionary-like object, the interesting attributes are: ``sequences``, the sequences, ``target``,
-        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of the
-        features.
+        the classification labels, ``target_names``, the meaning of the labels and ``feature_names``, the meaning of
+        the features.
     :Example:
 
     >>> from modlamp.datasets import load_custom
@@ -278,14 +291,17 @@ def load_custom(filename):
     """
 
     module_path = dirname(__file__)
-    with open(join(module_path, 'data', filename)) as f:
-        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(',')
+    with open(join(module_path, "data", filename)) as f:
+        n_samples, n_features, target_name1, target_name2 = next(f).strip().split(",")
         sequences, target = list(), list()
         for line in f:
-            tmp = line.strip().split(',')
+            tmp = line.strip().split(",")
             sequences.append(tmp[0])
             target.append(tmp[1])
 
-    return Bunch(sequences=np.array(sequences, dtype='str'), target=np.array(target, dtype='int'),
-                 target_names=[target_name1, target_name2],
-                 feature_names=['Sequence'])
+    return Bunch(
+        sequences=np.array(sequences, dtype="str"),
+        target=np.array(target, dtype="int"),
+        target_names=[target_name1, target_name2],
+        feature_names=["Sequence"],
+    )

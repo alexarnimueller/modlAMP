@@ -32,15 +32,15 @@ def _read_db_config(configfile):
     :return: a dictionary of read database parameters
     """
     if exists(configfile):
-        with open(configfile, 'r') as cfg:
+        with open(configfile, "r") as cfg:
             db = json.load(cfg)
 
-        if not db['password']:
-            db['password'] = getpass()
-    
+        if not db["password"]:
+            db["password"] = getpass()
+
         return db
     else:
-        raise IOError('Path to config file is wrong or file does not exist!\n%s' % configfile)
+        raise IOError("Path to config file is wrong or file does not exist!\n%s" % configfile)
 
 
 def _connect(configfile):
@@ -54,16 +54,16 @@ def _connect(configfile):
     config = _read_db_config(configfile)
 
     try:
-        print('Connecting to MySQL database...')
+        print("Connecting to MySQL database...")
         conn = mysql.connector.connect(**config)
-        print('connection established!')
+        print("connection established!")
         return conn
 
     except mysql.connector.Error as err:
         print(err)
 
 
-def query_database(table, columns=None, configfile='./modlamp/data/db_config.json'):
+def query_database(table, columns=None, configfile="./modlamp/data/db_config.json"):
     """
     This function extracts experimental results from the modlab peptide database. All data from the given table and
     column names is extracted and returned.
@@ -91,10 +91,10 @@ def query_database(table, columns=None, configfile='./modlamp/data/db_config.jso
         activity is none (inactive).
     """
     if not columns:
-        columns = ['*']
+        columns = ["*"]
     try:
         conn = _connect(configfile)
-        df = pd.read_sql("SELECT " + ', '.join(columns) + " FROM " + table, con=conn)
+        df = pd.read_sql("SELECT " + ", ".join(columns) + " FROM " + table, con=conn)
 
         return df
 
@@ -107,21 +107,30 @@ def query_apd(ids):
     A function to query sequences from the antimicrobial peptide database `APD <http://aps.unmc.edu/AP/>`_.
     If the whole database should be scraped, simply look up the latest entry ID and take a ``range(1, 'latestID')``
     as function input.
-    
+
     :param ids: {list of int} list of APD IDs to be queried from the database
     :return: list of peptide sequences corresponding to entered ids.
     :Example:
-    
+
     >>> query_apd([15, 16, 18, 19, 20])
     ['GLFDIVKKVVGALGSL', 'GLFDIVKKVVGAIGSL', 'GLFDIVKKVVGAFGSL', 'GLFDIAKKVIGVIGSL', 'GLFDIVKKIAGHIAGSI']
     """
-
+    payload = {
+        "Length": "Any",
+        "Netcharge": "Any",
+        "HydrophobicPer": "Any",
+        "Location": "Any",
+        "Type": "Any",
+        "Method": "Any",
+        "Sort": "ID",
+    }
     seqs = []
 
     for i in ids:
-        page = requests.get('http://aps.unmc.edu/AP/database/query_output.php?ID=%0.5d' % i)
-        tree = html.fromstring(page.content)
-        seqs.extend(tree.xpath('//font[@color="#ff3300"]/text()'))
+        payload["ID"] = i
+        page = requests.post("https://aps.unmc.edu/database/result", headers={}, data=payload, files=[], verify=False)
+        tree = html.fromstring(page.text)
+        seqs.extend(tree.xpath('//p[@class="sequence"]/text()'))
 
     return seqs
 
@@ -139,12 +148,12 @@ def query_camp(ids):
     >>> query_camp([2705, 2706])
     ['GLFDIVKKVVGALGSL', 'GLFDIVKKVVGTLAGL']
     """
-    
+
     seqs = []
-    
+
     for i in ids:
-        page = requests.get('http://camp.bicnirrh.res.in/seqDisp.php?id=CAMPSQ%i' % i)
+        page = requests.get(f"https://camp.bicnirrh.res.in/seqDisp.php?id=CAMPSQ{i}", verify=False)
         tree = html.fromstring(page.content)
         seqs.extend(tree.xpath('//td[@class="fasta"]/text()'))
-    
+
     return seqs

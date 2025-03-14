@@ -39,14 +39,14 @@ def _one_autocorr(seq, window, scale):
     """
     try:
         m = list()  # list of lists to store translated sequence values
-        for l in range(len(seq)):  # translate AA sequence into values
-            m.append(scale[str(seq[l])])
+        for shp in range(len(seq)):  # translate AA sequence into values
+            m.append(scale[str(seq[shp])])
         # auto-correlation in defined sequence window
         seqdesc = list()
         for dist in range(window):  # for all correlation distances
-            for val in range(len(scale['A'])):  # for all features of the descriptor scale
+            for val in range(len(scale["A"])):  # for all features of the descriptor scale
                 valsum = list()
-                cntr = 0.
+                cntr = 0.0
                 for pos in range(len(seq)):  # for every position in the sequence
                     if (pos + dist) < len(seq):  # check if corr distance is possible at that sequence position
                         cntr += 1  # counter to scale sum
@@ -55,7 +55,7 @@ def _one_autocorr(seq, window, scale):
         return seqdesc
     except ZeroDivisionError:
         print("ERROR!\nThe chosen correlation window % i is larger than the sequence %s !" % (window, seq))
-        
+
 
 def _one_crosscorr(seq, window, scale):
     """Private function used for calculating cross-correlated descriptors for 1 given sequence, window and an AA scale.
@@ -68,13 +68,13 @@ def _one_crosscorr(seq, window, scale):
     """
     try:
         m = list()  # list of lists to store translated sequence values
-        for l in range(len(seq)):  # translate AA sequence into values
-            m.append(scale[str(seq[l])])
+        for shp in range(len(seq)):  # translate AA sequence into values
+            m.append(scale[str(seq[shp])])
         # auto-correlation in defined sequence window
         seqdesc = list()
-        for val in range(len(scale['A'])):  # for all features of the descriptor scale
-            for cc in range(len(scale['A'])):  # for every feature cross correlation
-                if (val + cc) < len(scale['A']):  # check if corr distance is in range of the num of features
+        for val in range(len(scale["A"])):  # for all features of the descriptor scale
+            for cc in range(len(scale["A"])):  # for every feature cross correlation
+                if (val + cc) < len(scale["A"]):  # check if corr distance is in range of the num of features
                     for dist in range(window):  # for all correlation distances
                         cntr = float()
                         valsum = list()
@@ -89,7 +89,7 @@ def _one_crosscorr(seq, window, scale):
 
 
 def _one_arc(seq, modality, scale):
-    """ Privat function used for calculating arc descriptors for one sequence and AA scale. This function is used by
+    """Privat function used for calculating arc descriptors for one sequence and AA scale. This function is used by
     :py:func:`calculate_arc` method method of :py:class:`PeptideDescriptor`.
 
     :param seq: {str} amino acid sequence to calculate descriptor for
@@ -118,7 +118,7 @@ def _one_arc(seq, modality, scale):
     # loop through all windows
     for j in range(num_windows):
         # slices descriptor matrix into current window
-        window_mat = desc_mat[j:j + window, :]
+        window_mat = desc_mat[j : j + window, :]
 
         # defines order of amino acids in helical projection
         order = [0, 11, 4, 15, 8, 1, 12, 5, 16, 9, 2, 13, 6, 17, 10, 3, 14, 7]
@@ -128,7 +128,7 @@ def _one_arc(seq, modality, scale):
         for pos in order:
             try:
                 ordered.append(window_mat[pos, :])
-            except:
+            except Exception:
                 # for sequences of len < 18 adding dummy vector with 2s, length of descriptor dimensions
                 ordered.append([2] * desc_dim)
         ordered = np.asarray(ordered)
@@ -151,8 +151,7 @@ def _one_arc(seq, modality, scale):
                         arc += 10
                     elif ordered[n - 1, m] == 0:  # if previous position didn't contain PF don't add anything
                         arc += 0
-                    elif ordered[
-                                n - 2, m] == 1:  # if previous position is empty then check second previous for PF
+                    elif ordered[n - 2, m] == 1:  # if previous position is empty then check second previous for PF
                         arc += 10
                     if n == 17:  # if we are at the last position check for position n=0 instead of next position.
                         if ordered[0, m] == 1:  # if it contains PF add 10° extra
@@ -180,9 +179,9 @@ def _one_arc(seq, modality, scale):
 
     allwindows_arc = np.asarray(allwindows_arc)
 
-    if modality == 'max':
+    if modality == "max":
         final_arc = np.max(allwindows_arc, axis=0)  # calculate maximum / mean arc along all windows
-    elif modality == 'mean':
+    elif modality == "mean":
         final_arc = np.mean(allwindows_arc, axis=0)
     else:
         print('modality is unknown, please choose between "max" and "mean"\n.')
@@ -203,17 +202,17 @@ def _charge(seq, ph=7.0, amide=False):
     :param amide: {boolean} whether the sequences have an amidated C-terminus.
     :return: {array} descriptor values in the attribute :py:attr:`descriptor
     """
-    
+
     if amide:
-        pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pks = {'Cterm': 15., 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
+        pos_pks = {"Nterm": 9.38, "K": 10.67, "R": 12.10, "H": 6.04}
+        neg_pks = {"Cterm": 15.0, "D": 3.71, "E": 4.15, "C": 8.14, "Y": 10.10}
     else:
-        pos_pks = {'Nterm': 9.38, 'K': 10.67, 'R': 12.10, 'H': 6.04}
-        neg_pks = {'Cterm': 2.15, 'D': 3.71, 'E': 4.15, 'C': 8.14, 'Y': 10.10}
-    
-    aa_content = count_aas(seq, scale='absolute')
-    aa_content['Nterm'] = 1.0
-    aa_content['Cterm'] = 1.0
+        pos_pks = {"Nterm": 9.38, "K": 10.67, "R": 12.10, "H": 6.04}
+        neg_pks = {"Cterm": 2.15, "D": 3.71, "E": 4.15, "C": 8.14, "Y": 10.10}
+
+    aa_content = count_aas(seq, scale="absolute")
+    aa_content["Nterm"] = 1.0
+    aa_content["Cterm"] = 1.0
     pos_charge = 0.0
     for aa, pK in pos_pks.items():
         c_r = 10 ** (pK - ph)
@@ -254,7 +253,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of sequence lengths in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor(['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'])
         >>> desc.length()
         >>> desc.descriptor
@@ -266,20 +265,20 @@ class GlobalDescriptor(BaseDescriptor):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('Length')
+            self.featurenames.append("Length")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['Length']
-    
+            self.featurenames = ["Length"]
+
     def formula(self, amide=False, append=False):
         """Method to calculate the molecular formula of every sequence in the attribute :py:attr:`sequences`.
-        
+
         :param amide: {boolean} whether the sequences are C-terminally amidated.
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of molecular formulas {str} in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor(['KADSFLSADGHSADFSLDKKLKERL', 'ERTILSDFPQWWFASLDFLNC', 'ACDEFGHIKLMNPQRSTVWY'])
         >>> desc.formula(amide=True)
         >>> for v in desc.descriptor:
@@ -287,41 +286,41 @@ class GlobalDescriptor(BaseDescriptor):
         C122 H197 N35 O39
         C121 H168 N28 O33 S
         C106 H157 N29 O30 S2
-        
+
         .. seealso:: :py:func:`modlamp.core.aa_formulas()`
-        
+
         .. versionadded:: v2.7.6
         """
         desc = []
         formulas = aa_formulas()
         for seq in self.sequences:
-            f = {'C': 0, 'H': 0, 'N': 0, 'O': 0, 'S': 0}
+            f = {"C": 0, "H": 0, "N": 0, "O": 0, "S": 0}
             for aa in seq:  # loop over all AAs
                 for k in f.keys():
                     f[k] += formulas[aa][k]
-            
+
             # substract H2O for every peptide bond
-            f['H'] -= 2 * (len(seq) - 1)
-            f['O'] -= (len(seq) - 1)
-            
+            f["H"] -= 2 * (len(seq) - 1)
+            f["O"] -= len(seq) - 1
+
             if amide:  # add C-terminal amide --> replace OH with NH2
-                f['O'] -= 1
-                f['H'] += 1
-                f['N'] += 1
-            
-            if f['S'] != 0:
-                val = 'C%s H%s N%s O%s %s%s' % (f['C'], f['H'], f['N'], f['O'], 'S', f['S'])
+                f["O"] -= 1
+                f["H"] += 1
+                f["N"] += 1
+
+            if f["S"] != 0:
+                val = "C%s H%s N%s O%s %s%s" % (f["C"], f["H"], f["N"], f["O"], "S", f["S"])
             else:
-                val = 'C%s H%s N%s O%s' % (f['C'], f['H'], f['N'], f['O'])
-                
+                val = "C%s H%s N%s O%s" % (f["C"], f["H"], f["N"], f["O"])
+
             desc.append([val])
-        
+
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('Formula')
+            self.featurenames.append("Formula")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['Formula']
+            self.featurenames = ["Formula"]
 
     def calculate_MW(self, amide=False, append=False):
         """Method to calculate the molecular weight [g/mol] of every sequence in the attribute :py:attr:`sequences`.
@@ -331,7 +330,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('IAESFKGHIPL')
         >>> desc.calculate_MW(amide=True)
         >>> desc.descriptor
@@ -354,10 +353,10 @@ class GlobalDescriptor(BaseDescriptor):
             desc = [d - 0.98 for d in desc]
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('MW')
+            self.featurenames.append("MW")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['MW']
+            self.featurenames = ["MW"]
 
     def calculate_charge(self, ph=7.0, amide=False, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
@@ -376,7 +375,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('KLAKFGKRSELVALSG')
         >>> desc.calculate_charge(ph=7.4, amide=True)
         >>> desc.descriptor
@@ -389,13 +388,14 @@ class GlobalDescriptor(BaseDescriptor):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('Charge')
+            self.featurenames.append("Charge")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['Charge']
+            self.featurenames = ["Charge"]
 
     def charge_density(self, ph=7.0, amide=False, append=False):
-        """Method to calculate the charge density (charge / MW) of every sequences in the attributes :py:attr:`sequences`
+        """Method to calculate the charge density (charge / MW) of every sequences in the attributes
+            :py:attr:`sequences`
 
         :param ph: {float} pH at which to calculate peptide charge.
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
@@ -403,7 +403,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`.
         :Example:
-        
+
         >>> desc = GlobalDescriptor('GNSDLLIEQRTLLASDEF')
         >>> desc.charge_density(ph=6, amide=True)
         >>> desc.descriptor
@@ -417,10 +417,10 @@ class GlobalDescriptor(BaseDescriptor):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('ChargeDensity')
+            self.featurenames.append("ChargeDensity")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['ChargeDensity']
+            self.featurenames = ["ChargeDensity"]
 
     def isoelectric_point(self, amide=False, append=False):
         """
@@ -436,7 +436,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('KLFDIKFGHIPQRST')
         >>> desc.isoelectric_point()
         >>> desc.descriptor
@@ -485,10 +485,10 @@ class GlobalDescriptor(BaseDescriptor):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('pI')
+            self.featurenames.append("pI")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['pI']
+            self.featurenames = ["pI"]
 
     def instability_index(self, append=False):
         """
@@ -500,27 +500,27 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('LLASMNDLLAKRST')
         >>> desc.instability_index()
         >>> desc.descriptor
         array([[ 63.95714286]])
         """
-        
+
         desc = []
-        dimv = load_scale('instability')[1]
+        dimv = load_scale("instability")[1]
         for seq in self.sequences:
             stabindex = float()
             for i in range(len(seq) - 1):
-                stabindex += dimv[seq[i]][seq[i+1]]
+                stabindex += dimv[seq[i]][seq[i + 1]]
             desc.append((10.0 / len(seq)) * stabindex)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('InstabilityInd')
+            self.featurenames.append("InstabilityInd")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['InstabilityInd']
+            self.featurenames = ["InstabilityInd"]
 
     def aromaticity(self, append=False):
         """
@@ -531,7 +531,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('GLFYWRFFLQRRFLYWW')
         >>> desc.aromaticity()
         >>> desc.descriptor
@@ -539,17 +539,17 @@ class GlobalDescriptor(BaseDescriptor):
         """
         desc = []
         for seq in self.sequences:
-            f = seq.count('F')
-            w = seq.count('W')
-            y = seq.count('Y')
+            f = seq.count("F")
+            w = seq.count("W")
+            y = seq.count("Y")
             desc.append(float(f + w + y) / len(seq))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('Aromaticity')
+            self.featurenames.append("Aromaticity")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['Aromaticity']
+            self.featurenames = ["Aromaticity"]
 
     def aliphatic_index(self, append=False):
         """
@@ -562,7 +562,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('KWLKYLKKLAKLVK')
         >>> desc.aliphatic_index()
         >>> desc.descriptor
@@ -573,14 +573,14 @@ class GlobalDescriptor(BaseDescriptor):
         for seq in self.sequences:
             d = {aa: seq.count(aa) for aa in aa_dict.keys()}  # count aa
             d = {k: (float(d[k]) / len(seq)) * 100 for k in d.keys()}  # get mole percent of all AA
-            desc.append(d['A'] + 2.9 * d['V'] + 3.9 * (d['I'] + d['L']))  # formula for calculating the AI (Ikai, 1980)
+            desc.append(d["A"] + 2.9 * d["V"] + 3.9 * (d["I"] + d["L"]))  # formula for calculating the AI (Ikai, 1980)
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('AliphaticInd')
+            self.featurenames.append("AliphaticInd")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['AliphaticInd']
+            self.featurenames = ["AliphaticInd"]
 
     def boman_index(self, append=False):
         """Method to calculate the boman index of every sequence in the attribute :py:attr:`sequences`.
@@ -589,14 +589,14 @@ class GlobalDescriptor(BaseDescriptor):
         dividing by    sequence length.
         ([1] H. G. Boman, D. Wade, I. a Boman, B. Wåhlin, R. B. Merrifield, *FEBS Lett*. **1989**, *259*, 103–106.
         [2] A. Radzick, R. Wolfenden, *Biochemistry* **1988**, *27*, 1664–1670.)
-        
+
         .. seealso:: :py:func:`modlamp.core.aa_energies()`
 
         :param append: {boolean} whether the produced descriptor values should be appended to the existing ones in the
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('GLFDIVKKVVGALGSL')
         >>> desc.boman_index()
         >>> desc.descriptor
@@ -612,10 +612,10 @@ class GlobalDescriptor(BaseDescriptor):
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('BomanInd')
+            self.featurenames.append("BomanInd")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['BomanInd']
+            self.featurenames = ["BomanInd"]
 
     def hydrophobic_ratio(self, append=False):
         """
@@ -626,7 +626,7 @@ class GlobalDescriptor(BaseDescriptor):
             attribute :py:attr:`descriptor`.
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('VALLYWRTVLLAIII')
         >>> desc.hydrophobic_ratio()
         >>> desc.descriptor
@@ -637,38 +637,39 @@ class GlobalDescriptor(BaseDescriptor):
         for seq in self.sequences:
             pa = {aa: seq.count(aa) for aa in aa_dict.keys()}  # count aa
             # formula for calculating the AI (Ikai, 1980):
-            desc.append((pa['A'] + pa['C'] + pa['F'] + pa['I'] + pa['L'] + pa['M'] + pa['V']) / float(len(seq)))
+            desc.append((pa["A"] + pa["C"] + pa["F"] + pa["I"] + pa["L"] + pa["M"] + pa["V"]) / float(len(seq)))
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            self.featurenames.append('HydrophRatio')
+            self.featurenames.append("HydrophRatio")
         else:
             self.descriptor = np.array(desc)
-            self.featurenames = ['HydrophRatio']
+            self.featurenames = ["HydrophRatio"]
 
     def calculate_all(self, ph=7.4, amide=True):
         """Method combining all global descriptors and appending them into the feature matrix in the attribute
         :py:attr:`descriptor` and corresponding feature names in :py:attr:`featurenames`.
-        
+
         :param ph: {float} pH at which to calculate peptide charge
         :param amide: {boolean} whether the sequences have an amidated C-terminus.
         :return: array of descriptor values in the attribute :py:attr:`descriptor` and corresponding feature names in
         :py:attr:`featurenames`
         :Example:
-        
+
         >>> desc = GlobalDescriptor('AFGHFKLKKLFIFGHERT')
         >>> desc.calculate_all(amide=True)
         >>> desc.featurenames
-        ['Length', 'MW', 'Charge', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity', 'AliphaticInd', 'BomanInd', 'HydrophRatio']
+        ['Length', 'MW', 'Charge', 'ChargeDensity', 'pI', 'InstabilityInd', 'Aromaticity',
+         'AliphaticInd', 'BomanInd', 'HydrophRatio']
         >>> desc.descriptor
         array([[ 18.,  2.17559000e+03,   1.87167619e-03,   1.16757812e+01, ...  1.10555556e+00,   4.44444444e-01]])
         >>> desc.save_descriptor('/path/to/outputfile.csv')  # save the descriptor data (with feature names header)
         """
-        
+
         # This is a strange way of doing it. However, the append=True option excludes length and charge, no idea why!
         fn = []
         self.length()  # sequence length
-        l = self.descriptor
+        dsc = self.descriptor
         fn.extend(self.featurenames)
         self.calculate_MW(amide=amide)  # molecular weight
         mw = self.descriptor
@@ -697,8 +698,8 @@ class GlobalDescriptor(BaseDescriptor):
         self.hydrophobic_ratio()  # Hydrophobic ratio
         hr = self.descriptor
         fn.extend(self.featurenames)
-        
-        self.descriptor = np.concatenate((l, mw, c, cd, pi, si, ar, ai, bi, hr), axis=1)
+
+        self.descriptor = np.concatenate((dsc, mw, c, cd, pi, si, ar, ai, bi, hr), axis=1)
         self.featurenames = fn
 
 
@@ -706,40 +707,71 @@ class PeptideDescriptor(BaseDescriptor):
     """Base class for peptide descriptors. The following **amino acid descriptor scales** are available for descriptor
     calculation:
 
-    - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić, D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
-    - **ABHPRK**         (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic, Kink-inducer)
-    - **argos**          (Argos hydrophobicity amino acid scale, *[2] Argos, P., Rao, J. K. M. & Hargrave, P. A., Eur. J. Biochem. 2005, 128, 565–575.*)
-    - **bulkiness**      (Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
+    - **AASI**           (An amino acid selectivity index scale for helical antimicrobial peptides, *[1] D. Juretić,
+                          D. Vukicević, N. Ilić, N. Antcheva, A. Tossi, J. Chem. Inf. Model. 2009, 49, 2873–2882.*)
+    - **ABHPRK**         (modlabs inhouse physicochemical feature scale (Acidic, Basic, Hydrophobic, Polar, aRomatic,
+                          Kink-inducer)
+    - **argos**          (Argos hydrophobicity amino acid scale, *[2] Argos, P., Rao, J. K. M. & Hargrave, P. A., Eur.
+                          J. Biochem. 2005, 128, 565–575.*)
+    - **bulkiness**      (Amino acid side chain bulkiness scale, *[3] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor.
+                          Biol. 1968, 21, 170–201.*)
     - **charge_phys**    (Amino acid charge at pH 7.0 - Hystidine charge +0.1.)
     - **charge_acid**    (Amino acid charge at acidic pH - Hystidine charge +1.0.)
     - **cougar**         (modlabs inhouse selection of global peptide descriptors)
-    - **eisenberg**      (the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss, T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
-    - **Ez**             (potential that assesses energies of insertion of amino acid side chains into lipid bilayers, *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol. Biol. 2007, 366, 436–448.*)
-    - **flexibility**    (amino acid side chain flexibilitiy scale, *[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept. Protein Res. 1988, 32, 241–255.*)
-    - **grantham**       (amino acid side chain composition, polarity and molecular volume, *[8] Grantham, R. Science. 185, 862–864 (1974).*)
-    - **gravy**          (GRAVY hydrophobicity amino acid scale, *[9] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **hopp-woods**     (Hopp-Woods amino acid hydrophobicity scale,*[10] T. P. Hopp, K. R. Woods, Proc. Natl. Acad. Sci. 1981, 78, 3824–3828.*)
-    - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains, *[11] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
-    - **janin**          (Janin hydrophobicity amino acid scale, *[12] J. L. Cornette, K. B. Cease, H. Margalit, J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
-    - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[13] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982, 157, 105–132.*)
-    - **levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from http://web.expasy.org/protscale. *[14] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
-    - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains, *[15] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy, J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
-    - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM), extended to natural amino acids, *[16] A. Zaliani, E. Gancia, J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
-    - **pepArc**         (modlabs pharmacophoric feature scale, dimensions are: hydrophobicity, polarity, positive charge, negative charge, proline.)
-    - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[17] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **polarity**       (Amino acid polarity scale, *[18] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968, 21, 170–201.*)
-    - **PPCALI**         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[19] C. P. Koch, A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider, PLoS Comput. Biol. 2013, 9, e1003088.*)
-    - **refractivity**   (Relative amino acid refractivity values, *[20] T. L. McMeekin, M. Wilensky, M. L. Groves, Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
-    - **t_scale**        (A PCA derived scale based on amino acid side chain properties calculated with 6 different probes of the GRID program, *[21] M. Cocchi, E. Johansson, Quant. Struct. Act. Relationships 1993, 12, 1–8.*)
-    - **TM_tend**        (Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale, *[22] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
-    - **z3**             (The original three dimensional Z-scale, *[23] S. Hellberg, M. Sjöström, B. Skagerberg, S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
-    - **z5**             (The extended five dimensional Z-scale, *[24] M. Sandberg, L. Eriksson, J. Jonsson, M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
+    - **eisenberg**      (the Eisenberg hydrophobicity consensus amino acid scale, *[4] D. Eisenberg, R. M. Weiss,
+                          T. C. Terwilliger, W. Wilcox, Faraday Symp. Chem. Soc. 1982, 17, 109.*)
+    - **Ez**             (potential that assesses energies of insertion of amino acid side chains into lipid bilayers,
+                          *[5] A. Senes, D. C. Chadi, P. B. Law, R. F. S. Walters, V. Nanda, W. F. DeGrado, J. Mol.
+                          Biol. 2007, 366, 436–448.*)
+    - **flexibility**    (amino acid side chain flexibilitiy scale, *[6] R. Bhaskaran, P. K. Ponnuswamy, Int. J. Pept.
+                          Protein Res. 1988, 32, 241–255.*)
+    - **grantham**       (amino acid side chain composition, polarity and molecular volume, *[8] Grantham, R. Science.
+                          185, 862–864 (1974).*)
+    - **gravy**          (GRAVY hydrophobicity amino acid scale, *[9] J. Kyte, R. F. Doolittle, J. Mol. Biol. 1982,
+                          157, 105–132.*)
+    - **hopp-woods**     (Hopp-Woods amino acid hydrophobicity scale,*[10] T. P. Hopp, K. R. Woods, Proc. Natl. Acad.
+                          Sci. 1981, 78, 3824–3828.*)
+    - **ISAECI**         (Isotropic Surface Area (ISA) and Electronic Charge Index (ECI) of amino acid side chains,
+                          *[11] E. R. Collantes, W. J. Dunn, J. Med. Chem. 1995, 38, 2705–2713.*)
+    - **janin**          (Janin hydrophobicity amino acid scale, *[12] J. L. Cornette, K. B. Cease, H. Margalit,
+                          J. L. Spouge, J. A. Berzofsky, C. DeLisi, J. Mol. Biol. 1987, 195, 659–685.*)
+    - **kytedoolittle**  (Kyte & Doolittle hydrophobicity amino acid scale, *[13] J. Kyte, R. F. Doolittle,
+                          J. Mol. Biol. 1982, 157, 105–132.*)
+    - **levitt_alpha**   (Levitt amino acid alpha-helix propensity scale, extracted from
+                          http://web.expasy.org/protscale. *[14] M. Levitt, Biochemistry 1978, 17, 4277-4285.*)
+    - **MSS**            (A graph-theoretical index that reflects topological shape and size of amino acid side chains,
+                          *[15] C. Raychaudhury, A. Banerjee, P. Bag, S. Roy,
+                          J. Chem. Inf. Comput. Sci. 1999, 39, 248–254.*)
+    - **MSW**            (Amino acid scale based on a PCA of the molecular surface based WHIM descriptor (MS-WHIM),
+                          extended to natural amino acids, *[16] A. Zaliani, E. Gancia,
+                          J. Chem. Inf. Comput. Sci 1999, 39, 525–533.*)
+    - **pepArc**         (modlabs pharmacophoric feature scale, dimensions are: hydrophobicity, polarity,
+                          positive charge, negative charge, proline.)
+    - **pepcats**        (modlabs pharmacophoric feature based PEPCATS scale, *[17] C. P. Koch, A. M. Perna,
+                          M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider,
+                          PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **polarity**       (Amino acid polarity scale, *[18] J. M. Zimmerman, N. Eliezer, R. Simha, J. Theor. Biol. 1968,
+                          21, 170–201.*)
+    - **PPCALI**         (modlabs inhouse scale derived from a PCA of 143 amino acid property scales, *[19] C. P. Koch,
+                          A. M. Perna, M. Pillong, N. K. Todoroff, P. Wrede, G. Folkers, J. A. Hiss, G. Schneider,
+                          PLoS Comput. Biol. 2013, 9, e1003088.*)
+    - **refractivity**   (Relative amino acid refractivity values, *[20] T. L. McMeekin, M. Wilensky, M. L. Groves,
+                          Biochem. Biophys. Res. Commun. 1962, 7, 151–156.*)
+    - **t_scale**        (A PCA derived scale based on amino acid side chain properties calculated with 6 different
+                          probes of the GRID program, *[21] M. Cocchi, E. Johansson, Quant. Struct. Act.
+                          Relationships 1993, 12, 1–8.*)
+    - **TM_tend**        (Amino acid transmembrane propensity scale, extracted from http://web.expasy.org/protscale,
+                          *[22] Zhao, G., London E. Protein Sci. 2006, 15, 1987-2001.*)
+    - **z3**             (The original three dimensional Z-scale, *[23] S. Hellberg, M. Sjöström, B. Skagerberg,
+                          S. Wold, J. Med. Chem. 1987, 30, 1126–1135.*)
+    - **z5**             (The extended five dimensional Z-scale, *[24] M. Sandberg, L. Eriksson, J. Jonsson,
+                          M. Sjöström, S. Wold, J. Med. Chem. 1998, 41, 2481–2491.*)
 
     Further, amino acid scale independent methods can be calculated with help of the :class:`GlobalDescriptor` class.
 
     """
 
-    def __init__(self, seqs, scalename='Eisenberg'):
+    def __init__(self, seqs, scalename="Eisenberg"):
         """
         :param seqs: a .fasta file with sequences, a list of sequences or a single sequence as string to calculate the
             descriptor values for.
@@ -819,7 +851,7 @@ class PeptideDescriptor(BaseDescriptor):
         else:
             self.descriptor = np.array(desc)
 
-    def calculate_moment(self, window=1000, angle=100, modality='max', append=False):
+    def calculate_moment(self, window=1000, angle=100, modality="max", append=False):
         """Method for calculating the maximum or mean moment of the amino acid values for a given descriptor scale and
         window.
 
@@ -841,48 +873,48 @@ class PeptideDescriptor(BaseDescriptor):
         >>> AMP.descriptor
         array([[ 0.48790226]])
         """
-        if self.scale['A'] == list:
-            print('\n Descriptor moment calculation is only possible for one dimensional descriptors.\n')
-    
+        if self.scale["A"] == list:
+            print("\n Descriptor moment calculation is only possible for one dimensional descriptors.\n")
+
         else:
             desc = []
             for seq in self.sequences:
                 wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
                 mtrx = []
                 mwdw = []
-                
+
                 for aa in range(len(seq)):
                     mtrx.append(self.scale[str(seq[aa])])
-                    
+
                 for i in range(len(mtrx) - wdw + 1):
-                    mwdw.append(sum(mtrx[i:i + wdw], []))
-    
+                    mwdw.append(sum(mtrx[i : i + wdw], []))
+
                 mwdw = np.asarray(mwdw)
                 rads = angle * (np.pi / 180) * np.asarray(range(wdw))  # calculate actual moment (radial)
                 vcos = (mwdw * np.cos(rads)).sum(axis=1)
                 vsin = (mwdw * np.sin(rads)).sum(axis=1)
-                moms = np.sqrt(vsin ** 2 + vcos ** 2) / wdw
-    
-                if modality == 'max':  # take window with maximal value
+                moms = np.sqrt(vsin**2 + vcos**2) / wdw
+
+                if modality == "max":  # take window with maximal value
                     moment = np.max(moms)
-                elif modality == 'mean':  # take average value over all windows
+                elif modality == "mean":  # take average value over all windows
                     moment = np.mean(moms)
-                elif modality == 'all':
+                elif modality == "all":
                     moment = moms
                 else:
                     print('\nERROR!\nModality parameter is wrong, please choose between "all", "max" and "mean".\n')
                     return
                 desc.append(moment)
                 self.all_moms.append(moms)
-                
+
             desc = np.asarray(desc).reshape(len(desc), 1)  # final descriptor array
-            
+
             if append:
                 self.descriptor = np.hstack((self.descriptor, np.array(desc)))
             else:
                 self.descriptor = np.array(desc)
 
-    def calculate_global(self, window=1000, modality='max', append=False):
+    def calculate_global(self, window=1000, modality="max", append=False):
         """Method for calculating a global / window averaging descriptor value of a given AA scale
 
         :param window: {int} amino acid window in which to calculate the moment. If the sequence is shorter than the
@@ -904,35 +936,35 @@ class PeptideDescriptor(BaseDescriptor):
             wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
             mtrx = []
             mwdw = []
-            
-            for l in range(len(seq)):  # translate AA sequence into values
-                mtrx.append(self.scale[str(seq[l])])
+
+            for sq in range(len(seq)):  # translate AA sequence into values
+                mtrx.append(self.scale[str(seq[sq])])
 
             for i in range(len(mtrx) - wdw + 1):
-                mwdw.append(sum(mtrx[i:i + wdw], []))  # list of all the values for the different windows
-                
+                mwdw.append(sum(mtrx[i : i + wdw], []))  # list of all the values for the different windows
+
             mwdw = np.asarray(mwdw)
             glob = np.sum(mwdw, axis=1) / float(wdw)
             outglob = float()
-            
-            if modality in ['max', 'mean']:
-                if modality == 'max':
+
+            if modality in ["max", "mean"]:
+                if modality == "max":
                     outglob = np.max(glob)  # returned moment will be the maximum of all windows
-                elif modality == 'mean':
+                elif modality == "mean":
                     outglob = np.mean(glob)  # returned moment will be the mean of all windows
                 else:
                     print('Modality parameter is wrong, please choose between "max" and "mean"\n.')
                     return
             desc.append(outglob)
             self.all_globs.append(glob)
-        
+
         desc = np.asarray(desc).reshape(len(desc), 1)
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
         else:
             self.descriptor = np.array(desc)
 
-    def calculate_profile(self, prof_type='uH', window=7, append=False):
+    def calculate_profile(self, prof_type="uH", window=7, append=False):
         """Method for calculating hydrophobicity or hydrophobic moment profiles for given sequences and fitting for
         slope and intercept. The hydrophobicity scale used is "eisenberg"
 
@@ -949,10 +981,10 @@ class PeptideDescriptor(BaseDescriptor):
         >>> AMP.descriptor
         array([[ 0.03731293,  0.19246599]])
         """
-        if prof_type == 'uH':
+        if prof_type == "uH":
             self.calculate_moment(window=window)
             y_vals = self.all_moms
-        elif prof_type == 'H':
+        elif prof_type == "H":
             self.calculate_global(window=window)
             y_vals = self.all_globs
         else:
@@ -961,7 +993,7 @@ class PeptideDescriptor(BaseDescriptor):
 
         desc = list()
         for n, seq in enumerate(self.sequences):
-            x_vals = range(len(seq))[int((window - 1) / 2):-int((window - 1) / 2)]
+            x_vals = range(len(seq))[int((window - 1) / 2) : -int((window - 1) / 2)]
             if len(seq) <= window:
                 slope, intercept, r_value, p_value, std_err = [0, 0, 0, 0, 0]
             else:
@@ -974,8 +1006,9 @@ class PeptideDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
 
     def calculate_arc(self, modality="max", append=False):
-        """ Method for calculating property arcs as seen in the helical wheel plot. Use for binary amino acid scales only.
-        
+        """Method for calculating property arcs as seen in the helical wheel plot. Use for binary amino acid
+        scales only.
+
         :param modality: modality of the arc to calculate, to choose between "max" and "mean".
         :param append: if true, append to current descriptor stored in the descriptor attribute.
         :return: calculated descriptor as numpy.array in the descriptor attribute.
@@ -989,110 +1022,7 @@ class PeptideDescriptor(BaseDescriptor):
         """
         desc = Parallel(n_jobs=-1)(delayed(_one_arc)(seq, modality, self.scale) for seq in self.sequences)
 
-        # Converts each of the amino acids to descriptor vector
-        for seq in self.sequences:
-
-            # desc_mat = []
-            # for aa in seq:
-            #     desc_mat.append(self.scale[aa])
-            # desc_mat = np.asarray(desc_mat)
-			#
-            # # Check descriptor dimension
-            # desc_dim = desc_mat.shape[1]
-			#
-            # # list to store descriptor values for all windows
-            # allwindows_arc = []
-			#
-            # if len(seq) > 18:
-            #     window = 18
-            #     # calculates number of windows in sequence
-            #     num_windows = len(seq) - window
-            # else:
-            #     window = len(seq)
-            #     num_windows = 1
-			#
-            # # loop through all windows
-            # for j in range(num_windows):
-            #     # slices descriptor matrix into current window
-            #     window_mat = desc_mat[j:j + window, :]
-			#
-            #     # defines order of amino acids in helical projection
-            #     order = [0, 11, 4, 15, 8, 1, 12, 5, 16, 9, 2, 13, 6, 17, 10, 3, 14, 7]
-			#
-            #     # orders window descriptor matrix into helical projection order
-            #     ordered = []
-            #     for pos in order:
-            #         try:
-            #             ordered.append(window_mat[pos, :])
-            #         except:
-            #             # for sequences of len < 18 adding dummy vector with 2s, length of descriptor dimensions
-            #             ordered.append([2] * desc_dim)
-            #     ordered = np.asarray(ordered)
-			#
-            #     window_arc = []
-			#
-            #     # loop through pharmacophoric features
-            #     for m in range(desc_dim):
-            #         all_arcs = []  # stores all arcs that can be found of a pharmacophoric feature
-            #         arc = 0
-			#
-            #         for n in range(18):  # for all positions in helix, regardless of sequence length
-            #             if ordered[n, m] == 0:  # if position does not contain pharmacophoric feature
-            #                 all_arcs.append(arc)  # append previous arc to all arcs list
-            #                 arc = 0  # arc is initialized
-            #             elif ordered[n, m] == 1:  # if position contains pharmacophoric feature(PF), elongate arc by 20°
-            #                 arc += 20
-            #             elif ordered[n, m] == 2:  # if position doesn't contain amino acid:
-            #                 if ordered[n - 1, m] == 1:  # if previous position contained PF add 10°
-            #                     arc += 10
-            #                 elif ordered[n - 1, m] == 0:  # if previous position didn't contain PF don't add anything
-            #                     arc += 0
-            #                 elif ordered[
-            #                             n - 2, m] == 1:  # if previous position is empty then check second previous for PF
-            #                     arc += 10
-            #                 if n == 17:  # if we are at the last position check for position n=0 instead of next position.
-            #                     if ordered[0, m] == 1:  # if it contains PF add 10° extra
-            #                         arc += 10
-            #                 else:  # if next position contains PF add 10° extra
-            #                     if ordered[n + 1, m] == 1:
-            #                         arc += 10
-            #                     elif ordered[n + 1, m] == 0:
-            #                         arc += 0
-            #                     else:  # if next position is empty check for 2nd next position
-            #                         if n == 16:
-            #                             if ordered[0, m] == 1:
-            #                                 arc += 10
-            #                         else:
-            #                             if ordered[n + 2, m] == 1:
-            #                                 arc += 10
-			#
-            #         all_arcs.append(arc)
-            #         if not arc == 360:
-            #             arc0 = all_arcs.pop() + all_arcs[0]  # join first and last arc together
-            #             all_arcs = [arc0] + all_arcs[1:]
-			#
-            #         window_arc.append(np.max(all_arcs))  # append to window arcs the maximum arc of this PF
-            #     allwindows_arc.append(window_arc)  # append all PF arcs of this window
-			#
-            # allwindows_arc = np.asarray(allwindows_arc)
-			#
-            # if modality == 'max':
-            #     final_arc = np.max(allwindows_arc, axis=0)  # calculate maximum / mean arc along all windows
-            # elif modality == 'mean':
-            #     final_arc = np.mean(allwindows_arc, axis=0)
-            # else:
-            #     print('modality is unknown, please choose between "max" and "mean"\n.')
-            #     sys.exit()
-
-            if append:
-                self.descriptor = np.hstack((self.descriptor, np.array(desc)))
-            else:
-                self.descriptor = np.array(desc)
-
-
-
-
-
-
-
-
+        if append:
+            self.descriptor = np.hstack((self.descriptor, np.array(desc)))
+        else:
+            self.descriptor = np.array(desc)

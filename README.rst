@@ -300,6 +300,17 @@ Documentation
 A detailed documentation of all modules is available from the `modlAMP documentation website <http://modlamp.org>`_.
 
 
+Contributing
+------------
+
+We are open to contributions! Please clone the repo, create your own branch and, once you're done, create a pull request.
+
+Also, please use the test cases in the ``tests`` folder to ensure that your code is working properly.
+To run tests, use the following command in the root directory of the package:
+
+    python -m unittest discover tests
+
+
 Citing modlAMP
 --------------
 
