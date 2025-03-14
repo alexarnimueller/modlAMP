@@ -72,3 +72,4 @@ v4.2.1  12.06.2020 -- Bugfix in plot_aa_distr
 v4.2.2  17.06.2020 -- Bugfix for Bioconda, pip internal function
 v4.2.3  15.10.2020 -- Bugfix in GlobalAnalysis charge plot
 v4.3.0  25.02.2021 -- Correction in GlobalDescriptor documentation and analysis bug fixed
+v4.3.1  14.03.2025 -- Linting and fixing unicode b-string issue when saving descriptor
