@@ -1,0 +1,32 @@
+default_language_version:
+  python: python3.10
+
+exclude: (\.*/static/vendor/|\.*/static/fonts)
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: "24.4.0"
+    hooks:
+      - id: black
+        args: [--line-length=119, --target-version=py310]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-ast
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-encoding-pragma
+      - id: mixed-line-ending
+      - id: name-tests-test
+      - id: pretty-format-json
+      - id: trailing-whitespace
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
