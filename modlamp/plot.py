@@ -33,7 +33,14 @@ __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
-def plot_feature(y_values, targets=None, y_label="feature values", x_tick_labels=None, filename=None, colors=None):
+def plot_feature(
+    y_values,
+    targets=None,
+    y_label="feature values",
+    x_tick_labels=None,
+    filename=None,
+    colors=None,
+):
     """
     Function to generate a box plot of 1 given feature. The different target classes given in **targets** are plottet
     as separate boxes.
@@ -60,7 +67,16 @@ def plot_feature(y_values, targets=None, y_label="feature values", x_tick_labels
         :height: 300px
     """
     if not colors:
-        colors = ["#69D2E7", "#FA6900", "#E0E4CC", "#542437", "#53777A", "black", "#C02942", "#031634"]
+        colors = [
+            "#69D2E7",
+            "#FA6900",
+            "#E0E4CC",
+            "#542437",
+            "#53777A",
+            "black",
+            "#C02942",
+            "#031634",
+        ]
 
     if isinstance(y_values, list):
         y_values = np.array(y_values)
@@ -131,7 +147,16 @@ def plot_2_features(x_values, y_values, targets=None, x_label="", y_label="", fi
         :height: 300px
     """
     if not colors:
-        colors = ["#69D2E7", "#FA6900", "#B5B8AB", "#542437", "#53777A", "black", "#C02942", "#031634"]
+        colors = [
+            "#69D2E7",
+            "#FA6900",
+            "#B5B8AB",
+            "#542437",
+            "#53777A",
+            "black",
+            "#C02942",
+            "#031634",
+        ]
 
     fig, ax = plt.subplots()
 
@@ -164,7 +189,15 @@ def plot_2_features(x_values, y_values, targets=None, x_label="", y_label="", fi
 
 
 def plot_3_features(
-    x_values, y_values, z_values, targets=None, x_label="", y_label="", z_label="", filename=None, colors=None
+    x_values,
+    y_values,
+    z_values,
+    targets=None,
+    x_label="",
+    y_label="",
+    z_label="",
+    filename=None,
+    colors=None,
 ):
     """
     Function to generate a 3D feature scatter plot of 3 given features. The different target classes given in
@@ -189,7 +222,16 @@ def plot_3_features(
     """
 
     if not colors:
-        colors = ["#69D2E7", "#FA6900", "#E0E4CC", "#542437", "#53777A", "black", "#C02942", "#031634"]
+        colors = [
+            "#69D2E7",
+            "#FA6900",
+            "#E0E4CC",
+            "#542437",
+            "#53777A",
+            "black",
+            "#C02942",
+            "#031634",
+        ]
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection="3d")
@@ -224,7 +266,15 @@ def plot_3_features(
         plt.show()
 
 
-def plot_profile(sequence, window=5, scalename="Eisenberg", filename=None, color="red", seq=False, ylim=None):
+def plot_profile(
+    sequence,
+    window=5,
+    scalename="Eisenberg",
+    filename=None,
+    color="red",
+    seq=False,
+    ylim=None,
+):
     """Function to generate sequence profile plots of a given amino acid scale or a moment thereof.
 
     .. note::
@@ -274,7 +324,11 @@ def plot_profile(sequence, window=5, scalename="Eisenberg", filename=None, color
     ax.set_xlabel("sequence position", fontweight="bold")
     ax.set_ylabel(scalename + " value", fontweight="bold")
     ax.text(
-        max(x_range) / 2 + 1, 1.05 * max(seq_profile), "window size: " + str(window), fontsize=16, fontweight="bold"
+        max(x_range) / 2 + 1,
+        1.05 * max(seq_profile),
+        "window size: " + str(window),
+        fontsize=16,
+        fontweight="bold",
     )
     if seq:
         ax.set_title(sequence, fontsize=16, fontweight="bold", y=1.02)
@@ -296,7 +350,14 @@ def plot_profile(sequence, window=5, scalename="Eisenberg", filename=None, color
         plt.show()
 
 
-def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=None, seq=False, moment=False):
+def helical_wheel(
+    sequence,
+    colorcoding="rainbow",
+    lineweights=True,
+    filename=None,
+    seq=False,
+    moment=False,
+):
     """A function to project a given peptide sequence onto a helical wheel plot. It can be useful to illustrate the
     properties of alpha-helices, like positioning of charged and hydrophobic residues along the sequence.
 
@@ -327,7 +388,28 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
     .. versionadded:: v2.1.5
     """
     # color mappings
-    aa = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"]
+    aa = [
+        "A",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "K",
+        "L",
+        "M",
+        "N",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "V",
+        "W",
+        "Y",
+    ]
     f_rainbow = [
         "#3e3e28",
         "#ffcc33",
@@ -439,12 +521,117 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
         "#f79318",
         "#f79318",
     ]
-    t_rainbow = ["w", "k", "w", "w", "k", "w", "k", "k", "w", "k", "k", "k", "k", "k", "w", "k", "k", "k", "k", "k"]
-    t_charge = ["w", "w", "k", "k", "w", "w", "k", "w", "k", "w", "w", "w", "w", "w", "k", "w", "w", "w", "w", "w"]
-    t_polar = ["w", "w", "k", "k", "w", "w", "k", "w", "k", "w", "w", "k", "w", "k", "k", "k", "k", "w", "w", "w"]
-    t_simple = ["k", "k", "w", "w", "k", "w", "w", "k", "w", "k", "k", "k", "k", "w", "w", "w", "w", "k", "k", "k"]
+    t_rainbow = [
+        "w",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "k",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "k",
+        "k",
+    ]
+    t_charge = [
+        "w",
+        "w",
+        "k",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "w",
+        "w",
+        "w",
+        "w",
+        "w",
+        "k",
+        "w",
+        "w",
+        "w",
+        "w",
+        "w",
+    ]
+    t_polar = [
+        "w",
+        "w",
+        "k",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "k",
+        "w",
+        "w",
+        "w",
+    ]
+    t_simple = [
+        "k",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "k",
+        "w",
+        "w",
+        "w",
+        "w",
+        "k",
+        "k",
+        "k",
+    ]
     t_none = ["k"] * 20
-    t_amphi = ["k", "k", "w", "w", "w", "k", "w", "k", "w", "k", "k", "k", "w", "k", "w", "k", "k", "k", "w", "w"]
+    t_amphi = [
+        "k",
+        "k",
+        "w",
+        "w",
+        "w",
+        "k",
+        "w",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "w",
+        "k",
+        "w",
+        "k",
+        "k",
+        "k",
+        "w",
+        "w",
+    ]
     d_eisberg = load_scale("eisenberg")[1]  # eisenberg hydrophobicity values for HM
 
     if lineweights:
@@ -495,20 +682,32 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
             # plot the connecting lines
             if old is not None:
                 line = lines.Line2D(
-                    (old[0], new[0]), (old[1], new[1]), transform=ax.transData, color="k", linewidth=lw[i - 1]
+                    (old[0], new[0]),
+                    (old[1], new[1]),
+                    transform=ax.transData,
+                    color="k",
+                    linewidth=lw[i - 1],
                 )
                 line.set_zorder(1)  # 1 = level behind circles
                 ax.add_line(line)
         elif 17 < i < 36:
             line = lines.Line2D(
-                (old[0], new[0]), (old[1], new[1]), transform=ax.transData, color="k", linewidth=lw[i - 1]
+                (old[0], new[0]),
+                (old[1], new[1]),
+                transform=ax.transData,
+                color="k",
+                linewidth=lw[i - 1],
             )
             line.set_zorder(1)  # 1 = level behind circles
             ax.add_line(line)
             new = (np.cos(r) * 1.2, np.sin(r) * 1.2)
         elif i == 36:
             line = lines.Line2D(
-                (old[0], new[0]), (old[1], new[1]), transform=ax.transData, color="k", linewidth=lw[i - 1]
+                (old[0], new[0]),
+                (old[1], new[1]),
+                transform=ax.transData,
+                color="k",
+                linewidth=lw[i - 1],
             )
             line.set_zorder(1)  # 1 = level behind circles
             ax.add_line(line)
@@ -517,7 +716,13 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
             new = (np.cos(r) * 1.4, np.sin(r) * 1.4)
 
         # plot circles
-        circ = patches.Circle(new, radius=0.1, transform=ax.transData, edgecolor="k", facecolor=df[sequence[i]])
+        circ = patches.Circle(
+            new,
+            radius=0.1,
+            transform=ax.transData,
+            edgecolor="k",
+            facecolor=df[sequence[i]],
+        )
         circ.set_zorder(2)  # level in front of lines
         ax.add_patch(circ)
 
@@ -569,7 +774,17 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
         v_hm = np.sum(np.array(hm), 0)
         x = 0.0333 * v_hm[0]
         y = 0.0333 * v_hm[1]
-        ax.arrow(0.0, 0.0, x, y, head_width=0.04, head_length=0.03, transform=ax.transData, color="k", linewidth=6.0)
+        ax.arrow(
+            0.0,
+            0.0,
+            x,
+            y,
+            head_width=0.04,
+            head_length=0.03,
+            transform=ax.transData,
+            color="k",
+            linewidth=6.0,
+        )
         desc = PeptideDescriptor(sequence)  # calculate hydrophobic moment
         desc.calculate_moment()
         if abs(x) < 0.2 and y > 0.0:  # right positioning of HM text so arrow does not cover it
@@ -609,7 +824,17 @@ def helical_wheel(sequence, colorcoding="rainbow", lineweights=True, filename=No
         plt.show()
 
 
-def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=0, x_max=1, colors=None, alpha=0.2):
+def plot_pde(
+    data,
+    title=None,
+    axlabels=None,
+    filename=None,
+    legendloc=2,
+    x_min=0,
+    x_max=1,
+    colors=None,
+    alpha=0.2,
+):
     """A function to plot probability density estimations of given data vectors / matrices (row wise)
 
     :param data: {list / array} data of which underlying probability density function should be estimated and plotted.
@@ -645,7 +870,17 @@ def plot_pde(data, title=None, axlabels=None, filename=None, legendloc=2, x_min=
 
     # colors
     if not colors:
-        colors = ["#0B486B", "#3B8686", "#79BD9A", "#A8DBA8", "#CFF09E", "#0000ff", "#bf00ff", "#ff0040", "#009900"]
+        colors = [
+            "#0B486B",
+            "#3B8686",
+            "#79BD9A",
+            "#A8DBA8",
+            "#CFF09E",
+            "#0000ff",
+            "#bf00ff",
+            "#ff0040",
+            "#009900",
+        ]
     elif len(colors) != len(data) and shp != 1:  # if not enough colors for all data subtypes
         colors *= len(data)
 
@@ -724,7 +959,17 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
 
     # check color input and transform to list of right length
     if not colors:
-        colors = ["#0B486B", "#3B8686", "#79BD9A", "#A8DBA8", "#CFF09E", "#0000ff", "#bf00ff", "#ff0040", "#009900"]
+        colors = [
+            "#0B486B",
+            "#3B8686",
+            "#79BD9A",
+            "#A8DBA8",
+            "#CFF09E",
+            "#0000ff",
+            "#bf00ff",
+            "#ff0040",
+            "#009900",
+        ]
 
     if isinstance(colors, str):
         colors = [colors] * len(x)
@@ -746,7 +991,14 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
 
         if bp:  # print box plot if option is given
             medprops = dict(linestyle="-", linewidth="1", color="black")
-            box = ax.boxplot(x, notch=1, positions=[1.0], vert=1, patch_artist=True, medianprops=medprops)
+            box = ax.boxplot(
+                x,
+                notch=1,
+                positions=[1.0],
+                vert=1,
+                patch_artist=True,
+                medianprops=medprops,
+            )
             plt.setp(box["whiskers"], color="black")
             box["boxes"][0].set(facecolor=colors[0], edgecolor="black", alpha=0.7)
 

@@ -14,14 +14,14 @@ Class                          Characteristics
 =============================  =======================================================================================
 """
 
+import collections
+import operator
 import os
 import random
 import re
 
 import numpy as np
 import pandas as pd
-import collections
-import operator
 from scipy.spatial import distance
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils import shuffle
@@ -93,7 +93,28 @@ class BaseSequence(object):
         self.AA_aroma = ["W", "Y", "F"]
         self.AA_polar = ["S", "T", "Q", "N"]
         # AA labels:
-        self.AAs = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"]
+        self.AAs = [
+            "A",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "K",
+            "L",
+            "M",
+            "N",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "V",
+            "W",
+            "Y",
+        ]
         # AA probability from the APD3 database:
         self.prob_AMP = [
             0.0766,
@@ -642,7 +663,26 @@ class BaseSequence(object):
                     0.02439024,
                     0.0,
                 ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01612903, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.01612903,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                ],
             ]
         )
 
@@ -2906,7 +2946,28 @@ def count_aas(seq, scale="relative"):
     """
     if seq == "":  # error if len(seq) == 0
         seq = " "
-    aas = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"]
+    aas = [
+        "A",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "K",
+        "L",
+        "M",
+        "N",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "V",
+        "W",
+        "Y",
+    ]
     scl = 1.0
     if scale == "relative":
         scl = len(seq)

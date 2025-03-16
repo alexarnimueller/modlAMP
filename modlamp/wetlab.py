@@ -15,7 +15,7 @@ Class                                Data
 """
 
 from os import listdir, makedirs
-from os.path import join, exists, splitext
+from os.path import exists, join, splitext
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -356,7 +356,11 @@ class CD:
             w = range(self.wmax, self.wmin - 1, -1)  # wavelengths
 
             # check input data option
-            if data in ["mean residue ellipticity", "molar ellipticity", "circular dichroism"]:
+            if data in [
+                "mean residue ellipticity",
+                "molar ellipticity",
+                "circular dichroism",
+            ]:
                 # loop through all data for single plots
                 for i, f in enumerate(self.filenames):
 
@@ -373,7 +377,16 @@ class CD:
                         y_max = 1000 * ylim[1]
 
                     # plot single plots
-                    self._plot_single(w, d, col, y_label, self.names[i] + " " + self.solvent[i], f, y_min, y_max)
+                    self._plot_single(
+                        w,
+                        d,
+                        col,
+                        y_label,
+                        self.names[i] + " " + self.solvent[i],
+                        f,
+                        y_min,
+                        y_max,
+                    )
                     # plot mixed plots
                     if combine == "solvent" and i % 2 == 0:
                         self._plot_double(w, d, d2, y_label, self.names[i], f, y_min, y_max)
@@ -405,7 +418,11 @@ class CD:
         if not exists(join(self.directory, "Dichro")):
             makedirs(join(self.directory, "Dichro"))
 
-        if data in ["mean residue ellipticity", "molar ellipticity", "circular dichroism"]:
+        if data in [
+            "mean residue ellipticity",
+            "molar ellipticity",
+            "circular dichroism",
+        ]:
             # loop through all data for single plots
             for i, f in enumerate(self.filenames):
                 # get data type to be plotted
@@ -456,7 +473,8 @@ class CD:
                 hel.append(round((v[indx, 1] / hel_100) * 100.0, 2))
 
             self.helicity_values = pd.DataFrame(
-                np.array([self.names, self.solvent, hel]).T, columns=["Name", "Solvent", "Helicity"]
+                np.array([self.names, self.solvent, hel]).T,
+                columns=["Name", "Solvent", "Helicity"],
             )
             if induction:
                 induct = []

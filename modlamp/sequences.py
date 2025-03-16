@@ -498,7 +498,20 @@ class MixedLibrary(BaseSequence):
         """
         super(MixedLibrary, self).__init__(seqnum)  # inherit methods and some attributes from BaseSequence
         self.libsize = int(seqnum)
-        norm = float(sum((centrosymmetric, centroasymmetric, helix, kinked, oblique, rand, randAMP, randAMPnoCM)))
+        norm = float(
+            sum(
+                (
+                    centrosymmetric,
+                    centroasymmetric,
+                    helix,
+                    kinked,
+                    oblique,
+                    rand,
+                    randAMP,
+                    randAMPnoCM,
+                )
+            )
+        )
         self.ratios = {
             "sym": float(centrosymmetric) / norm,
             "asy": float(centroasymmetric) / norm,

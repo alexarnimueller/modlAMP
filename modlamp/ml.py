@@ -43,15 +43,14 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.model_selection import validation_curve
 from sklearn import metrics as mets
+from sklearn.base import clone
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, matthews_corrcoef
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, validation_curve
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from sklearn.base import clone
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -172,16 +171,31 @@ def train_best_model(
     print("performing grid search...")
 
     if model.lower() == "svm":
-        pipe_svc = Pipeline([("scl", scaler), ("clf", SVC(class_weight="balanced", random_state=1, probability=True))])
+        pipe_svc = Pipeline(
+            [
+                ("scl", scaler),
+                ("clf", SVC(class_weight="balanced", random_state=1, probability=True)),
+            ]
+        )
 
         if param_grid is None:
             param_range = [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
             param_grid = [
                 {"clf__C": param_range, "clf__kernel": ["linear"]},
-                {"clf__C": param_range, "clf__gamma": param_range, "clf__kernel": ["rbf"]},
+                {
+                    "clf__C": param_range,
+                    "clf__gamma": param_range,
+                    "clf__kernel": ["rbf"],
+                },
             ]
 
-        gs = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring=score, cv=cv, n_jobs=n_jobs)
+        gs = GridSearchCV(
+            estimator=pipe_svc,
+            param_grid=param_grid,
+            scoring=score,
+            cv=cv,
+            n_jobs=n_jobs,
+        )
         if sample_weights:
             gs.fit(x_train, y_train, [{"clf__sample_weight": sample_weights}])
         else:
@@ -195,7 +209,15 @@ def train_best_model(
         return best_classifier.fit(x_train, y_train)
 
     elif model.lower() == "rf":
-        pipe_rf = Pipeline([("scl", scaler), ("clf", RandomForestClassifier(random_state=1, class_weight="balanced"))])
+        pipe_rf = Pipeline(
+            [
+                ("scl", scaler),
+                (
+                    "clf",
+                    RandomForestClassifier(random_state=1, class_weight="balanced"),
+                ),
+            ]
+        )
 
         if param_grid is None:
             param_grid = [
@@ -207,7 +229,13 @@ def train_best_model(
                 }
             ]
 
-        gs = GridSearchCV(estimator=pipe_rf, param_grid=param_grid, scoring=score, cv=cv, n_jobs=n_jobs)
+        gs = GridSearchCV(
+            estimator=pipe_rf,
+            param_grid=param_grid,
+            scoring=score,
+            cv=cv,
+            n_jobs=n_jobs,
+        )
 
         if sample_weights:
             gs.fit(x_train, y_train, [{"clf__sample_weight": sample_weights}])
@@ -307,7 +335,14 @@ def plot_validation_curve(
 
     """
     train_scores, test_scores = validation_curve(
-        classifier, x_train, y_train, param_name, param_range, cv=cv, scoring=score, n_jobs=n_jobs
+        classifier,
+        x_train,
+        y_train,
+        param_name,
+        param_range,
+        cv=cv,
+        scoring=score,
+        n_jobs=n_jobs,
     )
     train_mean = np.mean(train_scores, axis=1)
     train_std = np.std(train_scores, axis=1)
@@ -321,7 +356,13 @@ def plot_validation_curve(
     plt.ylabel(ylab)
     plt.ylim(0.0, 1.1)
     plt.semilogx(param_range, train_mean, label="Training score", color="b")
-    plt.fill_between(param_range, train_mean - train_std, train_mean + train_std, alpha=0.2, color="b")
+    plt.fill_between(
+        param_range,
+        train_mean - train_std,
+        train_mean + train_std,
+        alpha=0.2,
+        color="b",
+    )
     plt.semilogx(param_range, test_mean, label="Cross-validation score", color="g")
     plt.fill_between(param_range, test_mean - test_std, test_mean + test_std, alpha=0.2, color="g")
     plt.legend(loc="best")
@@ -397,7 +438,12 @@ def predict(classifier, x, seqs, names=None, y=None, filename=None):
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
     else:
-        d_pred = {"Name": names, "P_class0": preds[:, 0], "P_class1": preds[:, 1], "True_class": y}
+        d_pred = {
+            "Name": names,
+            "P_class0": preds[:, 0],
+            "P_class1": preds[:, 1],
+            "True_class": y,
+        }
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
     if filename:
@@ -484,7 +530,10 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
         ycv_train, ycv_test = y[fold_train_index], y[fold_test_index]
         scores = []
         if sample_weights is not None:
-            weightcv_train, weightcv_test = sample_weights[fold_train_index], sample_weights[fold_test_index]
+            weightcv_train, weightcv_test = (
+                sample_weights[fold_train_index],
+                sample_weights[fold_test_index],
+            )
             clf.fit(xcv_train, ycv_train, sample_weight=weightcv_train)
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(xcv_test), sample_weight=weightcv_test))

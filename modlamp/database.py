@@ -8,9 +8,9 @@ This module incorporates functions to connect to several peptide databases. It a
 SQL database for which the configuration is given in a specified config file.
 """
 
-from os.path import exists
 import json
 from getpass import getpass
+from os.path import exists
 
 import mysql.connector
 import pandas as pd
@@ -128,7 +128,13 @@ def query_apd(ids):
 
     for i in ids:
         payload["ID"] = i
-        page = requests.post("https://aps.unmc.edu/database/result", headers={}, data=payload, files=[], verify=False)
+        page = requests.post(
+            "https://aps.unmc.edu/database/result",
+            headers={},
+            data=payload,
+            files=[],
+            verify=False,
+        )
         tree = html.fromstring(page.text)
         seqs.extend(tree.xpath('//p[@class="sequence"]/text()'))
 

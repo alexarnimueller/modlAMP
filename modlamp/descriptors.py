@@ -19,10 +19,17 @@ Class                                Characteristics
 import sys
 
 import numpy as np
-from scipy import stats
 from joblib import Parallel, delayed
+from scipy import stats
 
-from modlamp.core import BaseDescriptor, load_scale, count_aas, aa_weights, aa_energies, aa_formulas
+from modlamp.core import (
+    BaseDescriptor,
+    aa_energies,
+    aa_formulas,
+    aa_weights,
+    count_aas,
+    load_scale,
+)
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -309,7 +316,14 @@ class GlobalDescriptor(BaseDescriptor):
                 f["N"] += 1
 
             if f["S"] != 0:
-                val = "C%s H%s N%s O%s %s%s" % (f["C"], f["H"], f["N"], f["O"], "S", f["S"])
+                val = "C%s H%s N%s O%s %s%s" % (
+                    f["C"],
+                    f["H"],
+                    f["N"],
+                    f["O"],
+                    "S",
+                    f["S"],
+                )
             else:
                 val = "C%s H%s N%s O%s" % (f["C"], f["H"], f["N"], f["O"])
 

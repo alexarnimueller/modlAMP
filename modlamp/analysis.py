@@ -8,9 +8,9 @@ This module can be used for diverse analysis of given peptide libraries.
 """
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
+from mpl_toolkits.mplot3d import Axes3D
 
 from modlamp.core import count_aas
 from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
@@ -44,7 +44,28 @@ class GlobalAnalysis(object):
         self.uH = list()
         self.charge = list()
         self.len = list()
-        self.AAs = ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"]
+        self.AAs = [
+            "A",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "K",
+            "L",
+            "M",
+            "N",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "V",
+            "W",
+            "Y",
+        ]
 
         if names:
             self.libnames = names
@@ -213,7 +234,14 @@ class GlobalAnalysis(object):
             plt.suptitle("Summary", fontweight="bold", fontsize=16.0)
             labels = self.libnames
             if not colors:
-                colors = ["#FA6900", "#69D2E7", "#542437", "#53777A", "#CCFC8E", "#9CC4E4"]
+                colors = [
+                    "#FA6900",
+                    "#69D2E7",
+                    "#542437",
+                    "#53777A",
+                    "#CCFC8E",
+                    "#9CC4E4",
+                ]
             num = len(labels)
 
             for a in [ax1, ax2, ax3, ax4, ax5, ax6]:
