@@ -372,7 +372,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["MW"]
 
-    def calculate_charge(self, ph=7.0, amide=False, append=False):
+    def calculate_charge(self, ph=7.4, amide=True, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
