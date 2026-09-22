@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modlamp"
+description = "python package for in silico peptide design and QSAR studies"
+readme = "README.rst"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [{ name = "Alex Müller" }, { name = "Gisela Gabernet" }]
+maintainers = [{ name = "Alex Müller", email = "alexarnimueller@protonmail.com" }]
+keywords = [
+    "antimicrobial", "anticancer", "peptide", "descriptor", "sequences",
+    "QSAR", "machine learning", "design",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.17",        # np.random.default_rng
+    "scipy>=1.8",
+    "matplotlib>=3.9",    # Axes.boxplot(tick_labels=...)
+    "scikit-learn>=1.0",  # validation_curve keyword-only arguments
+    "pandas>=1.4",
+    "requests>=2.25",
+    "lxml>=4.6",
+    "joblib>=1.1",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+database = ["mysql-connector-python>=8.0"]
+test = ["pytest>=7", "pytest-cov>=4"]
+docs = ["sphinx>=7"]
+
+[project.urls]
+Homepage = "http://modlamp.org"
+Documentation = "http://modlamp.org"
+Source = "https://github.com/alexarnimueller/modlamp"
+Changelog = "https://github.com/alexarnimueller/modlamp/blob/master/CHANGELOG"
+
+[tool.setuptools]
+# explicit, so setuptools does not treat modlamp/data as an undeclared package
+packages = ["modlamp"]
+include-package-data = false
+# example scripts, kept for backwards compatibility with the setup.py build.
+# Dropping them from the installed distribution would be reasonable: they are
+# examples, and they land on the user's PATH.
+script-files = ["bin/example_modlamp.py", "bin/example_descriptors.py"]
+
+[tool.setuptools.dynamic]
+# single source of truth: setup.py used to carry a second copy and a
+# "# also change version in version.py" comment that went stale
+version = { attr = "modlamp.version.__version__" }
+
+[tool.setuptools.package-data]
+modlamp = ["data/*.csv", "data/*.fasta", "data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "network: test requires a live third-party service (APD3, CAMP)",
+]
+
+[tool.coverage.run]
+source = ["modlamp"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]

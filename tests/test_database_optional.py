@@ -13,16 +13,11 @@ class TestDatabaseImport(unittest.TestCase):
         self.assertTrue(hasattr(db, "query_camp"))
         self.assertTrue(hasattr(db, "query_database"))
 
-    def test_version_is_consistent(self):
-        import re
-        from os.path import dirname, join
-
+    def test_version_is_single_sourced(self):
         import modlamp
+        from modlamp.version import __version__
 
-        setup_py = open(join(dirname(modlamp.__file__), "..", "setup.py")).read()
-        m = re.search(r'version="([^"]+)"', setup_py)
-        if m:  # only checkable from a source checkout
-            self.assertEqual(m.group(1), modlamp.__version__)
+        self.assertEqual(modlamp.__version__, __version__)
 
 
 if __name__ == "__main__":

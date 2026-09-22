@@ -1,2 +1,3 @@
-include LICENSE requirements.txt Makefile
-recursive-include docs *
+include LICENSE CHANGELOG requirements.txt Makefile
+recursive-include docs *.rst *.py *.html Makefile
+prune docs/static
