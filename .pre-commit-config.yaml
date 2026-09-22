@@ -1,7 +1,9 @@
-default_language_version:
-  python: python3.10
-
-exclude: (\.*/static/vendor/|\.*/static/fonts)
+exclude: |
+  (?x)^(
+    tests/files/.*        # verbatim instrument output and parser fixtures: byte-exact on purpose,
+                          # trailing whitespace and CRLF endings included
+    |docs/static/.*
+  )$
 
 repos:
   - repo: https://github.com/psf/black
@@ -22,7 +24,9 @@ repos:
       - id: fix-encoding-pragma
       - id: mixed-line-ending
       - id: name-tests-test
+        args: [--pytest-test-first]
       - id: pretty-format-json
+        args: [--autofix, --indent=2]
       - id: trailing-whitespace
 
   - repo: https://github.com/pycqa/isort
