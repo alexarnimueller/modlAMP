@@ -1,0 +1,110 @@
+name: release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Where to publish"
+        required: true
+        default: testpypi
+        type: choice
+        options: [testpypi, pypi]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build twine
+      - name: Check the tag matches modlamp.__version__
+        if: github.event_name == 'release'
+        run: |
+          python - <<'PY'
+          import os, re, sys
+          src = open("modlamp/version.py").read()
+          version = re.search(r'__version__ = "([^"]+)"', src).group(1)
+          tag = os.environ["GITHUB_REF_NAME"].lstrip("v")
+          if tag != version:
+              sys.exit(f"tag {tag!r} does not match modlamp.__version__ {version!r}")
+          print("version", version)
+          PY
+      - id: meta
+        run: |
+          python -c "import re;print('version='+re.search(r'__version__ = \"([^\"]+)\"',open('modlamp/version.py').read()).group(1))" >> "$GITHUB_OUTPUT"
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  testpypi:
+    # every release is rehearsed on TestPyPI first; a botched sdist is then cheap
+    needs: build
+    if: github.event_name == 'release' || inputs.target == 'testpypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/modlamp
+    permissions:
+      id-token: write   # OIDC: no API token is stored anywhere
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  smoke:
+    # install what was just published, from a clean machine, before touching real PyPI
+    needs: testpypi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install from TestPyPI and exercise the package
+        run: |
+          for i in 1 2 3 4 5; do
+            pip install --index-url https://test.pypi.org/simple/ \
+              --extra-index-url https://pypi.org/simple/ \
+              "modlamp==${{ needs.build.outputs.version }}" && break
+            echo "index not ready yet, retrying"; sleep 20
+          done
+          python -c "
+          from modlamp.descriptors import GlobalDescriptor
+          from modlamp.datasets import load_ACPvsRandom
+          d = GlobalDescriptor(['GLFDIVKKVVGALGSL']); d.calculate_all()
+          assert d.descriptor.shape == (1, 10), d.descriptor.shape
+          assert len(load_ACPvsRandom().sequences) == 826
+          print('smoke OK')
+          "
+
+  pypi:
+    needs: [build, smoke]
+    if: github.event_name == 'release' || inputs.target == 'pypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/modlamp
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
