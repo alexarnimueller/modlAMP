@@ -563,17 +563,17 @@ class MixedLibrary(BaseSequence):
         Cs.generate_sequences(symmetry="symmetric")
         Ca = Centrosymmetric(self.nums["asy"])
         Ca.generate_sequences(symmetry="asymmetric")
-        H = Helices(7, 28, self.nums["hel"])
+        H = Helices(self.nums["hel"], 7, 28)
         H.generate_sequences()
-        K = Kinked(7, 28, self.nums["knk"])
+        K = Kinked(self.nums["knk"], 7, 28)
         K.generate_sequences()
-        O = Oblique(7, 28, self.nums["obl"])
+        O = Oblique(self.nums["obl"], 7, 28)
         O.generate_sequences()
-        R = Random(7, 28, self.nums["ran"])
+        R = Random(self.nums["ran"], 7, 28)
         R.generate_sequences("rand")
-        Ra = Random(7, 28, self.nums["AMP"])
+        Ra = Random(self.nums["AMP"], 7, 28)
         Ra.generate_sequences("AMP")
-        Rc = Random(7, 28, self.nums["nCM"])
+        Rc = Random(self.nums["nCM"], 7, 28)
         Rc.generate_sequences("AMPnoCM")
 
         # TODO: update libnums according to real numbers
@@ -599,14 +599,13 @@ class MixedLibrary(BaseSequence):
             + ["nCM"] * self.nums["nCM"]
         )
         # combining sequence and name to remove duplicates
-        comb = []
-        for i, s in enumerate(sequences):
-            comb.append(s + "_" + names[i])
-        comb = set(comb)
-        # remove duplicates
-        for c in comb:
-            self.sequences.append(c.split("_")[0])
-            self.names.append(c.split("_")[1])
+        # remove duplicates, keeping first occurrence and a deterministic order
+        seen = set()
+        for s, n in zip(sequences, names):
+            if s not in seen:
+                seen.add(s)
+                self.sequences.append(s)
+                self.names.append(n)
         # update libsize and nums
         self.libsize = len(self.sequences)
         self.nums = {
