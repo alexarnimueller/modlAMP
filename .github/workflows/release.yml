@@ -1,16 +1,13 @@
 name: release
 
 on:
-  release:
-    types: [published]
+  push:
+    # publishing is driven by the tag. Creating a GitHub Release from the UI creates
+    # the tag and therefore triggers this too -- there is one trigger, not two, so a
+    # release can never fire the workflow twice and attempt a duplicate upload.
+    tags: ["v*"]
   workflow_dispatch:
-    inputs:
-      target:
-        description: "Where to publish"
-        required: true
-        default: testpypi
-        type: choice
-        options: [testpypi, pypi]
+    # manual runs are a TestPyPI rehearsal only and can never reach the real index
 
 permissions:
   contents: read
@@ -27,13 +24,13 @@ jobs:
           python-version: "3.12"
       - run: pip install build twine
       - name: Check the tag matches modlamp.__version__
-        if: github.event_name == 'release'
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           python - <<'PY'
           import os, re, sys
           src = open("modlamp/version.py").read()
           version = re.search(r'__version__ = "([^"]+)"', src).group(1)
-          tag = os.environ["GITHUB_REF_NAME"].lstrip("v")
+          tag = os.environ["GITHUB_REF_NAME"].removeprefix("v")  # lstrip would eat repeated leading v
           if tag != version:
               sys.exit(f"tag {tag!r} does not match modlamp.__version__ {version!r}")
           print("version", version)
@@ -49,15 +46,16 @@ jobs:
           path: dist/
 
   testpypi:
-    # every release is rehearsed on TestPyPI first; a botched sdist is then cheap
+    # every release is rehearsed on TestPyPI first, so a botched sdist is cheap to discover.
+    # Runs on both triggers, which is what keeps the pypi job below reachable: a skipped
+    # dependency skips everything downstream of it.
     needs: build
-    if: github.event_name == 'release' || inputs.target == 'testpypi'
     runs-on: ubuntu-latest
     environment:
       name: testpypi
       url: https://test.pypi.org/p/modlamp
     permissions:
-      id-token: write   # OIDC: no API token is stored anywhere
+      id-token: write # OIDC: no API token is stored anywhere
     steps:
       - uses: actions/download-artifact@v8
         with:
@@ -66,11 +64,14 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          # NOTE: on a repeated rehearsal of a version already uploaded to TestPyPI the upload
+          # is skipped and the smoke job below exercises the previously uploaded artifact.
+          # Bump the version to rehearse changed code.
           skip-existing: true
 
   smoke:
-    # install what was just published, from a clean machine, before touching real PyPI
-    needs: testpypi
+    # install what was just published, on a clean machine, before touching the real index
+    needs: [build, testpypi]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v7
@@ -95,7 +96,7 @@ jobs:
 
   pypi:
     needs: [build, smoke]
-    if: github.event_name == 'release' || inputs.target == 'pypi'
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     environment:
       name: pypi
