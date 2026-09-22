@@ -13,7 +13,12 @@ from sklearn.pipeline import Pipeline  # noqa: E402
 from sklearn.preprocessing import StandardScaler  # noqa: E402
 from sklearn.svm import SVC  # noqa: E402
 
-from modlamp.ml import plot_validation_curve, predict, score_cv, train_best_model  # noqa: E402
+from modlamp.ml import (  # noqa: E402
+    plot_validation_curve,
+    predict,
+    score_cv,
+    train_best_model,
+)
 from modlamp.plot import plot_2_features, plot_3_features, plot_feature  # noqa: E402
 
 __author__ = "modlab"
@@ -39,20 +44,26 @@ class TestSklearnCompat(unittest.TestCase):
         self.assertIn("mean", df.columns)
 
     def test_predict_accepts_array_targets_and_names(self):
-        df = predict(self.clf, self.x[:3], seqs=["AAA", "CCC", "DDD"],
-                     names=["a", "b", "c"], y=self.y[:3])
+        df = predict(self.clf, self.x[:3], seqs=["AAA", "CCC", "DDD"], names=["a", "b", "c"], y=self.y[:3])
         self.assertIn("True_class", df.columns)
         self.assertIn("Name", df.columns)
 
     def test_train_best_model_accepts_sample_weights(self):
-        m = train_best_model("svm", self.x, self.y, sample_weights=np.ones(60), cv=3,
-                             param_grid=[{"clf__C": [1.0], "clf__kernel": ["linear"]}])
+        m = train_best_model(
+            "svm",
+            self.x,
+            self.y,
+            sample_weights=np.ones(60),
+            cv=3,
+            param_grid=[{"clf__C": [1.0], "clf__kernel": ["linear"]}],
+        )
         self.assertIsNotNone(m)
 
     def test_validation_curve_runs(self):
         path = self._tmp(".png")
-        plot_validation_curve(self.clf, self.x, self.y, param_name="clf__C",
-                              param_range=[0.1, 1.0], cv=3, filename=path)
+        plot_validation_curve(
+            self.clf, self.x, self.y, param_name="clf__C", param_range=[0.1, 1.0], cv=3, filename=path
+        )
         self.assertGreater(os.path.getsize(path), 0)
 
 

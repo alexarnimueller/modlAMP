@@ -23,8 +23,9 @@ class TestMixedLibrary(unittest.TestCase):
         self.assertEqual(len(lib.names), len(lib.sequences))
 
     def test_zero_ratio_does_not_crash(self):
-        lib = MixedLibrary(100, centrosymmetric=1, centroasymmetric=0, helix=0, kinked=0,
-                           oblique=0, rand=0, randAMP=0, randAMPnoCM=0)
+        lib = MixedLibrary(
+            100, centrosymmetric=1, centroasymmetric=0, helix=0, kinked=0, oblique=0, rand=0, randAMP=0, randAMPnoCM=0
+        )
         lib.generate_sequences()
         self.assertGreater(len(lib.sequences), 0)
 

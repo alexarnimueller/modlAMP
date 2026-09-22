@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
 import unittest
+from os.path import dirname, join
 
 import numpy as np
 import pandas as pd
+
 from modlamp.analysis import GlobalAnalysis
 from modlamp.core import read_fasta
-from os.path import dirname, join
 
 
 class TestAnalysis(unittest.TestCase):

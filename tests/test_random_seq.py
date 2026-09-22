@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from modlamp.sequences import Random
@@ -6,7 +7,7 @@ from modlamp.sequences import Random
 class TestRandom(unittest.TestCase):
 
     S = Random(10, 10, 30)
-    S.generate_sequences('randnoCM')
+    S.generate_sequences("randnoCM")
 
     def test_seq_num(self):
         self.assertEqual(len(self.S.sequences), 10)
@@ -17,8 +18,9 @@ class TestRandom(unittest.TestCase):
 
     def test_noCM(self):
         for s in self.S.sequences:
-            self.assertNotIn('C', s)
-            self.assertNotIn('M', s)
+            self.assertNotIn("C", s)
+            self.assertNotIn("M", s)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

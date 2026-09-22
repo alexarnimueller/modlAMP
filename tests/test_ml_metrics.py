@@ -39,8 +39,21 @@ class TestMetrics(unittest.TestCase):
 
     def test_all_metric_rows_are_present(self):
         df = score_cv(self.clf, self.x, self.y, cv=4)
-        for m in ["MCC", "accuracy", "precision", "recall", "f1", "roc_auc",
-                  "TN", "FP", "FN", "TP", "FDR", "sensitivity", "specificity"]:
+        for m in [
+            "MCC",
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "roc_auc",
+            "TN",
+            "FP",
+            "FN",
+            "TP",
+            "FDR",
+            "sensitivity",
+            "specificity",
+        ]:
             self.assertIn(m, df.index)
 
 
