@@ -856,14 +856,15 @@ class BaseDescriptor(object):
         >>> seqs.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
-        if isinstance(seqs, list) and seqs[0].isupper():
-            self.sequences = [s.strip() for s in seqs]
+        if isinstance(seqs, (list, tuple)) or isinstance(seqs, np.ndarray):
+            seqs = list(seqs)
+            if not seqs:
+                raise ValueError("Empty sequence collection passed to %s" % type(self).__name__)
+            self.sequences = [str(s).strip().upper() for s in seqs]
             self.names = []
-        elif isinstance(seqs, np.ndarray) and seqs[0].isupper():
-            self.sequences = [s.strip() for s in seqs.tolist()]
-            self.names = []
-        elif isinstance(seqs, str) and seqs.isupper():
-            self.sequences = [seqs.strip()]
+        elif isinstance(seqs, str) and re.fullmatch(r"[A-Za-z]+", seqs.strip()):
+            # a bare word of letters is a sequence; anything else is treated as a path
+            self.sequences = [seqs.strip().upper()]
             self.names = []
         elif os.path.isfile(seqs):
             if seqs.endswith(".fasta"):  # read .fasta file
@@ -879,9 +880,11 @@ class BaseDescriptor(object):
                             self.names.append("seq_" + str(cntr))
                             cntr += 1
             else:
-                print("Sorry, currently only .fasta or .csv files can be read!")
+                raise ValueError("Sorry, currently only .fasta or .csv files can be read!")
         else:
-            print("%s does not exist, is not a valid list of AA sequences or is not a valid sequence string" % seqs)
+            raise ValueError(
+                "%s does not exist, is not a valid list of AA sequences or is not a valid sequence string" % seqs
+            )
 
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype="int")
