@@ -196,8 +196,8 @@ def train_best_model(
             cv=cv,
             n_jobs=n_jobs,
         )
-        if sample_weights:
-            gs.fit(x_train, y_train, [{"clf__sample_weight": sample_weights}])
+        if sample_weights is not None:
+            gs.fit(x_train, y_train, clf__sample_weight=sample_weights)
         else:
             gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
@@ -237,8 +237,8 @@ def train_best_model(
             n_jobs=n_jobs,
         )
 
-        if sample_weights:
-            gs.fit(x_train, y_train, [{"clf__sample_weight": sample_weights}])
+        if sample_weights is not None:
+            gs.fit(x_train, y_train, clf__sample_weight=sample_weights)
         else:
             gs.fit(x_train, y_train)
         print("Best score (scorer: %s) and parameters from a %d-fold cross validation:" % (score, cv))
@@ -338,8 +338,8 @@ def plot_validation_curve(
         classifier,
         x_train,
         y_train,
-        param_name,
-        param_range,
+        param_name=param_name,
+        param_range=param_range,
         cv=cv,
         scoring=score,
         n_jobs=n_jobs,
@@ -425,15 +425,15 @@ def predict(classifier, x, seqs, names=None, y=None, filename=None):
     """
     preds = classifier.predict_proba(x)
 
-    if not (y and names):
+    if y is None and names is None:
         d_pred = {"P_class0": preds[:, 0], "P_class1": preds[:, 1]}
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
-    elif not y:
+    elif y is None:
         d_pred = {"Name": names, "P_class0": preds[:, 0], "P_class1": preds[:, 1]}
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
-    elif not names:
+    elif names is None:
         d_pred = {"P_class0": preds[:, 0], "P_class1": preds[:, 1], "True_class": y}
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
@@ -447,7 +447,7 @@ def predict(classifier, x, seqs, names=None, y=None, filename=None):
         df_pred = pd.DataFrame(d_pred, index=seqs)
 
     if filename:
-        df_pred.to_csv(filename + time.strftime("-%Y%m%desc-%H%M%S.csv"))
+        df_pred.to_csv(filename + time.strftime("-%Y%m%d-%H%M%S.csv"))
 
     return df_pred
 
@@ -522,7 +522,7 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
         "specificity",
     ]
 
-    kf = StratifiedKFold(n_splits=cv, random_state=42, shuffle=shuffle)
+    kf = StratifiedKFold(n_splits=cv, random_state=42 if shuffle else None, shuffle=shuffle)
     clf = clone(classifier)
 
     for fold_train_index, fold_test_index in kf.split(x, y):

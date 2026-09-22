@@ -24,7 +24,7 @@ import matplotlib.lines as lines
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats.kde import gaussian_kde
+from scipy.stats import gaussian_kde
 
 from modlamp.core import count_aas, load_scale
 from modlamp.descriptors import PeptideDescriptor
@@ -105,7 +105,7 @@ def plot_feature(
     fig, ax = plt.subplots()
     # coloring faces of boxes
     median_props = dict(linestyle="-", linewidth="1", color="black")
-    box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, labels=labels)
+    box = ax.boxplot(data, notch=True, patch_artist=True, medianprops=median_props, tick_labels=labels)
     plt.setp(box["whiskers"], color="black")
 
     for patch, color in zip(box["boxes"], colors):
@@ -254,11 +254,7 @@ def plot_3_features(
     ax.set_ylabel(y_label, fontweight="bold")
     ax.set_zlabel(z_label, fontweight="bold")
     ax.set_title("3D Feature Plot", fontsize=16, fontweight="bold")
-    # only left and bottom axes, no box
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
-    ax.xaxis.set_ticks_position("bottom")
-    ax.yaxis.set_ticks_position("bottom")
+    # NOTE: spine / tick-position styling below is 2-D only and is not applied to Axes3D
 
     if filename:
         plt.savefig(filename, dpi=150)
@@ -1024,7 +1020,7 @@ def plot_violin(x, colors=None, bp=False, filename=None, title=None, axlabels=No
     # only left and bottom axes, no box
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
-    plt.tick_params(axis="x", which="both", top="off")
+    ax.tick_params(axis="x", which="both", top=False)
     ax.yaxis.set_ticks_position("left")
     ax.set_ylim((y_min, y_max))
     if axlabels is None:
