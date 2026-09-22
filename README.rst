@@ -1,20 +1,33 @@
 README
 ======
 
-.. image:: https://img.shields.io/pypi/v/modlamp.svg
-   :target: https://pypi.org/project/modlamp/
+.. image:: https://github.com/alexarnimueller/modlAMP/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/alexarnimueller/modlAMP/actions/workflows/test.yml
+    :alt: Test status
 
-.. image:: https://travis-ci.org/alexarnimueller/modlAMP.svg
-    :target: https://travis-ci.org/alexarnimueller/modlAMP
+.. image:: https://img.shields.io/pypi/v/modlamp.svg
+    :target: https://pypi.org/project/modlamp/
+    :alt: PyPI version
+
+.. image:: https://img.shields.io/pypi/dm/modlamp.svg
+    :target: https://pypi.org/project/modlamp/
+    :alt: PyPI downloads per month
 
 .. image:: https://codecov.io/gh/alexarnimueller/modlAMP/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/alexarnimueller/modlAMP
+    :alt: Test coverage
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code style: black
 
 .. image:: https://img.shields.io/badge/License-BSD--3-lightgrey.svg
-    :target: https://github.com/alexarnimueller/modlAMP/blob/master/LICENSE.rst
+    :target: https://github.com/alexarnimueller/modlAMP/blob/master/LICENSE
+    :alt: License: BSD-3-Clause
 
 .. image:: https://img.shields.io/badge/DOI-10.1093%2Fbioinformatics%2Fbtx285-ff69b4.svg
     :target: https://doi.org/10.1093/bioinformatics/btx285
+    :alt: DOI: 10.1093/bioinformatics/btx285
 
 
 **modlAMP**
