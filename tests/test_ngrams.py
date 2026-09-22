@@ -1,21 +1,24 @@
+# -*- coding: utf-8 -*-
+"""Regression tests for n-gram counting."""
 import unittest
-from numpy.random import randint
-from modlamp.sequences import AMPngrams
+
+from modlamp.core import count_ngrams
+
+__author__ = "modlab"
 
 
-class TestNgram(unittest.TestCase):
-    S = AMPngrams(10, n_min=2, n_max=10)
-    S.generate_sequences()
+class TestNgramCounts(unittest.TestCase):
+    def test_overlapping_occurrences_are_counted(self):
+        self.assertEqual(count_ngrams("AAAA", 2)["AA"], 3)
+        self.assertEqual(count_ngrams("KKKKK", 3)["KKK"], 3)
 
-    def test_seqnum(self):
-        self.assertEqual(len(self.S.sequences), 10)
-    
-    def test_ngrams_in_seq(self):
-        seq_str = ''.join(self.S.sequences)
-        ngram_str = ''.join(self.S.ngrams.tolist())
-        pos = randint(0, len(seq_str) - 2)
-        self.assertTrue(seq_str[pos:pos+2] in ngram_str or seq_str[pos-1:pos+1] in ngram_str)
+    def test_non_repeating_sequence_is_unchanged(self):
+        self.assertEqual(count_ngrams("ACDEF", 2), {"AC": 1, "CD": 1, "DE": 1, "EF": 1})
+
+    def test_total_matches_number_of_windows(self):
+        seq = "GLLDFLSLAALSLDKLVKKGALS"
+        self.assertEqual(sum(count_ngrams(seq, 3).values()), len(seq) - 2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

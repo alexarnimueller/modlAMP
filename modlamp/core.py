@@ -2990,7 +2990,7 @@ def count_ngrams(seq, n):
     ngrams = list()
     for i in n:
         ngrams.extend([seq[j : j + i] for j in range(len(seq) - (i - 1))])
-    counts = {g: (seq.count(g)) for g in set(ngrams)}
+    counts = dict(collections.Counter(ngrams))  # overlapping occurrences
     counts = collections.OrderedDict(sorted(counts.items(), key=operator.itemgetter(1), reverse=True))
     return counts
 
