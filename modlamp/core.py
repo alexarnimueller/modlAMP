@@ -1326,7 +1326,8 @@ class BaseDescriptor(object):
         seqs = seqs[:, 0]
         if targets:
             self.target = np.array(data[:, -1], dtype="int")
-        self.sequences = seqs
+            data = data[:, :-1]  # the target column is not a descriptor feature
+        self.sequences = seqs.tolist()
         self.descriptor = data
 
     def save_descriptor(self, filename, delimiter=",", targets=None, header=None):
@@ -1344,15 +1345,20 @@ class BaseDescriptor(object):
             names = np.hstack((ids, seqs))
         else:
             names = seqs
-        if targets and len(targets) == len(self.sequences):
+        if targets is not None and len(targets) == len(self.sequences):
             target = np.array(targets)[:, np.newaxis]
             data = np.hstack((names, self.descriptor, target))
         else:
             data = np.hstack((names, self.descriptor))
+        if targets is not None and len(targets) == len(self.sequences):
+            featurenames = ["Sequence"] + list(self.featurenames) + ["Target"]
+        else:
+            featurenames = ["Sequence"] + list(self.featurenames)
+        if ids.shape == seqs.shape:
+            featurenames = ["ID"] + featurenames
         if not header:
-            featurenames = [["Sequence"]] + self.featurenames
-            header = ",".join([f[0] for f in featurenames])
-        np.savetxt(filename, data, delimiter=delimiter, fmt="%s", header=header)
+            header = delimiter.join(featurenames)
+        np.savetxt(filename, data, delimiter=delimiter, fmt="%s", header=header, comments="")
 
 
 def load_scale(scalename):
