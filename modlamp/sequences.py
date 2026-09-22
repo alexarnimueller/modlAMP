@@ -257,6 +257,18 @@ class Centrosymmetric(BaseSequence):
     blocks are concatenated.
     """
 
+    def _random_block(self):
+        """Draw one centro-symmetric block of seven amino acids of the form ``[h, +, h, a, h, +, h]``
+        with h = hydrophobic AA, + = basic AA and a = anchor/aromatic AA.
+
+        :return: {str} a seven-residue block
+        """
+        outer = np.random.choice(self.AA_hyd)
+        basic = np.random.choice(self.AA_basic)
+        inner = np.random.choice(self.AA_hyd)
+        anchor = np.random.choice(self.AA_aroma)
+        return outer + basic + inner + anchor + inner + basic + outer
+
     def generate_sequences(self, symmetry="asymmetric"):
         """Generate overall symmetric or asymmetric sequences out of two or three blocks of centro-symmetric blocks of
         7 amino acids. The resulting sequence presumably has a large hydrophobic moment.
@@ -271,54 +283,39 @@ class Centrosymmetric(BaseSequence):
         >>> s.generate_sequences(symmetry='symmetric')
         >>> s.sequences
         ['ARIFIRAARIFIRA','GRIYIRGGRIYIRGGRIYIRG','IRGFGRIIRGFGRIIRGFGRI','GKAYAKGGKAYAKG','AKGYGKAAKGYGKAAKGYGKA']
+
+        .. versionchanged:: v4.3.3
+            ``asymmetric`` now guarantees that the concatenated blocks differ from one another, as the class
+            documentation has always stated. Previously each block was drawn independently, so with only
+            ``len(AA_hyd)**2 * len(AA_basic) * len(AA_aroma)`` = 150 distinct blocks available two of them
+            coincided in about 0.7 % of sequences, silently returning a symmetric sequence from asymmetric mode.
         """
-        if symmetry == "symmetric":
-            self.clean()
-            for s in range(self.seqnum):  # iterate over number of sequences to generate
-                n = np.random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
-                seq = ["X"] * 7  # template sequence AA list with length 7
-                for a in range(7):  # generate symmetric sequence block of 7 AA with an anchor in the middle
-                    if a == 0:
-                        seq[0] = np.random.choice(self.AA_hyd)
-                        seq[6] = seq[0]
-                    elif a == 1:
-                        seq[1] = np.random.choice(self.AA_basic)
-                        seq[5] = seq[1]
-                    elif a == 2:
-                        seq[2] = np.random.choice(self.AA_hyd)
-                        seq[4] = seq[2]
-                    elif a == 3:
-                        seq[3] = np.random.choice(self.AA_aroma)
-                    else:
-                        continue
-                self.sequences.append("".join(seq) * n)
-
-        elif symmetry == "asymmetric":
-            self.clean()
-            for s in range(self.seqnum):  # iterate over number of sequences to generate
-                n = np.random.choice(range(2, 4))  # number of sequence blocks to take (2 or 3)
-                seq = ["X"] * 7  # template sequence AA list with length 7
-                blocks = []
-                for c in range(n):
-                    for a in range(7):  # generate symmetric sequence block of 7 AA with an anchor in the middle
-                        if a == 0:
-                            seq[0] = np.random.choice(self.AA_hyd)
-                            seq[6] = seq[0]
-                        elif a == 1:
-                            seq[1] = np.random.choice(self.AA_basic)
-                            seq[5] = seq[1]
-                        elif a == 2:
-                            seq[2] = np.random.choice(self.AA_hyd)
-                            seq[4] = seq[2]
-                        elif a == 3:
-                            seq[3] = np.random.choice(self.AA_aroma)
-                        else:
-                            continue
-                    blocks.append("".join(seq))
-                self.sequences.append("".join(blocks))
-
-        else:
+        if symmetry not in ("symmetric", "asymmetric"):
             raise AttributeError("Unknown symmetry option given! Choose from [symmetric, asymmetric].")
+
+        # number of distinct blocks the current amino acid alphabets can produce; asymmetric mode
+        # cannot concatenate more distinct blocks than this
+        n_distinct = len(set(self.AA_hyd)) ** 2 * len(set(self.AA_basic)) * len(set(self.AA_aroma))
+
+        self.clean()
+        for _ in range(self.seqnum):  # iterate over number of sequences to generate
+            n = int(np.random.choice(range(2, 4)))  # number of sequence blocks to take (2 or 3)
+
+            if symmetry == "symmetric":
+                self.sequences.append(self._random_block() * n)
+                continue
+
+            if n > n_distinct:
+                raise ValueError(
+                    "Cannot build %i different blocks from the given amino acid alphabets, which allow only %i "
+                    "distinct blocks." % (n, n_distinct)
+                )
+            blocks = []
+            while len(blocks) < n:  # rejection sampling keeps the per-position weighting intact
+                block = self._random_block()
+                if block not in blocks:
+                    blocks.append(block)
+            self.sequences.append("".join(blocks))
 
 
 class AmphipathicArc(BaseSequence):

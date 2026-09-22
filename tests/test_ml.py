@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
 import unittest
+
 import numpy as np
-from modlamp.ml import train_best_model, score_cv, score_testset
+
+from modlamp.ml import score_cv, score_testset, train_best_model
 
 
 class TestTrainModel(unittest.TestCase):

@@ -1,0 +1,98 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # weekly, so upstream releases break CI before they break users
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MPLBACKEND: Agg
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: pre-commit/action@v3.0.1
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          # one non-Linux runner to catch path/backend assumptions
+          - os: macos-latest
+            python-version: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[test]"
+      - name: Run tests
+        # network-marked tests hit third-party servers (APD3, CAMP); they run in the
+        # scheduled job only, so an upstream outage cannot redden a pull request
+        run: pytest -m "not network" --cov=modlamp --cov-report=xml --cov-report=term-missing
+      - uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        with:
+          files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  network:
+    # external databases, allowed to fail: their downtime is not our regression
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[test]"
+      - run: pytest -m network -v
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - name: Install the wheel in a clean venv and import every module
+        run: |
+          python -m venv /tmp/fresh
+          /tmp/fresh/bin/pip install --quiet dist/*.whl
+          cd /tmp  # import from outside the source tree, not the checkout
+          /tmp/fresh/bin/python -c "
+          import importlib, modlamp
+          for m in modlamp.__all__:
+              importlib.import_module('modlamp.' + m)
+          from modlamp.datasets import load_ACPvsRandom
+          assert len(load_ACPvsRandom().sequences) > 0, 'package data missing from wheel'
+          print('wheel OK', modlamp.__version__)
+          "
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

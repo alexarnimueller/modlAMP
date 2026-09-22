@@ -1,5 +1,6 @@
-{"host": "server",
+{
   "database": "peptides",
-  "user": "modlamp",
-  "password": "password"
+  "host": "server",
+  "password": "password",
+  "user": "modlamp"
 }

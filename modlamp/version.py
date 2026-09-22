@@ -11,4 +11,4 @@ __all__ = [
     "wetlab",
 ]
 __author__ = "Alex Müller, Gisela Gabernet"
-__version__ = "4.3.2"
+__version__ = "4.3.3"
