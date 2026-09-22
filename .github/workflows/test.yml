@@ -20,8 +20,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - uses: pre-commit/action@v3.0.1
@@ -38,8 +38,8 @@ jobs:
           - os: macos-latest
             python-version: "3.12"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -49,7 +49,7 @@ jobs:
         # network-marked tests hit third-party servers (APD3, CAMP); they run in the
         # scheduled job only, so an upstream outage cannot redden a pull request
         run: pytest -m "not network" --cov=modlamp --cov-report=xml --cov-report=term-missing
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v7
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         with:
           files: coverage.xml
@@ -62,8 +62,8 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install -e ".[test]"
@@ -72,8 +72,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install build twine
@@ -92,7 +92,7 @@ jobs:
           assert len(load_ACPvsRandom().sequences) > 0, 'package data missing from wheel'
           print('wheel OK', modlamp.__version__)
           "
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
