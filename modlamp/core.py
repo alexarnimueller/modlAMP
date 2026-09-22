@@ -2868,21 +2868,22 @@ def read_fasta(inputfile):
     """
     names = list()  # list for storing names
     sequences = list()  # list for storing sequences
-    seq = str()
+    chunks = list()  # buffer for the (possibly wrapped) sequence currently being read
     with open(inputfile) as f:
-        all = f.readlines()
-        last = all[-1]
-        for line in all:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
             if line.startswith(">"):
-                names.append(line.split(" ")[0][1:].strip())  # add FASTA name without description as molecule name
-                sequences.append(seq.strip())
-                seq = str()
-            elif line == last:
-                seq += line.strip()  # remove potential white space
-                sequences.append(seq.strip())
+                if names:  # flush the previous record before starting a new one
+                    sequences.append("".join(chunks))
+                names.append(line[1:].split()[0] if len(line) > 1 else "")
+                chunks = list()
             else:
-                seq += line.strip()  # remove potential white space
-    return sequences[1:], names
+                chunks.append(line)
+        if names:  # flush the final record
+            sequences.append("".join(chunks))
+    return sequences, names
 
 
 def save_fasta(filename, sequences, names=None):
