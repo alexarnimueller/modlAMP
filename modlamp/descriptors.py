@@ -34,6 +34,10 @@ from modlamp.core import (
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
+#: default conditions for every charge-dependent descriptor (charge, charge density, pI)
+DEFAULT_PH = 7.4
+DEFAULT_AMIDE = True
+
 
 def _one_autocorr(seq, window, scale):
     """Private function used for calculating auto-correlated descriptors for 1 given sequence, window and an AA scale.
@@ -117,7 +121,7 @@ def _one_arc(seq, modality, scale):
     if len(seq) > 18:
         window = 18
         # calculates number of windows in sequence
-        num_windows = len(seq) - window
+        num_windows = len(seq) - window + 1
     else:
         window = len(seq)
         num_windows = 1
@@ -372,7 +376,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["MW"]
 
-    def calculate_charge(self, ph=7.4, amide=True, append=False):
+    def calculate_charge(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
@@ -407,7 +411,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["Charge"]
 
-    def charge_density(self, ph=7.0, amide=False, append=False):
+    def charge_density(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE, append=False):
         """Method to calculate the charge density (charge / MW) of every sequences in the attributes
             :py:attr:`sequences`
 
@@ -423,12 +427,14 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc.descriptor
         array([[-0.00097119]])
         """
+        prev_desc, prev_names = self.descriptor, list(self.featurenames)
         self.calculate_charge(ph, amide)
         charges = self.descriptor
         self.calculate_MW(amide)
         masses = self.descriptor
         desc = charges / masses
         desc = np.asarray(desc).reshape(len(desc), 1)
+        self.descriptor, self.featurenames = prev_desc, prev_names
         if append:
             self.descriptor = np.hstack((self.descriptor, np.array(desc)))
             self.featurenames.append("ChargeDensity")
@@ -436,7 +442,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["ChargeDensity"]
 
-    def isoelectric_point(self, amide=False, append=False):
+    def isoelectric_point(self, amide=DEFAULT_AMIDE, append=False):
         """
         Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
         The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
@@ -456,11 +462,10 @@ class GlobalDescriptor(BaseDescriptor):
         >>> desc.descriptor
         array([[ 10.6796875]])
         """
-        ph, ph1, ph2 = float(), float(), float()
         desc = []
         for seq in self.sequences:
-
             # Bracket between ph1 and ph2
+            ph1, ph2 = 0.0, 14.0
             ph = 7.0
             charge = _charge(seq, ph, amide)
             if charge > 0.0:
@@ -660,7 +665,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["HydrophRatio"]
 
-    def calculate_all(self, ph=7.4, amide=True):
+    def calculate_all(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE):
         """Method combining all global descriptors and appending them into the feature matrix in the attribute
         :py:attr:`descriptor` and corresponding feature names in :py:attr:`featurenames`.
 
@@ -887,10 +892,14 @@ class PeptideDescriptor(BaseDescriptor):
         >>> AMP.descriptor
         array([[ 0.48790226]])
         """
-        if self.scale["A"] == list:
-            print("\n Descriptor moment calculation is only possible for one dimensional descriptors.\n")
+        if len(self.scale["A"]) > 1:
+            raise ValueError(
+                "Hydrophobic moment calculation is only possible for one-dimensional descriptor scales, "
+                "'%s' has %i dimensions." % (self.scalename, len(self.scale["A"]))
+            )
 
         else:
+            self.all_moms = list()
             desc = []
             for seq in self.sequences:
                 wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
@@ -916,8 +925,7 @@ class PeptideDescriptor(BaseDescriptor):
                 elif modality == "all":
                     moment = moms
                 else:
-                    print('\nERROR!\nModality parameter is wrong, please choose between "all", "max" and "mean".\n')
-                    return
+                    raise ValueError('Modality parameter is wrong, please choose between "all", "max" and "mean".')
                 desc.append(moment)
                 self.all_moms.append(moms)
 
@@ -945,6 +953,9 @@ class PeptideDescriptor(BaseDescriptor):
         >>> AMP.descriptor
         array([[ 0.44875]])
         """
+        if modality not in ["max", "mean"]:
+            raise ValueError('Modality parameter is wrong, please choose between "max" and "mean".')
+        self.all_globs = list()
         desc = list()
         for n, seq in enumerate(self.sequences):
             wdw = min(window, len(seq))  # if sequence is shorter than window, take the whole sequence instead
@@ -961,14 +972,10 @@ class PeptideDescriptor(BaseDescriptor):
             glob = np.sum(mwdw, axis=1) / float(wdw)
             outglob = float()
 
-            if modality in ["max", "mean"]:
-                if modality == "max":
-                    outglob = np.max(glob)  # returned moment will be the maximum of all windows
-                elif modality == "mean":
-                    outglob = np.mean(glob)  # returned moment will be the mean of all windows
-                else:
-                    print('Modality parameter is wrong, please choose between "max" and "mean"\n.')
-                    return
+            if modality == "max":
+                outglob = np.max(glob)  # returned moment will be the maximum of all windows
+            else:
+                outglob = np.mean(glob)  # returned moment will be the mean of all windows
             desc.append(outglob)
             self.all_globs.append(glob)
 

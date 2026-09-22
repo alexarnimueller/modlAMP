@@ -44,8 +44,11 @@ class TestAnalysis(unittest.TestCase):
         self.assertAlmostEqual(self.a.uH[0][5], 0.6569639743)
 
     def test_charge(self):
-        self.a.calc_charge()
+        self.a.calc_charge(ph=7.0)
         self.assertAlmostEqual(self.a.charge[0][2], 5.995, places=3)
+        self.a.charge = []
+        self.a.calc_charge()  # default pH 7.4
+        self.assertAlmostEqual(self.a.charge[0][2], 5.988, places=3)
 
     def test_len(self):
         self.a.calc_len()

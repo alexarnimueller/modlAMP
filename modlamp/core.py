@@ -856,14 +856,15 @@ class BaseDescriptor(object):
         >>> seqs.sequences
         ['AFDGHLKI','KKLQRSDLLRTK','KKLASCNNIPPR'...]
         """
-        if isinstance(seqs, list) and seqs[0].isupper():
-            self.sequences = [s.strip() for s in seqs]
+        if isinstance(seqs, (list, tuple)) or isinstance(seqs, np.ndarray):
+            seqs = list(seqs)
+            if not seqs:
+                raise ValueError("Empty sequence collection passed to %s" % type(self).__name__)
+            self.sequences = [str(s).strip().upper() for s in seqs]
             self.names = []
-        elif isinstance(seqs, np.ndarray) and seqs[0].isupper():
-            self.sequences = [s.strip() for s in seqs.tolist()]
-            self.names = []
-        elif isinstance(seqs, str) and seqs.isupper():
-            self.sequences = [seqs.strip()]
+        elif isinstance(seqs, str) and re.fullmatch(r"[A-Za-z]+", seqs.strip()):
+            # a bare word of letters is a sequence; anything else is treated as a path
+            self.sequences = [seqs.strip().upper()]
             self.names = []
         elif os.path.isfile(seqs):
             if seqs.endswith(".fasta"):  # read .fasta file
@@ -879,9 +880,11 @@ class BaseDescriptor(object):
                             self.names.append("seq_" + str(cntr))
                             cntr += 1
             else:
-                print("Sorry, currently only .fasta or .csv files can be read!")
+                raise ValueError("Sorry, currently only .fasta or .csv files can be read!")
         else:
-            print("%s does not exist, is not a valid list of AA sequences or is not a valid sequence string" % seqs)
+            raise ValueError(
+                "%s does not exist, is not a valid list of AA sequences or is not a valid sequence string" % seqs
+            )
 
         self.descriptor = np.array([[]])
         self.target = np.array([], dtype="int")
@@ -1074,10 +1077,11 @@ class BaseDescriptor(object):
         minmaxidx = list()  # Store original indices of selections to return
 
         # Randomly selecting first peptide into the sele
-        np.random.seed(seed)
-        idx = int(np.random.random_integers(0, len(pool), 1))
+        rng = np.random.default_rng(seed)
+        poolidx = list(range(len(pool)))  # original row index of every row still in the pool
+        idx = int(rng.integers(0, len(pool)))
         sele = pool[idx : idx + 1, :]
-        minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx : idx + 1, :], axis=1))))
+        minmaxidx.append(poolidx.pop(idx))
 
         # Deleting peptide in selection from pool
         pool = np.delete(pool, idx, axis=0)
@@ -1097,7 +1101,7 @@ class BaseDescriptor(object):
             # Adding it to selection and removing from pool
             sele = np.append(sele, pool[maxidx : maxidx + 1, :], axis=0)
             pool = np.delete(pool, maxidx, axis=0)
-            minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx : maxidx + 1, :], axis=1))))
+            minmaxidx.append(poolidx.pop(maxidx))
 
         self.sequences = np.array(self.sequences)[minmaxidx].tolist()
         if hasattr(self, "descriptor") and self.descriptor.size:
@@ -1105,7 +1109,7 @@ class BaseDescriptor(object):
         if hasattr(self, "names") and self.names:
             self.names = np.array(self.names)[minmaxidx].tolist()
         if hasattr(self, "target") and self.target.size:
-            self.target = self.descriptor[minmaxidx]
+            self.target = self.target[minmaxidx]
 
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
@@ -1235,19 +1239,15 @@ class BaseDescriptor(object):
         """
         if not self.names:
             self.names = ["Seq_" + str(i) for i in range(len(self.sequences))]
-        if not self.target:
-            self.target = [0] * len(self.sequences)
-        if not self.descriptor:
-            self.descriptor = np.zeros(len(self.sequences))
-        df = pd.DataFrame(
-            np.array([self.sequences, self.names, self.descriptor, self.target]).T,
-            columns=["Sequences", "Names", "Descriptor", "Target"],
-        )
-        df = df.drop_duplicates(subset="Sequences", keep="first")  # keep first occurrence of duplicate
-        self.sequences = list(df["Sequences"])
-        self.names = list(df["Names"])
-        self.descriptor = df["Descriptor"].get_values()
-        self.target = df["Target"].get_values()
+        df = pd.DataFrame({"Sequences": self.sequences, "Names": self.names})
+        keep = ~df.duplicated(subset="Sequences", keep="first")  # keep first occurrence of duplicate
+        idx = np.where(keep.values)[0]
+        self.sequences = [self.sequences[i] for i in idx]
+        self.names = [self.names[i] for i in idx]
+        if hasattr(self, "descriptor") and np.size(self.descriptor):
+            self.descriptor = np.asarray(self.descriptor)[idx]
+        if hasattr(self, "target") and np.size(self.target):
+            self.target = np.asarray(self.target)[idx]
 
     def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
@@ -1326,7 +1326,8 @@ class BaseDescriptor(object):
         seqs = seqs[:, 0]
         if targets:
             self.target = np.array(data[:, -1], dtype="int")
-        self.sequences = seqs
+            data = data[:, :-1]  # the target column is not a descriptor feature
+        self.sequences = seqs.tolist()
         self.descriptor = data
 
     def save_descriptor(self, filename, delimiter=",", targets=None, header=None):
@@ -1344,15 +1345,20 @@ class BaseDescriptor(object):
             names = np.hstack((ids, seqs))
         else:
             names = seqs
-        if targets and len(targets) == len(self.sequences):
+        if targets is not None and len(targets) == len(self.sequences):
             target = np.array(targets)[:, np.newaxis]
             data = np.hstack((names, self.descriptor, target))
         else:
             data = np.hstack((names, self.descriptor))
+        if targets is not None and len(targets) == len(self.sequences):
+            featurenames = ["Sequence"] + list(self.featurenames) + ["Target"]
+        else:
+            featurenames = ["Sequence"] + list(self.featurenames)
+        if ids.shape == seqs.shape:
+            featurenames = ["ID"] + featurenames
         if not header:
-            featurenames = [["Sequence"]] + self.featurenames
-            header = ",".join([f[0] for f in featurenames])
-        np.savetxt(filename, data, delimiter=delimiter, fmt="%s", header=header)
+            header = delimiter.join(featurenames)
+        np.savetxt(filename, data, delimiter=delimiter, fmt="%s", header=header, comments="")
 
 
 def load_scale(scalename):
@@ -2868,21 +2874,22 @@ def read_fasta(inputfile):
     """
     names = list()  # list for storing names
     sequences = list()  # list for storing sequences
-    seq = str()
+    chunks = list()  # buffer for the (possibly wrapped) sequence currently being read
     with open(inputfile) as f:
-        all = f.readlines()
-        last = all[-1]
-        for line in all:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
             if line.startswith(">"):
-                names.append(line.split(" ")[0][1:].strip())  # add FASTA name without description as molecule name
-                sequences.append(seq.strip())
-                seq = str()
-            elif line == last:
-                seq += line.strip()  # remove potential white space
-                sequences.append(seq.strip())
+                if names:  # flush the previous record before starting a new one
+                    sequences.append("".join(chunks))
+                names.append(line[1:].split()[0] if len(line) > 1 else "")
+                chunks = list()
             else:
-                seq += line.strip()  # remove potential white space
-    return sequences[1:], names
+                chunks.append(line)
+        if names:  # flush the final record
+            sequences.append("".join(chunks))
+    return sequences, names
 
 
 def save_fasta(filename, sequences, names=None):
@@ -2990,7 +2997,7 @@ def count_ngrams(seq, n):
     ngrams = list()
     for i in n:
         ngrams.extend([seq[j : j + i] for j in range(len(seq) - (i - 1))])
-    counts = {g: (seq.count(g)) for g in set(ngrams)}
+    counts = dict(collections.Counter(ngrams))  # overlapping occurrences
     counts = collections.OrderedDict(sorted(counts.items(), key=operator.itemgetter(1), reverse=True))
     return counts
 
