@@ -56,6 +56,16 @@ __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
 
+def _scores_for_auc(classifier, x):
+    """Return continuous scores for ROC-AUC. Falls back to hard labels only if the model exposes neither
+    ``predict_proba`` nor ``decision_function``."""
+    if hasattr(classifier, "predict_proba"):
+        return classifier.predict_proba(x)[:, 1]
+    elif hasattr(classifier, "decision_function"):
+        return classifier.decision_function(x)
+    return classifier.predict(x)
+
+
 def train_best_model(
     model,
     x_train,
@@ -503,7 +513,6 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
         "precision_score",
         "recall_score",
         "f1_score",
-        "roc_auc_score",
         "confusion_matrix",
     ]
     metrics = [
@@ -538,7 +547,8 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(xcv_test), sample_weight=weightcv_test))
             tn, fp, fn, tp = scores[-1].ravel()
-            scores = scores[:-1] + [tn, fp, fn, tp]
+            auc = mets.roc_auc_score(ycv_test, _scores_for_auc(clf, xcv_test), sample_weight=weightcv_test)
+            scores = scores[:-1] + [auc, tn, fp, fn, tp]
             fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
             sn = float(tp) / float(tp + fn)
@@ -550,7 +560,8 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
             for f in funcs:
                 scores.append(getattr(mets, f)(ycv_test, clf.predict(xcv_test)))
             tn, fp, fn, tp = scores[-1].ravel()
-            scores = scores[:-1] + [tn, fp, fn, tp]
+            auc = mets.roc_auc_score(ycv_test, _scores_for_auc(clf, xcv_test))
+            scores = scores[:-1] + [auc, tn, fp, fn, tp]
             fdr = float(fp) / float(tp + fp)
             scores.append(fdr)
             sn = float(tp) / float(tp + fn)
@@ -565,8 +576,9 @@ def score_cv(classifier, x, y, sample_weights=None, cv=10, shuffle=True):
 
     df_scores = pd.DataFrame(dict_scores, index=metrics)
 
-    df_scores["mean"] = df_scores.mean(axis=1)
-    df_scores["std"] = df_scores.std(axis=1)
+    fold_scores = df_scores[cv_names]
+    df_scores["mean"] = fold_scores.mean(axis=1)
+    df_scores["std"] = fold_scores.std(axis=1)
 
     return df_scores.round(2)
 
@@ -636,7 +648,6 @@ def score_testset(classifier, x_test, y_test, sample_weights=None):
         "precision_score",
         "recall_score",
         "f1_score",
-        "roc_auc_score",
         "confusion_matrix",
     ]
 
@@ -645,7 +656,8 @@ def score_testset(classifier, x_test, y_test, sample_weights=None):
         scores.append(getattr(mets, f)(y_test, classifier.predict(x_test), sample_weight=sample_weights))
 
     tn, fp, fn, tp = scores.pop().ravel()
-    scores = scores + [tn, fp, fn, tp]
+    auc = mets.roc_auc_score(y_test, _scores_for_auc(classifier, x_test), sample_weight=sample_weights)
+    scores = scores + [auc, tn, fp, fn, tp]
     fdr = float(fp) / (tp + fp)
     scores.append(fdr)
     sn = float(tp) / (tp + fn)
