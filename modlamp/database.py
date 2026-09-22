@@ -10,13 +10,11 @@ SQL database for which the configuration is given in a specified config file.
 
 import json
 from getpass import getpass
-from os.path import exists
+from os.path import dirname, exists, join
 
-import mysql.connector
 import pandas as pd
 import requests
 from lxml import html
-from mysql.connector import Error
 
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
@@ -51,19 +49,23 @@ def _connect(configfile):
         This file is passed to :py:func:`_read_db_config()`.
     :return: a ``mysql.connector`` connection object
     """
+    try:
+        import mysql.connector  # imported lazily: only query_database() needs a MySQL driver
+    except ImportError:
+        raise ImportError(
+            "querying the modlab peptide database requires 'mysql-connector-python'; "
+            "install it with `pip install modlamp[database]`"
+        )
+
     config = _read_db_config(configfile)
 
-    try:
-        print("Connecting to MySQL database...")
-        conn = mysql.connector.connect(**config)
-        print("connection established!")
-        return conn
-
-    except mysql.connector.Error as err:
-        print(err)
+    print("Connecting to MySQL database...")
+    conn = mysql.connector.connect(**config)
+    print("connection established!")
+    return conn
 
 
-def query_database(table, columns=None, configfile="./modlamp/data/db_config.json"):
+def query_database(table, columns=None, configfile=None):
     """
     This function extracts experimental results from the modlab peptide database. All data from the given table and
     column names is extracted and returned.
@@ -92,14 +94,13 @@ def query_database(table, columns=None, configfile="./modlamp/data/db_config.jso
     """
     if not columns:
         columns = ["*"]
+    if configfile is None:  # ship-with-the-package default, independent of the current working directory
+        configfile = join(dirname(__file__), "data", "db_config.json")
+    conn = _connect(configfile)
     try:
-        conn = _connect(configfile)
-        df = pd.read_sql("SELECT " + ", ".join(columns) + " FROM " + table, con=conn)
-
-        return df
-
-    except Error as e:
-        print(e)
+        return pd.read_sql("SELECT " + ", ".join(columns) + " FROM " + table, con=conn)
+    finally:
+        conn.close()
 
 
 def query_apd(ids):
