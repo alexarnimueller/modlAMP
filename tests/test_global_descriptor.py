@@ -20,21 +20,26 @@ class TestGlobalDescriptor(unittest.TestCase):
         self.assertEqual('NPGKSTTRRI', self.G3.sequences[-1])
 
     def test_charge(self):
-        self.G.calculate_charge()
+        self.G.calculate_charge(ph=7.0, amide=False)
         self.assertAlmostEqual(self.G.descriptor[0, 0], 0.996, 3)
-        self.G.calculate_charge(amide=True)
+        self.G.calculate_charge(ph=7.0, amide=True)
         self.assertAlmostEqual(self.G.descriptor[0, 0], 1.996, 3)
-        self.G.calculate_charge(ph=9.84)
+        self.G.calculate_charge(ph=9.84, amide=False)
         self.assertAlmostEqual(self.G.descriptor[0, 0], -0.000, 3)
 
+    def test_charge_defaults(self):
+        # defaults are pH 7.4 / amidated C-terminus and must be shared by all charge-dependent descriptors
+        self.G.calculate_charge()
+        self.assertAlmostEqual(self.G.descriptor[0, 0], 1.989, 3)
+
     def test_isoelectric(self):
-        self.G.isoelectric_point()
+        self.G.isoelectric_point(amide=False)
         self.assertAlmostEqual(self.G.descriptor[0, 0], 9.840, 3)
         self.G.isoelectric_point(amide=True)
         self.assertAlmostEqual(self.G.descriptor[0, 0], 10.7090, 4)
 
     def test_charge_density(self):
-        self.G.charge_density()
+        self.G.charge_density(ph=7.0, amide=False)
         self.assertAlmostEqual(self.G.descriptor[0, 0], 0.00070, 4)
         self.G.charge_density(amide=True)
     
@@ -55,7 +60,7 @@ class TestGlobalDescriptor(unittest.TestCase):
 
     def test_filter_values(self):
         E = GlobalDescriptor(['GLFDIVKKVVGALG', 'LLLLLL', 'KKKKKKKKKK', 'DDDDDDDDDDDD'])
-        E.calculate_charge()
+        E.calculate_charge(ph=7.0, amide=False)
         E.filter_values(values=[1.], operator='>=')
         self.assertEqual(E.sequences, ['KKKKKKKKKK'])
         self.assertEqual(len(E.descriptor), 1)

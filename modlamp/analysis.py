@@ -181,7 +181,7 @@ class GlobalAnalysis(object):
             d.calculate_moment(window=window, angle=angle, modality=modality)
             self.uH.append(d.descriptor[:, 0])
 
-    def calc_charge(self, ph=7.0, amide=True):
+    def calc_charge(self, ph=7.4, amide=True):
         """Method to calculate the total molecular charge at a given pH for all sequences in the library.
 
         :param ph: {float} ph at which to calculate the peptide charge.
