@@ -1074,10 +1074,11 @@ class BaseDescriptor(object):
         minmaxidx = list()  # Store original indices of selections to return
 
         # Randomly selecting first peptide into the sele
-        np.random.seed(seed)
-        idx = int(np.random.random_integers(0, len(pool), 1))
+        rng = np.random.default_rng(seed)
+        poolidx = list(range(len(pool)))  # original row index of every row still in the pool
+        idx = int(rng.integers(0, len(pool)))
         sele = pool[idx : idx + 1, :]
-        minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[idx : idx + 1, :], axis=1))))
+        minmaxidx.append(poolidx.pop(idx))
 
         # Deleting peptide in selection from pool
         pool = np.delete(pool, idx, axis=0)
@@ -1097,7 +1098,7 @@ class BaseDescriptor(object):
             # Adding it to selection and removing from pool
             sele = np.append(sele, pool[maxidx : maxidx + 1, :], axis=0)
             pool = np.delete(pool, maxidx, axis=0)
-            minmaxidx.append(int(*np.where(np.all(self.descriptor == pool[maxidx : maxidx + 1, :], axis=1))))
+            minmaxidx.append(poolidx.pop(maxidx))
 
         self.sequences = np.array(self.sequences)[minmaxidx].tolist()
         if hasattr(self, "descriptor") and self.descriptor.size:
@@ -1105,7 +1106,7 @@ class BaseDescriptor(object):
         if hasattr(self, "names") and self.names:
             self.names = np.array(self.names)[minmaxidx].tolist()
         if hasattr(self, "target") and self.target.size:
-            self.target = self.descriptor[minmaxidx]
+            self.target = self.target[minmaxidx]
 
     def filter_sequences(self, sequences):
         """Method to filter out entries for given sequences in *sequences* out of a descriptor instance. All
@@ -1235,19 +1236,15 @@ class BaseDescriptor(object):
         """
         if not self.names:
             self.names = ["Seq_" + str(i) for i in range(len(self.sequences))]
-        if not self.target:
-            self.target = [0] * len(self.sequences)
-        if not self.descriptor:
-            self.descriptor = np.zeros(len(self.sequences))
-        df = pd.DataFrame(
-            np.array([self.sequences, self.names, self.descriptor, self.target]).T,
-            columns=["Sequences", "Names", "Descriptor", "Target"],
-        )
-        df = df.drop_duplicates(subset="Sequences", keep="first")  # keep first occurrence of duplicate
-        self.sequences = list(df["Sequences"])
-        self.names = list(df["Names"])
-        self.descriptor = df["Descriptor"].get_values()
-        self.target = df["Target"].get_values()
+        df = pd.DataFrame({"Sequences": self.sequences, "Names": self.names})
+        keep = ~df.duplicated(subset="Sequences", keep="first")  # keep first occurrence of duplicate
+        idx = np.where(keep.values)[0]
+        self.sequences = [self.sequences[i] for i in idx]
+        self.names = [self.names[i] for i in idx]
+        if hasattr(self, "descriptor") and np.size(self.descriptor):
+            self.descriptor = np.asarray(self.descriptor)[idx]
+        if hasattr(self, "target") and np.size(self.target):
+            self.target = np.asarray(self.target)[idx]
 
     def keep_natural_aa(self):
         """Method to filter out sequences that do not contain natural amino acids. If the sequence contains a character
