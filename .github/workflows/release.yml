@@ -109,3 +109,28 @@ jobs:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    # only after the upload succeeded, so a Release never advertises a version that is
+    # not on PyPI. Tag-triggered runs only: a dispatch rehearsal has no tag to attach to.
+    needs: [build, pypi]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release and attach the distribution files
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - name: Build the release notes from the CHANGELOG entry
+        run: python .github/changelog_extract.py "${{ needs.build.outputs.version }}" > notes.md
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "modlAMP ${{ needs.build.outputs.version }}" \
+            --notes-file notes.md \
+            --verify-tag
