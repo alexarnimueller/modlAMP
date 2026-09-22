@@ -1,7 +1,9 @@
 import unittest
-from os.path import join, dirname
-from modlamp.database import query_apd, query_camp
-from modlamp.database import _read_db_config
+from os.path import dirname, join
+
+import pytest
+
+from modlamp.database import _read_db_config, query_apd, query_camp
 
 
 class TestConnect(unittest.TestCase):
@@ -12,10 +14,13 @@ class TestConnect(unittest.TestCase):
         self.assertEqual(set(conf.keys()), set(d))
 
 
+@pytest.mark.network
 class TestDB(unittest.TestCase):
-    seq1 = query_apd([15])
-    seq2 = query_camp([2705])
+    # queried inside the test methods, not at class-definition time: as module-level
+    # attributes an outage of either website broke collection of the whole test suite
 
-    def test_query(self):
-        self.assertEqual(self.seq1, ["GLFDIVKKVVGALGSL"])
-        self.assertEqual(self.seq2, ["GLFDIVKKVVGALGSL"])
+    def test_query_apd(self):
+        self.assertEqual(query_apd([15]), ["GLFDIVKKVVGALGSL"])
+
+    def test_query_camp(self):
+        self.assertEqual(query_camp([2705]), ["GLFDIVKKVVGALGSL"])
