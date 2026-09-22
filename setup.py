@@ -19,7 +19,7 @@ setup(
     license="BSD-3",
     keywords="antimicrobial anticancer peptide descriptor sequences QSAR machine learning design",
     packages=["modlamp"],
-    package_data={"modlamp": ["data/*.csv", "data/*.fasta"]},
+    package_data={"modlamp": ["data/*.csv", "data/*.fasta", "data/*.json"]},
     scripts=["bin/example_modlamp.py", "bin/example_descriptors.py"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -29,7 +29,12 @@ setup(
         "Topic :: Scientific/Engineering :: Medical Science Apps.",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
+    python_requires=">=3.9",
     install_requires=reqs,
+    extras_require={"database": ["mysql-connector-python>=8.0"]},
 )
