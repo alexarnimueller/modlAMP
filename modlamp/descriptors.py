@@ -34,6 +34,10 @@ from modlamp.core import (
 __author__ = "Alex Müller, Gisela Gabernet"
 __docformat__ = "restructuredtext en"
 
+#: default conditions for every charge-dependent descriptor (charge, charge density, pI)
+DEFAULT_PH = 7.4
+DEFAULT_AMIDE = True
+
 
 def _one_autocorr(seq, window, scale):
     """Private function used for calculating auto-correlated descriptors for 1 given sequence, window and an AA scale.
@@ -372,7 +376,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["MW"]
 
-    def calculate_charge(self, ph=7.4, amide=True, append=False):
+    def calculate_charge(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE, append=False):
         """Method to overall charge of every sequence in the attribute :py:attr:`sequences`.
 
         The method used is first described by Bjellqvist. In the case of amidation, the value for the 'Cterm' pKa is 15
@@ -407,7 +411,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["Charge"]
 
-    def charge_density(self, ph=7.0, amide=False, append=False):
+    def charge_density(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE, append=False):
         """Method to calculate the charge density (charge / MW) of every sequences in the attributes
             :py:attr:`sequences`
 
@@ -436,7 +440,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["ChargeDensity"]
 
-    def isoelectric_point(self, amide=False, append=False):
+    def isoelectric_point(self, amide=DEFAULT_AMIDE, append=False):
         """
         Method to calculate the isoelectric point of every sequence in the attribute :py:attr:`sequences`.
         The pK scale is extracted from: http://www.hbcpnetbase.com/ (CRC Handbook of Chemistry and Physics, 96th ed).
@@ -660,7 +664,7 @@ class GlobalDescriptor(BaseDescriptor):
             self.descriptor = np.array(desc)
             self.featurenames = ["HydrophRatio"]
 
-    def calculate_all(self, ph=7.4, amide=True):
+    def calculate_all(self, ph=DEFAULT_PH, amide=DEFAULT_AMIDE):
         """Method combining all global descriptors and appending them into the feature matrix in the attribute
         :py:attr:`descriptor` and corresponding feature names in :py:attr:`featurenames`.
 
